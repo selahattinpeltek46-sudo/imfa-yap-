@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topçuoğlu Yapı Market | Göksun İnşaat Malzemeleri</title>
+<meta name="description" content="Ramazan Topçuoğlu Yapı Market — Göksun'da genel yapı malzemeleri, boya &amp; yapı kimyasalları, nalburiye ve hırdavat.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f2ea;
+    --surface: #ffffff;
+    --surface-2: #efe6d6;
+    --ink: #221c15;
+    --ink-muted: #6b6255;
+    --steel: #384049;
+    --steel-strong: #232830;
+    --safety: #d9531b;
+    --safety-strong: #b8410f;
+    --safety-soft: #f3c9a8;
+    --border: #e3d8c3;
+    --shadow: 0 2px 4px rgba(34,28,21,0.06), 0 16px 34px -18px rgba(34,28,21,0.32);
+    --pending: #a1470f;
+    --pending-bg: #fdeee1;
+    --pending-border: #f0c49a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17140f;
+      --surface: #201b14;
+      --surface-2: #2a2318;
+      --ink: #f3ede2;
+      --ink-muted: #b8ab93;
+      --steel: #9aa5b1;
+      --steel-strong: #cfd6dd;
+      --safety: #ef7239;
+      --safety-strong: #ff8a52;
+      --safety-soft: #4a2e1c;
+      --border: #3a3122;
+      --shadow: 0 2px 4px rgba(0,0,0,0.4), 0 16px 34px -18px rgba(0,0,0,0.7);
+      --pending: #ffb37a;
+      --pending-bg: #3a2413;
+      --pending-border: #6b431f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17140f; --surface: #201b14; --surface-2: #2a2318;
+    --ink: #f3ede2; --ink-muted: #b8ab93;
+    --steel: #9aa5b1; --steel-strong: #cfd6dd;
+    --safety: #ef7239; --safety-strong: #ff8a52; --safety-soft: #4a2e1c;
+    --border: #3a3122; --shadow: 0 2px 4px rgba(0,0,0,0.4), 0 16px 34px -18px rgba(0,0,0,0.7);
+    --pending: #ffb37a; --pending-bg: #3a2413; --pending-border: #6b431f;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: "Oswald", "Inter", sans-serif; margin: 0; text-transform: uppercase; letter-spacing: 0.01em; }
+  a { color: inherit; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+  :focus-visible { outline: 2px solid var(--safety); outline-offset: 2px; }
+  img { max-width: 100%; display: block; }
+
+  .rule { width: 3rem; height: 3px; background: var(--safety); border: none; margin: 0 0 1rem; }
+
+  .pending {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: "Inter", sans-serif; font-size: 0.72rem; font-weight: 600;
+    text-transform: none; letter-spacing: 0.02em;
+    color: var(--pending); background: var(--pending-bg);
+    border: 1px dashed var(--pending-border); border-radius: 999px;
+    padding: 0.2rem 0.7rem; margin: 0.35rem 0;
+  }
+  .pending::before { content: "⚠"; font-size: 0.8em; }
+
+  header {
+    position: sticky; top: 0; z-index: 30;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.5rem; max-width: 1120px; margin: 0 auto; gap: 1.25rem; }
+  .brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+  .brand-mark {
+    width: 2.6rem; height: 2.6rem; border-radius: 0.5rem; flex-shrink: 0;
+    background: var(--steel-strong); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Oswald", sans-serif; font-weight: 700; font-size: 1.05rem;
+  }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+  .brand-text strong { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; }
+  .brand-text span { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--ink-muted); text-transform: uppercase; }
+
+  .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; margin: 0; padding: 0; }
+  .nav-links a { font-size: 0.92rem; font-weight: 500; text-decoration: none; color: var(--ink); }
+  .nav-links a:hover { color: var(--safety); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    padding: 0.75rem 1.5rem; border-radius: 0.4rem; font-weight: 600; font-size: 0.92rem;
+    text-decoration: none; border: 1px solid transparent; cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--safety); color: #fff; box-shadow: var(--shadow); }
+  .btn-primary:hover { background: var(--safety-strong); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--border); }
+  .btn-ghost:hover { border-color: var(--safety); color: var(--safety); }
+
+  .nav-cta { display: none; }
+  @media (min-width: 860px) { .nav-cta { display: inline-flex; } }
+  .nav-links { display: none; }
+  @media (min-width: 860px) { .nav-links { display: flex; } }
+  .nav-links.open {
+    display: flex; flex-direction: column; gap: 0; position: absolute;
+    top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 0.5rem 1.5rem 1rem;
+  }
+  .nav-links.open li { width: 100%; }
+  .nav-links.open a { display: block; padding: 0.7rem 0; border-bottom: 1px solid var(--border); }
+  .nav-toggle { display: inline-flex; background: none; border: 1px solid var(--border); border-radius: 0.4rem; padding: 0.5rem 0.7rem; font-size: 1.1rem; cursor: pointer; }
+  @media (min-width: 860px) { .nav-toggle { display: none; } }
+
+  .hero {
+    position: relative; overflow: hidden;
+    background: linear-gradient(180deg, var(--steel-strong), #14181d 120%);
+    color: #f4efe6; padding: 6rem 1.5rem 4.5rem;
+  }
+  .hero-inner { max-width: 1120px; margin: 0 auto; position: relative; z-index: 2; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; letter-spacing: 0.08em; color: var(--safety-soft, #f3c9a8); text-transform: uppercase; margin-bottom: 1.25rem; font-weight: 600; }
+  .hero-eyebrow .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--safety); }
+  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.08; max-width: 20ch; margin-bottom: 1.25rem; }
+  .hero h1 em { font-style: normal; color: var(--safety); }
+  .hero-desc { font-size: 1.05rem; color: #d8d0c2; max-width: 46ch; margin-bottom: 2rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    max-width: 1120px; margin: 3.5rem auto 0; position: relative; z-index: 2;
+  }
+  @media (max-width: 560px) { .hero-stats { grid-template-columns: 1fr; } }
+  .stat-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 0.6rem; padding: 1.1rem 1.2rem; backdrop-filter: blur(6px);
+  }
+  .stat-card strong { display: block; font-family: "Oswald", sans-serif; font-size: 1.05rem; color: #fff; margin-bottom: 0.15rem; }
+  .stat-card span { font-size: 0.82rem; color: #cfc6b6; }
+
+  .section { padding: 5rem 0; }
+  .section-dark { background: var(--surface-2); }
+  .section-eyebrow { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--safety); margin-bottom: 0.9rem; }
+  .section-title { font-size: clamp(1.6rem, 3.4vw, 2.3rem); margin-bottom: 1rem; max-width: 24ch; }
+  .section-desc { color: var(--ink-muted); max-width: 60ch; font-size: 1rem; margin-bottom: 2.5rem; }
+
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+  .product-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 0.7rem;
+    padding: 1.75rem; box-shadow: var(--shadow);
+  }
+  .product-card .icon {
+    width: 3rem; height: 3rem; border-radius: 0.6rem; background: var(--safety-soft);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem;
+    font-size: 1.4rem;
+  }
+  .product-card h3 { font-size: 1.05rem; margin-bottom: 0.6rem; }
+  .product-card p { color: var(--ink-muted); font-size: 0.92rem; margin: 0 0 0.9rem; }
+  .product-card ul { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); font-size: 0.88rem; }
+  .product-card li { margin-bottom: 0.3rem; }
+
+  .founder {
+    display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center;
+  }
+  @media (min-width: 860px) { .founder { grid-template-columns: 0.85fr 1.15fr; } }
+  .founder-media {
+    aspect-ratio: 4/5; border-radius: 0.8rem; overflow: hidden;
+    background: var(--surface-2); border: 1px dashed var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-muted); font-size: 0.9rem; text-align: center; padding: 1.5rem;
+  }
+  .founder-media img { width: 100%; height: 100%; object-fit: cover; }
+  .founder-signature { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .founder-signature strong { display: block; font-family: "Oswald", sans-serif; font-size: 1.05rem; }
+  .founder-signature span { font-size: 0.85rem; color: var(--ink-muted); }
+
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+  .why-card { display: flex; gap: 1rem; align-items: flex-start; }
+  .why-num { font-family: "Oswald", sans-serif; font-size: 1.6rem; color: var(--safety); flex-shrink: 0; width: 2.4rem; }
+  .why-card h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+  .why-card p { font-size: 0.9rem; color: var(--ink-muted); margin: 0; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+  @media (min-width: 860px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
+  .contact-item { margin-bottom: 1.5rem; }
+  .contact-label { display: block; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--safety-soft, var(--safety)); font-weight: 600; margin-bottom: 0.35rem; }
+  .contact-item p { margin: 0; color: #ece5d8; }
+  .contact-item a { text-decoration: none; }
+  .contact-cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.5rem; }
+  .contact-map {
+    border-radius: 0.7rem; overflow: hidden; border: 1px dashed var(--border);
+    aspect-ratio: 4/3; background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-muted); text-align: center; padding: 1.5rem; font-size: 0.9rem;
+  }
+  .section-dark .contact-map { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.14); }
+
+  .footer { background: var(--steel-strong); color: #cfc6b6; padding: 2.5rem 1.5rem; text-align: center; font-size: 0.85rem; }
+  .footer-inner { max-width: 1120px; margin: 0 auto; }
+  .footer p { margin: 0.3rem 0; }
+
+  .whatsapp-float {
+    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 40;
+    width: 3.4rem; height: 3.4rem; border-radius: 50%; background: #25D366;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25); text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="#" class="brand">
+      <span class="brand-mark">TY</span>
+      <span class="brand-text"><strong>TOPÇUOĞLU</strong><span>Yapı Market</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#urunler">Ürünler</a></li>
+      <li><a href="#hakkimizda">Hakkımızda</a></li>
+      <li><a href="#neden-biz">Neden Biz</a></li>
+      <li><a href="#iletisim">İletişim</a></li>
+    </ul>
+    <a href="#iletisim" class="btn btn-primary nav-cta"><span>Bize Ulaşın</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow"><span class="dot"></span>Göksun · Kahramanmaraş</p>
+    <h1>Göksun'un Güvenilir<br><em>Yapı Market</em>'i</h1>
+    <p class="hero-desc">Topçuoğlu Yapı Market; genel yapı malzemeleri, boya &amp; yapı kimyasalları ve nalburiye-hırdavat çeşitleriyle Göksun ve çevresinde inşaat ve tadilat projelerinizin yanında.</p>
+    <div class="hero-actions">
+      <a href="#urunler" class="btn btn-primary"><span>Ürünlerimizi İnceleyin</span></a>
+      <a href="#iletisim" class="btn btn-ghost" style="border-color:rgba(255,255,255,0.25); color:#f4efe6;"><span>Bize Ulaşın</span></a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <strong>[Yıl]+</strong>
+      <span>Yıllık Tecrübe — <em class="pending" style="margin:0;">onay bekliyor</em></span>
+    </div>
+    <div class="stat-card">
+      <strong>[Sayı]+</strong>
+      <span>Ürün Çeşidi — <em class="pending" style="margin:0;">onay bekliyor</em></span>
+    </div>
+    <div class="stat-card">
+      <strong>Göksun</strong>
+      <span>ve Çevresine Hizmet</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="urunler">
+  <div class="container">
+    <p class="section-eyebrow">Ürün &amp; Hizmet Kategorilerimiz</p>
+    <h2 class="section-title">İhtiyacınız Olan Her Şey Tek Çatı Altında</h2>
+    <p class="section-desc">Küçük tadilattan büyük inşaat projesine, ustadan ev sahibine — Topçuoğlu Yapı Market'te aradığınızı bulursunuz.</p>
+
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="icon">🧱</div>
+        <h3>Genel Yapı Malzemeleri</h3>
+        <p>İnşaatın temelinden çatısına kadar ihtiyaç duyduğunuz temel yapı malzemeleri.</p>
+        <ul>
+          <li>Çimento &amp; harç ürünleri</li>
+          <li>Demir &amp; inşaat çeliği</li>
+          <li>İzolasyon &amp; yalıtım malzemeleri</li>
+          <li>Alçı &amp; sıva malzemeleri</li>
+        </ul>
+      </div>
+      <div class="product-card">
+        <div class="icon">🎨</div>
+        <h3>Boya &amp; Yapı Kimyasalları</h3>
+        <p>İç ve dış cephe boyaları, astar ve yapı kimyasallarında geniş ürün yelpazesi.</p>
+        <ul>
+          <li>İç &amp; dış cephe boyaları</li>
+          <li>Astar &amp; macun ürünleri</li>
+          <li>Su yalıtım kimyasalları</li>
+          <li>Yapıştırıcı &amp; derz dolgu</li>
+        </ul>
+      </div>
+      <div class="product-card">
+        <div class="icon">🔧</div>
+        <h3>Nalburiye &amp; Hırdavat</h3>
+        <p>El aletlerinden tesisat malzemelerine, günlük ihtiyaçlarınız için geniş stok.</p>
+        <ul>
+          <li>El aletleri &amp; takım ekipmanları</li>
+          <li>Vida, civata &amp; bağlantı elemanları</li>
+          <li>Elektrik &amp; su tesisatı malzemeleri</li>
+          <li>Kilit, menteşe &amp; kapı-pencere aksesuarları</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark" id="hakkimizda">
+  <div class="container founder">
+    <div class="founder-media">
+      <span class="pending">Ramazan Bey'in fotoğrafı / mağaza fotoğrafı bekleniyor</span>
+    </div>
+    <div>
+      <p class="section-eyebrow">Hakkımızda</p>
+      <h2 class="section-title">Göksun'da Güvenle Büyüyen Bir Aile İşi</h2>
+      <p class="section-desc" style="margin-bottom:1rem;">
+        <span class="pending">Firma hikayesi ve kuruluş yılı onay bekliyor</span><br>
+        Topçuoğlu Yapı Market, Ramazan Topçuoğlu önderliğinde Göksun'da inşaat ve yapı malzemeleri sektöründe hizmet veriyor. Kaliteli ürün, geniş stok ve güler yüzlü hizmet anlayışıyla bölgenin tercih edilen adreslerinden biri olmayı hedefliyoruz.
+      </p>
+      <div class="founder-signature">
+        <strong>Ramazan Topçuoğlu</strong>
+        <span>Kurucu / İşletme Sahibi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="neden-biz">
+  <div class="container">
+    <p class="section-eyebrow">Neden Biz</p>
+    <h2 class="section-title">Topçuoğlu Yapı Market Farkı</h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="why-num">01</span>
+        <div>
+          <h3>Geniş Ürün Stoku</h3>
+          <p>Yapı malzemesinden hırdavata, aradığınız ürünü tek adreste bulma kolaylığı.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <span class="why-num">02</span>
+        <div>
+          <h3>Yerel &amp; Güvenilir</h3>
+          <p>Göksun'da yıllardır süregelen aile işletmesi güveniyle hizmet veriyoruz.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <span class="why-num">03</span>
+        <div>
+          <h3>Usta &amp; Müteahhit Dostu</h3>
+          <p>Projeye özel toplu alımlarda avantajlı fiyat ve hızlı tedarik desteği.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <span class="why-num">04</span>
+        <div>
+          <h3>Doğru Yönlendirme</h3>
+          <p>İhtiyacınıza en uygun ürünü seçmenizde deneyimli ekibimiz yanınızda.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark" id="iletisim" style="background:var(--steel-strong); color:#f4efe6;">
+  <div class="container">
+    <p class="section-eyebrow" style="color:var(--safety-soft,#f3c9a8);">İletişim</p>
+    <h2 class="section-title" style="color:#fff;">Bize Uğrayın veya Arayın</h2>
+    <p class="section-desc" style="color:#cfc6b6;">Ürünlerimiz ve stok durumu hakkında bilgi almak için bize ulaşın.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-label">Adres</span>
+          <p>Göksun, Kahramanmaraş<br><span class="pending">Tam adres onay bekliyor</span></p>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Telefon</span>
+          <p><span class="pending">Telefon numarası onay bekliyor</span></p>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Çalışma Saatleri</span>
+          <p><span class="pending">Çalışma saatleri onay bekliyor</span></p>
+        </div>
+        <div class="contact-cta-row">
+          <a class="btn btn-primary" href="#" aria-disabled="true"><span>WhatsApp'tan Yazın</span></a>
+          <span class="pending" style="margin-left:0.5rem;">WhatsApp numarası eklenecek</span>
+        </div>
+      </div>
+      <div class="contact-map">
+        <span class="pending">Harita — adres onaylanınca eklenecek</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p><strong>Topçuoğlu Yapı Market</strong></p>
+    <p>© 2026 Topçuoğlu Yapı Market. Tüm hakları saklıdır.</p>
+    <p><span class="pending">Adres &amp; telefon onaylanınca footer'a eklenecek</span></p>
+  </div>
+</footer>
+
+<a href="#" class="whatsapp-float" aria-label="WhatsApp'tan yazın" aria-disabled="true">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Z" fill="#fff" fill-opacity="0.15"/><path d="M8.4 7.3c.2-.5.5-.5.7-.5h.6c.2 0 .4 0 .6.4.2.5.7 1.7.8 1.8.1.2.1.3 0 .5-.1.2-.2.3-.3.5-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.6.8 1.9.9.3.1.5.2.6.3.1.2.1 1-.3 1.9-.4.9-2.1 1.7-2.9 1.7-.7 0-1.6.1-4.6-1.9-3-2-4.7-5.3-4.9-5.6-.2-.3-1.4-1.9-1.4-3.5 0-1.7.9-2.5 1.2-2.9Z" fill="#fff"/></svg>
+</a>
+
+<script>
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
