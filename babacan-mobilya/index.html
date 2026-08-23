@@ -186,7 +186,13 @@
     aspect-ratio: 4/5; border-radius: 18px; overflow: hidden; border: 2px solid var(--gold);
     box-shadow: var(--shadow);
   }
-  .about-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .about-art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
+  .about-facts { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
+  .about-facts span {
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 0.4rem 0.9rem; font-family: "JetBrains Mono", monospace; font-size: 0.72rem;
+    font-weight: 600; color: var(--ink-muted);
+  }
   .about-lead { font-size: 1.05rem; color: var(--ink-muted); margin-top: 0.9rem; max-width: 54ch; }
   .about-quote {
     font-family: "Fraunces", serif; font-style: italic; font-weight: 500;
@@ -332,8 +338,8 @@
       <a class="cta-ghost" href="#urunler">Ürünleri Gör</a>
     </div>
     <div class="stats">
-      <div><div class="n">3 iş kolu</div><div class="l">mobilya · hırdavat · tamir</div></div>
-      <div><div class="n">Sanayi Sitesi</div><div class="l">Göksun merkezde atölye</div></div>
+      <div><div class="n">20 Kişilik</div><div class="l">ekip, tek atölyede</div></div>
+      <div><div class="n">20 Yıl</div><div class="l">Göksun'da tecrübe</div></div>
       <div><div class="n">Usta işi</div><div class="l">döşeme ve tamir hizmeti</div></div>
       <div><div class="n">Aynı gün</div><div class="l">keşif ve fiyat teklifi</div></div>
     </div>
@@ -385,15 +391,22 @@
 <section id="hakkimizda">
   <div class="container">
     <div class="about reveal">
-      <div class="about-art">
-        <img src="images/foto (12).png" alt="Kenan'ın atölyesinden, montaj aşamasında bir mutfak" loading="lazy">
+      <div>
+        <div class="about-art">
+          <img src="images/foto (14).png" alt="Kenan Babacan, Babacan Mobilya'nın patronu" loading="lazy">
+        </div>
+        <div class="about-facts">
+          <span>20 Yıl Tecrübe</span>
+          <span>20 Kişilik Ekip</span>
+          <span>Yeniyapan Köyü, Göksun</span>
+        </div>
       </div>
       <div>
         <p class="kicker"><span class="rule"></span>Hakkımızda</p>
-        <h2>İşin başında Kenan var</h2>
-        <p class="about-lead">Kenan, Göksun Sanayi Sitesi'ndeki atölyesinde her mutfak dolabını, vestibülü ve hol mobilyasını kendi elleriyle ölçüp üretiyor. Sipariş alan da, ölçüyü alan da, montajı yapan da aynı kişi — aracısız, doğrudan usta işi.</p>
-        <p class="about-quote">"Her eve, kendi evime yaptığım gibi özenle bakarım."</p>
-        <div class="about-sign">— Kenan, Babacan Mobilya</div>
+        <h2>Patron Kenan Babacan</h2>
+        <p class="about-lead">Göksun'un Yeniyapan köyünden Kenan Babacan, 20 yıldır Göksun ve civarında mobilya ve hırdavat sektöründe hizmet veriyor. 20 kişilik ekibiyle mobilya imalatı, satışı, toptan üretim ve hırdavat tedariki yapıyor — sipariş, üretim ve montaj Göksun Sanayi Sitesi'ndeki atölyede aynı çatı altında yürütülüyor.</p>
+        <p class="about-quote">"Bu işin başında ben varım; çıkan her işin arkasında benim imzam var."</p>
+        <div class="about-sign">— Kenan Babacan, Babacan Mobilya</div>
       </div>
     </div>
   </div>
