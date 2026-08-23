@@ -147,6 +147,29 @@
   }
   .hero .cta-ghost:hover { border-color: var(--gold-soft); }
 
+  .hero-marquee {
+    display: none; position: absolute; top: 0; right: 0; bottom: 0; width: 3.4rem;
+    overflow: hidden; z-index: 2;
+    border-left: 1px solid rgba(251,245,228,0.16);
+    background: linear-gradient(180deg, rgba(6,14,10,0.05), rgba(6,14,10,0.4));
+  }
+  .hero-marquee-track {
+    position: absolute; top: 0; left: 0; width: 100%;
+    writing-mode: vertical-rl; white-space: nowrap;
+    animation: hero-marquee-scroll 34s linear infinite;
+  }
+  .hero-marquee-track span {
+    font-family: "JetBrains Mono", monospace; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); opacity: 0.82;
+  }
+  .hero-marquee-track .sep { color: var(--gold); opacity: 0.55; padding: 0 1rem; }
+  @keyframes hero-marquee-scroll {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+  }
+  @media (min-width: 960px) { .hero-marquee { display: block; } }
+  @media (prefers-reduced-motion: reduce) { .hero-marquee-track { animation: none; } }
+
   .stats {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
     background: rgba(251,245,228,0.14);
@@ -333,6 +356,20 @@
   <div class="hero-bg"><img src="images/foto (10).png" alt="Işıklı ayna ve hol mobilyası, atölyeden bir kare" loading="eager"></div>
   <div class="hero-scrim"></div>
   <div class="hero-mist"></div>
+  <div class="hero-marquee" aria-hidden="true">
+    <div class="hero-marquee-track">
+      <span>Babacan Mobilya</span><span class="sep">✦</span>
+      <span>Göksun'un Ustası</span><span class="sep">✦</span>
+      <span>Evinizi İnşa Eder</span><span class="sep">✦</span>
+      <span>Ölçüde Üretim</span><span class="sep">✦</span>
+      <span>20 Yıl Tecrübe</span><span class="sep">✦</span>
+      <span>Babacan Mobilya</span><span class="sep">✦</span>
+      <span>Göksun'un Ustası</span><span class="sep">✦</span>
+      <span>Evinizi İnşa Eder</span><span class="sep">✦</span>
+      <span>Ölçüde Üretim</span><span class="sep">✦</span>
+      <span>20 Yıl Tecrübe</span><span class="sep">✦</span>
+    </div>
+  </div>
   <div class="container hero-content">
     <p class="eyebrow"><span class="rule" style="background:var(--gold-soft);"></span>Orman Ürünleri ve Hırdavat — Göksun Sanayi Sitesi</p>
     <p class="hero-slogan">"Göksun'un ustası, Babacan'ın imzası."</p>
