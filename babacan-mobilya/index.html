@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Babacan Mobilya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  :root {
+    --bg: #efeae1;
+    --surface: #ffffff;
+    --surface-2: #e6ddc9;
+    --ink: #251d15;
+    --ink-muted: #6d6153;
+    --walnut: #7c4b2a;
+    --walnut-strong: #5f3a20;
+    --steel: #48565e;
+    --brass: #ad8a3e;
+    --border: #ddd3c0;
+    --shadow: 0 1px 2px rgba(37,29,21,0.06), 0 10px 26px -16px rgba(37,29,21,0.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16130f;
+      --surface: #201a13;
+      --surface-2: #2a2118;
+      --ink: #ece4d8;
+      --ink-muted: #a89b89;
+      --walnut: #c58a56;
+      --walnut-strong: #e0a06c;
+      --steel: #93a7b0;
+      --brass: #d9b45f;
+      --border: #362b1f;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 26px -16px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16130f;
+    --surface: #201a13;
+    --surface-2: #2a2118;
+    --ink: #ece4d8;
+    --ink-muted: #a89b89;
+    --walnut: #c58a56;
+    --walnut-strong: #e0a06c;
+    --steel: #93a7b0;
+    --brass: #d9b45f;
+    --border: #362b1f;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 26px -16px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Work Sans", system-ui, sans-serif; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: "Spectral", Georgia, serif; margin: 0; }
+  a { color: inherit; }
+  .mono { font-family: "JetBrains Mono", monospace; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+  :focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+
+  header {
+    position: sticky; top: 0; z-index: 30;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 1.05rem 1.5rem; max-width: 1080px; margin: 0 auto; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 0.65rem; font-family: "Spectral", serif; font-weight: 700; font-size: 1.18rem; }
+  .brand-mark {
+    width: 2.15rem; height: 2.15rem; border-radius: 50%; flex-shrink: 0;
+    background: var(--surface-2); border: 1px solid var(--border);
+    object-fit: cover;
+  }
+  nav ul { list-style: none; display: flex; gap: 1.6rem; margin: 0; padding: 0; }
+  nav a { text-decoration: none; font-size: 0.87rem; font-weight: 600; color: var(--ink-muted); }
+  nav a:hover { color: var(--ink); }
+  .cta-btn {
+    background: var(--walnut); color: #fdf8f0; font-weight: 600; font-size: 0.85rem;
+    padding: 0.6rem 1.15rem; border-radius: 7px; text-decoration: none; white-space: nowrap;
+  }
+  .cta-btn:hover { background: var(--walnut-strong); }
+  .cta-ghost {
+    border: 1px solid var(--border); color: var(--ink); text-decoration: none;
+    padding: 0.58rem 1.1rem; border-radius: 7px; font-weight: 600; font-size: 0.87rem;
+  }
+  .cta-ghost:hover { border-color: var(--walnut); }
+
+  .hero {
+    padding: 4.75rem 0 3.5rem; border-bottom: 1px solid var(--border);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--walnut) 7%, transparent), transparent 60%);
+  }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 3rem; align-items: center; }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace; font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.09em; text-transform: uppercase; color: var(--brass); margin-bottom: 1.1rem;
+  }
+  .hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.1rem); line-height: 1.1; font-weight: 700; text-wrap: balance; }
+  .hero p { color: var(--ink-muted); font-size: 1.08rem; max-width: 44ch; margin: 1.15rem 0 1.85rem; }
+  .hero-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+  .hero-art {
+    aspect-ratio: 1/1; border-radius: 14px; border: 1px solid var(--border); overflow: hidden;
+    display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 3px;
+    background: var(--border);
+  }
+  .hero-art .cell { background: var(--surface-2); overflow: hidden; }
+  .hero-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 2.75rem;
+  }
+  .stats div { background: var(--surface); padding: 1.1rem 1.2rem; }
+  .stats .n { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 1.3rem; color: var(--walnut); }
+  .stats .l { font-size: 0.78rem; color: var(--ink-muted); margin-top: 0.2rem; }
+
+  section { padding: 4rem 0; }
+  .section-head { max-width: 58ch; margin-bottom: 2.25rem; }
+  .kicker { font-family: "JetBrains Mono", monospace; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brass); margin-bottom: 0.6rem; }
+  h2 { font-size: clamp(1.65rem, 3vw, 2.05rem); font-weight: 700; text-wrap: balance; }
+  .section-head p { color: var(--ink-muted); margin-top: 0.65rem; }
+
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .pillar { background: var(--surface); padding: 1.85rem 1.7rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  .pillar .num { font-family: "JetBrains Mono", monospace; font-size: 0.78rem; color: var(--ink-muted); }
+  .pillar h3 { font-size: 1.22rem; font-weight: 700; }
+  .pillar p { font-size: 0.92rem; color: var(--ink-muted); margin: 0; }
+  .pillar ul { margin: 0.4rem 0 0; padding-left: 1.05rem; font-size: 0.87rem; color: var(--ink-muted); display: grid; gap: 0.3rem; }
+
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
+  .g-item { border-radius: 12px; border: 1px solid var(--border); overflow: hidden; background: var(--surface); }
+  .g-art { aspect-ratio: 1/1; overflow: hidden; }
+  .g-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .g-body { padding: 0.9rem 1rem 1.1rem; }
+  .g-body h3 { font-size: 0.98rem; font-weight: 600; }
+  .g-body p { font-size: 0.82rem; color: var(--ink-muted); margin: 0.25rem 0 0; }
+
+  .trust {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 2.5rem; display: grid; grid-template-columns: 1.1fr 1fr; gap: 2.5rem; align-items: center;
+  }
+  .trust h2 { margin-bottom: 0.9rem; }
+  .trust p { color: var(--ink-muted); }
+  .trust-list { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: 0.65rem; }
+  .trust-list li { display: flex; gap: 0.6rem; font-size: 0.92rem; }
+  .trust-list li::before { content: "—"; color: var(--brass); flex-shrink: 0; }
+  .trust-art {
+    aspect-ratio: 1/1; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--surface-2); overflow: hidden;
+  }
+  .trust-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.9rem; box-shadow: var(--shadow); }
+  .contact-card h3 { font-size: 1.1rem; margin-bottom: 1rem; }
+  .contact-line { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px dashed var(--border); font-size: 0.92rem; }
+  .contact-line:last-child { border-bottom: none; }
+  .contact-line span:first-child { color: var(--ink-muted); }
+  .contact-line a { font-weight: 600; text-decoration: none; }
+  .contact-line a:hover { color: var(--walnut); }
+  .map-art {
+    border-radius: 14px; border: 1px solid var(--border); min-height: 100%;
+    background: linear-gradient(150deg, color-mix(in srgb, var(--steel) 18%, var(--surface-2)), var(--surface-2));
+    display: flex; align-items: flex-end; padding: 1.5rem;
+    font-size: 0.85rem; color: var(--ink-muted);
+  }
+
+  footer { border-top: 1px solid var(--border); padding: 2.1rem 0; color: var(--ink-muted); font-size: 0.85rem; }
+  footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--walnut); }
+
+  @media (max-width: 780px) {
+    nav ul { display: none; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2,1fr); }
+    .pillars { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: repeat(2,1fr); }
+    .trust { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand"><img class="brand-mark" src="images/foto (9).png" alt="Babacan Mobilya logosu">Babacan Mobilya</div>
+    <nav><ul>
+      <li><a href="#hizmetler">Hizmetler</a></li>
+      <li><a href="#urunler">Ürünler</a></li>
+      <li><a href="#iletisim">İletişim</a></li>
+    </ul></nav>
+    <a class="cta-btn" href="tel:+905056088235">0505 608 82 35</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">Orman Ürünleri ve Hırdavat — Göksun Sanayi Sitesi</p>
+      <h1>Ölçüde üretim, yerinde montaj: mutfak dolabından vestibüle.</h1>
+      <p>Mermer desenli panel ve gizli LED aydınlatmayla mutfak dolabı, vestibül/gömme dolap, TV ünitesi ve hol mobilyası — aynı çatı altında yapı hırdavatı ve usta işi tamir-döşeme hizmeti.</p>
+      <div class="hero-ctas">
+        <a class="cta-btn" href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Yazın</a>
+        <a class="cta-ghost" href="#urunler">Ürünleri Gör</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="cell"><img src="images/foto (11).png" alt="Mermer panelli TV ünitesi" loading="lazy"></div>
+      <div class="cell"><img src="images/foto (6).png" alt="Aynalı sürgülü vestibül dolabı" loading="lazy"></div>
+      <div class="cell"><img src="images/foto (1).png" alt="Mermer detaylı mutfak dolabı" loading="lazy"></div>
+      <div class="cell"><img src="images/foto (4).png" alt="Ahşap panelli vestiyer" loading="lazy"></div>
+    </div>
+    <div class="stats" style="grid-column: 1 / -1;">
+      <div><div class="n">3 iş kolu</div><div class="l">mobilya · hırdavat · tamir</div></div>
+      <div><div class="n">Sanayi Sitesi</div><div class="l">Göksun merkezde atölye</div></div>
+      <div><div class="n">Usta işi</div><div class="l">döşeme ve tamir hizmeti</div></div>
+      <div><div class="n">Aynı gün</div><div class="l">keşif ve fiyat teklifi</div></div>
+    </div>
+  </div>
+</div>
+
+<section id="hizmetler">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Hizmetler</p>
+      <h2>Tek çatı altında üç işiniz de görülür</h2>
+      <p>Göksun ve çevre köylerden gelen müşteriler tek durakta hem mobilya alır hem malzeme tedarik eder hem de eskiyeni yeniletir.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <span class="num">01</span>
+        <h3>Ölçüde Üretim Mobilya</h3>
+        <p>Mermer desenli panel ve gizli LED aydınlatmayla, evinize özel ölçüde üretim.</p>
+        <ul>
+          <li>Mutfak dolabı</li>
+          <li>Vestibül / gömme dolap</li>
+          <li>TV ünitesi ve hol mobilyası</li>
+        </ul>
+      </div>
+      <div class="pillar">
+        <span class="num">02</span>
+        <h3>Hırdavat &amp; Yapı Malzemesi</h3>
+        <p>İnşaat, tamirat ve marangoz ihtiyaçları için nalburiye ve ahşap malzeme.</p>
+        <ul>
+          <li>El aletleri ve bağlantı elemanları</li>
+          <li>Ahşap ve orman ürünleri</li>
+          <li>Usta ve esnafa toptan tedarik</li>
+        </ul>
+      </div>
+      <div class="pillar">
+        <span class="num">03</span>
+        <h3>Tamir &amp; Döşeme Atölyesi</h3>
+        <p>Eskiyen koltuk, sandalye ve mobilyalarınız atölyede yenilenir.</p>
+        <ul>
+          <li>Koltuk ve kanepe döşemesi</li>
+          <li>Mobilya onarımı ve cilası</li>
+          <li>Yerinde keşif imkanı</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="urunler">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Ürünlerden Örnekler</p>
+      <h2>Atölyeden ve mağazadan kareler</h2>
+      <p>Atölyeden ve hırdavat reyonundan gerçek kareler — tamir-döşeme atölyesi fotoğrafları eklendiğinde galeri tamamlanacak.</p>
+    </div>
+    <div class="gallery">
+      <div class="g-item">
+        <div class="g-art"><img src="images/foto (1).png" alt="Mermer detaylı mutfak dolabı" loading="lazy"></div>
+        <div class="g-body"><h3>Mutfak Dolabı</h3><p>Mermer desenli, LED aydınlatmalı</p></div>
+      </div>
+      <div class="g-item">
+        <div class="g-art"><img src="images/foto (2).png" alt="Aynalı vestibül dolabı" loading="lazy"></div>
+        <div class="g-body"><h3>Vestibül / Gömme Dolap</h3><p>Aynalı, ölçüde üretim</p></div>
+      </div>
+      <div class="g-item">
+        <div class="g-art"><img src="images/foto (11).png" alt="TV ünitesi" loading="lazy"></div>
+        <div class="g-body"><h3>TV Ünitesi &amp; Panel</h3><p>Işıklı vitrin detayı</p></div>
+      </div>
+      <div class="g-item">
+        <div class="g-art"><img src="images/foto (10).png" alt="Hol mobilyası" loading="lazy"></div>
+        <div class="g-body"><h3>Hol Mobilyası</h3><p>Işıklı ayna &amp; konsol</p></div>
+      </div>
+      <div class="g-item">
+        <div class="g-art"><img src="images/foto (4).png" alt="Ahşap panelli vestiyer" loading="lazy"></div>
+        <div class="g-body"><h3>Vestiyer / Askılık</h3><p>Ahşap panel detayı</p></div>
+      </div>
+      <div class="g-item">
+        <div class="g-art"><img src="images/foto (7).png" alt="Hırdavat reyonu" loading="lazy"></div>
+        <div class="g-body"><h3>Hırdavat Reyonu</h3><p>Nalburiye ve yapı malzemesi</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="trust">
+      <div>
+        <p class="kicker">Neden Babacan Mobilya</p>
+        <h2>Sanayi sitesinde köklü, güvenilir bir isim</h2>
+        <p>Aynı elden çıkan satış, malzeme ve tamir hizmeti; şehir dışına gitmeden, aracısız fiyat.</p>
+        <ul class="trust-list">
+          <li>Sipariş üzerine ölçülü üretim ve tamir</li>
+          <li>Sanayi sitesinde kolay ulaşılan konum</li>
+          <li>Esnafa ve ustaya toptan hırdavat tedariki</li>
+          <li>WhatsApp'tan hızlı fiyat ve keşif talebi</li>
+        </ul>
+      </div>
+      <div class="trust-art"><img src="images/foto (8).png" alt="Hırdavat reyonunda müşteri hizmeti" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section id="iletisim">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">İletişim</p>
+      <h2>Atölyeye uğrayın veya yazın</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>İletişim Bilgileri</h3>
+        <div class="contact-line"><span>Telefon</span><a href="tel:+905056088235">0505 608 82 35</a></div>
+        <div class="contact-line"><span>WhatsApp</span><a href="https://wa.me/905056088235" target="_blank" rel="noopener">Mesaj gönder</a></div>
+        <div class="contact-line"><span>Instagram</span><a href="https://www.instagram.com/babacanmobilyam46/" target="_blank" rel="noopener">@babacanmobilyam46</a></div>
+        <div class="contact-line"><span>Adres</span><span>Yeni Mah., Göksun Sanayi Sitesi Yolu</span></div>
+        <div class="contact-line"><span>Çalışma Saatleri</span><span>Pazartesi–Cumartesi, 08:00–18:00</span></div>
+      </div>
+      <div class="map-art">Harita alanı — Google Haritalar konum gömme yeri</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>© Babacan Mobilya — Göksun, Kahramanmaraş</div>
+    <div><a href="tel:+905056088235">0505 608 82 35</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
