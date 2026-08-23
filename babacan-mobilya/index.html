@@ -89,34 +89,49 @@
   .cta-ghost:hover { border-color: var(--walnut); }
 
   .hero {
+    position: relative; overflow: hidden; min-height: 78vh;
+    display: flex; align-items: flex-end;
     padding: 4.75rem 0 3.5rem; border-bottom: 1px solid var(--border);
-    background:
-      linear-gradient(180deg, color-mix(in srgb, var(--walnut) 7%, transparent), transparent 60%);
+    isolation: isolate;
   }
-  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 3rem; align-items: center; }
+  .hero-bg { position: absolute; inset: 0; z-index: -3; }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.88) brightness(0.86); }
+  .hero-scrim {
+    position: absolute; inset: 0; z-index: -2;
+    background:
+      linear-gradient(180deg, rgba(15,12,8,0.18) 0%, rgba(15,12,8,0.52) 60%, rgba(12,9,6,0.88) 100%),
+      linear-gradient(90deg, rgba(12,9,6,0.55) 0%, rgba(12,9,6,0.08) 55%);
+  }
+  .hero-mist {
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(115% 65% at 8% 0%, rgba(238,232,220,0.30), transparent 62%),
+      radial-gradient(80% 55% at 100% 100%, rgba(173,138,62,0.22), transparent 60%);
+    mix-blend-mode: overlay;
+  }
+  .hero-content { position: relative; max-width: 40rem; }
   .eyebrow {
     font-family: "JetBrains Mono", monospace; font-size: 0.72rem; font-weight: 600;
-    letter-spacing: 0.09em; text-transform: uppercase; color: var(--brass); margin-bottom: 1.1rem;
+    letter-spacing: 0.09em; text-transform: uppercase; color: #e0b96e; margin-bottom: 1.1rem;
   }
-  .hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.1rem); line-height: 1.1; font-weight: 700; text-wrap: balance; }
-  .hero p { color: var(--ink-muted); font-size: 1.08rem; max-width: 44ch; margin: 1.15rem 0 1.85rem; }
+  .hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.1rem); line-height: 1.1; font-weight: 700; text-wrap: balance; color: #f6f1e6; }
+  .hero p { color: rgba(246,241,230,0.82); font-size: 1.08rem; max-width: 44ch; margin: 1.15rem 0 1.85rem; }
   .hero-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-
-  .hero-art {
-    aspect-ratio: 1/1; border-radius: 14px; border: 1px solid var(--border); overflow: hidden;
-    display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 3px;
-    background: var(--border);
+  .hero .cta-ghost {
+    border-color: rgba(246,241,230,0.4); color: #f6f1e6;
+    background: rgba(20,16,11,0.28); backdrop-filter: blur(4px);
   }
-  .hero-art .cell { background: var(--surface-2); overflow: hidden; }
-  .hero-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero .cta-ghost:hover { border-color: #e0b96e; }
 
   .stats {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border);
-    border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 2.75rem;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: rgba(246,241,230,0.16);
+    border: 1px solid rgba(246,241,230,0.22); border-radius: 10px; overflow: hidden;
+    margin-top: 2.75rem; backdrop-filter: blur(6px);
   }
-  .stats div { background: var(--surface); padding: 1.1rem 1.2rem; }
-  .stats .n { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 1.3rem; color: var(--walnut); }
-  .stats .l { font-size: 0.78rem; color: var(--ink-muted); margin-top: 0.2rem; }
+  .stats div { background: rgba(15,12,8,0.32); padding: 1.1rem 1.2rem; }
+  .stats .n { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 1.3rem; color: #e0b96e; }
+  .stats .l { font-size: 0.78rem; color: rgba(246,241,230,0.72); margin-top: 0.2rem; }
 
   section { padding: 4rem 0; }
   .section-head { max-width: 58ch; margin-bottom: 2.25rem; }
@@ -176,7 +191,7 @@
 
   @media (max-width: 780px) {
     nav ul { display: none; }
-    .hero-grid { grid-template-columns: 1fr; }
+    .hero { min-height: 68vh; }
     .stats { grid-template-columns: repeat(2,1fr); }
     .pillars { grid-template-columns: 1fr; }
     .gallery { grid-template-columns: repeat(2,1fr); }
@@ -200,23 +215,18 @@
 </header>
 
 <div class="hero">
-  <div class="container hero-grid">
-    <div>
-      <p class="eyebrow">Orman Ürünleri ve Hırdavat — Göksun Sanayi Sitesi</p>
-      <h1>Ölçüde üretim, yerinde montaj: mutfak dolabından vestibüle.</h1>
-      <p>Mermer desenli panel ve gizli LED aydınlatmayla mutfak dolabı, vestibül/gömme dolap, TV ünitesi ve hol mobilyası — aynı çatı altında yapı hırdavatı ve usta işi tamir-döşeme hizmeti.</p>
-      <div class="hero-ctas">
-        <a class="cta-btn" href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Yazın</a>
-        <a class="cta-ghost" href="#urunler">Ürünleri Gör</a>
-      </div>
+  <div class="hero-bg"><img src="images/foto (10).png" alt="Işıklı ayna ve hol mobilyası, atölyeden bir kare" loading="eager"></div>
+  <div class="hero-scrim"></div>
+  <div class="hero-mist"></div>
+  <div class="container hero-content">
+    <p class="eyebrow">Orman Ürünleri ve Hırdavat — Göksun Sanayi Sitesi</p>
+    <h1>Ölçüde üretim, yerinde montaj: mutfak dolabından vestibüle.</h1>
+    <p>Mermer desenli panel ve gizli LED aydınlatmayla mutfak dolabı, vestibül/gömme dolap, TV ünitesi ve hol mobilyası — aynı çatı altında yapı hırdavatı ve usta işi tamir-döşeme hizmeti.</p>
+    <div class="hero-ctas">
+      <a class="cta-btn" href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Yazın</a>
+      <a class="cta-ghost" href="#urunler">Ürünleri Gör</a>
     </div>
-    <div class="hero-art">
-      <div class="cell"><img src="images/foto (11).png" alt="Mermer panelli TV ünitesi" loading="lazy"></div>
-      <div class="cell"><img src="images/foto (6).png" alt="Aynalı sürgülü vestibül dolabı" loading="lazy"></div>
-      <div class="cell"><img src="images/foto (1).png" alt="Mermer detaylı mutfak dolabı" loading="lazy"></div>
-      <div class="cell"><img src="images/foto (4).png" alt="Ahşap panelli vestiyer" loading="lazy"></div>
-    </div>
-    <div class="stats" style="grid-column: 1 / -1;">
+    <div class="stats">
       <div><div class="n">3 iş kolu</div><div class="l">mobilya · hırdavat · tamir</div></div>
       <div><div class="n">Sanayi Sitesi</div><div class="l">Göksun merkezde atölye</div></div>
       <div><div class="n">Usta işi</div><div class="l">döşeme ve tamir hizmeti</div></div>
@@ -334,7 +344,8 @@
         <div class="contact-line"><span>Telefon</span><a href="tel:+905056088235">0505 608 82 35</a></div>
         <div class="contact-line"><span>WhatsApp</span><a href="https://wa.me/905056088235" target="_blank" rel="noopener">Mesaj gönder</a></div>
         <div class="contact-line"><span>Instagram</span><a href="https://www.instagram.com/babacanmobilyam46/" target="_blank" rel="noopener">@babacanmobilyam46</a></div>
-        <div class="contact-line"><span>Adres</span><span>Yeni Mah., Göksun Sanayi Sitesi Yolu</span></div>
+        <div class="contact-line"><span>Adres</span><span>Yeni Mah., Göksun Sanayi Sitesi, 46600 Göksun/Kahramanmaraş</span></div>
+        <div class="contact-line"><span>İkinci Hat</span><a href="tel:+905525145273">0552 514 52 73</a></div>
         <div class="contact-line"><span>Çalışma Saatleri</span><span>Pazartesi–Cumartesi, 08:00–18:00</span></div>
       </div>
       <div class="map-art">Harita alanı — Google Haritalar konum gömme yeri</div>
