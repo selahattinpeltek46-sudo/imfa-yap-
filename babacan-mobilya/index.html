@@ -189,6 +189,37 @@
   footer a { text-decoration: none; }
   footer a:hover { color: var(--walnut); }
 
+  .faq { display: grid; gap: 0.7rem; max-width: 62rem; }
+  .faq details {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1rem 1.2rem;
+  }
+  .faq summary {
+    cursor: pointer; font-weight: 600; font-size: 0.98rem; list-style: none;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-family: "JetBrains Mono", monospace; color: var(--brass); font-size: 1.2rem; flex-shrink: 0; }
+  .faq details[open] summary::after { content: "–"; }
+  .faq p { color: var(--ink-muted); font-size: 0.92rem; margin: 0.7rem 0 0; }
+
+  .whatsapp-float {
+    position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 50;
+    width: 3.3rem; height: 3.3rem; border-radius: 50%;
+    background: #25d366; color: #fff; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px -4px rgba(0,0,0,0.45); text-decoration: none;
+    transition: transform 0.15s ease;
+  }
+  .whatsapp-float:hover { transform: scale(1.06); }
+  .whatsapp-float svg { width: 1.65rem; height: 1.65rem; }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .whatsapp-float { transition: none; }
+  }
+
   @media (max-width: 780px) {
     nav ul { display: none; }
     .hero { min-height: 68vh; }
@@ -208,6 +239,7 @@
     <nav><ul>
       <li><a href="#hizmetler">Hizmetler</a></li>
       <li><a href="#urunler">Ürünler</a></li>
+      <li><a href="#sss">S.S.S</a></li>
       <li><a href="#iletisim">İletişim</a></li>
     </ul></nav>
     <a class="cta-btn" href="tel:+905056088235">0505 608 82 35</a>
@@ -242,7 +274,7 @@
       <h2>Tek çatı altında üç işiniz de görülür</h2>
       <p>Göksun ve çevre köylerden gelen müşteriler tek durakta hem mobilya alır hem malzeme tedarik eder hem de eskiyeni yeniletir.</p>
     </div>
-    <div class="pillars">
+    <div class="pillars reveal">
       <div class="pillar">
         <span class="num">01</span>
         <h3>Ölçüde Üretim Mobilya</h3>
@@ -284,7 +316,7 @@
       <h2>Atölyeden ve mağazadan kareler</h2>
       <p>Atölyeden ve hırdavat reyonundan gerçek kareler — tamir-döşeme atölyesi fotoğrafları eklendiğinde galeri tamamlanacak.</p>
     </div>
-    <div class="gallery">
+    <div class="gallery reveal">
       <div class="g-item">
         <div class="g-art"><img src="images/foto (1).png" alt="Mermer detaylı mutfak dolabı" loading="lazy"></div>
         <div class="g-body"><h3>Mutfak Dolabı</h3><p>Mermer desenli, LED aydınlatmalı</p></div>
@@ -315,7 +347,7 @@
 
 <section>
   <div class="container">
-    <div class="trust">
+    <div class="trust reveal">
       <div>
         <p class="kicker">Neden Babacan Mobilya</p>
         <h2>Sanayi sitesinde köklü, güvenilir bir isim</h2>
@@ -338,7 +370,7 @@
       <p class="kicker">İletişim</p>
       <h2>Atölyeye uğrayın veya yazın</h2>
     </div>
-    <div class="contact-grid">
+    <div class="contact-grid reveal">
       <div class="contact-card">
         <h3>İletişim Bilgileri</h3>
         <div class="contact-line"><span>Telefon</span><a href="tel:+905056088235">0505 608 82 35</a></div>
@@ -353,12 +385,66 @@
   </div>
 </section>
 
+<section id="sss">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Sıkça Sorulan Sorular</p>
+      <h2>Merak edilenler</h2>
+    </div>
+    <div class="faq reveal">
+      <details>
+        <summary>Keşif ve ölçü ücretli mi?</summary>
+        <p>Göksun merkez ve çevre köylerde ölçü ve keşif ücretsizdir; aynı gün içinde randevu ayarlanır.</p>
+      </details>
+      <details>
+        <summary>Mutfak dolabı / vestibül dolabı ne kadar sürede teslim edilir?</summary>
+        <p>Ölçüden sonra ortalama teslim süresi 10–15 iş günüdür; montaj atölye ekibimiz tarafından yerinde yapılır.</p>
+      </details>
+      <details>
+        <summary>Ürünlerde garanti var mı?</summary>
+        <p>Tüm ölçüde üretim mobilyalarda işçilik garantisi verilir; malzeme ve donanımlar üretici garantisi kapsamındadır.</p>
+      </details>
+      <details>
+        <summary>Sadece mobilya mı satıyorsunuz, hırdavat da alabilir miyim?</summary>
+        <p>Hayır — aynı adreste mobilya, yapı hırdavatı ve tamir-döşeme hizmeti bir arada verilir, ayrı ayrı gitmenize gerek yok.</p>
+      </details>
+      <details>
+        <summary>Eski mobilyamı tamir ettirebilir miyim?</summary>
+        <p>Evet, koltuk döşemesi, mobilya onarımı ve cila işleri atölyemizde yapılır; yerinde keşif imkanı da var.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="container">
     <div>© Babacan Mobilya — Göksun, Kahramanmaraş</div>
     <div><a href="tel:+905056088235">0505 608 82 35</a></div>
   </div>
 </footer>
+
+<a class="whatsapp-float" href="https://wa.me/905056088235" target="_blank" rel="noopener" aria-label="WhatsApp'tan yazın">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.28-1.38a9.87 9.87 0 0 0 4.71 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.15c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.19-1.58-1.19-3.02 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.13-.28.28-.12.55.16.27.71 1.17 1.52 1.9 1.05.94 1.93 1.23 2.2 1.37.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.53.72 1.79.85.26.13.43.19.5.3.07.11.07.61-.17 1.29z"/></svg>
+</a>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
 
 </body>
 </html>
