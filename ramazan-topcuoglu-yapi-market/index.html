@@ -207,17 +207,29 @@
   .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
   .product-card {
     background: var(--surface); border: 1px solid var(--border); border-radius: 0.7rem;
-    padding: 1.75rem; box-shadow: var(--shadow);
+    overflow: hidden; box-shadow: var(--shadow);
   }
-  .product-card .icon {
-    width: 3rem; height: 3rem; border-radius: 0.6rem; background: var(--safety-soft);
-    display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem;
-    font-size: 1.4rem;
+  .product-photo {
+    position: relative; aspect-ratio: 4/3; background-color: var(--surface-2);
+    background-size: cover; background-position: center;
   }
-  .product-card h3 { font-size: 1.05rem; margin-bottom: 0.6rem; }
-  .product-card p { color: var(--ink-muted); font-size: 0.92rem; margin: 0 0 0.9rem; }
-  .product-card ul { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); font-size: 0.88rem; }
-  .product-card li { margin-bottom: 0.3rem; }
+  .product-photo::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(20,24,29,0) 35%, rgba(20,24,29,0.82) 100%);
+  }
+  .product-photo .icon {
+    position: absolute; top: 1rem; left: 1rem; z-index: 2;
+    width: 2.6rem; height: 2.6rem; border-radius: 0.55rem; background: rgba(255,255,255,0.92);
+    display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
+  }
+  .product-photo h3 {
+    position: absolute; left: 1.1rem; right: 1.1rem; bottom: 0.9rem; z-index: 2;
+    color: #fff; font-size: 1.05rem; margin: 0;
+  }
+  .product-card-body { padding: 1.5rem 1.75rem 1.75rem; }
+  .product-card-body p { color: var(--ink-muted); font-size: 0.92rem; margin: 0 0 0.9rem; }
+  .product-card-body ul { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); font-size: 0.88rem; }
+  .product-card-body li { margin-bottom: 0.3rem; }
 
   .founder {
     display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center;
@@ -233,6 +245,18 @@
   .founder-signature { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
   .founder-signature strong { display: block; font-family: "Oswald", sans-serif; font-size: 1.05rem; }
   .founder-signature span { font-size: 0.85rem; color: var(--ink-muted); }
+
+  .mission-vision {
+    max-width: 1120px; margin: 3.5rem auto 0; padding: 0 1.5rem;
+    display: grid; grid-template-columns: 1fr; gap: 1.75rem;
+    padding-top: 2.5rem; border-top: 1px solid var(--border);
+  }
+  @media (min-width: 700px) { .mission-vision { grid-template-columns: 1fr 1fr; padding-left: 1.5rem; padding-right: 1.5rem; } }
+  .mv-card h4 {
+    font-family: "Oswald", sans-serif; font-size: 0.95rem; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--safety); margin: 0 0 0.6rem;
+  }
+  .mv-card p { font-size: 0.92rem; color: var(--ink-muted); margin: 0; }
 
   .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
   .why-card { display: flex; gap: 1rem; align-items: flex-start; }
@@ -339,37 +363,49 @@
 
     <div class="products-grid">
       <div class="product-card">
-        <div class="icon">🧱</div>
-        <h3>Genel Yapı Malzemeleri</h3>
-        <p>İnşaatın temelinden çatısına kadar ihtiyaç duyduğunuz temel yapı malzemeleri.</p>
-        <ul>
-          <li>Çimento &amp; harç ürünleri</li>
-          <li>Demir &amp; inşaat çeliği</li>
-          <li>İzolasyon &amp; yalıtım malzemeleri</li>
-          <li>Alçı &amp; sıva malzemeleri</li>
-        </ul>
+        <div class="product-photo" style="background-image:url('https://images.pexels.com/photos/33160441/pexels-photo-33160441.jpeg?auto=compress&cs=tinysrgb&w=900')">
+          <div class="icon">🧱</div>
+          <h3>Genel Yapı Malzemeleri</h3>
+        </div>
+        <div class="product-card-body">
+          <p>İnşaatın temelinden çatısına kadar ihtiyaç duyduğunuz temel yapı malzemeleri.</p>
+          <ul>
+            <li>Çimento &amp; harç ürünleri</li>
+            <li>Demir &amp; inşaat çeliği</li>
+            <li>İzolasyon &amp; yalıtım malzemeleri</li>
+            <li>Alçı &amp; sıva malzemeleri</li>
+          </ul>
+        </div>
       </div>
       <div class="product-card">
-        <div class="icon">🎨</div>
-        <h3>Boya &amp; Yapı Kimyasalları</h3>
-        <p>İç ve dış cephe boyaları, astar ve yapı kimyasallarında geniş ürün yelpazesi.</p>
-        <ul>
-          <li>İç &amp; dış cephe boyaları</li>
-          <li>Astar &amp; macun ürünleri</li>
-          <li>Su yalıtım kimyasalları</li>
-          <li>Yapıştırıcı &amp; derz dolgu</li>
-        </ul>
+        <div class="product-photo" style="background-image:url('https://images.pexels.com/photos/5799042/pexels-photo-5799042.jpeg?auto=compress&cs=tinysrgb&w=900')">
+          <div class="icon">🎨</div>
+          <h3>Boya &amp; Yapı Kimyasalları</h3>
+        </div>
+        <div class="product-card-body">
+          <p>İç ve dış cephe boyaları, astar ve yapı kimyasallarında geniş ürün yelpazesi.</p>
+          <ul>
+            <li>İç &amp; dış cephe boyaları</li>
+            <li>Astar &amp; macun ürünleri</li>
+            <li>Su yalıtım kimyasalları</li>
+            <li>Yapıştırıcı &amp; derz dolgu</li>
+          </ul>
+        </div>
       </div>
       <div class="product-card">
-        <div class="icon">🔧</div>
-        <h3>Nalburiye &amp; Hırdavat</h3>
-        <p>El aletlerinden tesisat malzemelerine, günlük ihtiyaçlarınız için geniş stok.</p>
-        <ul>
-          <li>El aletleri &amp; takım ekipmanları</li>
-          <li>Vida, civata &amp; bağlantı elemanları</li>
-          <li>Elektrik &amp; su tesisatı malzemeleri</li>
-          <li>Kilit, menteşe &amp; kapı-pencere aksesuarları</li>
-        </ul>
+        <div class="product-photo" style="background-image:url('https://images.pexels.com/photos/5357150/pexels-photo-5357150.jpeg?auto=compress&cs=tinysrgb&w=900')">
+          <div class="icon">🔧</div>
+          <h3>Nalburiye &amp; Hırdavat</h3>
+        </div>
+        <div class="product-card-body">
+          <p>El aletlerinden tesisat malzemelerine, günlük ihtiyaçlarınız için geniş stok.</p>
+          <ul>
+            <li>El aletleri &amp; takım ekipmanları</li>
+            <li>Vida, civata &amp; bağlantı elemanları</li>
+            <li>Elektrik &amp; su tesisatı malzemeleri</li>
+            <li>Kilit, menteşe &amp; kapı-pencere aksesuarları</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -393,6 +429,18 @@
         <span>Kurucu / İşletme Sahibi</span>
       </div>
     </div>
+  </div>
+
+  <div class="mission-vision">
+    <div class="mv-card">
+      <h4>Misyonumuz</h4>
+      <p>Göksun ve çevresindeki ev sahiplerine, ustalara ve müteahhitlere; doğru ürünü, uygun fiyata ve zamanında ulaştırarak inşaat ve tadilat süreçlerini kolaylaştırmak.</p>
+    </div>
+    <div class="mv-card">
+      <h4>Vizyonumuz</h4>
+      <p>Geniş ürün stoku ve güler yüzlü hizmet anlayışımızla Göksun'un ilk akla gelen yapı marketi olmak.</p>
+    </div>
+    <span class="pending">Misyon &amp; vizyon metni taslak — onaylayın veya düzenleyin</span>
   </div>
 </section>
 
