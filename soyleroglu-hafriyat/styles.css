@@ -362,6 +362,28 @@ a { color: inherit; }
 .service-card h3 { font-family: var(--font-display); font-size: 19px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.4px; margin-bottom: 12px; }
 .service-card p { font-size: 14.5px; color: var(--white-dim); line-height: 1.65; }
 
+/* Taş Duvar showcase */
+.stone-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 190px;
+  gap: 6px;
+}
+.stone-item { position: relative; overflow: hidden; }
+.stone-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.stone-item:hover img { transform: scale(1.06); }
+.stone-item.big { grid-column: span 3; grid-row: span 2; }
+.stone-item.tall { grid-row: span 2; }
+.stone-caption {
+  position: absolute; inset: auto 0 0 0;
+  padding: 14px 16px;
+  background: linear-gradient(0deg, rgba(11,13,18,0.92), transparent);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
 /* Fleet */
 .fleet-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
 .fleet-media { position: relative; }
@@ -381,7 +403,7 @@ a { color: inherit; }
 /* TOKI feature */
 .toki-band {
   position: relative;
-  background: linear-gradient(120deg, var(--ink-3), var(--ink-2));
+  background: linear-gradient(120deg, rgba(26,30,41,0.9), rgba(18,21,29,0.94)), url('assets/proje-havadan-teraslama.jpg') center 60%/cover no-repeat;
   border: 1px solid var(--line);
   padding: 60px;
   display: grid;
@@ -633,6 +655,8 @@ a { color: inherit; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
   .gallery-item.wide { grid-column: span 2; }
   .video-card { flex-basis: 190px; }
+  .stone-grid { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 160px; }
+  .stone-item.big { grid-column: span 3; grid-row: span 2; }
   .process-strip { grid-template-columns: repeat(5, 1fr); gap: 6px; }
   .process-step p { display: none; }
 }
@@ -653,6 +677,8 @@ a { color: inherit; }
   .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 260px; }
   .gallery-item.wide, .gallery-item.tall { grid-column: span 1; grid-row: span 1; }
   .video-card { flex-basis: 160px; }
+  .stone-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
+  .stone-item.big { grid-column: span 2; grid-row: span 2; }
   .insta-cta { padding: 24px; }
   .ticker-item { font-size: 15px; letter-spacing: 1.5px; padding: 0 18px; }
 }
