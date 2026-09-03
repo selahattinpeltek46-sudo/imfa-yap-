@@ -51,6 +51,18 @@ if (statStrip) {
   statObserver.observe(statStrip);
 }
 
+// Hero parallax — background drifts slower than scroll for depth
+const heroEl = document.querySelector('.hero');
+const heroBgEl = document.querySelector('.hero-bg');
+if (heroEl && heroBgEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  window.addEventListener('scroll', () => {
+    const rect = heroEl.getBoundingClientRect();
+    if (rect.bottom < 0) return;
+    const offset = Math.min(Math.max(window.scrollY * 0.06, 0), 40);
+    heroBgEl.style.backgroundPositionY = `calc(28% + ${offset}px)`;
+  }, { passive: true });
+}
+
 // Scroll-reveal
 const revealEls = document.querySelectorAll('.reveal');
 const revealObserver = new IntersectionObserver(entries => {
