@@ -1,14 +1,14 @@
 :root {
-  --ink: #0b0d12;
-  --ink-2: #12151d;
-  --ink-3: #1a1e29;
-  --gold: #c89b4a;
-  --gold-light: #e8c579;
-  --gold-dim: #8f712f;
-  --green: #7a9a5a;
-  --white: #f6f4ef;
-  --white-dim: #a9adb8;
-  --line: rgba(200, 155, 74, 0.18);
+  --ink: #0e120f;
+  --ink-2: #161c16;
+  --ink-3: #202920;
+  --gold: #6b8f52;
+  --gold-light: #a3c47c;
+  --gold-dim: #3f5a30;
+  --earth: #b3703f;
+  --white: #f3efe4;
+  --white-dim: #aab0a3;
+  --line: rgba(163, 196, 124, 0.18);
   --font-display: 'Oswald', 'Segoe UI', sans-serif;
   --font-body: 'Inter', 'Segoe UI', sans-serif;
 }
@@ -449,6 +449,23 @@ a { color: inherit; }
 .finder-card:hover { background: var(--ink-3); border-color: var(--gold-dim); transform: translateY(-2px); }
 .finder-icon { font-size: 22px; flex-shrink: 0; }
 
+/* Category cards */
+.category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.category-card { position: relative; display: block; aspect-ratio: 4/3.2; overflow: hidden; border: 1px solid var(--line); text-decoration: none; background: var(--ink-2); }
+.category-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.category-card:hover img { transform: scale(1.06); }
+.category-card.icon-only { display: flex; align-items: center; justify-content: center; color: var(--gold-dim); }
+.category-card.icon-only svg { position: relative; z-index: 1; opacity: 0.5; }
+.category-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(14,18,15,0.95) 0%, rgba(14,18,15,0.45) 55%, rgba(14,18,15,0.15) 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 22px;
+}
+.category-overlay h3 { font-family: var(--font-display); font-size: 19px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--white); margin-bottom: 6px; }
+.category-overlay p { font-size: 13px; color: var(--white-dim); line-height: 1.5; margin-bottom: 12px; }
+.category-overlay span.link-cta { color: var(--gold-light); }
+
 /* Product cards */
 .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
 .product-card { border: 1px solid var(--line); background: var(--ink); display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease; }
@@ -511,6 +528,17 @@ a { color: inherit; }
 .feature-list li::before { content: '✓'; color: var(--gold-light); font-weight: 700; flex-shrink: 0; }
 .usage-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 30px; }
 .usage-tag { border: 1px solid var(--line); color: var(--white-dim); padding: 8px 16px; font-size: 13px; border-radius: 2px; }
+
+/* Spec table */
+.spec-table { width: 100%; max-width: 620px; border-collapse: collapse; margin: 20px 0 30px; }
+.spec-table tr { border-bottom: 1px solid var(--line); }
+.spec-table tr:first-child { border-top: 1px solid var(--line); }
+.spec-table th, .spec-table td { text-align: left; padding: 13px 4px; font-size: 14.5px; }
+.spec-table th { color: var(--white); font-weight: 600; width: 42%; }
+.spec-table td { color: var(--white-dim); }
+.spec-table td.spec-unknown { color: var(--white-dim); font-style: italic; opacity: 0.8; }
+.btn-earth { background: var(--earth); color: var(--ink); }
+.btn-earth:hover { box-shadow: 0 10px 30px rgba(179, 112, 63, 0.3); }
 
 /* Article body */
 .article-body { color: var(--white-dim); font-size: 15.5px; line-height: 1.75; }
@@ -661,6 +689,7 @@ a.b2b-card p { color: var(--gold-light); font-weight: 600; margin: 0; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
   .gallery-item.wide { grid-column: span 2; }
   .finder-grid { grid-template-columns: repeat(2, 1fr); }
+  .category-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 720px) {
@@ -677,6 +706,7 @@ a.b2b-card p { color: var(--gold-light); font-weight: 600; margin: 0; }
   .hero-pillars { grid-template-columns: repeat(2, 1fr); row-gap: 24px; }
   .ticker-item { font-size: 15px; letter-spacing: 1.5px; padding: 0 18px; }
   .finder-grid { grid-template-columns: 1fr; }
+  .category-grid { grid-template-columns: 1fr; }
   .mobile-bar { display: grid; }
   .whatsapp-float { display: none; }
   body { padding-bottom: 60px; }
