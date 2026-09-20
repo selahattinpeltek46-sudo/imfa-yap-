@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://selahattinpeltek46-sudo.github.io/imfa-yap-/ucel-tarim-aletleri/sitemap.xml
