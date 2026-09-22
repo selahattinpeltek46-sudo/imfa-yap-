@@ -200,6 +200,45 @@
   .service-text h3 { font-size: clamp(1.6rem, 3vw, 2.1rem); margin: 0.5rem 0 0.9rem; font-weight: 600; }
   .service-text p { color: var(--ink-muted); font-size: 0.98rem; max-width: 42ch; margin: 0 0 1.4rem; }
 
+  /* Malzeme & Detay */
+  .material-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 2.5rem; }
+  .material-swatch { background: var(--surface); padding: 0; }
+  .swatch-crop { aspect-ratio: 1/1; background-size: 260%; background-repeat: no-repeat; }
+  .material-swatch .m-label { padding: 0.9rem 1rem 1.1rem; }
+  .material-swatch .m-name { font-family: "Fraunces", serif; font-weight: 600; font-size: 0.92rem; }
+  .material-swatch .m-desc { font-size: 0.76rem; color: var(--ink-muted); margin-top: 0.25rem; line-height: 1.4; }
+
+  .detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-top: 3rem; }
+  .detail-item { aspect-ratio: 1/1; overflow: hidden; position: relative; background: var(--surface); border: 1px solid var(--line); }
+  .detail-item img { width: 100%; height: 100%; object-fit: cover; transform: scale(2.2); transition: transform 0.6s ease; }
+  .detail-item:hover img { transform: scale(2.4); }
+  .detail-item .d-cap {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 0.6rem 0.8rem;
+    background: linear-gradient(0deg, rgba(11,8,6,0.78), transparent); color: #f6efe0;
+    font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600;
+  }
+
+  /* Full-bleed break */
+  .reel { position: relative; height: 62vh; min-height: 24rem; overflow: hidden; }
+  .reel img { width: 100%; height: 100%; object-fit: cover; }
+  .reel-cap {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 2.5rem 1.75rem;
+    background: linear-gradient(0deg, rgba(11,8,6,0.72), transparent);
+    color: #f6efe0; max-width: 1180px; margin: 0 auto;
+  }
+  .reel-cap p { font-family: "Fraunces", serif; font-style: italic; font-size: clamp(1.2rem, 2.4vw, 1.7rem); max-width: 30ch; margin: 0; }
+
+  /* Projeler — filtre */
+  .filter-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .filter-btn {
+    background: none; border: 1px solid var(--line); color: var(--ink-muted); font-size: 0.78rem;
+    font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.55rem 1.1rem;
+    cursor: pointer; border-radius: 2px;
+  }
+  .filter-btn:hover { border-color: var(--wood); color: var(--wood); }
+  .filter-btn.active { background: var(--wood-deep); border-color: var(--wood-deep); color: #f6efe0; }
+  .proj.is-hidden { display: none; }
+
   /* Projeler — asymmetric grid */
   .project-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
   .project-grid {
@@ -345,6 +384,8 @@
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem 1.5rem; }
     .timeline { grid-template-columns: repeat(3, 1fr); row-gap: 2rem; }
     .timeline::before { display: none; }
+    .material-strip { grid-template-columns: repeat(3, 1fr); }
+    .detail-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 900px) {
     nav.primary-nav { display: none; }
@@ -356,6 +397,8 @@
     .statement-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     .service-row { grid-template-columns: 1fr; gap: 1.5rem; padding: 2.5rem 0; }
     .service-row:nth-child(even) .service-media { order: 0; }
+    .material-strip { grid-template-columns: repeat(2, 1fr); }
+    .reel { height: 46vh; }
     .project-grid { grid-template-columns: 1fr; grid-template-areas: "big" "small1" "small2" "wide"; }
     .before-after { grid-template-columns: 1fr; }
     .master { grid-template-columns: 1fr; gap: 1.75rem; }
@@ -505,6 +548,40 @@
   </div>
 </section>
 
+<section aria-labelledby="malzeme-h">
+  <div class="container reveal">
+    <p class="label">Malzeme &amp; Yüzey</p>
+    <h2 id="malzeme-h" style="margin-top:0.6rem;font-size:clamp(1.9rem,4vw,2.6rem);font-weight:500;max-width:20ch;">Gördüğünüz her yüzey, gerçek bir projeden.</h2>
+    <p style="color:var(--ink-muted);max-width:46ch;margin-top:0.8rem;">Kullandığımız malzeme ve yüzeyler — atölyemizden çıkan gerçek işlerin yakın çekimleri.</p>
+    <div class="material-strip">
+      <div class="material-swatch">
+        <div class="swatch-crop" style="background-image:url('images/foto (1).png');background-position:20% 75%;" role="img" aria-label="Lake boyalı beyaz mutfak dolabı yüzeyi"></div>
+        <div class="m-label"><div class="m-name">Lake Boyalı MDF</div><div class="m-desc">Mutfak ve dolap kapaklarında</div></div>
+      </div>
+      <div class="material-swatch">
+        <div class="swatch-crop" style="background-image:url('images/foto (12).png');background-position:35% 40%;" role="img" aria-label="Mermer desenli laminat arka duvar yüzeyi"></div>
+        <div class="m-label"><div class="m-name">Mermer Desenli Laminat</div><div class="m-desc">Tezgah arkası ve panel kaplama</div></div>
+      </div>
+      <div class="material-swatch">
+        <div class="swatch-crop" style="background-image:url('images/foto (1).png');background-position:55% 30%;" role="img" aria-label="Cam vitrinli üst dolap kapağı yüzeyi"></div>
+        <div class="m-label"><div class="m-name">Cam Vitrin Kapak</div><div class="m-desc">Üst dolap ve vitrin bölümlerinde</div></div>
+      </div>
+      <div class="material-swatch">
+        <div class="swatch-crop" style="background-image:url('images/foto (10).png');background-position:50% 45%;" role="img" aria-label="Gizli LED aydınlatma detayı"></div>
+        <div class="m-label"><div class="m-name">Gizli LED Aydınlatma</div><div class="m-desc">Ayna, konsol ve vitrin detayında</div></div>
+      </div>
+      <div class="material-swatch">
+        <div class="swatch-crop" style="background-image:url('images/foto (6).png');background-position:50% 55%;" role="img" aria-label="Aynalı sürgülü kapak yüzeyi"></div>
+        <div class="m-label"><div class="m-name">Aynalı Sürgülü Sistem</div><div class="m-desc">Gömme dolap ve vestibülde</div></div>
+      </div>
+      <div class="material-swatch">
+        <div class="swatch-crop" style="background-image:url('images/foto (4).png');background-position:75% 45%;" role="img" aria-label="Ahşap panel yüzeyi"></div>
+        <div class="m-label"><div class="m-name">Ahşap Panel</div><div class="m-desc">Vestiyer ve hol uygulamalarında</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="projeler" aria-labelledby="projeler-h">
   <div class="container">
     <div class="project-head reveal">
@@ -514,8 +591,15 @@
       </div>
       <p style="color:var(--ink-muted);max-width:36ch;">Gerçek alanlar. Gerçek ihtiyaçlar. Gerçek çözümler.</p>
     </div>
+    <div class="filter-bar reveal" role="group" aria-label="Projeleri filtrele">
+      <button class="filter-btn active" data-filter="all">Tümü</button>
+      <button class="filter-btn" data-filter="mutfak">Mutfak</button>
+      <button class="filter-btn" data-filter="dolap">Dolap</button>
+      <button class="filter-btn" data-filter="vestiyer">Vestiyer</button>
+      <button class="filter-btn" data-filter="hol">Hol</button>
+    </div>
     <div class="project-grid reveal">
-      <a class="proj proj-big" href="images/foto (3).png" target="_blank" rel="noopener">
+      <a class="proj proj-big" data-cat="mutfak" href="images/foto (3).png" target="_blank" rel="noopener">
         <img src="images/foto (3).png" alt="L tipi mutfak dolabı, gri granit tezgah" width="606" height="805" loading="lazy" decoding="async">
         <div class="proj-info">
           <div class="region">Göksun</div>
@@ -524,7 +608,7 @@
           <span class="arrow-link" style="color:#f6efe0;border-color:rgba(246,239,224,0.5);">Fotoğrafı Büyüt →</span>
         </div>
       </a>
-      <a class="proj proj-s1" href="images/foto (6).png" target="_blank" rel="noopener">
+      <a class="proj proj-s1" data-cat="dolap" href="images/foto (6).png" target="_blank" rel="noopener">
         <img src="images/foto (6).png" alt="Aynalı sürgülü gömme dolap" width="547" height="814" loading="lazy" decoding="async">
         <div class="proj-info">
           <div class="region">Göksun</div>
@@ -532,7 +616,7 @@
           <p>Tavana kadar kullanım sağlayan sürgülü, aynalı gömme dolap.</p>
         </div>
       </a>
-      <a class="proj proj-s2" href="images/foto (4).png" target="_blank" rel="noopener">
+      <a class="proj proj-s2" data-cat="vestiyer" href="images/foto (4).png" target="_blank" rel="noopener">
         <img src="images/foto (4).png" alt="Ahşap panelli vestiyer" width="442" height="818" loading="lazy" decoding="async">
         <div class="proj-info">
           <div class="region">Göksun</div>
@@ -540,7 +624,7 @@
           <p>Ahşap panel ve oturma bankı detaylı giriş holü çözümü.</p>
         </div>
       </a>
-      <a class="proj proj-wide" href="images/foto (10).png" target="_blank" rel="noopener">
+      <a class="proj proj-wide" data-cat="hol" href="images/foto (10).png" target="_blank" rel="noopener">
         <img src="images/foto (10).png" alt="Gizli LED aydınlatmalı özel kesim ayna ve hol konsolu" width="613" height="812" loading="lazy" decoding="async">
         <div class="proj-info">
           <div class="region">Göksun</div>
@@ -548,6 +632,24 @@
           <p>Gizli LED aydınlatmalı özel kesim ayna ve konsol — hol mobilyası çözümü.</p>
         </div>
       </a>
+    </div>
+  </div>
+</section>
+
+<div class="reel">
+  <img src="images/foto (13).png" alt="Boydan boya dolaplı, teslime hazır mutfak kurulumu" width="833" height="518" loading="lazy" decoding="async">
+  <div class="reel-cap"><p>"Bu işin başında ben varım; çıkan her işin arkasında benim imzam var."</p></div>
+</div>
+
+<section aria-labelledby="detay-h">
+  <div class="container reveal">
+    <p class="label">Yakından Bakış</p>
+    <h2 id="detay-h" style="margin-top:0.6rem;font-size:clamp(1.9rem,4vw,2.6rem);font-weight:500;max-width:18ch;">İşçilik, detayda görülür.</h2>
+    <div class="detail-grid">
+      <div class="detail-item"><img src="images/foto (2).png" alt="Vestibül dolabı kapak kulpu ve ayna kesim detayı" width="590" height="831" loading="lazy" decoding="async"><span class="d-cap">Kulp &amp; Kesim</span></div>
+      <div class="detail-item"><img src="images/foto (11).png" alt="Gizli LED aydınlatma ışık detayı" width="509" height="809" loading="lazy" decoding="async"><span class="d-cap">LED Detayı</span></div>
+      <div class="detail-item"><img src="images/foto (3).png" alt="Granit tezgah ve dolap birleşim detayı" width="606" height="805" loading="lazy" decoding="async"><span class="d-cap">Tezgah Birleşimi</span></div>
+      <div class="detail-item"><img src="images/foto (4).png" alt="Ahşap panel doku detayı" width="442" height="818" loading="lazy" decoding="async"><span class="d-cap">Panel Dokusu</span></div>
     </div>
   </div>
 </section>
@@ -812,6 +914,20 @@
     document.querySelectorAll('.js-wa').forEach(function (a) {
       var msg = a.getAttribute('data-wa-msg');
       if (msg) { a.href = a.href.split('?')[0] + '?text=' + encodeURIComponent(msg); }
+    });
+
+    var filterBtns = document.querySelectorAll('.filter-btn');
+    var projs = document.querySelectorAll('.proj');
+    filterBtns.forEach(function (fb) {
+      fb.addEventListener('click', function () {
+        filterBtns.forEach(function (b) { b.classList.remove('active'); });
+        fb.classList.add('active');
+        var cat = fb.getAttribute('data-filter');
+        projs.forEach(function (p) {
+          var show = cat === 'all' || p.getAttribute('data-cat') === cat;
+          p.classList.toggle('is-hidden', !show);
+        });
+      });
     });
 
     var btn = document.getElementById('hamburgerBtn');
