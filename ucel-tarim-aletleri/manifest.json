@@ -1,0 +1,14 @@
+{
+  "name": "Üçel Tarım Aletleri",
+  "short_name": "Üçel Tarım",
+  "description": "Göksun'da tarım aletleri satışı, imalatı, ikinci el ve takas.",
+  "start_url": "/imfa-yap-/ucel-tarim-aletleri/",
+  "scope": "/imfa-yap-/ucel-tarim-aletleri/",
+  "display": "standalone",
+  "lang": "tr",
+  "background_color": "#18201C",
+  "theme_color": "#173B2F",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
