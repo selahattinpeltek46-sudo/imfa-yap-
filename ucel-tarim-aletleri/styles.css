@@ -114,17 +114,6 @@ a { color: inherit; }
   overflow: hidden;
   transition: transform 0.25s cubic-bezier(.22,.61,.36,1), box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -60%;
-  width: 40%; height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255,255,255,0.35), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.7s ease;
-  pointer-events: none;
-}
-.btn:hover::before { left: 130%; }
 .btn:active { transform: scale(0.96); }
 
 .btn-primary {
@@ -146,8 +135,7 @@ a { color: inherit; }
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  background: rgba(24, 32, 28, 0.82);
-  backdrop-filter: blur(12px);
+  background: rgba(24, 32, 28, 0.96);
   border-bottom: 1px solid var(--line);
   transition: background 0.35s ease;
 }
@@ -410,7 +398,6 @@ a { color: inherit; }
   .hero-eyebrow, .hero h1, .hero-desc, .hero-actions, .hero-pillars, .scroll-cue { animation: none; opacity: 1; }
   .scroll-cue-line::after { animation: none; }
   .reveal.in .service-card, .reveal.in .b2b-card, .reveal.in .finder-card, .reveal.in .product-card { animation: none; }
-  .btn::before { display: none; }
 }
 
 /* Services / Ürünler */
@@ -559,7 +546,7 @@ a { color: inherit; }
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 95;
   background: var(--ink-2);
   border-top: 1px solid var(--line);
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 .mobile-bar a {
   display: flex; flex-direction: column; align-items: center; gap: 3px;
@@ -619,6 +606,38 @@ a { color: inherit; }
   text-transform: uppercase;
   border-radius: 2px;
   white-space: nowrap;
+}
+
+/* Traktörüme uygun ekipman formu */
+.tractor-form { max-width: 780px; margin-top: 8px; display: flex; flex-direction: column; gap: 18px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.tractor-form label, .form-row-full {
+  display: flex; flex-direction: column; gap: 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gold-light);
+}
+.tractor-form input {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  color: var(--white);
+  padding: 13px 14px;
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: var(--font-body);
+  border-radius: 2px;
+}
+.tractor-form input::placeholder { color: var(--white-dim); opacity: 0.7; }
+.tractor-form button { align-self: flex-start; }
+@media (max-width: 720px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* Focus visibility */
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 2px;
 }
 
 /* İmalat process strip */
