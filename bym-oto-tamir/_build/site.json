@@ -13,26 +13,26 @@
     "whatsapp": "905322148883",
     "_iletisim_not": "Google İşletme Profili'nden alındı (sabit hat) + işletmenin verdiği WhatsApp numarası.",
     "adres": {
-      "sokak": "Yeni Mahalle, Kırım Caddesi, Sanayi Sitesi No: 2/A",
+      "sokak": "Yeni Mahalle, Nevzat Pakdil Bulvarı, Sanayi Sitesi B Blok No: 83, D: 1",
       "ilce": "Göksun",
       "il": "Kahramanmaraş",
-      "posta_kodu": "46600",
+      "posta_kodu": "46660",
       "ulke": "TR"
     },
-    "_adres_not": "Google İşletme Profili ile aynı.",
+    "_adres_not": "İşletmeden alınan güncel adres. Google İşletme Profili'ndeki adres (Kırım Caddesi No: 2/A, 46600) buna göre güncellenmeli.",
     "konum": {
       "enlem": 38.0206,
       "boylam": 36.4969
     },
     "_konum_not": "DOGRULANACAK — koordinat hâlâ Göksun merkezi; Google Haritalar'daki işletme pininden alınmalı.",
-    "harita_sorgu": "BYM SERVİS Kırım Caddesi Sanayi Sitesi Göksun Kahramanmaraş",
+    "harita_sorgu": "BYM SERVİS Nevzat Pakdil Bulvarı Sanayi Sitesi Göksun Kahramanmaraş",
     "google_yorum_link": "https://www.google.com/maps/search/?api=1&query=BYM+SERV%C4%B0S+G%C3%B6ksun",
     "instagram": "",
     "facebook": "",
     "calisma_saatleri": [
       {
         "gunler": "Pazartesi – Cumartesi",
-        "saat": "09:00 – 19:00",
+        "saat": "08:00 – 19:00",
         "schema_gunler": [
           "Monday",
           "Tuesday",
@@ -41,7 +41,7 @@
           "Friday",
           "Saturday"
         ],
-        "acilis": "09:00",
+        "acilis": "08:00",
         "kapanis": "19:00"
       },
       {
@@ -52,7 +52,7 @@
         "kapanis": ""
       }
     ],
-    "_saat_not": "DOGRULANACAK — kapanış 19:00 Google'dan; açılış saati ve Pazar günü teyit edilecek.",
+    "_saat_not": "İşletmeden teyit edildi: Pzt–Cmt 08:00–19:00, Pazar kapalı.",
     "google_adi": "BYM SERVİS",
     "whatsapp_gorunen": "0 (532) 214 88 83",
     "google_puan": "4,3",
@@ -136,13 +136,16 @@
     "mod": "demo",
     "api_url": "",
     "saatler": [
+      "08:00",
       "09:00",
       "10:00",
       "11:00",
       "13:00",
       "14:00",
       "15:00",
-      "16:00"
+      "16:00",
+      "17:00",
+      "18:00"
     ],
     "kapali_gunler": [
       0
@@ -151,5 +154,5 @@
     "ileri_gun_limiti": 45,
     "tatiller": []
   },
-  "onizleme_metni": "Önizleme sürümü — çalışma saatleri ve bazı bilgiler teyit edilmektedir."
+  "onizleme_metni": "Önizleme sürümü — site yayına hazırlanmaktadır."
 }

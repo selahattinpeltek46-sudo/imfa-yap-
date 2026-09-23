@@ -5,19 +5,22 @@ export const CONFIG = {
     "telefon": "+903447143636",
     "telefonGorunen": "0 (344) 714 36 36",
     "whatsapp": "905322148883",
-    "adres": "Yeni Mahalle, Kırım Caddesi, Sanayi Sitesi No: 2/A, Göksun / Kahramanmaraş"
+    "adres": "Yeni Mahalle, Nevzat Pakdil Bulvarı, Sanayi Sitesi B Blok No: 83, D: 1, Göksun / Kahramanmaraş"
   },
   "randevu": {
     "mod": "demo",
     "apiUrl": "",
     "saatler": [
+      "08:00",
       "09:00",
       "10:00",
       "11:00",
       "13:00",
       "14:00",
       "15:00",
-      "16:00"
+      "16:00",
+      "17:00",
+      "18:00"
     ],
     "kapaliGunler": [
       0
