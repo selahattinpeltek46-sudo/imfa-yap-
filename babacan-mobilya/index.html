@@ -184,7 +184,7 @@
   .prod-head { max-width: 46ch; margin: 0 auto 3.5rem; text-align: center; }
   .prod-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); font-weight: 500; margin-top: 0.8rem; }
   .prod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--hair); }
-  .prod-item { background: var(--ivory); position: relative; }
+  .prod-item { background: var(--ivory); position: relative; scroll-margin-top: 6rem; }
   .prod-art { aspect-ratio: 4/3.3; overflow: hidden; }
   .prod-art img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
   .prod-item:hover .prod-art img { transform: scale(1.04); }
@@ -200,9 +200,9 @@
   .story-head { max-width: 50ch; margin-bottom: 3.5rem; }
   .story-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); font-weight: 500; color: #fff; margin-top: 0.8rem; }
   .story-head p.sub { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.2rem; color: rgba(243,240,233,0.7); margin-top: 0.6rem; }
-  .story-steps { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .story-steps { display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 2.75rem; }
   .story-step { border-left: 1px solid rgba(243,240,233,0.18); padding: 0 1.75rem; }
-  .story-step:first-child { border-left: none; padding-left: 0; }
+  .story-step:first-child, .story-step:nth-child(4) { border-left: none; padding-left: 0; }
   .story-step .num { font-family: "Cormorant Garamond", serif; font-size: 2.1rem; font-weight: 500; color: var(--wood); }
   .story-step h4 { font-size: 1.05rem; font-weight: 600; color: #fff; margin: 0.6rem 0 0.5rem; letter-spacing: 0.03em; }
   .story-step p { font-size: 0.86rem; color: rgba(243,240,233,0.68); margin: 0; }
@@ -266,12 +266,13 @@
 
   /* Footer */
   footer { background: var(--charcoal); color: rgba(243,240,233,0.68); padding: 3.5rem 0 2.5rem; }
-  .footer-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(243,240,233,0.14); }
+  .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(243,240,233,0.14); }
   .footer-brand { font-family: "Cormorant Garamond", serif; font-size: 1.3rem; color: #fff; font-weight: 600; }
   .footer-brand + p { font-size: 0.86rem; margin-top: 0.5rem; max-width: 32ch; }
-  footer nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.8rem; margin: 0; padding: 0; }
-  footer nav a { text-decoration: none; font-size: 0.86rem; }
-  footer nav a:hover { color: #fff; }
+  .footer-col h5 { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(243,240,233,0.5); margin-bottom: 0.9rem; }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+  .footer-col a { text-decoration: none; font-size: 0.86rem; }
+  .footer-col a:hover { color: #fff; }
   .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 1.6rem; font-size: 0.78rem; }
   .footer-social { display: flex; gap: 1.2rem; }
   .footer-social a { text-decoration: none; }
@@ -293,7 +294,7 @@
     .intro-art { order: -1; }
     .detail-grid { grid-template-columns: 1fr; gap: 2rem; }
     .story-steps { grid-template-columns: 1fr 1fr; row-gap: 2.5rem; }
-    .story-step:nth-child(2n+1) { border-left: none; padding-left: 0; }
+    .story-step { border-left: none !important; padding-left: 0 !important; }
     .work-grid { grid-template-columns: 1fr 1fr; }
     .trust-grid { grid-template-columns: 1fr; gap: 2rem; }
     .trust-bar-row { grid-template-columns: 1fr 1fr; row-gap: 1.4rem; }
@@ -313,6 +314,8 @@
     section { padding: 4rem 0; }
     .hero-ctas { flex-direction: column; align-items: stretch; }
     .hero-ctas .btn { justify-content: center; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem 1.5rem; }
+    .footer-top > div:first-child { grid-column: 1 / -1; }
   }
 </style>
 </head>
@@ -339,7 +342,7 @@
       </ul>
     </nav>
     <div class="header-right">
-      <a class="header-wa js-wa" data-wa-msg="Merhaba, Babacan Mobilya'dan bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Ulaş</a>
+      <a class="header-wa js-wa" data-wa-msg="Merhaba, projemi konuşmak istiyorum. Alanımın fotoğrafını gönderebilirim." href="https://wa.me/905056088235" target="_blank" rel="noopener">Projenizi Konuşalım</a>
       <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Menüyü aç">
         <span></span><span></span><span></span>
       </button>
@@ -410,7 +413,7 @@
       <h2 id="urunler-h">Özel mobilya çözümleri.</h2>
     </div>
     <div class="prod-grid reveal">
-      <div class="prod-item">
+      <div class="prod-item" id="mutfak-dolabi">
         <div class="prod-art"><img src="images/foto (1).png" alt="Ahşap tavanlı mutfakta beyaz kapaklı mutfak dolabı" width="862" height="614" loading="lazy" decoding="async"></div>
         <div class="prod-cap">
           <span class="prod-num">01</span>
@@ -418,7 +421,7 @@
           <a class="js-wa" data-wa-msg="Merhaba, mutfak dolabı için bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">İncele →</a>
         </div>
       </div>
-      <div class="prod-item">
+      <div class="prod-item" id="gomme-dolap">
         <div class="prod-art"><img src="images/foto (6).png" alt="Aynalı sürgülü kapaklı, tavana kadar gömme dolap" width="547" height="814" loading="lazy" decoding="async"></div>
         <div class="prod-cap">
           <span class="prod-num">02</span>
@@ -426,7 +429,7 @@
           <a class="js-wa" data-wa-msg="Merhaba, gömme dolap / vestibül dolabı için bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">İncele →</a>
         </div>
       </div>
-      <div class="prod-item">
+      <div class="prod-item" id="vestiyer-hol">
         <div class="prod-art"><img src="images/foto (4).png" alt="Ahşap panel detaylı vestiyer ünitesi" width="442" height="818" loading="lazy" decoding="async"></div>
         <div class="prod-cap">
           <span class="prod-num">03</span>
@@ -434,7 +437,7 @@
           <a class="js-wa" data-wa-msg="Merhaba, vestiyer / hol mobilyası için bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">İncele →</a>
         </div>
       </div>
-      <div class="prod-item">
+      <div class="prod-item" id="ozel-olcu">
         <div class="prod-art"><img src="images/foto (12).png" alt="Gold damarlı mermer desenli arka duvar ve granit tezgahlı mutfak dolabı" width="648" height="838" loading="lazy" decoding="async"></div>
         <div class="prod-cap">
           <span class="prod-num">04</span>
@@ -449,14 +452,16 @@
 <section id="uretim" class="story-band" aria-labelledby="story-h">
   <div class="container reveal">
     <div class="story-head">
-      <p class="eyebrow">Üretimin içinden.</p>
-      <h2 id="story-h">Bir fikirden, yaşam alanına.</h2>
+      <p class="eyebrow">Nasıl Çalışıyoruz</p>
+      <h2 id="story-h">Fikrinizden<br>gerçek mekâna.</h2>
     </div>
     <div class="story-steps">
       <div class="story-step"><div class="num">01</div><h4>İHTİYAÇ</h4><p>İhtiyacınızı ve mekânınızı dinliyoruz.</p></div>
-      <div class="story-step"><div class="num">02</div><h4>TASARIM</h4><p>Ölçü ve kullanım ihtiyacına göre çözüm oluşturuyoruz.</p></div>
-      <div class="story-step"><div class="num">03</div><h4>ÜRETİM</h4><p>Tasarlanan ürünü atölyede hayata geçiriyoruz.</p></div>
-      <div class="story-step"><div class="num">04</div><h4>MONTAJ</h4><p>Son dokunuşları yerinde tamamlıyoruz.</p></div>
+      <div class="story-step"><div class="num">02</div><h4>ÖLÇÜ VE PLANLAMA</h4><p>Alanınızı yerinde ölçüp planlıyoruz.</p></div>
+      <div class="story-step"><div class="num">03</div><h4>TASARIM</h4><p>Ölçü ve kullanım ihtiyacına göre çözüm oluşturuyoruz.</p></div>
+      <div class="story-step"><div class="num">04</div><h4>ÜRETİM</h4><p>Tasarlanan ürünü atölyede hayata geçiriyoruz.</p></div>
+      <div class="story-step"><div class="num">05</div><h4>MONTAJ</h4><p>Son dokunuşları yerinde tamamlıyoruz.</p></div>
+      <div class="story-step"><div class="num">06</div><h4>TESLİM</h4><p>Son kontrolleri yapıp projeyi teslim ediyoruz.</p></div>
     </div>
   </div>
 </section>
@@ -515,8 +520,8 @@
 <section id="hakkimizda" aria-labelledby="about-h">
   <div class="container about-wrap reveal">
     <p class="eyebrow">Babacan Mobilya</p>
-    <h2 id="about-h">Göksun'dan doğan bir üretim anlayışı.</h2>
-    <p>Kenan Babacan yönetiminde, Göksun Sanayi Sitesi'ndeki atölyede mobilya ölçüsü, üretimi ve montajı aynı çatı altında yürütülüyor. Aynı adreste yapı hırdavatı ve mobilya tamir-döşeme hizmeti de veriliyor.</p>
+    <h2 id="about-h">Mobilyadan fazlası.<br>Bir üretim anlayışı.</h2>
+    <p>Kenan Babacan yönetiminde, Göksun Sanayi Sitesi'ndeki (Kahramanmaraş) atölyede mobilya ölçüsü, üretimi ve montajı aynı çatı altında yürütülüyor. Aynı adreste yapı hırdavatı ve mobilya tamir-döşeme hizmeti de veriliyor.</p>
     <p class="local-line">Yerel üretim, doğrudan iletişim.</p>
   </div>
 </section>
@@ -606,10 +611,18 @@
         <div class="footer-brand">BABACAN MOBİLYA</div>
         <p>Göksun / Kahramanmaraş — Mobilya ve üretim çözümleri.</p>
       </div>
-      <nav aria-label="Footer menü">
+      <nav class="footer-col" aria-label="Ürünler">
+        <h5>Ürünler</h5>
         <ul>
-          <li><a href="#main">Ana Sayfa</a></li>
-          <li><a href="#urunler">Ürünler</a></li>
+          <li><a href="#mutfak-dolabi">Mutfak Dolabı</a></li>
+          <li><a href="#gomme-dolap">Gömme Dolap &amp; Vestibül</a></li>
+          <li><a href="#vestiyer-hol">Vestiyer &amp; Hol Mobilyası</a></li>
+          <li><a href="#ozel-olcu">Özel Ölçü</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Kurumsal">
+        <h5>Kurumsal</h5>
+        <ul>
           <li><a href="#uretim">Üretim</a></li>
           <li><a href="#calismalarimiz">Çalışmalarımız</a></li>
           <li><a href="#hakkimizda">Hakkımızda</a></li>
