@@ -469,6 +469,10 @@ body:has(.hero) .hdr { margin-bottom: calc(var(--hdr-h) * -1); }
 }
 .rev-empty__stars { display: flex; gap: 4px; color: #E8B04A; }
 .rev-empty__stars .ic { width: 20px; height: 20px; }
+.rev-empty__stars .is-dim { color: var(--bg-4); }
+.rev-empty__score { display: flex; align-items: baseline; gap: 10px; }
+.rev-empty__score strong { font-size: clamp(44px, 6vw, 72px); line-height: 1; letter-spacing: -0.04em; font-weight: 700; }
+.rev-empty__score span { color: var(--muted); font-size: 15px; }
 .rev-empty__t { font-size: clamp(22px, 2.6vw, 30px); font-weight: 650; letter-spacing: -0.02em; line-height: 1.2; max-width: 30ch; }
 .rev-empty .btn { margin-top: 8px; }
 

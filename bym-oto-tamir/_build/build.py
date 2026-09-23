@@ -140,7 +140,7 @@ def header(r, aktif):
         items += f'<li><a href="{link}"{cur}>{ad}</a></li>'
     banner = ""
     if CFG.get("onizleme"):
-        banner = '<div class="preview-bar" role="note">Önizleme sürümü — iletişim bilgileri ve çalışma saatleri örnektir, yayından önce güncellenecektir.</div>'
+        banner = f'<div class="preview-bar" role="note">{e(CFG.get("onizleme_metni", "Önizleme sürümü"))}</div>'
     return f"""<body>
 <a class="skip" href="#icerik">İçeriğe geç</a>
 {banner}
@@ -199,7 +199,7 @@ def footer(r):
         <h2 class="ftr__h">İletişim</h2>
         <ul class="ftr__contact">
           <li><a href="tel:{F['telefon_link']}">{ikon('i-phone')} {e(F['telefon_gorunen'])}</a></li>
-          <li><a href="{wa_link(WA_GENEL)}" target="_blank" rel="noopener">{ikon('i-wa')} WhatsApp</a></li>
+          <li><a href="{wa_link(WA_GENEL)}" target="_blank" rel="noopener">{ikon('i-wa')} {e(F.get('whatsapp_gorunen', 'WhatsApp'))}</a></li>
           <li><a href="{harita}" target="_blank" rel="noopener">{ikon('i-pin')} {e(ADRES_TEK)}</a></li>
         </ul>
       </div>
@@ -257,6 +257,7 @@ def business_schema():
         "@type": "AutoRepair",
         "@id": f"{URL}/#isletme",
         "name": F["ad"],
+        "alternateName": F.get("google_adi", F["ad"]),
         "url": f"{URL}/",
         "image": f"{URL}/assets/media/og-bym-oto-tamir.jpg",
         "telephone": F["telefon_link"],
@@ -353,7 +354,7 @@ def contact_block(r):
       <dl class="nap">
         <div><dt>{ikon('i-pin')} Adres</dt><dd>{e(ADRES_TEK)}</dd></div>
         <div><dt>{ikon('i-phone')} Telefon</dt><dd><a href="tel:{F['telefon_link']}">{e(F['telefon_gorunen'])}</a></dd></div>
-        <div><dt>{ikon('i-wa')} WhatsApp</dt><dd><a href="{wa_link(WA_GENEL)}" target="_blank" rel="noopener" data-wa>Mesaj gönderin</a></dd></div>
+        <div><dt>{ikon('i-wa')} WhatsApp</dt><dd><a href="{wa_link(WA_GENEL)}" target="_blank" rel="noopener" data-wa>{e(F.get('whatsapp_gorunen', 'Mesaj gönderin'))}</a></dd></div>
         <div><dt>{ikon('i-clock')} Çalışma saatleri</dt><dd><ul class="hours">{saatler}</ul></dd></div>
       </dl>
       <div class="btn-row">
@@ -591,9 +592,15 @@ def reviews_block(r):
             kart += f"""<figure class="rev reveal"><div class="rev__stars" aria-label="{y.get('puan',5)} yıldız">{yildiz}</div><blockquote>{e(y['metin'])}</blockquote><figcaption><strong>{e(y['isim'])}</strong>{arac}{link}</figcaption></figure>"""
         icerik = f'<div class="rev-grid">{kart}</div>'
     else:
+        puan = ""
+        dolu = int(float(str(F.get("google_puan", "5")).replace(",", ".")))
+        yildizlar = ikon("i-star") * dolu + ikon("i-star", "ic is-dim") * (5 - dolu)
+        if F.get("google_puan"):
+            puan = f'<p class="rev-empty__score"><strong>{e(F["google_puan"])}</strong><span>/ 5 · Google\'da {F.get("google_yorum_sayisi", "")} yorum</span></p>'
         icerik = f"""
     <div class="rev-empty reveal">
-      <div class="rev-empty__stars" aria-hidden="true">{ikon('i-star') * 5}</div>
+      <div class="rev-empty__stars" aria-hidden="true">{yildizlar}</div>
+      {puan}
       <p class="rev-empty__t">Müşterilerimizin gerçek yorumlarını Google'da okuyun.</p>
       <p class="muted">Sitemizde yalnızca Google İşletme Profili'mizdeki gerçek yorumlara yer veriyoruz.</p>
       <a class="btn btn--light" href="{e(F['google_yorum_link'])}" target="_blank" rel="noopener">Google yorumlarını gör {ikon('i-arrow')}</a>

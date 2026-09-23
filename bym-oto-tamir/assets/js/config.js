@@ -2,10 +2,10 @@
 export const CONFIG = {
   "firma": {
     "ad": "BYM Oto Tamir",
-    "telefon": "+905000000000",
-    "telefonGorunen": "0 (5XX) XXX XX XX",
-    "whatsapp": "905000000000",
-    "adres": "Adres bilgisi eklenecek, Göksun / Kahramanmaraş"
+    "telefon": "+903447143636",
+    "telefonGorunen": "0 (344) 714 36 36",
+    "whatsapp": "905322148883",
+    "adres": "Yeni Mahalle, Kırım Caddesi, Sanayi Sitesi No: 2/A, Göksun / Kahramanmaraş"
   },
   "randevu": {
     "mod": "demo",
