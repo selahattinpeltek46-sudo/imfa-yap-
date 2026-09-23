@@ -177,7 +177,7 @@ export function initMap() {
     box.querySelector("[data-map-load]")?.addEventListener("click", () => {
       const f = document.createElement("iframe");
       f.src = box.dataset.src;
-      f.title = "BYM Oto Tamir konumu – Google Haritalar";
+      f.title = "BYM Automotive konumu – Google Haritalar";
       f.loading = "lazy";
       f.referrerPolicy = "no-referrer-when-downgrade";
       box.replaceChildren(f);

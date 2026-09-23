@@ -1,5 +1,5 @@
 """
-BYM Oto Tamir — site içerikleri (hizmetler, sorunlar, süreç, blog).
+BYM Automotive — site içerikleri (hizmetler, sorunlar, süreç, blog).
 
 Metinler genel ve doğrulanabilir bilgiler içerir; firmaya özel iddia
 (yıl, müşteri sayısı, garanti vb.) EKLENMEZ.
@@ -17,8 +17,8 @@ HIZMETLER = [
         "ikon": "i-wrench",
         "randevu": "periyodik-bakim",
         "ozet": "Üretici bakım takvimine uygun yağ, filtre ve genel kontroller.",
-        "seo_baslik": "Periyodik Bakım | BYM Oto Tamir",
-        "seo_aciklama": "Motor yağı, filtreler ve üretici bakım takvimine uygun kontrollerle periyodik araç bakımı. BYM Oto Tamir'de randevunuzu online oluşturun.",
+        "seo_baslik": "Periyodik Bakım | BYM Automotive",
+        "seo_aciklama": "Motor yağı, filtreler ve üretici bakım takvimine uygun kontrollerle periyodik araç bakımı. BYM Automotive'de randevunuzu online oluşturun.",
         "giris": "Periyodik bakım, aracınızın üretici tarafından belirlenen kilometre ve zaman aralıklarında yapılması gereken rutin işlemlerdir. Düzenli bakım; motorun ömrünü korur, yakıt tüketimini dengeler ve büyük arızaların önüne geçer.",
         "kapsam": [
             "Motor yağı ve yağ filtresinin değişimi",
@@ -46,7 +46,7 @@ HIZMETLER = [
         "ikon": "i-scan",
         "randevu": "ariza-tespiti",
         "ozet": "Arıza kodlarının okunması ve sorunun kaynağına yönelik kontroller.",
-        "seo_baslik": "Bilgisayarlı Arıza Tespiti | BYM Oto Tamir",
+        "seo_baslik": "Bilgisayarlı Arıza Tespiti | BYM Automotive",
         "seo_aciklama": "Motor arıza lambası, performans kaybı ve elektronik sorunlar için bilgisayarlı arıza tespiti. Tahmin değil, kontrol ile teşhis.",
         "giris": "Günümüz araçlarında motor, şanzıman, fren ve konfor sistemleri elektronik kontrol üniteleri tarafından yönetilir. Bilgisayarlı arıza tespiti; bu ünitelerdeki hata kayıtlarını ve canlı verileri okuyarak sorunun hangi sistemde olduğunu ortaya koyar. Arıza kodu tek başına parça değişimi anlamına gelmez; kodun işaret ettiği sistem ayrıca kontrol edilir.",
         "kapsam": [
@@ -74,7 +74,7 @@ HIZMETLER = [
         "ikon": "i-engine",
         "randevu": "motor-mekanik",
         "ozet": "Motor, triger, soğutma ve mekanik aksam onarımları.",
-        "seo_baslik": "Motor & Mekanik Onarım | BYM Oto Tamir",
+        "seo_baslik": "Motor & Mekanik Onarım | BYM Automotive",
         "seo_aciklama": "Motor arızaları, triger seti, soğutma sistemi, yağ kaçakları ve mekanik onarımlar. İşlem öncesi bilgilendirme ve onay ile servis.",
         "giris": "Motor ve mekanik aksam; aracın güvenli ve verimli çalışmasının temelidir. Ses, titreşim, yağ kaçağı veya hararet gibi belirtiler erken fark edildiğinde daha küçük ve planlı onarımlarla çözülebilir.",
         "kapsam": [
@@ -101,7 +101,7 @@ HIZMETLER = [
         "ikon": "i-bolt",
         "randevu": "oto-elektrik",
         "ozet": "Akü, marş, şarj sistemi ve elektrik arızaları.",
-        "seo_baslik": "Oto Elektrik | BYM Oto Tamir",
+        "seo_baslik": "Oto Elektrik | BYM Automotive",
         "seo_aciklama": "Akü, marş motoru, şarj dinamosu, aydınlatma ve elektrik tesisatı arızaları için oto elektrik servisi.",
         "giris": "Aracın çalışmasından aydınlatmasına kadar birçok sistem elektrik tesisatına bağlıdır. Akü, marş ve şarj sistemindeki sorunlar çoğu zaman aracın geç çalışması veya hiç çalışmaması şeklinde kendini gösterir.",
         "kapsam": [
@@ -128,7 +128,7 @@ HIZMETLER = [
         "ikon": "i-disc",
         "randevu": "fren-sistemi",
         "ozet": "Balata, disk, amortisör ve alt takım kontrolleri.",
-        "seo_baslik": "Fren & Süspansiyon | BYM Oto Tamir",
+        "seo_baslik": "Fren & Süspansiyon | BYM Automotive",
         "seo_aciklama": "Fren balatası, disk, fren hidroliği, amortisör ve alt takım kontrol ve onarımları. Güvenliğiniz için planlı servis.",
         "giris": "Fren ve süspansiyon sistemleri doğrudan sürüş güvenliğini etkiler. Frenlerden gelen sesler, direksiyonda titreme veya aracın bir tarafa çekmesi ihmal edilmemesi gereken belirtilerdir.",
         "kapsam": [
@@ -155,7 +155,7 @@ HIZMETLER = [
         "ikon": "i-snow",
         "randevu": "klima",
         "ozet": "Klima performans kontrolü, gaz ve kaçak kontrolleri.",
-        "seo_baslik": "Oto Klima Servisi | BYM Oto Tamir",
+        "seo_baslik": "Oto Klima Servisi | BYM Automotive",
         "seo_aciklama": "Soğutmayan klima, kötü koku ve klima kompresörü sorunları için kontrol ve bakım. Polen filtresi ve gaz kontrolü.",
         "giris": "Klima sistemi yalnızca konfor değil, camların buğusunu almak için de önemlidir. Soğutma performansının düşmesi çoğu zaman gaz eksikliği, kaçak veya filtre tıkanıklığı ile ilgilidir.",
         "kapsam": [
@@ -180,7 +180,7 @@ HIZMETLER = [
         "ikon": "i-gear",
         "randevu": "sanziman",
         "ozet": "Vites geçişi, debriyaj ve şanzıman kontrolleri.",
-        "seo_baslik": "Şanzıman & Debriyaj | BYM Oto Tamir",
+        "seo_baslik": "Şanzıman & Debriyaj | BYM Automotive",
         "seo_aciklama": "Vites geçiş sorunları, debriyaj kaçırma ve şanzıman kontrolleri. İşlem öncesi teşhis ve bilgilendirme.",
         "giris": "Manuel ve otomatik şanzımanlarda geç, sert ya da vuruntulu vites geçişleri; debriyaj, şanzıman yağı veya kontrol sistemiyle ilgili bir soruna işaret edebilir. Erken kontrol, maliyetli onarımların önüne geçebilir.",
         "kapsam": [
@@ -205,7 +205,7 @@ HIZMETLER = [
         "ikon": "i-check",
         "randevu": "ariza-kontrolu",
         "ozet": "Yol öncesi, muayene öncesi ve alım öncesi genel kontroller.",
-        "seo_baslik": "Genel Araç Kontrolü | BYM Oto Tamir",
+        "seo_baslik": "Genel Araç Kontrolü | BYM Automotive",
         "seo_aciklama": "Uzun yol, muayene ve kış öncesi genel araç kontrolü. Aracınızın durumunu işlem öncesi öğrenin.",
         "giris": "Genel araç kontrolü; uzun yol, araç muayenesi veya kış öncesi aracınızın temel sistemlerinin gözden geçirilmesidir. Kontrol sonucunda gerekli görülen işlemler size aktarılır, onayınız olmadan işlem yapılmaz.",
         "kapsam": [

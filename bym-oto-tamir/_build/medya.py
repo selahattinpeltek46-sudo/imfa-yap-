@@ -1,5 +1,5 @@
 """
-BYM Oto Tamir — medya hazırlama.
+BYM Automotive — medya hazırlama.
 
 Kaynak fotoğrafları (_build/kaynak-fotograflar) web için hazırlar:
   - kenar kırpma (ekran görüntüsü okları vb.)

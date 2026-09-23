@@ -1,7 +1,7 @@
 // OTOMATİK ÜRETİLDİ — _build/site.json dosyasını düzenleyip `python3 _build/build.py` çalıştırın.
 export const CONFIG = {
   "firma": {
-    "ad": "BYM Oto Tamir",
+    "ad": "BYM Automotive",
     "telefon": "+903447143636",
     "telefonGorunen": "0 (344) 714 36 36",
     "whatsapp": "905322148883",

@@ -1,15 +1,16 @@
-# BYM Oto Tamir — Web Sitesi
+# BYM Automotive — Web Sitesi
 
-Göksun'daki BYM Oto Tamir için premium, mobil öncelikli, randevu odaklı statik web sitesi.
+Göksun'daki BYM Automotive için premium, mobil öncelikli, randevu odaklı statik web sitesi.
 Framework yok: HTML + CSS + ES modülleri. Tüm sayfalar `_build/build.py` ile üretilir.
 
 ## Yayına almadan önce doğrulanacaklar
 
 `_build/site.json` içinde `DOGRULANACAK` işaretli alanlar örnektir:
 
-- [ ] Telefon ve WhatsApp numarası
-- [ ] Açık adres + gerçek koordinat (Google İşletme Profili ile **birebir aynı** yazılmalı)
-- [ ] Çalışma saatleri ve randevu saatleri
+- [x] Telefon ve WhatsApp numarası
+- [x] Açık adres · [ ] gerçek koordinat (Google İşletme Profili ile **birebir aynı** yazılmalı)
+- [x] Çalışma saatleri ve randevu saatleri
+- [ ] Google İşletme Profili: adres ve açılış saati siteyle aynı olacak şekilde güncellenmeli
 - [ ] Alan adı (`site_url`) — canonical, sitemap ve schema bunu kullanır
 - [ ] Hizmet verilen markalar
 - [ ] Instagram / Facebook adresleri

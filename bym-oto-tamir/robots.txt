@@ -3,4 +3,4 @@ Allow: /
 Disallow: /yonetim/
 Disallow: /_build/
 
-Sitemap: https://www.bymototamir.com/sitemap.xml
+Sitemap: https://www.bymautomotive.com/sitemap.xml

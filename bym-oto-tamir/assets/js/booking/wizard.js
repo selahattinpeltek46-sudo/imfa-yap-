@@ -311,8 +311,8 @@ export class BookingWizard {
     const a = this.done;
     const api = this.mode === "api";
     const sub = api
-      ? "Randevu bilgileriniz BYM Oto Tamir ekibine iletildi."
-      : "Randevu talebinizi BYM Oto Tamir ekibine iletmek için WhatsApp'tan gönderin.";
+      ? "Randevu bilgileriniz BYM Automotive ekibine iletildi."
+      : "Randevu talebinizi BYM Automotive ekibine iletmek için WhatsApp'tan gönderin.";
     this.root.innerHTML = `
       <div class="wz"><div class="wz__body">
         <div class="done">
@@ -362,12 +362,12 @@ export class BookingWizard {
     const start = `${y}${mo}${d}T${h}${mi}00`;
     const endH = pad(Number(h) + 1);
     const ics = [
-      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//BYM Oto Tamir//Randevu//TR", "BEGIN:VEVENT",
-      `UID:${a.id}@bymototamir`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//BYM Automotive//Randevu//TR", "BEGIN:VEVENT",
+      `UID:${a.id}@bymautomotive`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
       `DTSTART:${start}`, `DTEND:${y}${mo}${d}T${endH}${mi}00`,
-      `SUMMARY:BYM Oto Tamir – ${serviceById(a.service)?.name}`,
+      `SUMMARY:BYM Automotive – ${serviceById(a.service)?.name}`,
       `DESCRIPTION:${a.brand} ${a.model} · Ref: ${a.id}`,
-      "LOCATION:BYM Oto Tamir\\, Göksun", "END:VEVENT", "END:VCALENDAR",
+      "LOCATION:BYM Automotive\\, Göksun", "END:VEVENT", "END:VCALENDAR",
     ].join("\r\n");
     const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
     const link = Object.assign(document.createElement("a"), { href: url, download: `bym-randevu-${a.date}.ics` });

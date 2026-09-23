@@ -1,10 +1,10 @@
 {
-  "_not": "TÜM FİRMA BİLGİLERİ BURADAN YÖNETİLİR. 'DOGRULANACAK' işaretli alanlar örnek/yer tutucudur; BYM Oto Tamir'den teyit alınmadan yayına çıkılmamalıdır. Değişiklikten sonra: python3 _build/build.py",
+  "_not": "TÜM FİRMA BİLGİLERİ BURADAN YÖNETİLİR. 'DOGRULANACAK' işaretli alanlar örnek/yer tutucudur; BYM Automotive'den teyit alınmadan yayına çıkılmamalıdır. Değişiklikten sonra: python3 _build/build.py",
   "onizleme": true,
-  "site_url": "https://www.bymototamir.com",
-  "_site_url_not": "DOGRULANACAK — alan adı alındığında güncellenecek (canonical, sitemap, schema).",
+  "site_url": "https://www.bymautomotive.com",
+  "_site_url_not": "DOGRULANACAK — alan adı alındığında güncellenecek (ör. bymautomotive.com).",
   "firma": {
-    "ad": "BYM Oto Tamir",
+    "ad": "BYM Automotive",
     "kisa_ad": "BYM",
     "slogan": "Profesyonel bakım, doğru teşhis, şeffaf servis deneyimi.",
     "tabela_slogani": "Aracınızın Özel Hastanesi",
@@ -56,7 +56,13 @@
     "google_adi": "BYM SERVİS",
     "whatsapp_gorunen": "0 (532) 214 88 83",
     "google_puan": "4,3",
-    "google_yorum_sayisi": 43
+    "google_yorum_sayisi": 43,
+    "logo_ust": "AUTOMOTIVE",
+    "tagline": "Professional Automotive Service",
+    "diger_adlar": [
+      "BYM SERVİS",
+      "BYM Oto Tamir"
+    ]
   },
   "medya": {
     "_not": "Görseller assets/media klasöründedir. Hero videosu eklemek için dosyayı assets/media içine koyup 'hero.video' alanına adını yazın (ör. bym-hero.mp4). Video yoksa 'hero.poster' görseli kullanılır.",
@@ -64,11 +70,11 @@
       "video": "",
       "video_webm": "",
       "poster": "bym-lift-arac.webp",
-      "alt": "BYM Oto Tamir servis alanında lift üzerinde bakımdaki araç"
+      "alt": "BYM Automotive servis alanında lift üzerinde bakımdaki araç"
     },
     "hakkimizda": {
       "src": "bym-servis-dis-cephe.webp",
-      "alt": "BYM Oto Tamir servis binasının dış cephesi",
+      "alt": "BYM Automotive servis binasının dış cephesi",
       "w": 534,
       "h": 297
     },

@@ -3,7 +3,7 @@ import { CONFIG } from "./config.js";
 import { serviceById } from "./booking/catalog.js";
 import { formatDateTR, formatPlate } from "./booking/appointment.js";
 
-export const GENERAL_MESSAGE = "Merhaba BYM Oto Tamir, aracım için servis/randevu hakkında bilgi almak istiyorum.";
+export const GENERAL_MESSAGE = "Merhaba BYM Automotive, aracım için servis/randevu hakkında bilgi almak istiyorum.";
 
 export function waLink(message = GENERAL_MESSAGE) {
   return `https://wa.me/${CONFIG.firma.whatsapp}?text=${encodeURIComponent(message)}`;
@@ -12,7 +12,7 @@ export function waLink(message = GENERAL_MESSAGE) {
 export function appointmentMessage(a) {
   const service = serviceById(a.service)?.name || a.service;
   const lines = [
-    "Merhaba BYM Oto Tamir,",
+    "Merhaba BYM Automotive,",
     "randevu talebi oluşturmak istiyorum.",
     "",
     `Araç: ${a.brand} ${a.model}`.trim(),

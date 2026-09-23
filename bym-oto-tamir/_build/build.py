@@ -1,5 +1,5 @@
 """
-BYM Oto Tamir — statik site üreticisi.
+BYM Automotive — statik site üreticisi.
 
 Tüm HTML sayfaları, sitemap.xml ve assets/js/config.js bu betikle üretilir.
 Firma bilgileri: _build/site.json   İçerikler: _build/icerik.py
@@ -46,7 +46,7 @@ def wa_link(mesaj):
     return f"https://wa.me/{F['whatsapp']}?text={quote(mesaj)}"
 
 
-WA_GENEL = "Merhaba BYM Oto Tamir, aracım için servis/randevu hakkında bilgi almak istiyorum."
+WA_GENEL = "Merhaba BYM Automotive, aracım için servis/randevu hakkında bilgi almak istiyorum."
 ADRES_TEK = f"{F['adres']['sokak']}, {F['adres']['ilce']} / {F['adres']['il']}"
 
 
@@ -84,7 +84,7 @@ SPRITE = """<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
 <symbol id="i-fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
 </svg>"""
 
-LOGO = """<span class="logo__mark" aria-hidden="true">BYM</span><span class="logo__text">OTO TAMİR</span>"""
+LOGO = f"""<span class="logo__mark" aria-hidden="true">BYM</span><span class="logo__words"><span class="logo__text">{F.get('logo_ust', 'AUTOMOTIVE')}</span><span class="logo__tag" lang="en">{F.get('tagline', '')}</span></span>"""
 
 NAV = [
     ("Anasayfa", "", "home"),
@@ -182,6 +182,7 @@ def footer(r):
       <div class="ftr__brand">
         <a class="logo" href="{r}" aria-label="{e(F['ad'])} anasayfa">{LOGO}</a>
         <p>Profesyonel bakım, doğru teşhis,<br>şeffaf servis deneyimi.</p>
+        <p class="ftr__tag mono" lang="en">{e(F.get('tagline', ''))}</p>
         <div class="ftr__social">{sosyal}</div>
       </div>
       <nav class="ftr__col" aria-label="Hızlı menü">
@@ -257,7 +258,8 @@ def business_schema():
         "@type": "AutoRepair",
         "@id": f"{URL}/#isletme",
         "name": F["ad"],
-        "alternateName": F.get("google_adi", F["ad"]),
+        "alternateName": F.get("diger_adlar", [F.get("google_adi", F["ad"])]),
+        "slogan": F.get("tagline", ""),
         "url": f"{URL}/",
         "image": f"{URL}/assets/media/og-bym-oto-tamir.jpg",
         "telephone": F["telefon_link"],
@@ -335,7 +337,7 @@ def cta_final(r):
       <a class="btn btn--accent btn--lg" href="{r}randevu/">Randevu Al {ikon('i-arrow')}</a>
       <a class="btn btn--ghost btn--lg" href="{wa_link(WA_GENEL)}" target="_blank" rel="noopener" data-wa>{ikon('i-wa')} WhatsApp'tan Ulaş</a>
     </div>
-    <p class="final__sign">{e(F['ad'])}</p>
+    <p class="final__sign">{e(F['ad'])} · <span lang="en">{e(F.get('tagline', ''))}</span></p>
   </div>
 </section>"""
 
@@ -349,7 +351,7 @@ def contact_block(r):
   <div class="wrap contact__grid">
     <div class="contact__info reveal">
       <p class="eyebrow">İletişim</p>
-      <h2 id="iletisim-baslik" class="h-xl">Göksun'da BYM Oto Tamir</h2>
+      <h2 id="iletisim-baslik" class="h-xl">Göksun'da<br>BYM Automotive</h2>
       <p class="muted">Tabelanın üzerindeki kırmızı aracı gördüğünüzde doğru yerdesiniz.</p>
       <dl class="nap">
         <div><dt>{ikon('i-pin')} Adres</dt><dd>{e(ADRES_TEK)}</dd></div>
@@ -449,8 +451,8 @@ def anasayfa():
         garaj += f"""<figure class="g-item g-item--{i+1} reveal" style="--d:{(i%3)*60}ms"><button type="button" class="g-btn" data-lightbox="{i}" aria-label="Fotoğrafı büyüt: {e(g['alt'])}"><img src="{r}assets/media/{g['src']}" alt="{e(g['alt'])}" width="{g['w']}" height="{g['h']}" loading="lazy" decoding="async"></button><figcaption>{e(g['etiket'])}</figcaption></figure>"""
     yorumlar = reviews_block(r)
 
-    html = head(r, yol, "BYM Oto Tamir | Profesyonel Oto Servis ve Bakım",
-                "BYM Oto Tamir; periyodik bakım, arıza tespiti, motor, mekanik ve oto servis hizmetleriyle aracınız için profesyonel çözümler sunar.",
+    html = head(r, yol, "BYM Automotive | Göksun Oto Servis, Bakım ve Onarım",
+                "BYM Automotive (BYM Servis); Göksun'da periyodik bakım, arıza tespiti, motor, mekanik ve oto servis hizmetleriyle aracınız için profesyonel çözümler sunar.",
                 schema=[business_schema(), {"@context": "https://schema.org", "@type": "WebSite", "name": F["ad"], "url": f"{URL}/"}])
     html += header(r, "home")
     html += f"""
@@ -460,7 +462,7 @@ def anasayfa():
   <div class="hero__bg" data-parallax>{media}</div>
   <div class="hero__shade" aria-hidden="true"></div>
   <div class="wrap hero__in">
-    <p class="eyebrow hero__eyebrow"><span class="dot" aria-hidden="true"></span> Göksun · Kahramanmaraş</p>
+    <p class="eyebrow hero__eyebrow"><span class="dot" aria-hidden="true"></span><span lang="en">{e(F.get('tagline', ''))}</span><span class="hero__loc">· Göksun</span></p>
     <h1 id="hero-baslik" class="hero__h">
       <span class="line"><span>ARACINIZ İÇİN</span></span>
       <span class="line"><span>DOĞRU TEŞHİS.</span></span>
@@ -631,8 +633,8 @@ def hizmetler_index():
     yol = "hizmetler/"
     r = rel(yol)
     parca = [("Hizmetler", yol)]
-    html = head(r, yol, "Oto Servis Hizmetleri | BYM Oto Tamir",
-                "Periyodik bakım, bilgisayarlı arıza tespiti, motor, oto elektrik, fren, klima ve şanzıman hizmetleri. BYM Oto Tamir'de online randevu.",
+    html = head(r, yol, "Oto Servis Hizmetleri | BYM Automotive",
+                "Periyodik bakım, bilgisayarlı arıza tespiti, motor, oto elektrik, fren, klima ve şanzıman hizmetleri. BYM Automotive'de online randevu.",
                 schema=[breadcrumb_schema(parca)])
     html += header(r, "hizmetler")
     html += f"""<main id="icerik">
@@ -651,7 +653,7 @@ def hizmet_sayfasi(h):
     r = rel(yol)
     parca = [("Hizmetler", "hizmetler/"), (h["ad"], yol)]
     from urllib.parse import quote
-    wa = wa_link(f"Merhaba BYM Oto Tamir, {h['ad']} hizmeti hakkında bilgi almak istiyorum.")
+    wa = wa_link(f"Merhaba BYM Automotive, {h['ad']} hizmeti hakkında bilgi almak istiyorum.")
     kapsam = "".join(f"<li>{ikon('i-tick')}<span>{e(k)}</span></li>" for k in h["kapsam"])
     belirti = "".join(
         f'<li><a href="{r}randevu/?hizmet={h["randevu"]}&amp;not={quote(b)}"><span>{e(b)}</span>{ikon("i-arrow")}</a></li>'
@@ -743,8 +745,8 @@ def randevu():
     yol = "randevu/"
     r = rel(yol)
     parca = [("Randevu", yol)]
-    html = head(r, yol, "Online Servis Randevusu | BYM Oto Tamir",
-                "BYM Oto Tamir'de aracınız için online servis randevusu oluşturun. Marka, hizmet, gün ve saati seçin; randevunuzu 1 dakikada planlayın.",
+    html = head(r, yol, "Online Servis Randevusu | BYM Automotive",
+                "BYM Automotive'de aracınız için online servis randevusu oluşturun. Marka, hizmet, gün ve saati seçin; randevunuzu 1 dakikada planlayın.",
                 schema=[breadcrumb_schema(parca)])
     html += header(r, "randevu")
     html += f"""<main id="icerik" class="page-booking">
@@ -775,7 +777,7 @@ def hakkimizda():
     img = M["hakkimizda"]
     ilke = "".join(f'<li class="reveal"><span class="mono">{i+1:02d}</span><div><h3>{e(t)}</h3><p>{e(p)}</p></div></li>' for i, (t, p) in enumerate(I.NEDEN))
     baslik = 'Aracınızın<br><span class="silver">özel hastanesi.</span>'
-    html = head(r, yol, "Hakkımızda | BYM Oto Tamir", "BYM Oto Tamir'in servis anlayışı: doğru teşhis, şeffaf süreç, müşteri onayıyla işlem ve kontrollü teslim.", schema=[breadcrumb_schema(parca)])
+    html = head(r, yol, "Hakkımızda | BYM Automotive", "BYM Automotive'in servis anlayışı: doğru teşhis, şeffaf süreç, müşteri onayıyla işlem ve kontrollü teslim.", schema=[breadcrumb_schema(parca)])
     html += header(r, "hakkimizda")
     html += f"""<main id="icerik">
 {page_hero(r, parca, "Hakkımızda", baslik, "Tabelamızda yazan bu söz, işimize nasıl baktığımızı anlatıyor: Her aracı önce dinler, kontrol eder, sonra ne yapılacağını sahibine açıkça anlatırız.")}
@@ -784,7 +786,7 @@ def hakkimizda():
     <figure class="about__img reveal"><img src="{r}assets/media/{img['src']}" alt="{e(img['alt'])}" width="{img['w']}" height="{img['h']}" loading="lazy" decoding="async"><figcaption>BYM Servis · Göksun</figcaption></figure>
     <div class="about__txt reveal">
       <h2 class="h-lg">Nasıl çalışıyoruz?</h2>
-      <p>BYM Oto Tamir, Göksun'da bakım, arıza tespiti ve onarım hizmeti veren bir oto servisidir. Amacımız; aracınızı bıraktığınızda neyin, neden ve ne kadar sürede yapılacağını bildiğiniz, planlı bir servis deneyimi sunmaktır.</p>
+      <p>BYM Automotive, Göksun'da bakım, arıza tespiti ve onarım hizmeti veren bir oto servisidir. Amacımız; aracınızı bıraktığınızda neyin, neden ve ne kadar sürede yapılacağını bildiğiniz, planlı bir servis deneyimi sunmaktır.</p>
       <p>Randevulu çalışmamızın nedeni de budur: Aracınıza ayrılan zaman önceden planlanır, bekleme süresi kısalır ve her araca gereken dikkat gösterilir.</p>
     </div>
   </div>
@@ -806,8 +808,8 @@ def iletisim():
     yol = "iletisim/"
     r = rel(yol)
     parca = [("İletişim", yol)]
-    html = head(r, yol, "İletişim & Yol Tarifi | BYM Oto Tamir Göksun",
-                "BYM Oto Tamir iletişim bilgileri, çalışma saatleri ve yol tarifi. Telefon, WhatsApp veya online randevu ile ulaşın.",
+    html = head(r, yol, "İletişim & Yol Tarifi | BYM Automotive Göksun",
+                "BYM Automotive iletişim bilgileri, çalışma saatleri ve yol tarifi. Telefon, WhatsApp veya online randevu ile ulaşın.",
                 schema=[breadcrumb_schema(parca), business_schema()])
     html += header(r, "iletisim")
     html += f"""<main id="icerik">
@@ -823,7 +825,7 @@ def kvkk():
     yol = "kvkk/"
     r = rel(yol)
     parca = [("KVKK Aydınlatma Metni", yol)]
-    html = head(r, yol, "KVKK Aydınlatma Metni | BYM Oto Tamir", "BYM Oto Tamir kişisel verilerin korunması aydınlatma metni.", schema=[breadcrumb_schema(parca)], robots="noindex,follow")
+    html = head(r, yol, "KVKK Aydınlatma Metni | BYM Automotive", "BYM Automotive kişisel verilerin korunması aydınlatma metni.", schema=[breadcrumb_schema(parca)], robots="noindex,follow")
     html += header(r, "")
     html += f"""<main id="icerik">
 {page_hero(r, parca, "Yasal", "KVKK Aydınlatma Metni", "6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında bilgilendirme.")}
@@ -857,7 +859,7 @@ def markalar():
     r = rel(yol)
     parca = [("Markalar", yol)]
     liste = "".join(f'<li><a href="{r}markalar/{slugify(m)}/">{e(m)}<span>{ikon("i-arrow")}</span></a></li>' for m in CFG["markalar"]["liste"])
-    html = head(r, yol, "Hizmet Verdiğimiz Markalar | BYM Oto Tamir", "BYM Oto Tamir'de bakım ve onarım hizmeti verilen araç markaları.", schema=[breadcrumb_schema(parca)])
+    html = head(r, yol, "Hizmet Verdiğimiz Markalar | BYM Automotive", "BYM Automotive'de bakım ve onarım hizmeti verilen araç markaları.", schema=[breadcrumb_schema(parca)])
     html += header(r, "")
     html += f"""<main id="icerik">
 {page_hero(r, parca, "Markalar", "Hizmet Verdiğimiz<br>Markalar", "Markanızı seçin; aracınız için sunduğumuz servisleri inceleyin ve randevu oluşturun.")}
@@ -876,8 +878,8 @@ def marka_sayfasi(m):
     r = rel(yol)
     parca = [("Markalar", "markalar/"), (m, yol)]
     from urllib.parse import quote
-    html = head(r, yol, f"{m} Bakım ve Servis | BYM Oto Tamir",
-                f"{m} araçlarınız için periyodik bakım, arıza tespiti, motor, elektrik, fren ve klima servisi. BYM Oto Tamir'de online randevu.",
+    html = head(r, yol, f"{m} Bakım ve Servis | BYM Automotive",
+                f"{m} araçlarınız için periyodik bakım, arıza tespiti, motor, elektrik, fren ve klima servisi. BYM Automotive'de online randevu.",
                 schema=[breadcrumb_schema(parca)])
     html += header(r, "")
     baslik = f'{e(m)}<br><span class="silver">bakım ve servis.</span>'
@@ -940,7 +942,7 @@ def blog_yazisi(p):
         },
     ]
     tarih_tr = date.fromisoformat(p["tarih"]).strftime("%d.%m.%Y")
-    html = head(r, yol, f"{p['baslik']} | BYM Oto Tamir", p["ozet"], schema=schema)
+    html = head(r, yol, f"{p['baslik']} | BYM Automotive", p["ozet"], schema=schema)
     html += header(r, "")
     html += f"""<main id="icerik">
 <article>
@@ -981,7 +983,7 @@ def blog_yazisi(p):
 def yonetim():
     yol = "yonetim/"
     r = rel(yol)
-    html = head(r, yol, "Randevu Yönetimi (Demo) | BYM Oto Tamir", "Randevu yönetim paneli demo.", robots="noindex,nofollow")
+    html = head(r, yol, "Randevu Yönetimi (Demo) | BYM Automotive", "Randevu yönetim paneli demo.", robots="noindex,nofollow")
     html += header(r, "")
     html += f"""<main id="icerik">
 <section class="section section--booking-page">
@@ -1000,7 +1002,7 @@ def yonetim():
 def sayfa_404():
     yol = "404.html"
     r = ""  # GitHub Pages 404'ü kök yoldan sunar; mutlak kök gerektiğinde site_url kullanılır
-    html = head(r, "404.html", "Sayfa bulunamadı | BYM Oto Tamir", "Aradığınız sayfa bulunamadı.", robots="noindex")
+    html = head(r, "404.html", "Sayfa bulunamadı | BYM Automotive", "Aradığınız sayfa bulunamadı.", robots="noindex")
     html += header(r, "")
     html += f"""<main id="icerik">
 <section class="phero phero--404">
