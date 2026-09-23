@@ -912,3 +912,31 @@ select.input option { background: var(--bg-2); color: var(--text); }
 .case dl div:last-child { border-bottom: 0; }
 .case dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
 .principles .why__ic { flex: none; }
+
+/* ---------- Randevu: yükleme durumu, ilerleme, uyarılar ---------- */
+.booking__fallback { display: none; padding: 32px 28px; }
+.booking.is-failed .booking__fallback { display: grid; gap: 12px; }
+.booking.is-failed .booking__skeleton, .booking.is-ready .booking__skeleton { display: none; }
+.booking__fallback-t { font-size: 20px; font-weight: 650; letter-spacing: -0.02em; }
+.booking.is-failed, .booking.is-ready { min-height: 0; }
+.wz__steps { counter-reset: none; }
+.wz__steps li { display: flex; align-items: baseline; gap: 6px; }
+.wz__num { font-family: var(--mono); font-size: 11px; color: var(--dim); }
+.wz__steps li.is-current .wz__num, .wz__steps li.is-done .wz__num { color: var(--accent-hi); }
+@media (max-width: 479px) {
+  .wz__steps li span.wz__lbl { display: none; }
+  .wz__steps li.is-current span.wz__lbl { display: inline; }
+  .wz__steps { grid-template-columns: repeat(5, auto); justify-content: space-between; }
+  .wz__steps li { overflow: visible; }
+}
+.wz__alert { margin-top: 18px; padding: 12px 14px; border-radius: 10px; background: var(--accent-soft); color: #FFC9CB; font-size: 14.5px; outline: none; }
+.wz__legal { margin-top: 8px; font-size: 13.5px; color: var(--muted); }
+.wz__legal a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.done__notice { max-width: 46ch; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--bg-3); color: var(--muted); font-size: 14px; }
+.done__notice strong { color: var(--text); }
+@media (max-width: 559px) {
+  .wz__foot { flex-wrap: wrap; }
+  .wz__foot--send .btn { flex-basis: 100%; max-width: none; order: -1; }
+  .wz__foot--send .wz__back { width: 100%; justify-content: center; }
+  .done .btn-row { display: grid; width: 100%; }
+}

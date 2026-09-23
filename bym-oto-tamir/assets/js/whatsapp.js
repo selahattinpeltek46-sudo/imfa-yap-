@@ -1,29 +1,30 @@
 // WhatsApp mesaj şablonları ve bağlantı üretimi.
 import { CONFIG } from "./config.js";
-import { serviceById } from "./booking/catalog.js";
-import { formatDateTR, formatPlate } from "./booking/appointment.js";
 
 export const GENERAL_MESSAGE = "Merhaba BYM Automotive, aracım için servis/randevu hakkında bilgi almak istiyorum.";
 
+// wa.me: mobilde WhatsApp uygulamasını, masaüstünde WhatsApp Web'i açar.
+// encodeURIComponent Türkçe karakterleri UTF-8 olarak doğru kodlar.
 export function waLink(message = GENERAL_MESSAGE) {
   return `https://wa.me/${CONFIG.firma.whatsapp}?text=${encodeURIComponent(message)}`;
 }
 
-export function appointmentMessage(a) {
-  const service = serviceById(a.service)?.name || a.service;
-  const lines = [
-    "Merhaba BYM Automotive,",
-    "randevu talebi oluşturmak istiyorum.",
-    "",
-    `Araç: ${a.brand} ${a.model}`.trim(),
-    `Hizmet: ${service}`,
-    `Tarih: ${formatDateTR(a.date, { day: "numeric", month: "long", year: "numeric", weekday: "long" })}`,
-    `Saat: ${a.time}`,
-  ];
-  if (a.name) lines.push("", `Ad Soyad: ${a.name}`);
-  if (a.phone) lines.push(`Telefon: ${a.phone}`);
-  if (a.plate) lines.push(`Plaka: ${formatPlate(a.plate)}`);
-  if (a.note) lines.push(`Açıklama: ${a.note}`);
-  if (a.id) lines.push("", `Referans: ${a.id}`);
+/**
+ * @param {{service:string, vehicle:string, year:string, plate:string, problem:string,
+ *          date:string, time:string, name:string, phone:string}} r  Özet için hazırlanmış metinler
+ */
+export function appointmentMessage(r) {
+  const lines = ["Merhaba BYM Automotive,", "Randevu talebinde bulunmak istiyorum.", ""];
+  const add = (label, value) => { if (value) lines.push(`${label}: ${value}`); };
+  add("Hizmet", r.service);
+  add("Araç", r.vehicle);
+  add("Model Yılı", r.year);
+  add("Plaka", r.plate);
+  add("Sorun", r.problem);
+  add("Tarih", r.date);
+  add("Saat", r.time);
+  add("Ad Soyad", r.name);
+  add("Telefon", r.phone);
+  lines.push("", "Randevu uygunluğunun teyit edilmesini rica ederim.");
   return lines.join("\n");
 }

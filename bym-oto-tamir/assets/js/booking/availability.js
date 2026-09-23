@@ -1,4 +1,5 @@
-// Müsaitlik kuralları: kapalı günler, tatiller, geçmiş saatler, dolu saatler.
+// Müsaitlik kuralları: kapalı günler, tatiller, geçmiş saatler (ve backend varsa dolu saatler).
+// Saatler ve kapalı günler _build/site.json → randevu (saatler, kapali_gunler, tatiller) alanından gelir.
 import { toISODate, fromISODate } from "./appointment.js";
 
 export class Availability {
@@ -31,11 +32,11 @@ export class Availability {
     if (this.closedDays.has(d.getDay())) return false;
     if (this.holidays.has(toISODate(d))) return false;
     // Bugün için hiç uygun saat kalmadıysa kapat
-    if (+d === +this.today()) return this.#futureSlots(toISODate(d)).length > 0;
+    if (+d === +this.today()) return this._futureSlots(toISODate(d)).length > 0;
     return true;
   }
 
-  #futureSlots(iso) {
+  _futureSlots(iso) {
     const now = new Date();
     const isToday = iso === toISODate(now);
     if (!isToday) return this.slots;
@@ -49,12 +50,14 @@ export class Availability {
   /** @returns {Promise<{time:string, available:boolean}[]>} */
   async slotsFor(iso) {
     if (!this.isDateOpen(fromISODate(iso))) return this.slots.map((time) => ({ time, available: false }));
-    const future = new Set(this.#futureSlots(iso));
+    const future = new Set(this._futureSlots(iso));
     let booked = [];
-    try {
-      booked = await this.repo.bookedSlots(iso);
-    } catch {
-      booked = [];
+    if (this.repo) {
+      try {
+        booked = await this.repo.bookedSlots(iso);
+      } catch (e) {
+        booked = [];
+      }
     }
     const taken = new Set(booked);
     return this.slots.map((time) => ({ time, available: future.has(time) && !taken.has(time) }));

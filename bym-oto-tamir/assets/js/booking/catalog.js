@@ -20,18 +20,16 @@ export const MODELS = {
 
 export const BRANDS = [...Object.keys(MODELS), OTHER];
 
-// id: URL parametresi (?hizmet=...) ve backend için sabit anahtar
+// Sitedeki 8 hizmetle birebir aynı. id: URL parametresi (?hizmet=...)
 export const SERVICES = [
   { id: "periyodik-bakim", name: "Periyodik Bakım", icon: "i-wrench" },
   { id: "ariza-tespiti", name: "Bilgisayarlı Arıza Tespiti", icon: "i-scan" },
   { id: "motor-mekanik", name: "Motor & Mekanik", icon: "i-engine" },
   { id: "oto-elektrik", name: "Oto Elektrik", icon: "i-bolt" },
+  { id: "fren-sistemi", name: "Fren & Süspansiyon", icon: "i-disc" },
   { id: "klima", name: "Klima", icon: "i-snow" },
-  { id: "fren-sistemi", name: "Fren Sistemi", icon: "i-disc" },
-  { id: "suspansiyon", name: "Süspansiyon", icon: "i-car" },
   { id: "sanziman", name: "Şanzıman", icon: "i-gear" },
-  { id: "ariza-kontrolu", name: "Arıza Kontrolü", icon: "i-check" },
-  { id: "diger", name: "Diğer", icon: "i-wrench" },
+  { id: "ariza-kontrolu", name: "Genel Araç Kontrolü", icon: "i-check" },
 ];
 
 export const serviceById = (id) => SERVICES.find((s) => s.id === id);

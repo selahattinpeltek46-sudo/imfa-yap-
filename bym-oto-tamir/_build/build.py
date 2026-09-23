@@ -53,6 +53,7 @@ def hizmet_url(slug):
     return HURL[slug]
 
 
+WA_RANDEVU = "Merhaba BYM Automotive, randevu talebinde bulunmak istiyorum."
 WA_GENEL = "Merhaba BYM Automotive, aracım için servis/randevu hakkında bilgi almak istiyorum."
 ADRES_TEK = f"{F['adres']['sokak']}, {F['adres']['ilce']} / {F['adres']['il']}"
 
@@ -336,9 +337,18 @@ def booking_block(r, h_tag="h2", baslik_id="randevu-baslik"):
     </ol>
     <p class="booking-alt">Telefonla randevu için <a href="tel:{F['telefon_link']}">{e(F['telefon_gorunen'])}</a></p>
   </div>
-  <div class="booking reveal" data-booking aria-live="polite">
+  <div class="booking reveal" id="{baslik_id}-form" data-booking>
     <noscript><p class="booking__noscript">Randevu sihirbazı için JavaScript gereklidir. Randevu almak için <a href="{wa_link(WA_GENEL)}">WhatsApp</a> veya <a href="tel:{F['telefon_link']}">telefon</a> ile ulaşabilirsiniz.</p></noscript>
     <div class="booking__skeleton" aria-hidden="true"></div>
+    <div class="booking__fallback" role="alert">
+      <p class="booking__fallback-t">Randevu formu şu anda yüklenemedi.</p>
+      <p class="muted">Randevu talebinizi WhatsApp'tan veya telefonla hemen iletebilirsiniz.</p>
+      <div class="btn-row">
+        <a class="btn btn--wa" href="{wa_link(WA_RANDEVU)}" target="_blank" rel="noopener">{ikon('i-wa')} WhatsApp'tan yazın</a>
+        <a class="btn btn--ghost" href="tel:{F['telefon_link']}">{ikon('i-phone')} {e(F['telefon_gorunen'])}</a>
+      </div>
+    </div>
+    <script>setTimeout(function(){{var b=document.getElementById("{baslik_id}-form");if(b&&!/is-ready/.test(b.className))b.className+=" is-failed";}},8000);</script>
   </div>
 </div>"""
 
@@ -603,7 +613,7 @@ def anasayfa():
     </h1>
     <p class="hero__p">Profesyonel bakım, arıza tespiti ve onarım hizmetlerinde<br class="br-d"> şeffaf ve planlı servis deneyimi.</p>
     <div class="btn-row hero__btns">
-      <a class="btn btn--accent btn--lg" href="#randevu">Randevu Al {ikon('i-arrow')}</a>
+      <a class="btn btn--accent btn--lg" href="{r}randevu/">Randevu Al {ikon('i-arrow')}</a>
       <a class="btn btn--glass btn--lg" href="{wa_link(WA_GENEL)}" target="_blank" rel="noopener" data-wa>{ikon('i-wa')} WhatsApp'tan Ulaş</a>
     </div>
     <ul class="hero__trust">{guven_hero}</ul>

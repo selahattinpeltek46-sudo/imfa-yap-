@@ -200,7 +200,7 @@ export function initGallery() {
     if (e.key === "Tab") {
       const f = [...lb.querySelectorAll("button")];
       const idx = f.indexOf(document.activeElement);
-      if (e.shiftKey && idx <= 0) { e.preventDefault(); f.at(-1).focus(); }
+      if (e.shiftKey && idx <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
       else if (!e.shiftKey && idx === f.length - 1) { e.preventDefault(); f[0].focus(); }
     }
   });

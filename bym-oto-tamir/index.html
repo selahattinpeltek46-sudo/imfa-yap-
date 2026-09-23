@@ -61,7 +61,7 @@
     </h1>
     <p class="hero__p">Profesyonel bakım, arıza tespiti ve onarım hizmetlerinde<br class="br-d"> şeffaf ve planlı servis deneyimi.</p>
     <div class="btn-row hero__btns">
-      <a class="btn btn--accent btn--lg" href="#randevu">Randevu Al <svg class="ic" aria-hidden="true"><use href="#i-arrow"></use></svg></a>
+      <a class="btn btn--accent btn--lg" href="randevu/">Randevu Al <svg class="ic" aria-hidden="true"><use href="#i-arrow"></use></svg></a>
       <a class="btn btn--glass btn--lg" href="https://wa.me/905322148883?text=Merhaba%20BYM%20Automotive%2C%20arac%C4%B1m%20i%C3%A7in%20servis/randevu%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener" data-wa><svg class="ic" aria-hidden="true"><use href="#i-wa"></use></svg> WhatsApp'tan Ulaş</a>
     </div>
     <ul class="hero__trust"><li><svg class="ic" aria-hidden="true"><use href="#i-tick"></use></svg>Randevulu Servis</li><li><svg class="ic" aria-hidden="true"><use href="#i-tick"></use></svg>Şeffaf İşlem</li><li><svg class="ic" aria-hidden="true"><use href="#i-tick"></use></svg>Profesyonel Teşhis</li></ul>
@@ -87,9 +87,18 @@
     </ol>
     <p class="booking-alt">Telefonla randevu için <a href="tel:+903447143636">0 (344) 714 36 36</a></p>
   </div>
-  <div class="booking reveal" data-booking aria-live="polite">
+  <div class="booking reveal" id="randevu-baslik-form" data-booking>
     <noscript><p class="booking__noscript">Randevu sihirbazı için JavaScript gereklidir. Randevu almak için <a href="https://wa.me/905322148883?text=Merhaba%20BYM%20Automotive%2C%20arac%C4%B1m%20i%C3%A7in%20servis/randevu%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.">WhatsApp</a> veya <a href="tel:+903447143636">telefon</a> ile ulaşabilirsiniz.</p></noscript>
     <div class="booking__skeleton" aria-hidden="true"></div>
+    <div class="booking__fallback" role="alert">
+      <p class="booking__fallback-t">Randevu formu şu anda yüklenemedi.</p>
+      <p class="muted">Randevu talebinizi WhatsApp'tan veya telefonla hemen iletebilirsiniz.</p>
+      <div class="btn-row">
+        <a class="btn btn--wa" href="https://wa.me/905322148883?text=Merhaba%20BYM%20Automotive%2C%20randevu%20talebinde%20bulunmak%20istiyorum." target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-wa"></use></svg> WhatsApp'tan yazın</a>
+        <a class="btn btn--ghost" href="tel:+903447143636"><svg class="ic" aria-hidden="true"><use href="#i-phone"></use></svg> 0 (344) 714 36 36</a>
+      </div>
+    </div>
+    <script>setTimeout(function(){var b=document.getElementById("randevu-baslik-form");if(b&&!/is-ready/.test(b.className))b.className+=" is-failed";},8000);</script>
   </div>
 </div></div>
 </section>

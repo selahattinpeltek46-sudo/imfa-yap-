@@ -68,16 +68,17 @@ python3 -m http.server 8000   # önizleme: http://localhost:8000
 
 ## Randevu sistemi
 
-Sihirbaz adımları: Hizmet → Araç → Tarih & Saat → İletişim → Özet → Onay.
+Adımlar: **01 Hizmet → 02 Araç** (marka, model, model yılı, plaka, sorun) **→ 03 Tarih & saat → 04 Bilgiler** (ad soyad, telefon) **→ 05 Onay**.
 URL ile ön doldurma: `/randevu/?hizmet=klima&marka=BMW&not=Klima%20soğutmuyor`
 
-Backend yoktur. Özet adımındaki "Talebi WhatsApp ile gönder" butonu, bilgileri hazır bir WhatsApp mesajı
-olarak açar. Onay ekranı randevunun kesinleştiğini iddia etmez; ekip uygunluğu teyit eder.
-
-**Modlar** (`site.json → randevu.mod`):
-
-- `demo` (şu an): Randevu tarayıcıda (localStorage) saklanır; müşteri onay ekranında randevuyu WhatsApp ile işletmeye gönderir.
-- `api`: Randevu `api_url` adresindeki backend'e gönderilir.
+- **Backend yok, veri saklanmaz.** "Randevu Talebi Gönder" butonu bilgileri hazır bir WhatsApp mesajı olarak
+  `wa.me/<numara>` ile açar (mobilde uygulama, masaüstünde WhatsApp Web). Numara `site.json → firma.whatsapp`.
+- Onay ekranı "Randevu talebiniz alındı" der; randevunun kesinleştiğini iddia etmez, ekip uygunluğu teyit eder.
+- **Çalışma saatleri / randevu saatleri:** `site.json → randevu.saatler`, kapalı günler `randevu.kapali_gunler`
+  (0 = Pazar), resmi tatiller `randevu.tatiller` (`YYYY-MM-DD`). Değiştirdikten sonra `python3 _build/build.py`.
+- JavaScript kapalıysa `<noscript>` mesajı, JS açık ama form yüklenemezse (ağ hatası, çok eski tarayıcı)
+  WhatsApp/telefon yedeği gösterilir; boş kutu kalmaz.
+- Kod eski tarayıcılarla uyumlu tutulur (top-level await ve `#özel` metot kullanılmaz).
 
 ### Veri modeli
 
