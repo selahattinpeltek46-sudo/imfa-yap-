@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /yonetim/
 Disallow: /_build/
 
 Sitemap: https://selahattinpeltek46-sudo.github.io/bym-automotive/sitemap.xml

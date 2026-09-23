@@ -1,4 +1,4 @@
-// Arayüz davranışları: header, mobil menü, reveal, timeline, parallax, lightbox, harita.
+// Arayüz davranışları: header, mobil menü, reveal, timeline, belirti rehberi, galeri, harita.
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function initHeader() {
@@ -79,41 +79,82 @@ export function initTimeline() {
   update();
 }
 
-export function initParallax() {
-  const el = document.querySelector("[data-parallax]");
-  if (!el || reduce) return;
-  const update = () => {
-    const y = scrollY;
-    if (y > innerHeight) return;
-    el.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
-  };
-  addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
-  // Hareket azaltma tercihinde hero videosunu durdur
+// Hareket azaltma tercihinde hero videosunu durdur
+export function initHeroVideo() {
   const v = document.querySelector("[data-hero-video]");
   if (v && reduce) v.pause();
 }
 
-export function initCardGlow() {
-  document.querySelectorAll(".svc").forEach((c) => {
-    c.addEventListener("pointermove", (e) => {
-      const r = c.getBoundingClientRect();
-      c.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      c.style.setProperty("--my", `${e.clientY - r.top}px`);
+// "Aracınızda ne var?" — desktop'ta sekme, mobilde akordeon gibi davranır
+export function initSymptoms() {
+  const root = document.querySelector("[data-sym]");
+  if (!root) return;
+  const tabs = [...root.querySelectorAll("[data-sym-tab]")];
+  const desktop = matchMedia("(min-width: 1024px)");
+  const open = (tab, focus = false) => {
+    const isOpen = tab.getAttribute("aria-expanded") === "true";
+    // Mobilde açık olana tekrar dokunmak kapatır; desktop'ta her zaman bir panel açık kalır
+    if (isOpen && !desktop.matches) {
+      tab.setAttribute("aria-expanded", "false");
+      document.getElementById(tab.getAttribute("aria-controls")).hidden = true;
+      return;
+    }
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute("aria-expanded", String(on));
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
     });
+    if (!desktop.matches) {
+      const top = tab.getBoundingClientRect().top;
+      const hdr = (document.querySelector("[data-header]")?.offsetHeight || 64) + 8;
+      if (top < hdr) scrollTo({ top: scrollY + top - hdr, behavior: reduce ? "auto" : "smooth" });
+    }
+    if (focus) tab.focus();
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => open(tab));
+    tab.addEventListener("keydown", (e) => {
+      const k = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (!k || !desktop.matches) return;
+      e.preventDefault();
+      open(tabs[(i + k + tabs.length) % tabs.length], true);
+    });
+  });
+  // Desktop'a geçildiğinde hiçbir panel açık değilse ilkini aç
+  desktop.addEventListener("change", () => {
+    if (desktop.matches && !tabs.some((t) => t.getAttribute("aria-expanded") === "true")) open(tabs[0]);
   });
 }
 
-export function initLightbox() {
+// BYM Garage: kategori filtresi + lightbox (filtreye göre gezinir)
+export function initGallery() {
   const dataEl = document.getElementById("gallery-data");
   if (!dataEl) return;
   const items = JSON.parse(dataEl.textContent);
-  let i = 0;
+  const figures = [...document.querySelectorAll("[data-gallery] .g-item")];
+  let visible = items.map((_, i) => i);
+
+  document.querySelectorAll("[data-filter]").forEach((chip, _, chips) => {
+    chip.addEventListener("click", () => {
+      const cat = chip.dataset.filter;
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+      visible = [];
+      figures.forEach((f, i) => {
+        const show = !cat || f.dataset.cat === cat;
+        f.hidden = !show;
+        if (show) { visible.push(i); f.classList.add("is-in"); }
+      });
+    });
+  });
+
+  let pos = 0;
   let lastFocus = null;
   const lb = document.createElement("div");
   lb.className = "lb";
   lb.setAttribute("role", "dialog");
   lb.setAttribute("aria-modal", "true");
   lb.setAttribute("aria-label", "Fotoğraf galerisi");
+  lb.hidden = true;
   lb.innerHTML = `
     <div class="lb__top"><span data-lb-cap></span>
       <button type="button" class="icon-btn" data-lb-close aria-label="Kapat"><svg class="ic" aria-hidden="true"><use href="#i-x"></use></svg></button></div>
@@ -125,34 +166,37 @@ export function initLightbox() {
   document.body.append(lb);
   const img = lb.querySelector("[data-lb-img]");
   const cap = lb.querySelector("[data-lb-cap]");
-  const show = (n) => {
-    i = (n + items.length) % items.length;
-    img.src = items[i].src;
-    img.alt = items[i].alt;
-    cap.textContent = `${String(i + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")} · ${items[i].etiket}`;
+  const show = (p) => {
+    pos = (p + visible.length) % visible.length;
+    const it = items[visible[pos]];
+    img.src = it.src;
+    img.alt = it.alt;
+    cap.textContent = `${String(pos + 1).padStart(2, "0")} / ${String(visible.length).padStart(2, "0")} · ${it.etiket}`;
   };
-  const open = (n) => {
+  const open = (i) => {
     lastFocus = document.activeElement;
-    show(n);
-    lb.classList.add("is-open");
+    show(Math.max(0, visible.indexOf(i)));
+    lb.hidden = false;
+    requestAnimationFrame(() => lb.classList.add("is-open"));
     document.body.style.overflow = "hidden";
     lb.querySelector("[data-lb-close]").focus();
   };
   const close = () => {
     lb.classList.remove("is-open");
     document.body.style.overflow = "";
+    setTimeout(() => { lb.hidden = true; }, 300);
     lastFocus?.focus();
   };
   document.querySelectorAll("[data-lightbox]").forEach((b) => b.addEventListener("click", () => open(Number(b.dataset.lightbox))));
   lb.querySelector("[data-lb-close]").addEventListener("click", close);
-  lb.querySelector("[data-lb-prev]").addEventListener("click", () => show(i - 1));
-  lb.querySelector("[data-lb-next]").addEventListener("click", () => show(i + 1));
+  lb.querySelector("[data-lb-prev]").addEventListener("click", () => show(pos - 1));
+  lb.querySelector("[data-lb-next]").addEventListener("click", () => show(pos + 1));
   lb.addEventListener("click", (e) => { if (e.target === lb || e.target.classList.contains("lb__stage")) close(); });
   addEventListener("keydown", (e) => {
     if (!lb.classList.contains("is-open")) return;
     if (e.key === "Escape") close();
-    if (e.key === "ArrowLeft") show(i - 1);
-    if (e.key === "ArrowRight") show(i + 1);
+    if (e.key === "ArrowLeft") show(pos - 1);
+    if (e.key === "ArrowRight") show(pos + 1);
     if (e.key === "Tab") {
       const f = [...lb.querySelectorAll("button")];
       const idx = f.indexOf(document.activeElement);
@@ -160,13 +204,13 @@ export function initLightbox() {
       else if (!e.shiftKey && idx === f.length - 1) { e.preventDefault(); f[0].focus(); }
     }
   });
-  // Mobilde kaydırma
+  // Mobilde kaydırarak gezinme
   let x0 = null;
   lb.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
   lb.addEventListener("touchend", (e) => {
     if (x0 === null) return;
     const dx = e.changedTouches[0].clientX - x0;
-    if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 50) show(pos + (dx < 0 ? 1 : -1));
     x0 = null;
   });
 }

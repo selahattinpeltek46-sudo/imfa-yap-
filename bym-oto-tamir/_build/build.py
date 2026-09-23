@@ -46,6 +46,13 @@ def wa_link(mesaj):
     return f"https://wa.me/{F['whatsapp']}?text={quote(mesaj)}"
 
 
+HURL = {h["slug"]: h["url"] for h in I.HIZMETLER}
+
+
+def hizmet_url(slug):
+    return HURL[slug]
+
+
 WA_GENEL = "Merhaba BYM Automotive, aracım için servis/randevu hakkında bilgi almak istiyorum."
 ADRES_TEK = f"{F['adres']['sokak']}, {F['adres']['ilce']} / {F['adres']['il']}"
 
@@ -79,6 +86,10 @@ SPRITE = """<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
 <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 <symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><path d="M3 12h18"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M9.5 17h5"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M14.5 8.5l2 2"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
 <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol>
 <symbol id="i-insta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></symbol>
 <symbol id="i-fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
@@ -174,7 +185,8 @@ def footer(r):
         sosyal += f'<a href="{e(F["facebook"])}" aria-label="Facebook" rel="noopener" target="_blank">{ikon("i-fb")}</a>'
     if not sosyal:
         sosyal = '<span class="muted small">Sosyal medya hesapları eklenecek</span>'
-    harita = f"https://www.google.com/maps/search/?api=1&query={e(F['harita_sorgu']).replace(' ', '+')}"
+    from urllib.parse import quote
+    harita = f"https://www.google.com/maps/search/?api=1&amp;query={quote(F['harita_sorgu'])}"
     return f"""
 <footer class="ftr">
   <div class="wrap">
@@ -186,15 +198,18 @@ def footer(r):
         <div class="ftr__social">{sosyal}</div>
       </div>
       <nav class="ftr__col" aria-label="Hızlı menü">
-        <h2 class="ftr__h">Hızlı Menü</h2>
+        <h2 class="ftr__h">BYM</h2>
         <ul>
+          <li><a href="{r}randevu/">Randevu Al</a></li>
           <li><a href="{r}hizmetler/">Hizmetler</a></li>
-          <li><a href="{r}randevu/">Randevu</a></li>
           <li><a href="{r}hakkimizda/">Hakkımızda</a></li>
-          <li><a href="{r}markalar/">Markalar</a></li>
           <li><a href="{r}blog/">Bilgi Merkezi</a></li>
           <li><a href="{r}iletisim/">İletişim</a></li>
         </ul>
+      </nav>
+      <nav class="ftr__col" aria-label="Hizmetler">
+        <h2 class="ftr__h">Hizmetler</h2>
+        <ul>{"".join(f'<li><a href="{r}{h["url"]}">{e(h["ad"])}</a></li>' for h in I.HIZMETLER)}</ul>
       </nav>
       <div class="ftr__col">
         <h2 class="ftr__h">İletişim</h2>
@@ -202,16 +217,15 @@ def footer(r):
           <li><a href="tel:{F['telefon_link']}">{ikon('i-phone')} {e(F['telefon_gorunen'])}</a></li>
           <li><a href="{wa_link(WA_GENEL)}" target="_blank" rel="noopener">{ikon('i-wa')} {e(F.get('whatsapp_gorunen', 'WhatsApp'))}</a></li>
           <li><a href="{harita}" target="_blank" rel="noopener">{ikon('i-pin')} {e(ADRES_TEK)}</a></li>
+          <li><a href="{harita}" target="_blank" rel="noopener" class="ftr__maps">Google Haritalar'da aç {ikon('i-arrow')}</a></li>
         </ul>
-      </div>
-      <div class="ftr__col">
-        <h2 class="ftr__h">Çalışma Saatleri</h2>
+        <h2 class="ftr__h ftr__h--gap">Çalışma Saatleri</h2>
         <ul class="ftr__hours">{saatler}</ul>
       </div>
     </div>
     <div class="ftr__bottom">
       <span>© {date.today().year} {e(F['ad'])}</span>
-      <span><a href="{r}kvkk/">KVKK Aydınlatma Metni</a></span>
+      <span class="ftr__legal"><a href="{r}gizlilik/">Gizlilik Politikası</a><a href="{r}kvkk/">KVKK Aydınlatma Metni</a></span>
     </div>
   </div>
 </footer>
@@ -278,7 +292,7 @@ def business_schema():
             "@type": "OfferCatalog",
             "name": "Oto servis hizmetleri",
             "itemListElement": [
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": h["ad"], "url": f"{URL}/hizmetler/{h['slug']}/"}}
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": h["ad"], "url": f"{URL}/{h['url']}"}}
                 for h in I.HIZMETLER
             ],
         },
@@ -314,11 +328,12 @@ def booking_block(r, h_tag="h2", baslik_id="randevu-baslik"):
     <p class="eyebrow">Online randevu</p>
     <{h_tag} id="{baslik_id}" class="h-xl">Servis Randevunuzu Oluşturun</{h_tag}>
     <p class="lead">Size uygun günü ve saati seçin,<br class="br-d"> servise gelmeden önce randevunuzu planlayın.</p>
-    <ul class="booking-points">
-      <li>{ikon('i-tick')} Yaklaşık 1 dakika sürer</li>
-      <li>{ikon('i-tick')} Müsait saatleri anında görün</li>
-      <li>{ikon('i-tick')} Randevu bilgileriniz WhatsApp ile de iletilebilir</li>
-    </ul>
+    <ol class="booking-points">
+      <li><span class="mono">01</span> Hizmeti ve aracınızı seçin</li>
+      <li><span class="mono">02</span> Size uygun gün ve saati belirleyin</li>
+      <li><span class="mono">03</span> Talebiniz WhatsApp ile ekibimize iletilir</li>
+      <li><span class="mono">04</span> Ekibimiz uygunluğu teyit etmek için size döner</li>
+    </ol>
     <p class="booking-alt">Telefonla randevu için <a href="tel:{F['telefon_link']}">{e(F['telefon_gorunen'])}</a></p>
   </div>
   <div class="booking reveal" data-booking aria-live="polite">
@@ -377,12 +392,15 @@ def service_cards(r, liste=None, baslik_tag="h3"):
     out = ""
     for i, h in enumerate(liste or I.HIZMETLER):
         out += f"""
-    <a class="svc reveal" href="{r}hizmetler/{h['slug']}/" style="--d:{(i % 4) * 60}ms">
+    <article class="svc reveal" style="--d:{(i % 4) * 60}ms">
       <span class="svc__ic">{ikon(h['ikon'])}</span>
-      <{baslik_tag} class="svc__t">{e(h['ad'])}</{baslik_tag}>
+      <{baslik_tag} class="svc__t"><a href="{r}{h['url']}" class="svc__link">{e(h['ad'])}</a></{baslik_tag}>
       <p class="svc__p">{e(h['ozet'])}</p>
-      <span class="svc__more">Detaylı İncele {ikon('i-arrow')}</span>
-    </a>"""
+      <div class="svc__actions">
+        <a class="svc__more" href="{r}{h['url']}" aria-label="{e(h['ad'])} hakkında detaylı bilgi">Detaylı Bilgi {ikon('i-arrow')}</a>
+        <a class="svc__book" href="{r}randevu/?hizmet={h['randevu']}" aria-label="{e(h['ad'])} için randevu al">Randevu Al</a>
+      </div>
+    </article>"""
     return out
 
 
@@ -417,50 +435,164 @@ def page_hero(r, parcalar, eyebrow, h1, lead, extra=""):
 # ---------------------------------------------------------------------------
 # ANASAYFA
 # ---------------------------------------------------------------------------
-def anasayfa():
-    yol, r = "", ""
+def hero_media(r):
     hero = M["hero"]
     if hero.get("video"):
         sources = ""
         if hero.get("video_webm"):
             sources += f'<source src="{r}assets/media/{hero["video_webm"]}" type="video/webm">'
         sources += f'<source src="{r}assets/media/{hero["video"]}" type="video/mp4">'
-        media = f'<video class="hero__media" autoplay muted loop playsinline preload="metadata" poster="{r}assets/media/{hero["poster"]}" aria-hidden="true" data-hero-video>{sources}</video>'
-    else:
-        media = f'<img class="hero__media hero__media--still" src="{r}assets/media/{hero["poster"]}" alt="{e(hero["alt"])}" fetchpriority="high" decoding="async">'
+        return f'<video class="hero__media" autoplay muted loop playsinline preload="metadata" poster="{r}assets/media/{hero["poster"]}" aria-hidden="true" data-hero-video>{sources}</video>'
+    return f'<img class="hero__media hero__media--still" src="{r}assets/media/{hero["poster"]}" alt="{e(hero["alt"])}" fetchpriority="high" decoding="async">'
 
+
+def symptom_block(r, baslik_tag="h2"):
+    """Aracınızda ne var? — erişilebilir sekme/akordeon. Desktop: liste + panel; mobil: akordeon."""
+    from urllib.parse import quote
+    items = ""
+    for i, s_ in enumerate(I.SORUNLAR):
+        acik = i == 0
+        h = next(x for x in I.HIZMETLER if x["slug"] == s_["hizmet"])
+        nedenler = "".join(f"<li>{e(n)}</li>" for n in s_["nedenler"])
+        kontroller = "".join(f"<li>{ikon('i-tick')}<span>{e(k)}</span></li>" for k in s_["kontroller"])
+        uyari = f'<p class="sym__warn">{e(s_["uyari"])}</p>' if s_.get("uyari") else ""
+        items += f"""
+      <button type="button" class="sym__tab" id="sym-t-{s_['id']}" aria-controls="sym-p-{s_['id']}" aria-expanded="{str(acik).lower()}" data-sym-tab>
+        <span>{e(s_['baslik'])}</span>{ikon('i-plus', 'ic sym__plus')}
+      </button>
+      <div class="sym__panel" id="sym-p-{s_['id']}" role="region" aria-labelledby="sym-t-{s_['id']}" {'' if acik else 'hidden'}>
+        <h3 class="sym__h">{e(s_['baslik'])}</h3>
+        <p class="sym__lead">{e(s_['aciklama'])}</p>
+        {uyari}
+        <div class="sym__cols">
+          <div>
+            <h4 class="sym__label">Olası nedenler</h4>
+            <ul class="sym__list">{nedenler}</ul>
+          </div>
+          <div>
+            <h4 class="sym__label">Kontrol edilmesi gereken noktalar</h4>
+            <ul class="sym__checks">{kontroller}</ul>
+          </div>
+        </div>
+        <div class="sym__process">
+          <h4 class="sym__label">BYM'de süreç</h4>
+          <ol><li>Arıza kayıtları ve belirti dinlenir</li><li>İlgili sistem kontrol edilir</li><li>Tespit ve öneriler size aktarılır</li><li>Onayınızla işleme geçilir</li></ol>
+        </div>
+        <p class="sym__note">Bu bilgiler genel yönlendirme içindir. Kesin teşhis, araç kontrol edildikten sonra konur.</p>
+        <div class="btn-row">
+          <a class="btn btn--accent" href="{r}randevu/?hizmet={s_['randevu']}&amp;not={quote(s_['baslik'])}">Bu belirti için randevu al {ikon('i-arrow')}</a>
+          <a class="btn btn--ghost" href="{r}{h['url']}">{e(h['ad'])} hizmeti</a>
+        </div>
+      </div>"""
+    return f"""
+<section class="section" id="belirti" aria-labelledby="sorun-baslik">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow">Belirti rehberi</p>
+        <{baslik_tag} id="sorun-baslik" class="h-xl">Aracınızda<br>ne var?</{baslik_tag}>
+      </div>
+      <p class="muted sec-head__note">Belirtiyi seçin; olası nedenleri, kontrol edilecek noktaları ve servis sürecini görün.</p>
+    </div>
+    <div class="sym reveal" data-sym>{items}
+    </div>
+  </div>
+</section>"""
+
+
+def garage_block(r):
+    kategoriler = [k for k in M.get("kategoriler", []) if any(g.get("kategori") == k for g in M["garaj"])]
+    filtre = ""
+    if len(kategoriler) > 1:
+        chips = '<button type="button" class="chip" data-filter="" aria-pressed="true">Tümü</button>'
+        chips += "".join(f'<button type="button" class="chip" data-filter="{e(k)}" aria-pressed="false">{e(k)}</button>' for k in kategoriler)
+        filtre = f'<div class="garage__filters" role="group" aria-label="Kategoriye göre filtrele">{chips}</div>'
+    kart = ""
+    for i, g in enumerate(M["garaj"]):
+        bilgi = f'<span class="g-cap__car">{e(g.get("arac", ""))}</span><span class="g-cap__txt">{e(g.get("aciklama", g.get("etiket", "")))}</span>'
+        kart += f"""<figure class="g-item reveal" data-cat="{e(g.get('kategori', ''))}"><button type="button" class="g-btn" data-lightbox="{i}" aria-label="Fotoğrafı büyüt: {e(g['alt'])}"><img src="{r}assets/media/{g['src']}" alt="{e(g['alt'])}" width="{g['w']}" height="{g['h']}" loading="lazy" decoding="async"></button><figcaption class="g-cap"><span class="g-cap__cat mono">{e(g.get('kategori', ''))}</span>{bilgi}</figcaption></figure>"""
+    return f"""
+<section class="section section--alt" id="garage" aria-labelledby="garaj-baslik">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow">Servisten gerçek görüntüler</p>
+        <h2 id="garaj-baslik" class="h-xl garage-title">BYM GARAGE</h2>
+      </div>
+      <p class="muted sec-head__note">Servisimizden gerçek görüntüler. Stok fotoğraf kullanmıyoruz.</p>
+    </div>
+    {filtre}
+    <div class="garage" data-gallery>{kart}</div>
+  </div>
+</section>"""
+
+
+def cases_block(r):
+    liste = CFG.get("vakalar", {}).get("liste", [])
+    if not liste:
+        return ""
+    kart = ""
+    for v in liste:
+        foto = f'<img src="{r}assets/media/{e(v["foto"])}" alt="{e(v["arac"])}" loading="lazy" decoding="async">' if v.get("foto") else ""
+        kart += f"""<article class="case reveal">{foto}<dl>
+          <div><dt>Araç</dt><dd>{e(v['arac'])}</dd></div>
+          <div><dt>Sorun / talep</dt><dd>{e(v['talep'])}</dd></div>
+          <div><dt>Yapılan kontroller</dt><dd>{e(v['kontroller'])}</dd></div>
+          <div><dt>Uygulanan işlem</dt><dd>{e(v['islem'])}</dd></div>
+          <div><dt>Son kontrol</dt><dd>{e(v['son_kontrol'])}</dd></div></dl></article>"""
+    return f"""
+<section class="section" aria-labelledby="vaka-baslik">
+  <div class="wrap">
+    <div class="sec-head reveal"><div><p class="eyebrow">Vaka çalışmaları</p><h2 id="vaka-baslik" class="h-xl">Gerçek servis süreçleri</h2></div></div>
+    <div class="cases">{kart}</div>
+  </div>
+</section>"""
+
+
+def faq_block(sss, baslik="Sık sorulan sorular"):
+    items = "".join(f'<details class="faq"><summary>{e(q)}<span aria-hidden="true"></span></summary><p>{e(a)}</p></details>' for q, a in sss)
+    return f"""
+<section class="section section--tight" aria-labelledby="sss-baslik">
+  <div class="wrap faq-wrap">
+    <div class="reveal"><p class="eyebrow">SSS</p><h2 id="sss-baslik" class="h-lg">{baslik}</h2></div>
+    <div class="faqs reveal">{items}</div>
+  </div>
+</section>"""
+
+
+def faq_schema(sss):
+    return {"@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in sss]}
+
+
+# ---------------------------------------------------------------------------
+# ANASAYFA
+# ---------------------------------------------------------------------------
+def anasayfa():
+    yol, r = "", ""
     guven_hero = "".join(f"<li>{ikon('i-tick')}{e(g)}</li>" for g in I.GUVEN)
     guven_band = "".join(
         f'<li class="reveal" style="--d:{i*50}ms"><span class="mono">{i+1:02d}</span>{e(g)}</li>'
-        for i, g in enumerate(["Profesyonel Servis", "Şeffaf Süreç", "Randevulu Çalışma", "Teknik Teşhis", "Müşteri Onayı", "Kontrollü Teslim"])
+        for i, g in enumerate(I.GUVEN_BANDI)
     )
     neden = "".join(
-        f"""<article class="why reveal" style="--d:{i*70}ms"><span class="why__n mono">{i+1:02d}</span><h3 class="why__t">{e(tr_upper(t))}</h3><p>{e(p)}</p></article>"""
-        for i, (t, p) in enumerate(I.NEDEN)
-    )
-    sorunlar = "".join(
-        f"""<li class="reveal" style="--d:{(i%4)*50}ms"><a class="issue" href="{r}hizmetler/{s['hizmet']}/"><span class="issue__t">{e(s['baslik'])}</span><span class="issue__cta">Bu sorunu incele {ikon('i-arrow')}</span></a></li>"""
-        for i, s in enumerate(I.SORUNLAR)
+        f"""<article class="why reveal" style="--d:{i*70}ms"><div class="why__top"><span class="why__ic">{ikon(ic)}</span><span class="why__n mono">{i+1:02d}</span></div><h3 class="why__t">{e(tr_upper(t))}</h3><p>{e(p)}</p></article>"""
+        for i, (t, p, ic) in enumerate(I.NEDEN)
     )
     surec = "".join(
         f"""<li class="step reveal" style="--d:{i*70}ms"><span class="step__n mono">{i+1:02d}</span><h3 class="step__t">{e(tr_upper(t))}</h3><p>{e(p)}</p></li>"""
         for i, (t, p) in enumerate(I.SUREC)
     )
-    markalar = "".join(f'<li><a href="{r}markalar/{slugify(m)}/">{e(m)}</a></li>' for m in CFG["markalar"]["liste"])
-    garaj = ""
-    for i, g in enumerate(M["garaj"]):
-        garaj += f"""<figure class="g-item g-item--{i+1} reveal" style="--d:{(i%3)*60}ms"><button type="button" class="g-btn" data-lightbox="{i}" aria-label="Fotoğrafı büyüt: {e(g['alt'])}"><img src="{r}assets/media/{g['src']}" alt="{e(g['alt'])}" width="{g['w']}" height="{g['h']}" loading="lazy" decoding="async"></button><figcaption>{e(g['etiket'])}</figcaption></figure>"""
-    yorumlar = reviews_block(r)
 
     html = head(r, yol, "BYM Automotive | Göksun Oto Servis, Bakım ve Onarım",
-                "BYM Automotive (BYM Servis); Göksun'da periyodik bakım, arıza tespiti, motor, mekanik ve oto servis hizmetleriyle aracınız için profesyonel çözümler sunar.",
-                schema=[business_schema(), {"@context": "https://schema.org", "@type": "WebSite", "name": F["ad"], "url": f"{URL}/"}])
+                "BYM Automotive (BYM Servis): Göksun'da araç bakımı, bilgisayarlı arıza tespiti, motor, oto elektrik, fren ve klima servisi. Online randevu, şeffaf süreç, onaylı işlem.",
+                schema=[business_schema(), {"@context": "https://schema.org", "@type": "WebSite", "name": F["ad"], "url": f"{URL}/"}, faq_schema(I.SSS_GENEL)])
     html += header(r, "home")
     html += f"""
 <main id="icerik">
 
 <section class="hero" aria-labelledby="hero-baslik">
-  <div class="hero__bg" data-parallax>{media}</div>
+  <div class="hero__bg">{hero_media(r)}</div>
   <div class="hero__shade" aria-hidden="true"></div>
   <div class="wrap hero__in">
     <p class="eyebrow hero__eyebrow"><span class="dot" aria-hidden="true"></span><span lang="en">{e(F.get('tagline', ''))}</span><span class="hero__loc">· Göksun</span></p>
@@ -478,26 +610,26 @@ def anasayfa():
   </div>
 </section>
 
-<section class="section section--booking" id="randevu" aria-labelledby="randevu-baslik">
-  <div class="wrap">{booking_block(r)}</div>
-</section>
-
 <section class="band" aria-label="Çalışma prensiplerimiz">
   <ul class="wrap band__list">{guven_band}</ul>
 </section>
 
-<section class="section" aria-labelledby="neden-baslik">
+<section class="section section--booking" id="randevu" aria-labelledby="randevu-baslik">
+  <div class="wrap">{booking_block(r)}</div>
+</section>
+
+<section class="section section--alt" aria-labelledby="neden-baslik">
   <div class="wrap why-grid">
     <div class="why-head reveal">
       <p class="eyebrow">Neden BYM?</p>
       <h2 id="neden-baslik" class="h-xl">Serviste güven,<br><span class="silver">işlemde şeffaflık.</span></h2>
-      <p class="muted">Aracınızı bıraktığınız andan teslim aldığınız ana kadar ne yapıldığını bilirsiniz.</p>
+      <p class="muted">Aracınızı bıraktığınızda ne yapılacağını bilirsiniz. Onayınız olmadan işlem yapılmaz ve aracınız kontrolleri tamamlanarak teslim edilir.</p>
     </div>
     <div class="why-cards">{neden}</div>
   </div>
 </section>
 
-<section class="section section--alt" id="hizmetler" aria-labelledby="hizmet-baslik">
+<section class="section" id="hizmetler" aria-labelledby="hizmet-baslik">
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
@@ -510,17 +642,7 @@ def anasayfa():
   </div>
 </section>
 
-<section class="section" aria-labelledby="sorun-baslik">
-  <div class="wrap issues">
-    <div class="issues__head reveal">
-      <p class="eyebrow">Hızlı yönlendirme</p>
-      <h2 id="sorun-baslik" class="h-xl">Aracınızda<br>ne var?</h2>
-      <p class="muted">Belirtiyi seçin, ilgili servisi ve olası nedenleri inceleyin. Emin değilseniz randevuda açıklama olarak yazabilirsiniz.</p>
-      <a class="btn btn--ghost" href="{r}randevu/?hizmet=ariza-kontrolu">Arıza kontrolü için randevu {ikon('i-arrow')}</a>
-    </div>
-    <ul class="issue-list">{sorunlar}</ul>
-  </div>
-</section>
+{symptom_block(r)}
 
 <section class="section section--alt" id="surec" aria-labelledby="surec-baslik">
   <div class="wrap">
@@ -529,45 +651,23 @@ def anasayfa():
         <p class="eyebrow">Servis süreci</p>
         <h2 id="surec-baslik" class="h-xl">BYM'de servis süreci<br>nasıl ilerliyor?</h2>
       </div>
+      <p class="muted sec-head__note">Her adımda ne olduğunu bilirsiniz. Onayınız alınmadan işleme geçilmez.</p>
     </div>
     <ol class="timeline" data-timeline>{surec}</ol>
   </div>
 </section>
 
-<section class="section section--tight" aria-labelledby="marka-baslik">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div>
-        <p class="eyebrow">Markalar</p>
-        <h2 id="marka-baslik" class="h-lg">Hizmet Verdiğimiz Markalar</h2>
-      </div>
-      <a class="link-arrow" href="{r}markalar/">Tüm markalar {ikon('i-arrow')}</a>
-    </div>
-    <ul class="brands reveal">{markalar}</ul>
-  </div>
-</section>
-
-<section class="section section--alt" id="garage" aria-labelledby="garaj-baslik">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div>
-        <p class="eyebrow">Servisten gerçek görüntüler</p>
-        <h2 id="garaj-baslik" class="h-xl garage-title">BYM GARAGE</h2>
-      </div>
-      <p class="muted sec-head__note">Stok fotoğraf yok. Gördüğünüz her kare BYM servisinden.</p>
-    </div>
-    <div class="garage" data-gallery>{garaj}</div>
-  </div>
-</section>
-
-{yorumlar}
+{garage_block(r)}
+{cases_block(r)}
+{reviews_block(r)}
+{faq_block(I.SSS_GENEL)}
 
 <section class="section section--alt" aria-labelledby="blog-baslik">
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
         <p class="eyebrow">Bilgi merkezi</p>
-        <h2 id="blog-baslik" class="h-xl">BYM Otomotiv<br>Bilgi Merkezi</h2>
+        <h2 id="blog-baslik" class="h-xl">BYM Bilgi Merkezi</h2>
       </div>
       <a class="link-arrow" href="{r}blog/">Tüm yazılar {ikon('i-arrow')}</a>
     </div>
@@ -599,14 +699,18 @@ def reviews_block(r):
         dolu = int(float(str(F.get("google_puan", "5")).replace(",", ".")))
         yildizlar = ikon("i-star") * dolu + ikon("i-star", "ic is-dim") * (5 - dolu)
         if F.get("google_puan"):
-            puan = f'<p class="rev-empty__score"><strong>{e(F["google_puan"])}</strong><span>/ 5 · Google\'da {F.get("google_yorum_sayisi", "")} yorum</span></p>'
+            tarih = f' ({e(F["google_puan_tarihi"])} itibarıyla)' if F.get("google_puan_tarihi") else ""
+            puan = f'<p class="rev-empty__score"><strong>{e(F["google_puan"])}</strong><span>/ 5 · Google\'da {F.get("google_yorum_sayisi", "")} yorum{tarih}</span></p>'
+        alintilar = "".join(
+            f'<figure class="rev-quote"><blockquote>“{e(a["metin"])}”</blockquote><figcaption>{e(a["kaynak"])}</figcaption></figure>'
+            for a in CFG["yorumlar"].get("alintilar", []))
         icerik = f"""
     <div class="rev-empty reveal">
       <div class="rev-empty__stars" aria-hidden="true">{yildizlar}</div>
       {puan}
-      <p class="rev-empty__t">Müşterilerimizin gerçek yorumlarını Google'da okuyun.</p>
+      {alintilar}
       <p class="muted">Sitemizde yalnızca Google İşletme Profili'mizdeki gerçek yorumlara yer veriyoruz.</p>
-      <a class="btn btn--light" href="{e(F['google_yorum_link'])}" target="_blank" rel="noopener">Google yorumlarını gör {ikon('i-arrow')}</a>
+      <a class="btn btn--light" href="{e(F['google_yorum_link'])}" target="_blank" rel="noopener">Google'da tüm yorumları gör {ikon('i-arrow')}</a>
     </div>"""
     return f"""
 <section class="section" aria-labelledby="yorum-baslik">
@@ -623,7 +727,7 @@ def reviews_block(r):
 
 
 def lightbox_data(r):
-    data = [{"src": f"{r}assets/media/{g['src']}", "alt": g["alt"], "etiket": g["etiket"]} for g in M["garaj"]]
+    data = [{"src": f"{r}assets/media/{g['src']}", "alt": g["alt"], "etiket": " · ".join(x for x in (g.get("kategori"), g.get("arac"), g.get("aciklama")) if x)} for g in M["garaj"]]
     return f'<script type="application/json" id="gallery-data">{json.dumps(data, ensure_ascii=False)}</script>\n'
 
 
@@ -650,7 +754,7 @@ def hizmetler_index():
 
 
 def hizmet_sayfasi(h):
-    yol = f"hizmetler/{h['slug']}/"
+    yol = h["url"]
     r = rel(yol)
     parca = [("Hizmetler", "hizmetler/"), (h["ad"], yol)]
     from urllib.parse import quote
@@ -660,6 +764,7 @@ def hizmet_sayfasi(h):
         f'<li><a href="{r}randevu/?hizmet={h["randevu"]}&amp;not={quote(b)}"><span>{e(b)}</span>{ikon("i-arrow")}</a></li>'
         for b in h["belirtiler"])
     sss = "".join(f"<details class=\"faq\"><summary>{e(q)}<span aria-hidden=\"true\"></span></summary><p>{e(a)}</p></details>" for q, a in h["sss"])
+    kontrol = "".join(f'<li><span class="mono">{i+1:02d}</span><div><strong>{e(t)}</strong><p>{e(d)}</p></div></li>' for i, (t, d) in enumerate(I.SUREC))
     surec = "".join(f'<li><span class="mono">{i+1:02d}</span>{e(t)}</li>' for i, (t, _) in enumerate(I.SUREC))
     diger = [x for x in I.HIZMETLER if x["slug"] != h["slug"]][:4]
     ilgili_blog = [p for p in I.BLOG if p["hizmet"] == h["slug"]]
@@ -697,7 +802,7 @@ def hizmet_sayfasi(h):
       <a class="btn btn--ghost btn--lg" href="{wa}" target="_blank" rel="noopener" data-wa>{ikon('i-wa')} WhatsApp</a>
     </div>"""
     html += f"""<main id="icerik">
-{page_hero(r, parca, "Hizmet", e(h['ad']), e(h['giris']), extra)}
+{page_hero(r, parca, "Hizmet · Göksun", e(h['ad']), e(h['giris']), extra)}
 <section class="section section--flush-top">
   <div class="wrap detail">
     <div class="detail__main">
@@ -710,6 +815,10 @@ def hizmet_sayfasi(h):
         <h2 class="h-md">Hangi durumlarda gelmelisiniz?</h2>
         <p class="muted small">Belirtiye tıklayarak açıklaması hazır bir randevu oluşturabilirsiniz.</p>
         <ul class="symptoms">{belirti}</ul>
+      </div>
+      <div class="panel reveal">
+        <h2 class="h-md">Kontrol süreci</h2>
+        <ol class="proc">{kontrol}</ol>
       </div>
       <div class="panel reveal">
         <h2 class="h-md">Sık sorulan sorular</h2>
@@ -747,8 +856,8 @@ def randevu():
     r = rel(yol)
     parca = [("Randevu", yol)]
     html = head(r, yol, "Online Servis Randevusu | BYM Automotive",
-                "BYM Automotive'de aracınız için online servis randevusu oluşturun. Marka, hizmet, gün ve saati seçin; randevunuzu 1 dakikada planlayın.",
-                schema=[breadcrumb_schema(parca)])
+                "BYM Automotive'de aracınız için online servis randevusu oluşturun. Hizmeti, aracınızı, gün ve saati seçin; talebiniz WhatsApp ile ekibimize iletilsin.",
+                schema=[breadcrumb_schema(parca), faq_schema(I.SSS_GENEL[:2] + I.SSS_GENEL[3:])])
     html += header(r, "randevu")
     html += f"""<main id="icerik" class="page-booking">
 <section class="section section--booking section--booking-page">
@@ -763,6 +872,7 @@ def randevu():
     <ol class="timeline timeline--compact">{"".join(f'<li class="step"><span class="step__n mono">{i+1:02d}</span><h3 class="step__t">{e(tr_upper(t))}</h3><p>{e(p)}</p></li>' for i, (t, p) in enumerate(I.SUREC))}</ol>
   </div>
 </section>
+{faq_block(I.SSS_GENEL[:2] + I.SSS_GENEL[3:], "Randevu hakkında")}
 </main>"""
     html += footer(r)
     yaz(yol, html, "0.9")
@@ -776,7 +886,13 @@ def hakkimizda():
     r = rel(yol)
     parca = [("Hakkımızda", yol)]
     img = M["hakkimizda"]
-    ilke = "".join(f'<li class="reveal"><span class="mono">{i+1:02d}</span><div><h3>{e(t)}</h3><p>{e(p)}</p></div></li>' for i, (t, p) in enumerate(I.NEDEN))
+    ilke = "".join(f'<li class="reveal"><span class="why__ic">{ikon(ic)}</span><div><h3>{e(t)}</h3><p>{e(p)}</p></div></li>' for i, (t, p, ic) in enumerate(I.NEDEN))
+    ekip_liste = CFG.get("ekip", {}).get("liste", [])
+    ekip = ""
+    if ekip_liste:
+        kart = "".join(f'<figure class="team__m reveal"><img src="{r}assets/media/{e(k["foto"])}" alt="{e(k["isim"])}" loading="lazy" decoding="async"><figcaption><strong>{e(k["isim"])}</strong><span>{e(k["gorev"])}</span></figcaption></figure>' for k in ekip_liste)
+        ekip = f'<section class="section"><div class="wrap"><div class="sec-head"><div><p class="eyebrow">Ekip</p><h2 class="h-xl">Aracınızla ilgilenen ekip</h2></div></div><div class="team">{kart}</div></div></section>'
+
     baslik = 'Aracınızın<br><span class="silver">özel hastanesi.</span>'
     html = head(r, yol, "Hakkımızda | BYM Automotive", "BYM Automotive'in servis anlayışı: doğru teşhis, şeffaf süreç, müşteri onayıyla işlem ve kontrollü teslim.", schema=[breadcrumb_schema(parca)])
     html += header(r, "hakkimizda")
@@ -786,8 +902,9 @@ def hakkimizda():
   <div class="wrap about">
     <figure class="about__img reveal"><img src="{r}assets/media/{img['src']}" alt="{e(img['alt'])}" width="{img['w']}" height="{img['h']}" loading="lazy" decoding="async"><figcaption>BYM Servis · Göksun</figcaption></figure>
     <div class="about__txt reveal">
-      <h2 class="h-lg">Nasıl çalışıyoruz?</h2>
-      <p>BYM Automotive, Göksun'da bakım, arıza tespiti ve onarım hizmeti veren bir oto servisidir. Amacımız; aracınızı bıraktığınızda neyin, neden ve ne kadar sürede yapılacağını bildiğiniz, planlı bir servis deneyimi sunmaktır.</p>
+      <h2 class="h-lg">Aracınızı insanlara emanet edersiniz.</h2>
+      <p>BYM, Göksun sanayi sitesinde bakım, arıza tespiti ve onarım hizmeti veren bir oto servisidir. Birçok müşterimiz bizi tabelamızın üzerindeki kırmızı araçtan tanır.</p>
+      <p>Servis anlayışımız basit: Aracınızı teslim alırken sizi dinleriz, kontrol ettikten sonra neyin neden gerektiğini açıkça anlatırız ve onayınızı almadan işleme geçmeyiz. İş bittiğinde aracı kontrollerini tamamlayarak teslim ederiz.</p>
       <p>Randevulu çalışmamızın nedeni de budur: Aracınıza ayrılan zaman önceden planlanır, bekleme süresi kısalır ve her araca gereken dikkat gösterilir.</p>
     </div>
   </div>
@@ -798,9 +915,12 @@ def hakkimizda():
     <ul class="principles">{ilke}</ul>
   </div>
 </section>
+{ekip}
+{garage_block(r)}
 {cta_final(r)}
 {contact_block(r)}
 </main>"""
+    html += lightbox_data(r)
     html += footer(r)
     yaz(yol, html, "0.7")
 
@@ -856,6 +976,8 @@ def kvkk():
 # MARKALAR
 # ---------------------------------------------------------------------------
 def markalar():
+    if not CFG["markalar"].get("sayfa_uret"):
+        return
     yol = "markalar/"
     r = rel(yol)
     parca = [("Markalar", yol)]
@@ -962,7 +1084,7 @@ def blog_yazisi(p):
       <p class="muted">{e(h['ad'])} için randevu oluşturun; aracınızı kontrol edelim, ne yapılması gerektiğini size anlatalım.</p>
       <div class="btn-row">
         <a class="btn btn--accent" href="{r}randevu/?hizmet={h['randevu']}">Randevu Al {ikon('i-arrow')}</a>
-        <a class="btn btn--ghost" href="{r}hizmetler/{h['slug']}/">{e(h['ad'])} hizmeti</a>
+        <a class="btn btn--ghost" href="{r}{h['url']}">{e(h['ad'])} hizmeti</a>
       </div>
     </aside>
   </div>
@@ -981,23 +1103,57 @@ def blog_yazisi(p):
 # ---------------------------------------------------------------------------
 # YÖNETİM (demo) / 404
 # ---------------------------------------------------------------------------
-def yonetim():
-    yol = "yonetim/"
+def gizlilik():
+    yol = "gizlilik/"
     r = rel(yol)
-    html = head(r, yol, "Randevu Yönetimi (Demo) | BYM Automotive", "Randevu yönetim paneli demo.", robots="noindex,nofollow")
+    parca = [("Gizlilik Politikası", yol)]
+    html = head(r, yol, "Gizlilik Politikası | BYM Automotive", "BYM Automotive web sitesi gizlilik politikası.", schema=[breadcrumb_schema(parca)], robots="noindex,follow")
     html += header(r, "")
     html += f"""<main id="icerik">
-<section class="section section--booking-page">
-  <div class="wrap">
-    <p class="eyebrow">Yönetim · Demo</p>
-    <h1 class="h-xl">Randevular</h1>
-    <p class="muted">Bu sayfa, gelecekteki yönetim panelinin önizlemesidir. Demo modunda yalnızca bu tarayıcıda oluşturulan randevular listelenir.</p>
-    <div class="admin" data-admin></div>
+{page_hero(r, parca, "Yasal", "Gizlilik Politikası", "Bu sayfa, web sitemizi kullanırken hangi bilgilerin nasıl işlendiğini açıklar.")}
+<section class="section section--flush-top">
+  <div class="wrap prose">
+    <p class="note">Bu metin taslaktır; işletme tarafından gözden geçirilmelidir.</p>
+    <h2>Randevu talepleri</h2>
+    <p>Randevu formuna girdiğiniz bilgiler bir sunucuya gönderilmez. Formu tamamladığınızda bu bilgilerle hazır bir WhatsApp mesajı oluşturulur; mesajı göndermeyi siz onaylarsınız. Talebinizin bir kopyası yalnızca kendi tarayıcınızda (yerel depolama) tutulur ve tarayıcı verilerinizi temizleyerek silebilirsiniz.</p>
+    <h2>Çerezler ve analiz</h2>
+    <p>Sitemizde reklam veya ziyaretçi takibi amaçlı çerez ya da analiz aracı kullanılmamaktadır.</p>
+    <h2>Üçüncü taraf hizmetler</h2>
+    <ul>
+      <li><strong>Google Fonts:</strong> Yazı tiplerinin yüklenmesi sırasında tarayıcınız Google sunucularına bağlanır.</li>
+      <li><strong>Google Haritalar:</strong> Harita yalnızca "Haritayı göster" butonuna bastığınızda yüklenir.</li>
+      <li><strong>WhatsApp:</strong> WhatsApp bağlantıları, mesajlaşma için WhatsApp uygulamasını veya sitesini açar.</li>
+    </ul>
+    <h2>İletişim</h2>
+    <p>Sorularınız için {e(F['telefon_gorunen'])} numarasından bize ulaşabilirsiniz. Kişisel verilerle ilgili ayrıntılar için <a href="{r}kvkk/">KVKK Aydınlatma Metni</a>'ne bakabilirsiniz.</p>
   </div>
 </section>
 </main>"""
     html += footer(r)
     yaz(yol, html, None)
+
+
+def yonlendirme(eski, yeni):
+    """Taşınan sayfalar için 404 yerine yönlendirme sayfası."""
+    r = rel(eski)
+    hedef = f"{r}{yeni}"
+    html = f"""<!DOCTYPE html>
+<html lang="tr"><head><meta charset="UTF-8"><title>Sayfa taşındı | {e(F['ad'])}</title>
+<meta name="robots" content="noindex,follow"><link rel="canonical" href="{URL}/{yeni}">
+<meta http-equiv="refresh" content="0; url={hedef}"></head>
+<body><p>Bu sayfa taşındı: <a href="{hedef}">{URL}/{yeni}</a></p></body></html>
+"""
+    yaz(eski, html, None)
+
+
+def yonlendirmeler():
+    for h in I.HIZMETLER:
+        yonlendirme(f"hizmetler/{h['slug']}/", h["url"])
+    if not CFG["markalar"].get("sayfa_uret"):
+        yonlendirme("markalar/", "hizmetler/")
+        for m in CFG["markalar"]["liste"]:
+            yonlendirme(f"markalar/{slugify(m)}/", "hizmetler/")
+    yonlendirme("yonetim/", "randevu/")
 
 
 def sayfa_404():
@@ -1052,10 +1208,21 @@ def sitemap():
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n',
         encoding="utf-8",
     )
-    (SITE / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /yonetim/\nDisallow: /_build/\n\nSitemap: {URL}/sitemap.xml\n", encoding="utf-8")
+    (SITE / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /_build/\n\nSitemap: {URL}/sitemap.xml\n", encoding="utf-8")
+
+
+URETILEN = ["hizmetler", "markalar", "yonetim", "randevu", "hakkimizda", "iletisim", "kvkk", "gizlilik", "blog"] + [h["url"].strip("/") for h in I.HIZMETLER]
+
+
+def temizle():
+    import shutil
+    for d in URETILEN:
+        if (SITE / d).is_dir():
+            shutil.rmtree(SITE / d)
 
 
 def main():
+    temizle()
     anasayfa()
     hizmetler_index()
     for h in I.HIZMETLER:
@@ -1066,7 +1233,8 @@ def main():
     kvkk()
     markalar()
     blog()
-    yonetim()
+    gizlilik()
+    yonlendirmeler()
     sayfa_404()
     js_config()
     sitemap()

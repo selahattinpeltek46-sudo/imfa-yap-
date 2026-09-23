@@ -21,6 +21,7 @@ export function appointmentMessage(a) {
     `Saat: ${a.time}`,
   ];
   if (a.name) lines.push("", `Ad Soyad: ${a.name}`);
+  if (a.phone) lines.push(`Telefon: ${a.phone}`);
   if (a.plate) lines.push(`Plaka: ${formatPlate(a.plate)}`);
   if (a.note) lines.push(`Açıklama: ${a.note}`);
   if (a.id) lines.push("", `Referans: ${a.id}`);

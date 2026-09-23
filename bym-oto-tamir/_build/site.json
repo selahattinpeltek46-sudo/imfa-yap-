@@ -59,7 +59,8 @@
     "diger_adlar": [
       "BYM SERVİS",
       "BYM Oto Tamir"
-    ]
+    ],
+    "google_puan_tarihi": "Eylül 2026"
   },
   "medya": {
     "_not": "Görseller assets/media klasöründedir. Hero videosu eklemek için dosyayı assets/media içine koyup 'hero.video' alanına adını yazın (ör. bym-hero.mp4). Video yoksa 'hero.poster' görseli kullanılır.",
@@ -81,36 +82,60 @@
         "w": 622,
         "h": 705,
         "alt": "Servis kanalında kontrol için bekleyen beyaz Porsche Panamera",
-        "etiket": "Araç kabul"
+        "etiket": "Araç kabul",
+        "kategori": "Servis",
+        "arac": "Porsche Panamera",
+        "aciklama": "Servis kanalında"
       },
       {
         "src": "bym-lift-arac.webp",
         "w": 535,
         "h": 410,
         "alt": "Lift üzerinde alt takım kontrolü yapılan Volkswagen Golf",
-        "etiket": "Lift · Alt takım"
+        "etiket": "Lift · Alt takım",
+        "kategori": "Servis",
+        "arac": "Volkswagen Golf",
+        "aciklama": "Lift üzerinde"
       },
       {
         "src": "bym-motor-tdi.webp",
         "w": 560,
         "h": 402,
         "alt": "Volkswagen TDI dizel motor bölmesi",
-        "etiket": "Motor"
+        "etiket": "Motor",
+        "kategori": "Motor",
+        "arac": "Volkswagen TDI",
+        "aciklama": "Motor bölmesi"
       },
       {
         "src": "bym-motor-bolmesi.webp",
         "w": 345,
         "h": 417,
         "alt": "Bakım sırasında açık motor kaputu ve TDI motor",
-        "etiket": "Bakım"
+        "etiket": "Bakım",
+        "kategori": "Motor",
+        "arac": "Volkswagen TDI",
+        "aciklama": "Motor bölmesi"
       },
       {
         "src": "bym-servis-dis-cephe.webp",
         "w": 534,
         "h": 297,
         "alt": "BYM Servis tabelası ve direğin üzerindeki kırmızı araç",
-        "etiket": "Servis binası"
+        "etiket": "Servis binası",
+        "kategori": "Servis",
+        "arac": "BYM Servis",
+        "aciklama": "Servis binası"
       }
+    ],
+    "_garaj_not": "kategori: Araç Kabul | Bakım | Motor | Diagnostik | Servis | Teslim. Filtrelerde yalnızca fotoğrafı olan kategoriler görünür. 'arac' ve 'aciklama' yalnızca fotoğrafta doğrulanabilen bilgilerdir; işlem adı uydurulmaz.",
+    "kategoriler": [
+      "Araç Kabul",
+      "Bakım",
+      "Motor",
+      "Diagnostik",
+      "Servis",
+      "Teslim"
     ]
   },
   "markalar": {
@@ -128,11 +153,20 @@
       "Opel",
       "Hyundai",
       "Kia"
-    ]
+    ],
+    "sayfa_uret": false,
+    "_sayfa_not": "true yapılırsa /markalar/<marka>/ SEO sayfaları üretilir. Yalnızca BYM'nin gerçekten hizmet verdiği markalar doğrulandıktan sonra açılmalıdır."
   },
   "yorumlar": {
     "_not": "Sadece GERÇEK Google yorumları eklenir. Liste boşsa site, Google yorumlarına yönlendiren bir kart gösterir. Örnek: {\"isim\": \"A. Y.\", \"arac\": \"VW Passat\", \"puan\": 5, \"metin\": \"...\", \"link\": \"https://...\"}",
-    "liste": []
+    "liste": [],
+    "alintilar": [
+      {
+        "metin": "Aracınıza tepeden tırnağa her türlü bakımı yaptırabileceginiz biyer",
+        "kaynak": "Google Haritalar'daki bir müşteri yorumundan"
+      }
+    ],
+    "_alinti_not": "Google Haritalar profilinde öne çıkan gerçek yorum alıntıları, yazıldığı gibi. İsim bilinmiyorsa isim yazılmaz."
   },
   "randevu": {
     "_not": "mod: 'demo' → randevu tarayıcıda (localStorage) saklanır, müşteri WhatsApp ile iletir. 'api' → api_url adresine POST edilir (bkz. README).",
@@ -157,5 +191,13 @@
     "ileri_gun_limiti": 45,
     "tatiller": []
   },
-  "onizleme_metni": "Önizleme sürümü — site yayına hazırlanmaktadır."
+  "onizleme_metni": "Önizleme sürümü — site yayına hazırlanmaktadır.",
+  "vakalar": {
+    "_not": "Gerçek servis süreçleri. Liste boşsa bölüm görünmez. Örnek: {\"arac\":\"VW Passat 1.6 TDI\",\"talep\":\"...\",\"kontroller\":\"...\",\"islem\":\"...\",\"son_kontrol\":\"...\",\"foto\":\"dosya.webp\"}",
+    "liste": []
+  },
+  "ekip": {
+    "_not": "Ekip tanıtımı. Liste boşsa bölüm görünmez. Örnek: {\"isim\":\"...\",\"gorev\":\"...\",\"foto\":\"dosya.webp\"}",
+    "liste": []
+  }
 }

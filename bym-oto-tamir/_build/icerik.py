@@ -17,7 +17,8 @@ HIZMETLER = [
         "ikon": "i-wrench",
         "randevu": "periyodik-bakim",
         "ozet": "Üretici bakım takvimine uygun yağ, filtre ve genel kontroller.",
-        "seo_baslik": "Periyodik Bakım | BYM Automotive",
+        "seo_baslik": "Göksun Araç Bakımı · Periyodik Bakım | BYM Automotive",
+        "url": "oto-bakim/",
         "seo_aciklama": "Motor yağı, filtreler ve üretici bakım takvimine uygun kontrollerle periyodik araç bakımı. BYM Automotive'de randevunuzu online oluşturun.",
         "giris": "Periyodik bakım, aracınızın üretici tarafından belirlenen kilometre ve zaman aralıklarında yapılması gereken rutin işlemlerdir. Düzenli bakım; motorun ömrünü korur, yakıt tüketimini dengeler ve büyük arızaların önüne geçer.",
         "kapsam": [
@@ -46,7 +47,8 @@ HIZMETLER = [
         "ikon": "i-scan",
         "randevu": "ariza-tespiti",
         "ozet": "Arıza kodlarının okunması ve sorunun kaynağına yönelik kontroller.",
-        "seo_baslik": "Bilgisayarlı Arıza Tespiti | BYM Automotive",
+        "seo_baslik": "Göksun Bilgisayarlı Arıza Tespiti | BYM Automotive",
+        "url": "ariza-tespiti/",
         "seo_aciklama": "Motor arıza lambası, performans kaybı ve elektronik sorunlar için bilgisayarlı arıza tespiti. Tahmin değil, kontrol ile teşhis.",
         "giris": "Günümüz araçlarında motor, şanzıman, fren ve konfor sistemleri elektronik kontrol üniteleri tarafından yönetilir. Bilgisayarlı arıza tespiti; bu ünitelerdeki hata kayıtlarını ve canlı verileri okuyarak sorunun hangi sistemde olduğunu ortaya koyar. Arıza kodu tek başına parça değişimi anlamına gelmez; kodun işaret ettiği sistem ayrıca kontrol edilir.",
         "kapsam": [
@@ -74,7 +76,8 @@ HIZMETLER = [
         "ikon": "i-engine",
         "randevu": "motor-mekanik",
         "ozet": "Motor, triger, soğutma ve mekanik aksam onarımları.",
-        "seo_baslik": "Motor & Mekanik Onarım | BYM Automotive",
+        "seo_baslik": "Göksun Motor Tamiri · Motor & Mekanik | BYM Automotive",
+        "url": "motor-mekanik/",
         "seo_aciklama": "Motor arızaları, triger seti, soğutma sistemi, yağ kaçakları ve mekanik onarımlar. İşlem öncesi bilgilendirme ve onay ile servis.",
         "giris": "Motor ve mekanik aksam; aracın güvenli ve verimli çalışmasının temelidir. Ses, titreşim, yağ kaçağı veya hararet gibi belirtiler erken fark edildiğinde daha küçük ve planlı onarımlarla çözülebilir.",
         "kapsam": [
@@ -101,7 +104,8 @@ HIZMETLER = [
         "ikon": "i-bolt",
         "randevu": "oto-elektrik",
         "ozet": "Akü, marş, şarj sistemi ve elektrik arızaları.",
-        "seo_baslik": "Oto Elektrik | BYM Automotive",
+        "seo_baslik": "Göksun Oto Elektrik · Akü, Marş, Şarj | BYM Automotive",
+        "url": "oto-elektrik/",
         "seo_aciklama": "Akü, marş motoru, şarj dinamosu, aydınlatma ve elektrik tesisatı arızaları için oto elektrik servisi.",
         "giris": "Aracın çalışmasından aydınlatmasına kadar birçok sistem elektrik tesisatına bağlıdır. Akü, marş ve şarj sistemindeki sorunlar çoğu zaman aracın geç çalışması veya hiç çalışmaması şeklinde kendini gösterir.",
         "kapsam": [
@@ -128,7 +132,8 @@ HIZMETLER = [
         "ikon": "i-disc",
         "randevu": "fren-sistemi",
         "ozet": "Balata, disk, amortisör ve alt takım kontrolleri.",
-        "seo_baslik": "Fren & Süspansiyon | BYM Automotive",
+        "seo_baslik": "Fren & Süspansiyon Servisi Göksun | BYM Automotive",
+        "url": "fren-suspansiyon/",
         "seo_aciklama": "Fren balatası, disk, fren hidroliği, amortisör ve alt takım kontrol ve onarımları. Güvenliğiniz için planlı servis.",
         "giris": "Fren ve süspansiyon sistemleri doğrudan sürüş güvenliğini etkiler. Frenlerden gelen sesler, direksiyonda titreme veya aracın bir tarafa çekmesi ihmal edilmemesi gereken belirtilerdir.",
         "kapsam": [
@@ -155,7 +160,8 @@ HIZMETLER = [
         "ikon": "i-snow",
         "randevu": "klima",
         "ozet": "Klima performans kontrolü, gaz ve kaçak kontrolleri.",
-        "seo_baslik": "Oto Klima Servisi | BYM Automotive",
+        "seo_baslik": "Oto Klima Servisi Göksun | BYM Automotive",
+        "url": "klima/",
         "seo_aciklama": "Soğutmayan klima, kötü koku ve klima kompresörü sorunları için kontrol ve bakım. Polen filtresi ve gaz kontrolü.",
         "giris": "Klima sistemi yalnızca konfor değil, camların buğusunu almak için de önemlidir. Soğutma performansının düşmesi çoğu zaman gaz eksikliği, kaçak veya filtre tıkanıklığı ile ilgilidir.",
         "kapsam": [
@@ -180,7 +186,8 @@ HIZMETLER = [
         "ikon": "i-gear",
         "randevu": "sanziman",
         "ozet": "Vites geçişi, debriyaj ve şanzıman kontrolleri.",
-        "seo_baslik": "Şanzıman & Debriyaj | BYM Automotive",
+        "seo_baslik": "Şanzıman & Debriyaj Servisi Göksun | BYM Automotive",
+        "url": "sanziman/",
         "seo_aciklama": "Vites geçiş sorunları, debriyaj kaçırma ve şanzıman kontrolleri. İşlem öncesi teşhis ve bilgilendirme.",
         "giris": "Manuel ve otomatik şanzımanlarda geç, sert ya da vuruntulu vites geçişleri; debriyaj, şanzıman yağı veya kontrol sistemiyle ilgili bir soruna işaret edebilir. Erken kontrol, maliyetli onarımların önüne geçebilir.",
         "kapsam": [
@@ -205,7 +212,8 @@ HIZMETLER = [
         "ikon": "i-check",
         "randevu": "ariza-kontrolu",
         "ozet": "Yol öncesi, muayene öncesi ve alım öncesi genel kontroller.",
-        "seo_baslik": "Genel Araç Kontrolü | BYM Automotive",
+        "seo_baslik": "Genel Araç Kontrolü Göksun | BYM Automotive",
+        "url": "genel-arac-kontrolu/",
         "seo_aciklama": "Uzun yol, muayene ve kış öncesi genel araç kontrolü. Aracınızın durumunu işlem öncesi öğrenin.",
         "giris": "Genel araç kontrolü; uzun yol, araç muayenesi veya kış öncesi aracınızın temel sistemlerinin gözden geçirilmesidir. Kontrol sonucunda gerekli görülen işlemler size aktarılır, onayınız olmadan işlem yapılmaz.",
         "kapsam": [
@@ -228,27 +236,93 @@ HIZMETLER = [
 ]
 
 # ---------------------------------------------------------------------------
-# "ARACINIZDA NE VAR?" — sorun kartları
+# "ARACINIZDA NE VAR?" — belirti rehberi
+# Kesin teşhis içermez; "olası noktalar" olarak yazılır.
+# hizmet: hizmet sayfası slug'ı · randevu: sihirbazdaki hizmet kimliği
 # ---------------------------------------------------------------------------
 SORUNLAR = [
-    {"baslik": "Motor arıza lambası yanıyor", "hizmet": "ariza-tespiti"},
-    {"baslik": "Araç titriyor", "hizmet": "motor-mekanik"},
-    {"baslik": "Frenlerden ses geliyor", "hizmet": "fren-suspansiyon"},
-    {"baslik": "Araç geç çalışıyor", "hizmet": "oto-elektrik"},
-    {"baslik": "Klima soğutmuyor", "hizmet": "klima"},
-    {"baslik": "Vites geçişleri sorunlu", "hizmet": "sanziman"},
-    {"baslik": "Araç çekişten düştü", "hizmet": "ariza-tespiti"},
-    {"baslik": "Yakıt tüketimi arttı", "hizmet": "ariza-tespiti"},
+    {
+        "id": "ariza-lambasi",
+        "baslik": "Motor arıza lambası yanıyor",
+        "hizmet": "ariza-tespiti", "randevu": "ariza-tespiti",
+        "aciklama": "Motor kontrol ünitesi, izlediği bir değerin normal aralığın dışına çıktığını algıladığında lambayı yakar ve bir arıza kaydı oluşturur. Lambanın sabit yanması ile yanıp sönmesi farklı aciliyetlere işaret edebilir.",
+        "nedenler": ["Ateşleme sistemi (buji, bobin) kaynaklı tekleme", "Oksijen (lambda) veya hava akış sensörü değerleri", "Yakıt deposu kapağı veya buharlaşma sistemindeki kaçak", "Dizel araçlarda EGR veya partikül filtresi (DPF) kayıtları"],
+        "kontroller": ["Kayıtlı arıza kodları ve arızanın oluştuğu andaki veriler", "Canlı sensör değerleri", "Kodun işaret ettiği sistemin bağlantıları ve parçaları"],
+        "uyari": "Lamba yanıp sönüyorsa aracı zorlamadan kullanmayı bırakmanız önerilir.",
+    },
+    {
+        "id": "titreme",
+        "baslik": "Araç titriyor",
+        "hizmet": "motor-mekanik", "randevu": "motor-mekanik",
+        "aciklama": "Titreşimin ne zaman hissedildiği (rölantide, belirli bir hızda, frenlemede veya hızlanırken) kaynağı hakkında önemli bir ipucu verir. Randevu açıklamasına bunu yazmanız kontrolü kolaylaştırır.",
+        "nedenler": ["Rölantide: ateşleme veya yakıt kaynaklı tekleme, motor takozları", "Belirli bir hızda: lastik, jant veya balans", "Frenlemede: fren disklerinde yüzey bozulması", "Hızlanırken: aks veya ön takım bileşenleri"],
+        "kontroller": ["Arıza kayıtları ve motor çalışma verileri", "Motor ve şanzıman takozları", "Lastik, jant ve balans durumu", "Fren diskleri ve ön takım"],
+        "uyari": "",
+    },
+    {
+        "id": "fren-sesi",
+        "baslik": "Frenlerden ses geliyor",
+        "hizmet": "fren-suspansiyon", "randevu": "fren-sistemi",
+        "aciklama": "Frenlerden gelen ses her zaman ciddi bir arıza anlamına gelmez; ancak fren sistemi doğrudan güvenliğinizi etkilediği için sesin kaynağının bilinmesi önemlidir.",
+        "nedenler": ["Balata aşınma uyarı sacının diske sürtmesi (ince gıcırtı)", "Balatanın bitmesi, metalin diske sürtmesi (kalın, hırıltılı ses)", "Disk yüzeyinde bozulma veya pas", "Kaliper ya da kaliper pimlerinde boşluk"],
+        "kontroller": ["Balata kalınlığı", "Disk yüzeyi ve ölçüsü", "Kaliper ve pimler", "Fren hidroliği seviyesi"],
+        "uyari": "Metal sürtünme sesi duyuyor ya da fren pedalı yumuşamışsa kontrolü ertelemeyin.",
+    },
+    {
+        "id": "gec-calisma",
+        "baslik": "Araç geç çalışıyor",
+        "hizmet": "oto-elektrik", "randevu": "oto-elektrik",
+        "aciklama": "Marşın ağır basması ya da aracın birkaç denemede çalışması, özellikle soğuk havalarda sık görülür. Sorun her zaman aküde değildir.",
+        "nedenler": ["Akü kapasitesinin düşmesi", "Şarj sisteminin (dinamo) aküyü yeterince şarj etmemesi", "Marş motoru", "Kutup başlarında zayıf temas", "Yakıt veya ateşleme sistemi"],
+        "kontroller": ["Akü testi", "Şarj voltajı", "Marş motoru çalışması", "Park halindeki kaçak akım", "Arıza kayıtları"],
+        "uyari": "",
+    },
+    {
+        "id": "klima",
+        "baslik": "Klima soğutmuyor",
+        "hizmet": "klima", "randevu": "klima",
+        "aciklama": "Soğutma performansının düşmesi çoğu zaman gaz eksikliği, bir kaçak veya hava akışını engelleyen bir tıkanıklıkla ilgilidir.",
+        "nedenler": ["Klima gazı eksikliği veya sistemde kaçak", "Polen filtresinin tıkanması", "Kompresör veya kompresör kavraması", "Kondenser fanı", "Sensör veya kontrol arızası"],
+        "kontroller": ["Havalandırma çıkış sıcaklığı", "Sistem basınçları", "Kaçak kontrolü", "Fan ve kompresör çalışması", "Polen filtresi"],
+        "uyari": "",
+    },
+    {
+        "id": "cekis",
+        "baslik": "Araç çekişten düştü",
+        "hizmet": "ariza-tespiti", "randevu": "ariza-tespiti",
+        "aciklama": "Güç kaybı; aracın hava, yakıt, turbo veya egzoz sistemlerinden birinde değerlerin düşmesiyle ortaya çıkabilir. Bazı araçlar bir arıza algıladığında motoru korumak için güvenli moda geçer.",
+        "nedenler": ["Hava filtresi veya emme hattında kaçak", "Turbo ve turbo hortumları", "Yakıt filtresi veya enjektörler", "Sensör hataları", "Dizel araçlarda EGR veya partikül filtresi (DPF)"],
+        "kontroller": ["Arıza kayıtları", "Turbo basınç ve motor verileri", "Hava kaçakları", "Filtreler", "Yakıt sistemi"],
+        "uyari": "",
+    },
+    {
+        "id": "vites",
+        "baslik": "Vites geçişlerinde sorun var",
+        "hizmet": "sanziman", "randevu": "sanziman",
+        "aciklama": "Vitesin zor geçmesi, vites atması ya da otomatik şanzımanda sert veya geç geçişler; debriyaj, bağlantı mekanizması, yağ veya kontrol sistemiyle ilgili olabilir.",
+        "nedenler": ["Manuel: debriyaj aşınması veya ayarı", "Manuel: vites halatı ve bağlantı mekanizması", "Otomatik: şanzıman yağı seviyesi veya durumu", "Otomatik: kontrol ünitesi kayıtları ve adaptasyon"],
+        "kontroller": ["Yol testi", "Debriyaj", "Vites halatı ve bağlantılar", "Şanzıman yağı", "Arıza kayıtları"],
+        "uyari": "",
+    },
+    {
+        "id": "yakit",
+        "baslik": "Yakıt tüketimi arttı",
+        "hizmet": "ariza-tespiti", "randevu": "ariza-tespiti",
+        "aciklama": "Tüketimdeki artış; sürüş koşulları ve mevsim gibi normal etkenlerden de, aracın yanlış yakıt karışımıyla çalışmasına yol açan bir sorundan da kaynaklanabilir.",
+        "nedenler": ["Düşük lastik basıncı", "Kirli hava filtresi", "Oksijen (lambda), hava akış veya motor sıcaklık sensörü", "Buji ve ateşleme sistemi", "Sürten fren"],
+        "kontroller": ["Arıza kayıtları", "Sensör verileri", "Hava filtresi", "Lastik basınçları", "Frenlerin serbest dönmesi"],
+        "uyari": "",
+    },
 ]
 
 # ---------------------------------------------------------------------------
 # NEDEN BYM
 # ---------------------------------------------------------------------------
 NEDEN = [
-    ("Doğru teşhis", "Arızayı tahmin etmek yerine gerekli kontrolleri yaparak sorunun kaynağını belirliyoruz."),
-    ("Şeffaf süreç", "Yapılacak işlemler ve gerekli parçalar hakkında müşterimizi işlem öncesinde bilgilendiriyoruz."),
-    ("Onaylı işlem", "Müşteri onayı olmadan ek işlem başlatılmaz."),
-    ("Kontrollü teslim", "İşlem sonrası gerekli kontroller yapılarak araç teslim edilir."),
+    ("Doğru teşhis", "Arızanın kaynağını anlamaya yönelik sistematik kontrol ve teşhis süreci.", "i-scan"),
+    ("Şeffaf süreç", "Yapılacak işlemler hakkında sizi süreç boyunca bilgilendiriyoruz.", "i-eye"),
+    ("Onaylı işlem", "Müşteri onayı olmadan ek işlem yapılmaz.", "i-shield"),
+    ("Kontrollü teslim", "İşlem sonrası gerekli kontroller tamamlanarak araç teslim sürecine alınır.", "i-key"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -263,7 +337,18 @@ SUREC = [
     ("Teslim", "Kontroller tamamlanır ve araç teslim edilir."),
 ]
 
-GUVEN = ["Profesyonel Servis", "Şeffaf Süreç", "Randevulu Çalışma", "Teknik Teşhis"]
+GUVEN = ["Randevulu Servis", "Şeffaf İşlem", "Profesyonel Teşhis"]
+
+# Güven bandı — BYM'nin gerçekten uyguladığı prensipler
+GUVEN_BANDI = ["Müşteri Onayı", "Şeffaf Süreç", "İşlem Bilgilendirmesi", "Diagnostik Kontrol", "Servis Sonrası Kontrol", "Randevulu Servis"]
+
+# Anasayfa SSS — yalnızca doğrulanmış bilgiler
+SSS_GENEL = [
+    ("Randevu nasıl alınır?", "Sitemizdeki randevu formundan hizmeti, aracınızı ve size uygun gün ile saati seçin. Talebiniz WhatsApp üzerinden ekibimize iletilir; uygunluk durumunu teyit etmek için sizinle iletişime geçilir. Telefonla da randevu alabilirsiniz."),
+    ("Onayım olmadan aracıma işlem yapılır mı?", "Hayır. Kontrol sonucunda tespit edilen işlemler ve gerekli parçalar size aktarılır; onayınız olmadan ek işlem yapılmaz."),
+    ("Çalışma saatleriniz nedir?", "Pazartesi–Cumartesi 08:00–19:00 arasında hizmet veriyoruz. Pazar günleri kapalıyız."),
+    ("Servise gelmeden önce ne hazırlamalıyım?", "Aracınızda fark ettiğiniz belirtiyi (ne zaman, hangi koşulda ortaya çıktığını) not etmeniz kontrol sürecini hızlandırır. Varsa bakım kayıtlarınızı da getirebilirsiniz."),
+]
 
 # ---------------------------------------------------------------------------
 # BLOG — BYM Otomotiv Bilgi Merkezi

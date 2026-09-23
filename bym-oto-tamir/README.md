@@ -13,15 +13,15 @@ Framework yok: HTML + CSS + ES modülleri. Tüm sayfalar `_build/build.py` ile �
 - [ ] Google İşletme Profili: adres ve açılış saati siteyle aynı olacak şekilde güncellenmeli
 - [ ] Alan adı (`site_url`) — canonical, sitemap ve schema bunu kullanır
 - [ ] Hizmet verilen markalar
-- [ ] Instagram / Facebook adresleri
+- [x] Instagram · [ ] Facebook
 - [ ] Gerçek Google yorumları (yalnızca gerçek yorumlar; liste boşsa Google'a yönlendiren kart görünür)
 - [ ] KVKK metninin hukuki kontrolü
-- [ ] Hepsi tamamlanınca `"onizleme": false` (üstteki uyarı bandı kalkar)
+- [x] Önizleme bandı kaldırıldı
 
 ## Klasör yapısı
 
 ```
-bym-oto-tamir/
+bym-automotive/
 ├── _build/                  # Kaynaklar (yayına çıkmaz)
 │   ├── site.json            # Firma bilgileri, medya, markalar, yorumlar, randevu ayarları
 │   ├── icerik.py            # Hizmetler, sorunlar, süreç, blog yazıları
@@ -36,14 +36,15 @@ bym-oto-tamir/
 │       ├── ui.js            # Header, menü, animasyonlar, galeri, harita
 │       ├── whatsapp.js      # WhatsApp mesaj şablonları
 │       ├── config.js        # (üretilir) site.json'dan
-│       ├── admin.js         # Yönetim paneli önizlemesi
 │       └── booking/
 │           ├── catalog.js       # Marka → model, hizmet listesi
 │           ├── appointment.js   # Veri modeli, doğrulama (telefon, plaka)
 │           ├── repository.js    # Depolama: LocalRepository | HttpRepository
 │           ├── availability.js  # Kapalı gün, tatil, geçmiş/dolu saat kuralları
-│           └── wizard.js        # 7 adımlı randevu sihirbazı
-├── index.html, hizmetler/, randevu/, markalar/, blog/, hakkimizda/, iletisim/, kvkk/, yonetim/  (üretilir)
+│           └── wizard.js        # 5 adımlı randevu sihirbazı
+├── index.html, oto-bakim/, ariza-tespiti/, motor-mekanik/, oto-elektrik/, fren-suspansiyon/, klima/, sanziman/,
+│   genel-arac-kontrolu/, hizmetler/, randevu/, blog/, hakkimizda/, iletisim/, kvkk/, gizlilik/  (üretilir)
+│   hizmetler/<eski-slug>/, markalar/*, yonetim/ → yeni adreslere yönlendirme sayfaları
 └── sitemap.xml, robots.txt, 404.html  (üretilir)
 ```
 
@@ -67,8 +68,11 @@ python3 -m http.server 8000   # önizleme: http://localhost:8000
 
 ## Randevu sistemi
 
-Sihirbaz adımları: Marka → Model → Hizmet → Tarih → Saat → Bilgiler → Özet → Onay.
-URL ile ön doldurma: `/randevu/?marka=BMW&hizmet=klima&not=Klima%20soğutmuyor`
+Sihirbaz adımları: Hizmet → Araç → Tarih & Saat → İletişim → Özet → Onay.
+URL ile ön doldurma: `/randevu/?hizmet=klima&marka=BMW&not=Klima%20soğutmuyor`
+
+Backend yoktur. Özet adımındaki "Talebi WhatsApp ile gönder" butonu, bilgileri hazır bir WhatsApp mesajı
+olarak açar. Onay ekranı randevunun kesinleştiğini iddia etmez; ekip uygunluğu teyit eder.
 
 **Modlar** (`site.json → randevu.mod`):
 
@@ -108,11 +112,12 @@ URL ile ön doldurma: `/randevu/?marka=BMW&hizmet=klima&not=Klima%20soğutmuyor`
 Önerilen altyapı: Supabase / Firebase (ücretsiz katman yeterli) veya küçük bir Node/PHP servisi.
 Yeni randevuda işletmeye WhatsApp Business API / SMS / e-posta bildirimi backend tarafında gönderilmelidir.
 
-### Yönetim paneli
+### İleride eklenebilecekler
 
-`/yonetim/` (arama motorlarına kapalı) randevu listesini ve durum değiştirmeyi gösteren bir önizlemedir.
-Gerçek panelde kimlik doğrulama zorunludur. Aynı repository arayüzü üzerine şu modüller eklenecek:
-Randevular · Müşteriler · Araçlar (bakım geçmişi) · Hizmetler · Çalışma saatleri / müsait saatler · Blog · Galeri · Yorumlar.
+- Gerçek servis süreçleri (vaka çalışmaları): `site.json → vakalar.liste`
+- Ekip tanıtımı: `site.json → ekip.liste`
+- Marka SEO sayfaları: `site.json → markalar.sayfa_uret: true` (yalnızca doğrulanmış markalar için)
+- Backend ile randevu yönetimi: `randevu.mod: "api"` + yukarıdaki API sözleşmesi
 
 ## SEO
 
