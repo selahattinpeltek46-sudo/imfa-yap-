@@ -289,9 +289,9 @@ body:has(.hero) .hdr { margin-bottom: calc(var(--hdr-h) * -1); }
 .sec-head__note { max-width: 34ch; }
 
 /* Reveal animasyonları */
-.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); transition-delay: var(--d, 0ms); }
-.reveal.is-in { opacity: 1; transform: none; }
-.no-js .reveal, .no-io .reveal { opacity: 1; transform: none; }
+.js .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); transition-delay: var(--d, 0ms); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+.js.no-io .reveal { opacity: 1; transform: none; }
 
 /* ---------- Güven bandı ---------- */
 .band { border-block: 1px solid var(--line); background: var(--bg); }
@@ -940,3 +940,36 @@ select.input option { background: var(--bg-2); color: var(--text); }
   .wz__foot--send .wz__back { width: 100%; justify-content: center; }
   .done .btn-row { display: grid; width: 100%; }
 }
+
+/* ---------- Randevu: tek sayfalık yedek form (wizard çalışmadığında) ---------- */
+/* JS yok → form görünür. JS var → wizard yüklenirken iskelet, yüklenemezse (is-failed) form. */
+.booking__skeleton { display: none; }
+.booking.is-js:not(.is-ready):not(.is-failed) .booking__skeleton { display: block; }
+.booking__fallback { display: block; padding: 28px 24px 24px; }
+.booking.is-js .booking__fallback { display: none; }
+.booking.is-js.is-failed .booking__fallback { display: block; }
+.booking__fallback .wz__hint { margin-bottom: 22px; }
+.booking__fb-err:empty, .booking__fb-ok:empty { display: none; }
+.booking__fb-err { margin: 2px 0 14px; padding: 12px 14px; border-radius: 10px; background: var(--accent-soft); color: #FFC9CB; font-size: 14.5px; }
+.booking__fb-ok { margin-top: 16px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--bg-3); color: var(--muted); font-size: 14px; }
+.booking__fb-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 8px; padding-top: 18px; border-top: 1px solid var(--line); }
+.booking__fb-tel { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 15px; }
+.booking__fb-tel:hover { color: var(--text); }
+.booking__fb-tel .ic { width: 18px; height: 18px; }
+.booking__fallback input[type="date"] { min-height: 54px; color-scheme: dark; }
+@media (max-width: 559px) {
+  .booking__fallback { padding: 22px 18px 20px; }
+  .booking__fb-foot .btn { width: 100%; }
+  .booking__fb-foot { justify-content: center; }
+}
+
+/* ---------- JavaScript çalışmayan ortamlar ---------- */
+/* <head> içindeki tek satırlık script <html>'e "js" sınıfı ekler; yoksa aşağıdaki kurallar geçerli olur. */
+html:not(.js) .menu-btn { display: none; }
+html:not(.js) .hdr__cta { display: inline-flex; }
+html:not(.js) .garage__filters { display: none; }
+html:not(.js) .sym { display: block; }
+html:not(.js) .sym__tab { pointer-events: none; color: var(--text); border-bottom: 0; padding-bottom: 4px; }
+html:not(.js) .sym__plus { display: none; }
+html:not(.js) .sym__panel { position: static; margin-bottom: 14px; }
+html:not(.js) .sym__h { display: none; }

@@ -2,6 +2,7 @@
 <html lang="tr" data-root="">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.className+=" js";</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BYM Automotive | Göksun Oto Servis, Bakım ve Onarım</title>
 <meta name="description" content="BYM Automotive (BYM Servis): Göksun&#x27;da araç bakımı, bilgisayarlı arıza tespiti, motor, oto elektrik, fren ve klima servisi. Online randevu, şeffaf süreç, onaylı işlem.">
@@ -88,17 +89,74 @@
     <p class="booking-alt">Telefonla randevu için <a href="tel:+903447143636">0 (344) 714 36 36</a></p>
   </div>
   <div class="booking reveal" id="randevu-baslik-form" data-booking>
-    <noscript><p class="booking__noscript">Randevu sihirbazı için JavaScript gereklidir. Randevu almak için <a href="https://wa.me/905322148883?text=Merhaba%20BYM%20Automotive%2C%20arac%C4%B1m%20i%C3%A7in%20servis/randevu%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.">WhatsApp</a> veya <a href="tel:+903447143636">telefon</a> ile ulaşabilirsiniz.</p></noscript>
+    <script>(function(){var b=document.getElementById("randevu-baslik-form");if(!b)return;b.className+=" is-js";setTimeout(function(){if(!/is-ready/.test(b.className))b.className+=" is-failed";},8000);})();</script>
     <div class="booking__skeleton" aria-hidden="true"></div>
-    <div class="booking__fallback" role="alert">
-      <p class="booking__fallback-t">Randevu formu şu anda yüklenemedi.</p>
-      <p class="muted">Randevu talebinizi WhatsApp'tan veya telefonla hemen iletebilirsiniz.</p>
-      <div class="btn-row">
-        <a class="btn btn--wa" href="https://wa.me/905322148883?text=Merhaba%20BYM%20Automotive%2C%20randevu%20talebinde%20bulunmak%20istiyorum." target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-wa"></use></svg> WhatsApp'tan yazın</a>
-        <a class="btn btn--ghost" href="tel:+903447143636"><svg class="ic" aria-hidden="true"><use href="#i-phone"></use></svg> 0 (344) 714 36 36</a>
+    <form class="booking__fallback" id="fb-randevu-baslik" action="https://wa.me/905322148883" method="get" target="_blank" novalidate>
+      <h3 class="wz__q">Randevu talebi oluşturun</h3>
+      <p class="wz__hint">Formu doldurun; talebiniz WhatsApp üzerinden BYM Automotive'e iletilsin. Ekibimiz uygunluğu teyit etmek için size döner.</p>
+      <input type="hidden" name="text" value="Merhaba BYM Automotive, randevu talebinde bulunmak istiyorum.">
+      <div class="grid-2">
+        <div class="field"><label for="fb-randevu-baslik-service">Hizmet</label>
+          <select id="fb-randevu-baslik-service" class="input" data-f="service" required><option value="">Hizmet seçin</option><option>Periyodik Bakım</option><option>Bilgisayarlı Arıza Tespiti</option><option>Motor &amp; Mekanik</option><option>Oto Elektrik</option><option>Fren &amp; Süspansiyon</option><option>Klima</option><option>Şanzıman</option><option>Genel Araç Kontrolü</option></select></div>
+        <div class="field"><label for="fb-randevu-baslik-vehicle">Araç marka / model</label>
+          <input id="fb-randevu-baslik-vehicle" class="input" data-f="vehicle" required autocomplete="off" placeholder="Örn. BMW 520d"></div>
       </div>
-    </div>
-    <script>setTimeout(function(){var b=document.getElementById("randevu-baslik-form");if(b&&!/is-ready/.test(b.className))b.className+=" is-failed";},8000);</script>
+      <div class="grid-2">
+        <div class="field"><label for="fb-randevu-baslik-date">Tarih</label>
+          <input id="fb-randevu-baslik-date" class="input" type="date" data-f="date" required></div>
+        <div class="field"><label for="fb-randevu-baslik-time">Saat</label>
+          <select id="fb-randevu-baslik-time" class="input" data-f="time" required><option value="">Saat seçin</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option></select></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="fb-randevu-baslik-name">Ad Soyad</label>
+          <input id="fb-randevu-baslik-name" class="input" data-f="name" required autocomplete="name" placeholder="Adınız ve soyadınız"></div>
+        <div class="field"><label for="fb-randevu-baslik-phone">Telefon</label>
+          <input id="fb-randevu-baslik-phone" class="input" type="tel" data-f="phone" required inputmode="tel" autocomplete="tel-national" placeholder="0 (5XX) XXX XX XX"></div>
+      </div>
+      <div class="field"><label for="fb-randevu-baslik-problem">Sorun / açıklama <span class="opt-l">(isteğe bağlı)</span></label>
+        <textarea id="fb-randevu-baslik-problem" class="input" data-f="problem" rows="3" maxlength="500" placeholder="Örn: Motor arıza lambası yanıyor ve araç son günlerde titriyor."></textarea></div>
+      <p class="err booking__fb-err" role="alert"></p>
+      <div class="booking__fb-foot">
+        <button type="submit" class="btn btn--accent btn--lg">Randevu Talebi Gönder <svg class="ic" aria-hidden="true"><use href="#i-arrow"></use></svg></button>
+        <a class="booking__fb-tel" href="tel:+903447143636"><svg class="ic" aria-hidden="true"><use href="#i-phone"></use></svg> 0 (344) 714 36 36</a>
+      </div>
+      <p class="booking__fb-ok" role="status"></p>
+      <p class="wz__legal">Talebi göndererek <a href="kvkk/">KVKK Aydınlatma Metni</a>'ni okuduğunuzu kabul edersiniz.</p>
+    </form>
+    <script>(function(){
+      var f=document.getElementById("fb-randevu-baslik");if(!f)return;
+      var closed=[0];
+      function p(n){return(n<10?"0":"")+n;}
+      function v(x){var el=f.querySelector('[data-f="'+x+'"]');return el?el.value.replace(/^\s+|\s+$/g,""):"";}
+      var t=new Date(),min=t.getFullYear()+"-"+p(t.getMonth()+1)+"-"+p(t.getDate());
+      f.querySelector('[data-f="date"]').setAttribute("min",min);
+      f.addEventListener("submit",function(ev){
+        ev.preventDefault();
+        var err=f.querySelector(".booking__fb-err"),ok=f.querySelector(".booking__fb-ok"),m="";
+        err.textContent="";ok.textContent="";
+        var d=v("date"),ph=v("phone").replace(/\D/g,"");
+        if(ph.indexOf("90")===0)ph=ph.slice(2);if(ph.charAt(0)==="0")ph=ph.slice(1);
+        var dp=d.split("-"),day=d?new Date(+dp[0],+dp[1]-1,+dp[2]).getDay():-1;
+        if(!v("service"))m="Lütfen bir hizmet seçin.";
+        else if(!v("vehicle"))m="Lütfen aracınızın marka ve modelini girin.";
+        else if(!d)m="Lütfen tarih seçin.";
+        else if(d<min)m="Geçmiş bir tarih seçilemez.";
+        else if(closed.indexOf(day)>-1)m="Seçtiğiniz gün kapalıyız. Lütfen başka bir gün seçin.";
+        else if(!v("time"))m="Lütfen saat seçin.";
+        else if(v("name").split(/\s+/).length<2)m="Lütfen adınızı ve soyadınızı girin.";
+        else if(!/^[2-5][0-9]{9}$/.test(ph))m="Lütfen geçerli bir telefon numarası girin.";
+        if(m){err.textContent=m;return;}
+        var L=["Merhaba BYM Automotive,","Randevu talebinde bulunmak istiyorum.",""];
+        L.push("Hizmet: "+v("service"));L.push("Araç: "+v("vehicle"));
+        L.push("Tarih: "+dp[2]+"."+dp[1]+"."+dp[0]);L.push("Saat: "+v("time"));
+        L.push("Ad Soyad: "+v("name").replace(/\s+/g," "));L.push("Telefon: 0"+ph);
+        if(v("problem"))L.push("Sorun: "+v("problem"));
+        L.push("","Randevu uygunluğunun teyit edilmesini rica ederim.");
+        var url=f.getAttribute("action")+"?text="+encodeURIComponent(L.join("\n"));
+        var w=window.open(url,"_blank");if(w){w.opener=null;}else{window.location.href=url;}
+        ok.textContent="WhatsApp açıldı. Mesajı gönderdiğinizde talebiniz BYM Automotive'e ulaşır; ekibimiz uygunluğu teyit etmek için size döner.";
+      });
+    })();</script>
   </div>
 </div></div>
 </section>
@@ -213,7 +271,7 @@
       <button type="button" class="sym__tab" id="sym-t-ariza-lambasi" aria-controls="sym-p-ariza-lambasi" aria-expanded="true" data-sym-tab>
         <span>Motor arıza lambası yanıyor</span><svg class="ic sym__plus" aria-hidden="true"><use href="#i-plus"></use></svg>
       </button>
-      <div class="sym__panel" id="sym-p-ariza-lambasi" role="region" aria-labelledby="sym-t-ariza-lambasi" >
+      <div class="sym__panel" id="sym-p-ariza-lambasi" role="region" aria-labelledby="sym-t-ariza-lambasi">
         <h3 class="sym__h">Motor arıza lambası yanıyor</h3>
         <p class="sym__lead">Motor kontrol ünitesi, izlediği bir değerin normal aralığın dışına çıktığını algıladığında lambayı yakar ve bir arıza kaydı oluşturur. Lambanın sabit yanması ile yanıp sönmesi farklı aciliyetlere işaret edebilir.</p>
         <p class="sym__warn">Lamba yanıp sönüyorsa aracı zorlamadan kullanmayı bırakmanız önerilir.</p>
@@ -240,7 +298,7 @@
       <button type="button" class="sym__tab" id="sym-t-titreme" aria-controls="sym-p-titreme" aria-expanded="false" data-sym-tab>
         <span>Araç titriyor</span><svg class="ic sym__plus" aria-hidden="true"><use href="#i-plus"></use></svg>
       </button>
-      <div class="sym__panel" id="sym-p-titreme" role="region" aria-labelledby="sym-t-titreme" hidden>
+      <div class="sym__panel" id="sym-p-titreme" role="region" aria-labelledby="sym-t-titreme">
         <h3 class="sym__h">Araç titriyor</h3>
         <p class="sym__lead">Titreşimin ne zaman hissedildiği (rölantide, belirli bir hızda, frenlemede veya hızlanırken) kaynağı hakkında önemli bir ipucu verir. Randevu açıklamasına bunu yazmanız kontrolü kolaylaştırır.</p>
         
@@ -267,7 +325,7 @@
       <button type="button" class="sym__tab" id="sym-t-fren-sesi" aria-controls="sym-p-fren-sesi" aria-expanded="false" data-sym-tab>
         <span>Frenlerden ses geliyor</span><svg class="ic sym__plus" aria-hidden="true"><use href="#i-plus"></use></svg>
       </button>
-      <div class="sym__panel" id="sym-p-fren-sesi" role="region" aria-labelledby="sym-t-fren-sesi" hidden>
+      <div class="sym__panel" id="sym-p-fren-sesi" role="region" aria-labelledby="sym-t-fren-sesi">
         <h3 class="sym__h">Frenlerden ses geliyor</h3>
         <p class="sym__lead">Frenlerden gelen ses her zaman ciddi bir arıza anlamına gelmez; ancak fren sistemi doğrudan güvenliğinizi etkilediği için sesin kaynağının bilinmesi önemlidir.</p>
         <p class="sym__warn">Metal sürtünme sesi duyuyor ya da fren pedalı yumuşamışsa kontrolü ertelemeyin.</p>
@@ -294,7 +352,7 @@
       <button type="button" class="sym__tab" id="sym-t-gec-calisma" aria-controls="sym-p-gec-calisma" aria-expanded="false" data-sym-tab>
         <span>Araç geç çalışıyor</span><svg class="ic sym__plus" aria-hidden="true"><use href="#i-plus"></use></svg>
       </button>
-      <div class="sym__panel" id="sym-p-gec-calisma" role="region" aria-labelledby="sym-t-gec-calisma" hidden>
+      <div class="sym__panel" id="sym-p-gec-calisma" role="region" aria-labelledby="sym-t-gec-calisma">
         <h3 class="sym__h">Araç geç çalışıyor</h3>
         <p class="sym__lead">Marşın ağır basması ya da aracın birkaç denemede çalışması, özellikle soğuk havalarda sık görülür. Sorun her zaman aküde değildir.</p>
         
@@ -321,7 +379,7 @@
       <button type="button" class="sym__tab" id="sym-t-klima" aria-controls="sym-p-klima" aria-expanded="false" data-sym-tab>
         <span>Klima soğutmuyor</span><svg class="ic sym__plus" aria-hidden="true"><use href="#i-plus"></use></svg>
       </button>
-      <div class="sym__panel" id="sym-p-klima" role="region" aria-labelledby="sym-t-klima" hidden>
+      <div class="sym__panel" id="sym-p-klima" role="region" aria-labelledby="sym-t-klima">
         <h3 class="sym__h">Klima soğutmuyor</h3>
         <p class="sym__lead">Soğutma performansının düşmesi çoğu zaman gaz eksikliği, bir kaçak veya hava akışını engelleyen bir tıkanıklıkla ilgilidir.</p>
         
@@ -348,7 +406,7 @@
       <button type="button" class="sym__tab" id="sym-t-cekis" aria-controls="sym-p-cekis" aria-expanded="false" data-sym-tab>
         <span>Araç çekişten düştü</span><svg class="ic sym__plus" aria-hidden="true"><use href="#i-plus"></use></svg>
       </button>
-      <div class="sym__panel" id="sym-p-cekis" role="region" aria-labelledby="sym-t-cekis" hidden>
+      <div class="sym__panel" id="sym-p-cekis" role="region" aria-labelledby="sym-t-cekis">
         <h3 class="sym__h">Araç çekişten düştü</h3>
         <p class="sym__lead">Güç kaybı; aracın hava, yakıt, turbo veya egzoz sistemlerinden birinde değerlerin düşmesiyle ortaya çıkabilir. Bazı araçlar bir arıza algıladığında motoru korumak için güvenli moda geçer.</p>
         
@@ -375,7 +433,7 @@
       <button type="button" class="sym__tab" id="sym-t-vites" aria-controls="sym-p-vites" aria-expanded="false" data-sym-tab>
         <span>Vites geçişlerinde sorun var</span><svg class="ic sym__plus" aria-hidden="true"><use href="#i-plus"></use></svg>
       </button>
-      <div class="sym__panel" id="sym-p-vites" role="region" aria-labelledby="sym-t-vites" hidden>
+      <div class="sym__panel" id="sym-p-vites" role="region" aria-labelledby="sym-t-vites">
         <h3 class="sym__h">Vites geçişlerinde sorun var</h3>
         <p class="sym__lead">Vitesin zor geçmesi, vites atması ya da otomatik şanzımanda sert veya geç geçişler; debriyaj, bağlantı mekanizması, yağ veya kontrol sistemiyle ilgili olabilir.</p>
         
@@ -402,7 +460,7 @@
       <button type="button" class="sym__tab" id="sym-t-yakit" aria-controls="sym-p-yakit" aria-expanded="false" data-sym-tab>
         <span>Yakıt tüketimi arttı</span><svg class="ic sym__plus" aria-hidden="true"><use href="#i-plus"></use></svg>
       </button>
-      <div class="sym__panel" id="sym-p-yakit" role="region" aria-labelledby="sym-t-yakit" hidden>
+      <div class="sym__panel" id="sym-p-yakit" role="region" aria-labelledby="sym-t-yakit">
         <h3 class="sym__h">Yakıt tüketimi arttı</h3>
         <p class="sym__lead">Tüketimdeki artış; sürüş koşulları ve mevsim gibi normal etkenlerden de, aracın yanlış yakıt karışımıyla çalışmasına yol açan bir sorundan da kaynaklanabilir.</p>
         
@@ -554,7 +612,7 @@
     </div>
     <div class="map reveal" data-map data-src="https://maps.google.com/maps?q=BYM%20SERV%C4%B0S%2C%20G%C3%B6ksun%2C%20Kahramanmara%C5%9F&amp;z=15&amp;output=embed">
       <img src="assets/media/bym-servis-dis-cephe.webp" alt="" width="534" height="297" loading="lazy" decoding="async">
-      <button type="button" class="map__btn" data-map-load><svg class="ic" aria-hidden="true"><use href="#i-pin"></use></svg> Haritayı göster</button>
+      <a class="map__btn" href="https://www.google.com/maps/search/?api=1&amp;query=BYM%20SERV%C4%B0S%2C%20G%C3%B6ksun%2C%20Kahramanmara%C5%9F" target="_blank" rel="noopener" data-map-load><svg class="ic" aria-hidden="true"><use href="#i-pin"></use></svg> Haritayı göster</a>
     </div>
   </div>
 </section>

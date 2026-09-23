@@ -121,6 +121,7 @@ def head(r, yol, baslik, aciklama, schema=None, robots="index,follow", og_img=No
 <html lang="tr" data-root="{r}">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.className+=" js";</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{e(baslik)}</title>
 <meta name="description" content="{e(aciklama)}">
@@ -322,6 +323,82 @@ def rel(yol):
 # ---------------------------------------------------------------------------
 # ORTAK BÖLÜMLER
 # ---------------------------------------------------------------------------
+def fallback_form(fid, r):
+    """Wizard çalışmadığında (JS kapalı ya da yüklenemedi) gösterilen tek sayfalık randevu formu.
+    JS varsa alanlar birleştirilip WhatsApp mesajı olarak açılır; JS yoksa form wa.me'ye hazır bir
+    selamlama mesajıyla gider. Wizard başladığında bu form DOM'dan kaldırılır (wizard.js → innerHTML)."""
+    k = f"fb-{fid}"
+    hizmet = "".join(f'<option>{e(h["ad"])}</option>' for h in I.HIZMETLER)
+    saat = "".join(f"<option>{e(t)}</option>" for t in CFG["randevu"]["saatler"])
+    kapali = json.dumps(CFG["randevu"]["kapali_gunler"])
+    return f"""<form class="booking__fallback" id="{k}" action="https://wa.me/{F['whatsapp']}" method="get" target="_blank" novalidate>
+      <h3 class="wz__q">Randevu talebi oluşturun</h3>
+      <p class="wz__hint">Formu doldurun; talebiniz WhatsApp üzerinden BYM Automotive'e iletilsin. Ekibimiz uygunluğu teyit etmek için size döner.</p>
+      <input type="hidden" name="text" value="{e(WA_RANDEVU)}">
+      <div class="grid-2">
+        <div class="field"><label for="{k}-service">Hizmet</label>
+          <select id="{k}-service" class="input" data-f="service" required><option value="">Hizmet seçin</option>{hizmet}</select></div>
+        <div class="field"><label for="{k}-vehicle">Araç marka / model</label>
+          <input id="{k}-vehicle" class="input" data-f="vehicle" required autocomplete="off" placeholder="Örn. BMW 520d"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="{k}-date">Tarih</label>
+          <input id="{k}-date" class="input" type="date" data-f="date" required></div>
+        <div class="field"><label for="{k}-time">Saat</label>
+          <select id="{k}-time" class="input" data-f="time" required><option value="">Saat seçin</option>{saat}</select></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="{k}-name">Ad Soyad</label>
+          <input id="{k}-name" class="input" data-f="name" required autocomplete="name" placeholder="Adınız ve soyadınız"></div>
+        <div class="field"><label for="{k}-phone">Telefon</label>
+          <input id="{k}-phone" class="input" type="tel" data-f="phone" required inputmode="tel" autocomplete="tel-national" placeholder="0 (5XX) XXX XX XX"></div>
+      </div>
+      <div class="field"><label for="{k}-problem">Sorun / açıklama <span class="opt-l">(isteğe bağlı)</span></label>
+        <textarea id="{k}-problem" class="input" data-f="problem" rows="3" maxlength="500" placeholder="Örn: Motor arıza lambası yanıyor ve araç son günlerde titriyor."></textarea></div>
+      <p class="err booking__fb-err" role="alert"></p>
+      <div class="booking__fb-foot">
+        <button type="submit" class="btn btn--accent btn--lg">Randevu Talebi Gönder {ikon('i-arrow')}</button>
+        <a class="booking__fb-tel" href="tel:{F['telefon_link']}">{ikon('i-phone')} {e(F['telefon_gorunen'])}</a>
+      </div>
+      <p class="booking__fb-ok" role="status"></p>
+      <p class="wz__legal">Talebi göndererek <a href="{r}kvkk/">KVKK Aydınlatma Metni</a>'ni okuduğunuzu kabul edersiniz.</p>
+    </form>
+    <script>(function(){{
+      var f=document.getElementById("{k}");if(!f)return;
+      var closed={kapali};
+      function p(n){{return(n<10?"0":"")+n;}}
+      function v(x){{var el=f.querySelector('[data-f="'+x+'"]');return el?el.value.replace(/^\\s+|\\s+$/g,""):"";}}
+      var t=new Date(),min=t.getFullYear()+"-"+p(t.getMonth()+1)+"-"+p(t.getDate());
+      f.querySelector('[data-f="date"]').setAttribute("min",min);
+      f.addEventListener("submit",function(ev){{
+        ev.preventDefault();
+        var err=f.querySelector(".booking__fb-err"),ok=f.querySelector(".booking__fb-ok"),m="";
+        err.textContent="";ok.textContent="";
+        var d=v("date"),ph=v("phone").replace(/\\D/g,"");
+        if(ph.indexOf("90")===0)ph=ph.slice(2);if(ph.charAt(0)==="0")ph=ph.slice(1);
+        var dp=d.split("-"),day=d?new Date(+dp[0],+dp[1]-1,+dp[2]).getDay():-1;
+        if(!v("service"))m="Lütfen bir hizmet seçin.";
+        else if(!v("vehicle"))m="Lütfen aracınızın marka ve modelini girin.";
+        else if(!d)m="Lütfen tarih seçin.";
+        else if(d<min)m="Geçmiş bir tarih seçilemez.";
+        else if(closed.indexOf(day)>-1)m="Seçtiğiniz gün kapalıyız. Lütfen başka bir gün seçin.";
+        else if(!v("time"))m="Lütfen saat seçin.";
+        else if(v("name").split(/\\s+/).length<2)m="Lütfen adınızı ve soyadınızı girin.";
+        else if(!/^[2-5][0-9]{{9}}$/.test(ph))m="Lütfen geçerli bir telefon numarası girin.";
+        if(m){{err.textContent=m;return;}}
+        var L=["Merhaba BYM Automotive,","Randevu talebinde bulunmak istiyorum.",""];
+        L.push("Hizmet: "+v("service"));L.push("Araç: "+v("vehicle"));
+        L.push("Tarih: "+dp[2]+"."+dp[1]+"."+dp[0]);L.push("Saat: "+v("time"));
+        L.push("Ad Soyad: "+v("name").replace(/\\s+/g," "));L.push("Telefon: 0"+ph);
+        if(v("problem"))L.push("Sorun: "+v("problem"));
+        L.push("","Randevu uygunluğunun teyit edilmesini rica ederim.");
+        var url=f.getAttribute("action")+"?text="+encodeURIComponent(L.join("\\n"));
+        var w=window.open(url,"_blank");if(w){{w.opener=null;}}else{{window.location.href=url;}}
+        ok.textContent="WhatsApp açıldı. Mesajı gönderdiğinizde talebiniz BYM Automotive'e ulaşır; ekibimiz uygunluğu teyit etmek için size döner.";
+      }});
+    }})();</script>"""
+
+
 def booking_block(r, h_tag="h2", baslik_id="randevu-baslik"):
     return f"""
 <div class="booking-shell">
@@ -338,17 +415,9 @@ def booking_block(r, h_tag="h2", baslik_id="randevu-baslik"):
     <p class="booking-alt">Telefonla randevu için <a href="tel:{F['telefon_link']}">{e(F['telefon_gorunen'])}</a></p>
   </div>
   <div class="booking reveal" id="{baslik_id}-form" data-booking>
-    <noscript><p class="booking__noscript">Randevu sihirbazı için JavaScript gereklidir. Randevu almak için <a href="{wa_link(WA_GENEL)}">WhatsApp</a> veya <a href="tel:{F['telefon_link']}">telefon</a> ile ulaşabilirsiniz.</p></noscript>
+    <script>(function(){{var b=document.getElementById("{baslik_id}-form");if(!b)return;b.className+=" is-js";setTimeout(function(){{if(!/is-ready/.test(b.className))b.className+=" is-failed";}},8000);}})();</script>
     <div class="booking__skeleton" aria-hidden="true"></div>
-    <div class="booking__fallback" role="alert">
-      <p class="booking__fallback-t">Randevu formu şu anda yüklenemedi.</p>
-      <p class="muted">Randevu talebinizi WhatsApp'tan veya telefonla hemen iletebilirsiniz.</p>
-      <div class="btn-row">
-        <a class="btn btn--wa" href="{wa_link(WA_RANDEVU)}" target="_blank" rel="noopener">{ikon('i-wa')} WhatsApp'tan yazın</a>
-        <a class="btn btn--ghost" href="tel:{F['telefon_link']}">{ikon('i-phone')} {e(F['telefon_gorunen'])}</a>
-      </div>
-    </div>
-    <script>setTimeout(function(){{var b=document.getElementById("{baslik_id}-form");if(b&&!/is-ready/.test(b.className))b.className+=" is-failed";}},8000);</script>
+    {fallback_form(baslik_id, r)}
   </div>
 </div>"""
 
@@ -392,7 +461,7 @@ def contact_block(r):
     </div>
     <div class="map reveal" data-map data-src="https://maps.google.com/maps?q={q}&amp;z=15&amp;output=embed">
       <img src="{r}assets/media/{M['hakkimizda']['src']}" alt="" width="{M['hakkimizda']['w']}" height="{M['hakkimizda']['h']}" loading="lazy" decoding="async">
-      <button type="button" class="map__btn" data-map-load>{ikon('i-pin')} Haritayı göster</button>
+      <a class="map__btn" href="https://www.google.com/maps/search/?api=1&amp;query={q}" target="_blank" rel="noopener" data-map-load>{ikon('i-pin')} Haritayı göster</a>
     </div>
   </div>
 </section>"""
@@ -470,7 +539,7 @@ def symptom_block(r, baslik_tag="h2"):
       <button type="button" class="sym__tab" id="sym-t-{s_['id']}" aria-controls="sym-p-{s_['id']}" aria-expanded="{str(acik).lower()}" data-sym-tab>
         <span>{e(s_['baslik'])}</span>{ikon('i-plus', 'ic sym__plus')}
       </button>
-      <div class="sym__panel" id="sym-p-{s_['id']}" role="region" aria-labelledby="sym-t-{s_['id']}" {'' if acik else 'hidden'}>
+      <div class="sym__panel" id="sym-p-{s_['id']}" role="region" aria-labelledby="sym-t-{s_['id']}">
         <h3 class="sym__h">{e(s_['baslik'])}</h3>
         <p class="sym__lead">{e(s_['aciklama'])}</p>
         {uyari}

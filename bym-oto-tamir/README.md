@@ -76,8 +76,11 @@ URL ile ön doldurma: `/randevu/?hizmet=klima&marka=BMW&not=Klima%20soğutmuyor`
 - Onay ekranı "Randevu talebiniz alındı" der; randevunun kesinleştiğini iddia etmez, ekip uygunluğu teyit eder.
 - **Çalışma saatleri / randevu saatleri:** `site.json → randevu.saatler`, kapalı günler `randevu.kapali_gunler`
   (0 = Pazar), resmi tatiller `randevu.tatiller` (`YYYY-MM-DD`). Değiştirdikten sonra `python3 _build/build.py`.
-- JavaScript kapalıysa `<noscript>` mesajı, JS açık ama form yüklenemezse (ağ hatası, çok eski tarayıcı)
-  WhatsApp/telefon yedeği gösterilir; boş kutu kalmaz.
+- **Yedek form:** JavaScript kapalıysa veya sihirbaz 8 sn içinde yüklenemezse (ağ hatası, çok eski tarayıcı)
+  ayrı alanlı bir form (hizmet, araç, tarih, saat, ad soyad, telefon, sorun) görünür ve WhatsApp'a gönderir.
+  JS tamamen kapalıyken tarayıcı alanları birleştiremediği için WhatsApp yalnızca selamlama metniyle açılır.
+- Sayfa `<html class="js">` desenini kullanır: animasyon, belirti sekmeleri, menü ve filtreler yalnızca JS açıkken
+  devreye girer; JS kapalıyken tüm içerik görünür kalır.
 - Kod eski tarayıcılarla uyumlu tutulur (top-level await ve `#özel` metot kullanılmaz).
 
 ### Veri modeli

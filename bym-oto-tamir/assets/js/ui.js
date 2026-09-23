@@ -91,6 +91,8 @@ export function initSymptoms() {
   if (!root) return;
   const tabs = [...root.querySelectorAll("[data-sym-tab]")];
   const desktop = matchMedia("(min-width: 1024px)");
+  // HTML'de tüm paneller açık gelir (JS'siz ortamlar için); JS yalnızca seçili olanı açık bırakır
+  tabs.forEach((t) => { document.getElementById(t.getAttribute("aria-controls")).hidden = t.getAttribute("aria-expanded") !== "true"; });
   const open = (tab, focus = false) => {
     const isOpen = tab.getAttribute("aria-expanded") === "true";
     // Mobilde açık olana tekrar dokunmak kapatır; desktop'ta her zaman bir panel açık kalır
@@ -218,7 +220,8 @@ export function initGallery() {
 // Harita yalnızca kullanıcı isteyince yüklenir (performans + gizlilik)
 export function initMap() {
   document.querySelectorAll("[data-map]").forEach((box) => {
-    box.querySelector("[data-map-load]")?.addEventListener("click", () => {
+    box.querySelector("[data-map-load]")?.addEventListener("click", (e) => {
+      e.preventDefault();
       const f = document.createElement("iframe");
       f.src = box.dataset.src;
       f.title = "BYM Automotive konumu – Google Haritalar";
