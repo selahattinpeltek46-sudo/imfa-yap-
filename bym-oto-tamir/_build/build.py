@@ -272,7 +272,6 @@ def business_schema():
             "postalCode": F["adres"]["posta_kodu"],
             "addressCountry": F["adres"]["ulke"],
         },
-        "geo": {"@type": "GeoCoordinates", "latitude": F["konum"]["enlem"], "longitude": F["konum"]["boylam"]},
         "areaServed": [{"@type": "City", "name": "Göksun"}, {"@type": "AdministrativeArea", "name": "Kahramanmaraş"}],
         "openingHoursSpecification": hours,
         "hasOfferCatalog": {
@@ -284,6 +283,8 @@ def business_schema():
             ],
         },
     }
+    if F.get("konum"):
+        d["geo"] = {"@type": "GeoCoordinates", "latitude": F["konum"]["enlem"], "longitude": F["konum"]["boylam"]}
     if same:
         d["sameAs"] = same
     return d
@@ -1001,7 +1002,9 @@ def yonetim():
 
 def sayfa_404():
     yol = "404.html"
-    r = ""  # GitHub Pages 404'ü kök yoldan sunar; mutlak kök gerektiğinde site_url kullanılır
+    # 404 her derinlikte sunulur; bu yüzden site kökü mutlak yol olarak verilir
+    from urllib.parse import urlparse
+    r = urlparse(URL).path.rstrip("/") + "/"
     html = head(r, "404.html", "Sayfa bulunamadı | BYM Automotive", "Aradığınız sayfa bulunamadı.", robots="noindex")
     html += header(r, "")
     html += f"""<main id="icerik">

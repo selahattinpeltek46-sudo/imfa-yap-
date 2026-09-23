@@ -1,8 +1,8 @@
 {
   "_not": "TÜM FİRMA BİLGİLERİ BURADAN YÖNETİLİR. 'DOGRULANACAK' işaretli alanlar örnek/yer tutucudur; BYM Automotive'den teyit alınmadan yayına çıkılmamalıdır. Değişiklikten sonra: python3 _build/build.py",
-  "onizleme": true,
-  "site_url": "https://www.bymautomotive.com",
-  "_site_url_not": "DOGRULANACAK — alan adı alındığında güncellenecek (ör. bymautomotive.com).",
+  "onizleme": false,
+  "site_url": "https://selahattinpeltek46-sudo.github.io/bym-automotive",
+  "_site_url_not": "GitHub Pages adresi. Alan adı alınınca buraya yazılır ve kök klasöre CNAME dosyası eklenir.",
   "firma": {
     "ad": "BYM Automotive",
     "kisa_ad": "BYM",
@@ -20,14 +20,11 @@
       "ulke": "TR"
     },
     "_adres_not": "İşletmeden alınan güncel adres. Google İşletme Profili'ndeki adres (Kırım Caddesi No: 2/A, 46600) buna göre güncellenmeli.",
-    "konum": {
-      "enlem": 38.0206,
-      "boylam": 36.4969
-    },
-    "_konum_not": "DOGRULANACAK — koordinat hâlâ Göksun merkezi; Google Haritalar'daki işletme pininden alınmalı.",
-    "harita_sorgu": "BYM SERVİS Nevzat Pakdil Bulvarı Sanayi Sitesi Göksun Kahramanmaraş",
+    "konum": null,
+    "_konum_not": "Koordinat girilmedi; harita ve yol tarifi Google'daki 'BYM SERVİS' kaydını kullanır. Kesin koordinat eklenirse schema'ya 'geo' olarak yazılır: {\"enlem\": 38.0, \"boylam\": 36.4}",
+    "harita_sorgu": "BYM SERVİS, Göksun, Kahramanmaraş",
     "google_yorum_link": "https://www.google.com/maps/search/?api=1&query=BYM+SERV%C4%B0S+G%C3%B6ksun",
-    "instagram": "",
+    "instagram": "https://www.instagram.com/bymotonline/",
     "facebook": "",
     "calisma_saatleri": [
       {
