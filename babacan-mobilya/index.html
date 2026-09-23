@@ -154,6 +154,16 @@
   .hero .lede { font-size: 1.05rem; color: rgba(255,255,255,0.82); margin: 1.4rem auto 2.2rem; max-width: 42ch; }
   .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
+  /* Trust bar (hero altı) */
+  .trust-bar { border-bottom: 1px solid var(--hair); }
+  .trust-bar-row { display: grid; grid-template-columns: repeat(4, 1fr); padding: 1.7rem 0; }
+  .trust-bar-row > div { display: flex; align-items: center; gap: 0.8rem; padding: 0 1.4rem; border-left: 1px solid var(--hair); }
+  .trust-bar-row > div:first-child { border-left: none; padding-left: 0; }
+  .tb-icon { flex-shrink: 0; width: 1.6rem; height: 1.6rem; color: var(--wood); }
+  .tb-icon svg { width: 100%; height: 100%; }
+  .tb-h { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.05rem; }
+  .tb-p { font-size: 0.76rem; color: var(--gray); margin-top: 0.1rem; }
+
   section { padding: 6rem 0; }
   .section-tight { padding: 4rem 0; }
 
@@ -286,11 +296,15 @@
     .story-step:nth-child(2n+1) { border-left: none; padding-left: 0; }
     .work-grid { grid-template-columns: 1fr 1fr; }
     .trust-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .trust-bar-row { grid-template-columns: 1fr 1fr; row-gap: 1.4rem; }
+    .trust-bar-row > div:nth-child(2n+1) { border-left: none; padding-left: 0; }
   }
   @media (max-width: 780px) {
     nav.primary-nav { display: none; }
     .header-wa { display: none; }
     .hamburger { display: block; }
+    .trust-bar-row { grid-template-columns: 1fr; row-gap: 1.2rem; }
+    .trust-bar-row > div { border-left: none; padding-left: 0; }
     .prod-grid { grid-template-columns: 1fr; }
     .work-grid { grid-template-columns: 1fr; }
     .story-steps { grid-template-columns: 1fr; row-gap: 2rem; }
@@ -352,12 +366,21 @@
   <div class="hero-scrim"></div>
   <div class="container hero-inner reveal">
     <p class="eyebrow">Babacan Mobilya</p>
-    <h1>Mobilya, mekânla<br>buluştuğunda anlam kazanır.</h1>
-    <p class="lede">Göksun'da üretim, tasarım ve mobilya çözümleri.</p>
+    <h1>Mekânınıza özel.<br>Size özel.</h1>
+    <p class="lede">Özel ölçü mobilya tasarımı ve üretimi.</p>
     <div class="hero-ctas">
-      <a class="btn btn-light-solid" href="#calismalarimiz">Çalışmalarımızı Keşfet</a>
-      <a class="btn btn-light js-wa" data-wa-msg="Merhaba, Babacan Mobilya'dan bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Ulaş</a>
+      <a class="btn btn-light-solid js-wa" data-wa-msg="Merhaba, projemi konuşmak istiyorum. Alanımın fotoğrafını gönderebilirim." href="https://wa.me/905056088235" target="_blank" rel="noopener">Projenizi Konuşalım</a>
+      <a class="btn btn-light" href="#calismalarimiz">Çalışmalarımızı Keşfet</a>
     </div>
+  </div>
+</div>
+
+<div class="trust-bar reveal">
+  <div class="container trust-bar-row">
+    <div><span class="tb-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg></span><div><div class="tb-h">Özel Ölçü</div><div class="tb-p">Mekânınıza göre tasarım</div></div></div>
+    <div><span class="tb-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 12h4l2-7 4 14 2-7h8"/></svg></span><div><div class="tb-h">Üretim</div><div class="tb-p">Tasarımdan üretime</div></div></div>
+    <div><span class="tb-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.2-3.2a4 4 0 0 1-5.6 5.6L6.3 20.7a2 2 0 0 1-2.8-2.8L12.5 9a4 4 0 0 1 5.6-5.6l-3.3 3.2z"/></svg></span><div><div class="tb-h">Usta İşçilik</div><div class="tb-p">Detaylara önem veren üretim</div></div></div>
+    <div><span class="tb-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 3v18M3 9h6"/></svg></span><div><div class="tb-h">Montaj</div><div class="tb-p">Projenizin son aşamasına kadar</div></div></div>
   </div>
 </div>
 
