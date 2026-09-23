@@ -1,0 +1,77 @@
+{
+  "_not": "TÜM FİRMA BİLGİLERİ BURADAN YÖNETİLİR. 'DOGRULANACAK' işaretli alanlar örnek/yer tutucudur; BYM Oto Tamir'den teyit alınmadan yayına çıkılmamalıdır. Değişiklikten sonra: python3 _build/build.py",
+
+  "onizleme": true,
+
+  "site_url": "https://www.bymototamir.com",
+  "_site_url_not": "DOGRULANACAK — alan adı alındığında güncellenecek (canonical, sitemap, schema).",
+
+  "firma": {
+    "ad": "BYM Oto Tamir",
+    "kisa_ad": "BYM",
+    "slogan": "Profesyonel bakım, doğru teşhis, şeffaf servis deneyimi.",
+    "tabela_slogani": "Aracınızın Özel Hastanesi",
+    "telefon_gorunen": "0 (5XX) XXX XX XX",
+    "telefon_link": "+905000000000",
+    "whatsapp": "905000000000",
+    "_iletisim_not": "DOGRULANACAK — gerçek telefon ve WhatsApp numarası.",
+    "adres": {
+      "sokak": "Adres bilgisi eklenecek",
+      "ilce": "Göksun",
+      "il": "Kahramanmaraş",
+      "posta_kodu": "46600",
+      "ulke": "TR"
+    },
+    "_adres_not": "DOGRULANACAK — açık adres (Google İşletme Profili ile birebir aynı yazılmalı).",
+    "konum": { "enlem": 38.0206, "boylam": 36.4969 },
+    "_konum_not": "DOGRULANACAK — şu an Göksun merkezi. İşletmenin gerçek koordinatı girilmeli.",
+    "harita_sorgu": "BYM Oto Tamir Göksun Kahramanmaraş",
+    "google_yorum_link": "https://www.google.com/maps/search/?api=1&query=BYM+Oto+Tamir+G%C3%B6ksun",
+    "instagram": "",
+    "facebook": "",
+    "calisma_saatleri": [
+      { "gunler": "Pazartesi – Cumartesi", "saat": "09:00 – 18:00", "schema_gunler": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "acilis": "09:00", "kapanis": "18:00" },
+      { "gunler": "Pazar", "saat": "Kapalı", "schema_gunler": [], "acilis": "", "kapanis": "" }
+    ],
+    "_saat_not": "DOGRULANACAK — çalışma saatleri."
+  },
+
+  "medya": {
+    "_not": "Görseller assets/media klasöründedir. Hero videosu eklemek için dosyayı assets/media içine koyup 'hero.video' alanına adını yazın (ör. bym-hero.mp4). Video yoksa 'hero.poster' görseli kullanılır.",
+    "hero": {
+      "video": "",
+      "video_webm": "",
+      "poster": "bym-lift-arac.webp",
+      "alt": "BYM Oto Tamir servis alanında lift üzerinde bakımdaki araç"
+    },
+    "hakkimizda": { "src": "bym-servis-dis-cephe.webp", "alt": "BYM Oto Tamir servis binasının dış cephesi", "w": 534, "h": 297 },
+    "garaj": [
+      { "src": "bym-kanal-arac-kabul.webp", "w": 622, "h": 705, "alt": "Servis kanalında kontrol için bekleyen beyaz Porsche Panamera", "etiket": "Araç kabul" },
+      { "src": "bym-lift-arac.webp", "w": 535, "h": 410, "alt": "Lift üzerinde alt takım kontrolü yapılan Volkswagen Golf", "etiket": "Lift · Alt takım" },
+      { "src": "bym-motor-tdi.webp", "w": 560, "h": 402, "alt": "Volkswagen TDI dizel motor bölmesi", "etiket": "Motor" },
+      { "src": "bym-motor-bolmesi.webp", "w": 345, "h": 417, "alt": "Bakım sırasında açık motor kaputu ve TDI motor", "etiket": "Bakım" },
+      { "src": "bym-servis-dis-cephe.webp", "w": 534, "h": 297, "alt": "BYM Servis tabelası ve direğin üzerindeki kırmızı araç", "etiket": "Servis binası" }
+    ]
+  },
+
+  "markalar": {
+    "_not": "DOGRULANACAK — BYM'nin gerçekten hizmet verdiği markalar. Fotoğraflarda Volkswagen ve Porsche araçlar görülüyor.",
+    "liste": ["BMW", "Mercedes-Benz", "Audi", "Volkswagen", "Toyota", "Ford", "Renault", "Fiat", "Peugeot", "Opel", "Hyundai", "Kia"]
+  },
+
+  "yorumlar": {
+    "_not": "Sadece GERÇEK Google yorumları eklenir. Liste boşsa site, Google yorumlarına yönlendiren bir kart gösterir. Örnek: {\"isim\": \"A. Y.\", \"arac\": \"VW Passat\", \"puan\": 5, \"metin\": \"...\", \"link\": \"https://...\"}",
+    "liste": []
+  },
+
+  "randevu": {
+    "_not": "mod: 'demo' → randevu tarayıcıda (localStorage) saklanır, müşteri WhatsApp ile iletir. 'api' → api_url adresine POST edilir (bkz. README).",
+    "mod": "demo",
+    "api_url": "",
+    "saatler": ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00"],
+    "kapali_gunler": [0],
+    "_kapali_gunler_not": "0 = Pazar, 6 = Cumartesi",
+    "ileri_gun_limiti": 45,
+    "tatiller": []
+  }
+}
