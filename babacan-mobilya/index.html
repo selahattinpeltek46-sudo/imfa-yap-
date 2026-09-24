@@ -242,12 +242,15 @@
 
   /* Çalışmalarımız */
   .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
-  .work-item { position: relative; aspect-ratio: 4/3.3; overflow: hidden; }
-  .work-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
-  .work-item:hover img { transform: scale(1.05); }
-  .work-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.2rem 1.3rem; background: linear-gradient(0deg, rgba(20,17,14,0.85) 0%, rgba(20,17,14,0.15) 75%, transparent 100%); color: #fff; }
+  .work-item { position: relative; }
+  .work-art { display: block; aspect-ratio: 4/3.3; overflow: hidden; }
+  .work-art img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; display: block; }
+  .work-item:hover .work-art img { transform: scale(1.05); }
+  .work-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.2rem 1.3rem; background: linear-gradient(0deg, rgba(20,17,14,0.9) 0%, rgba(20,17,14,0.55) 65%, transparent 100%); color: #fff; pointer-events: none; }
   .work-cap h3 { font-size: 1.1rem; font-weight: 500; }
   .work-cap p { font-size: 0.76rem; color: rgba(255,255,255,0.78); margin: 0.25rem 0 0; }
+  .work-cap .work-cta { pointer-events: auto; display: inline-block; margin-top: 0.7rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: #fff; border: 1px solid rgba(255,255,255,0.55); padding: 0.45rem 0.85rem; text-decoration: none; }
+  .work-cap .work-cta:hover { background: #fff; color: var(--charcoal); border-color: #fff; }
 
   /* About */
   .about-wrap { text-align: center; max-width: 60ch; margin: 0 auto; }
@@ -566,30 +569,136 @@
       <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--wood);font-size:1.1rem;margin-top:0.7rem;">Söylediklerimizden çok, yaptıklarımız konuşsun.</p>
     </div>
     <div class="work-grid reveal">
-      <a class="work-item" href="images/foto (3).png" target="_blank" rel="noopener">
-        <img src="images/foto (3).png" alt="L tipi mutfak dolabı, gri granit tezgah" width="606" height="805" loading="lazy" decoding="async">
-        <div class="work-cap"><h3>Özel Ölçü Mutfak</h3><p>Göksun / Kahramanmaraş — Mutfak Dolabı</p></div>
-      </a>
-      <a class="work-item" href="images/foto (6).png" target="_blank" rel="noopener">
-        <img src="images/foto (6).png" alt="Aynalı sürgülü gömme dolap" width="547" height="814" loading="lazy" decoding="async">
-        <div class="work-cap"><h3>Aynalı Gömme Dolap</h3><p>Göksun / Kahramanmaraş — Gömme Dolap</p></div>
-      </a>
-      <a class="work-item" href="images/foto (4).png" target="_blank" rel="noopener">
-        <img src="images/foto (4).png" alt="Ahşap panelli vestiyer" width="442" height="818" loading="lazy" decoding="async">
-        <div class="work-cap"><h3>Vestiyer</h3><p>Göksun / Kahramanmaraş — Vestiyer</p></div>
-      </a>
-      <a class="work-item" href="images/foto (13).png" target="_blank" rel="noopener">
-        <img src="images/foto (13).png" alt="Boydan boya dolaplı mutfak kurulumu" width="833" height="518" loading="lazy" decoding="async">
-        <div class="work-cap"><h3>Boy Dolaplı Mutfak</h3><p>Göksun / Kahramanmaraş — Mutfak Dolabı</p></div>
-      </a>
-      <a class="work-item" href="images/foto (2).png" target="_blank" rel="noopener">
-        <img src="images/foto (2).png" alt="Aynalı, baklava desenli kapaklarla vestibül dolabı" width="590" height="831" loading="lazy" decoding="async">
-        <div class="work-cap"><h3>Vestibül Dolabı</h3><p>Göksun / Kahramanmaraş — Gömme Dolap</p></div>
-      </a>
-      <a class="work-item" href="images/foto (11).png" target="_blank" rel="noopener">
-        <img src="images/foto (11).png" alt="Gizli LED aydınlatmalı özel kesim ayna" width="509" height="809" loading="lazy" decoding="async">
-        <div class="work-cap"><h3>Işıklı Hol Konsolu</h3><p>Göksun / Kahramanmaraş — Hol Mobilyası</p></div>
-      </a>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (3).png" target="_blank" rel="noopener" aria-label="Özel Ölçü Mutfak — büyük görseli aç">
+          <img src="images/foto (3).png" alt="L tipi mutfak dolabı, gri granit tezgah" width="606" height="805" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Özel Ölçü Mutfak</h3>
+          <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, mutfak dolabı için ücretsiz keşif randevusu almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Keşif Randevusu İste</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (6).png" target="_blank" rel="noopener" aria-label="Aynalı Gömme Dolap — büyük görseli aç">
+          <img src="images/foto (6).png" alt="Aynalı sürgülü gömme dolap" width="547" height="814" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Aynalı Gömme Dolap</h3>
+          <p>Göksun / Kahramanmaraş — Gömme Dolap</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, aynalı gömme dolap modeli hakkında fiyat teklifi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Fiyat Teklifi Alın</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (4).png" target="_blank" rel="noopener" aria-label="Vestiyer — büyük görseli aç">
+          <img src="images/foto (4).png" alt="Ahşap panelli vestiyer" width="442" height="818" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Vestiyer</h3>
+          <p>Göksun / Kahramanmaraş — Vestiyer</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, bu vestiyer modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (13).png" target="_blank" rel="noopener" aria-label="Boy Dolaplı Mutfak — büyük görseli aç">
+          <img src="images/foto (13).png" alt="Boydan boya dolaplı mutfak kurulumu" width="833" height="518" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Boy Dolaplı Mutfak</h3>
+          <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, boy dolaplı mutfak modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (2).png" target="_blank" rel="noopener" aria-label="Vestibül Dolabı — büyük görseli aç">
+          <img src="images/foto (2).png" alt="Aynalı, baklava desenli kapaklarla vestibül dolabı" width="590" height="831" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Vestibül Dolabı</h3>
+          <p>Göksun / Kahramanmaraş — Gömme Dolap</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, vestibül dolabı modeli hakkında bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Sorun</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (11).png" target="_blank" rel="noopener" aria-label="Işıklı Hol Konsolu — büyük görseli aç">
+          <img src="images/foto (11).png" alt="Gizli LED aydınlatmalı özel kesim ayna" width="509" height="809" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Işıklı Hol Konsolu</h3>
+          <p>Göksun / Kahramanmaraş — Hol Mobilyası</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, ışıklı hol konsolu gibi özel bir çözüm için keşif randevusu almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Özel Ölçü İçin Keşif İste</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (14).png" target="_blank" rel="noopener" aria-label="Özel Ölçü Gardırop — büyük görseli aç">
+          <img src="images/foto (14).png" alt="Beyaz kapaklı, siyah kulplu özel ölçü gardırop" width="648" height="847" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Özel Ölçü Gardırop</h3>
+          <p>Göksun / Kahramanmaraş — Gardırop</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, bu gardırop modeli hakkında fiyat teklifi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Fiyat Teklifi Alın</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (15).webp" target="_blank" rel="noopener" aria-label="L Tipi Mutfak Dolabı — büyük görseli aç">
+          <img src="images/foto (15).webp" alt="L tipi açık gri kapaklı mutfak dolabı, yeni yapı" width="858" height="788" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>L Tipi Mutfak Dolabı</h3>
+          <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, bu tarz bir mutfak dolabı için ücretsiz keşif randevusu almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Keşif Randevusu İste</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (16).png" target="_blank" rel="noopener" aria-label="Siyah Kenar Detaylı Mutfak — büyük görseli aç">
+          <img src="images/foto (16).png" alt="Siyah kenar detaylı beyaz mutfak dolabı, granit tezgah" width="643" height="715" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Siyah Kenar Detaylı Mutfak</h3>
+          <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, bu mutfak modelini kendi mutfağım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (17).png" target="_blank" rel="noopener" aria-label="İki Tonlu Mutfak Köşesi — büyük görseli aç">
+          <img src="images/foto (17).png" alt="Krem ve mint yeşili iki tonlu, cam kapaklı mutfak köşesi" width="638" height="867" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>İki Tonlu Mutfak Köşesi</h3>
+          <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, bu iki tonlu mutfak modelinin benzerini kendi mekânım için istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (18).png" target="_blank" rel="noopener" aria-label="Bar Köşeli Mutfak Detayı — büyük görseli aç">
+          <img src="images/foto (18).png" alt="İki tonlu mutfağın bar köşesi görünümü, pencere kenarı" width="621" height="873" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Bar Köşeli Mutfak Detayı</h3>
+          <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, bar köşeli mutfak modeli hakkında bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Sorun</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (19).webp" target="_blank" rel="noopener" aria-label="Merdiven Altı Özel Depolama — büyük görseli aç">
+          <img src="images/foto (19).webp" alt="Merdiven altı boşluğa özel ölçü, açılı kapaklı depolama dolabı" width="871" height="853" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Merdiven Altı Özel Depolama</h3>
+          <p>Göksun / Kahramanmaraş — Özel Ölçü</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, merdiven altı gibi standart olmayan bir alanım var, özel ölçü depolama için keşif randevusu almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Özel Ölçü İçin Keşif İste</a>
+        </div>
+      </div>
+      <div class="work-item">
+        <a class="work-art" href="images/foto (20).webp" target="_blank" rel="noopener" aria-label="Vitrin Dolabı ve Raf Ünitesi — büyük görseli aç">
+          <img src="images/foto (20).webp" alt="Cam kapaklı vitrin dolabı ve açık raf ünitesi, pencere kenarı" width="819" height="890" loading="lazy" decoding="async">
+        </a>
+        <div class="work-cap">
+          <h3>Vitrin Dolabı ve Raf Ünitesi</h3>
+          <p>Göksun / Kahramanmaraş — Özel Köşe Çözümü</p>
+          <a class="work-cta js-wa" data-wa-msg="Merhaba, vitrin dolabı ve raf ünitesi hakkında fiyat teklifi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Fiyat Teklifi Alın</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
