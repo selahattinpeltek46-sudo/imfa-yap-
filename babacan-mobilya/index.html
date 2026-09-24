@@ -180,6 +180,12 @@
   .statement h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 700; letter-spacing: 0.03em; line-height: 1.5; }
   .statement p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.3rem; color: var(--wood); margin-top: 1.1rem; }
 
+  /* Fotoğraf gönderme CTA */
+  .photo-cta-inner { text-align: center; }
+  .photo-cta-inner h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 500; margin-top: 0.6rem; }
+  .photo-cta-inner p.lede { max-width: 52ch; margin: 1rem auto 0; color: var(--gray); font-size: 1.02rem; }
+  .photo-cta-inner .hero-ctas { margin-top: 1.8rem; }
+
   /* Neden Özel Ölçü */
   .why-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 4rem; align-items: start; }
   .why-grid h2 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); font-weight: 500; line-height: 1.2; }
@@ -226,6 +232,13 @@
   .detail-list li { border-top: 1px solid var(--hair); padding-top: 1rem; }
   .detail-list .k { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--wood); }
   .detail-list .v { font-size: 0.95rem; margin-top: 0.3rem; }
+  .detail-mini { margin-top: 3.4rem; }
+  .detail-mini > p.eyebrow { margin-bottom: 1.2rem; }
+  .detail-mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .detail-mini-item { aspect-ratio: 1/1; overflow: hidden; border-radius: 2px; }
+  .detail-mini-item .crop { width: 100%; height: 100%; background-size: 220%; background-repeat: no-repeat; transition: transform 0.5s ease; }
+  .detail-mini-item:hover .crop { transform: scale(1.06); }
+  .detail-mini-cap { margin-top: 0.6rem; font-size: 0.78rem; color: var(--gray); }
 
   /* Çalışmalarımız */
   .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
@@ -318,6 +331,7 @@
     .trust-bar-row > div { border-left: none; padding-left: 0; }
     .prod-grid { grid-template-columns: 1fr; }
     .work-grid { grid-template-columns: 1fr; }
+    .detail-mini-grid { gap: 0.6rem; }
     .story-steps { grid-template-columns: 1fr; row-gap: 2rem; }
     .story-step { border-left: none; padding-left: 0; border-top: 1px solid rgba(243,240,233,0.18); padding-top: 1.4rem; }
     .story-step:first-child { border-top: none; padding-top: 0; }
@@ -481,6 +495,17 @@
   </div>
 </section>
 
+<section aria-labelledby="photo-cta-h" class="section-tight">
+  <div class="container-nar photo-cta-inner reveal">
+    <p class="eyebrow">Başlangıç Noktası</p>
+    <h2 id="photo-cta-h">Mekânınızı bize gösterin.</h2>
+    <p class="lede">Mobilya ihtiyacınızı anlatın, mekânınızın fotoğraflarını WhatsApp'tan gönderin — birlikte değerlendirelim.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-dark js-wa" data-wa-msg="Merhaba, Babacan Mobilya'dan özel ölçü mobilya hakkında bilgi almak istiyorum. Mekânımın fotoğraflarını iletiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Fotoğraf Gönder →</a>
+    </div>
+  </div>
+</section>
+
 <section id="uretim" class="story-band" aria-labelledby="story-h">
   <div class="container reveal">
     <div class="story-head">
@@ -499,17 +524,36 @@
 </section>
 
 <section aria-labelledby="detail-h">
-  <div class="container detail-grid reveal">
-    <div class="detail-art"><div class="crop" style="background-image:url('images/foto (10).png');background-position:50% 45%;" role="img" aria-label="Gizli LED aydınlatma ve özel kesim ayna detayı"></div></div>
-    <div class="detail-head">
-      <p class="eyebrow">Detay</p>
-      <h2 id="detail-h">Yakından bakınca fark edilir.</h2>
-      <ul class="detail-list">
-        <li><div class="k">Malzeme</div><div class="v">Lake boyalı MDF, mermer desenli laminat</div></li>
-        <li><div class="k">İşçilik</div><div class="v">Yerinde ölçü ve montaj</div></li>
-        <li><div class="k">Detay</div><div class="v">Gizli LED aydınlatma</div></li>
-        <li><div class="k">Fonksiyon</div><div class="v">Depolama ve aydınlatma bir arada</div></li>
-      </ul>
+  <div class="container reveal">
+    <div class="detail-grid">
+      <div class="detail-art"><div class="crop" style="background-image:url('images/foto (10).png');background-position:50% 45%;" role="img" aria-label="Gizli LED aydınlatma ve özel kesim ayna detayı"></div></div>
+      <div class="detail-head">
+        <p class="eyebrow">Detay</p>
+        <h2 id="detail-h">Yakından bakınca fark edilir.</h2>
+        <ul class="detail-list">
+          <li><div class="k">Malzeme</div><div class="v">Lake boyalı MDF, mermer desenli laminat</div></li>
+          <li><div class="k">İşçilik</div><div class="v">Yerinde ölçü ve montaj</div></li>
+          <li><div class="k">Detay</div><div class="v">Gizli LED aydınlatma</div></li>
+          <li><div class="k">Fonksiyon</div><div class="v">Depolama ve aydınlatma bir arada</div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="detail-mini">
+      <p class="eyebrow">Detaylar</p>
+      <div class="detail-mini-grid">
+        <div>
+          <div class="detail-mini-item"><div class="crop" style="background-image:url('images/foto (1).png');background-position:62% 55%;" role="img" aria-label="Cam kapaklı mutfak dolabı detayı"></div></div>
+          <p class="detail-mini-cap">Cam kapak detayı</p>
+        </div>
+        <div>
+          <div class="detail-mini-item"><div class="crop" style="background-image:url('images/foto (6).png');background-position:32% 0%;" role="img" aria-label="Aynalı sürgülü kapak ve kulp detayı"></div></div>
+          <p class="detail-mini-cap">Kapak ve kulp detayı</p>
+        </div>
+        <div>
+          <div class="detail-mini-item"><div class="crop" style="background-image:url('images/foto (4).png');background-position:92% 59%;" role="img" aria-label="Ahşap panel dokusu detayı"></div></div>
+          <p class="detail-mini-cap">Ahşap panel dokusu</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -519,6 +563,7 @@
     <div class="prod-head reveal">
       <p class="eyebrow">Çalışmalarımız</p>
       <h2 id="work-h">Göksun'dan gerçek işler.</h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--wood);font-size:1.1rem;margin-top:0.7rem;">Söylediklerimizden çok, yaptıklarımız konuşsun.</p>
     </div>
     <div class="work-grid reveal">
       <a class="work-item" href="images/foto (3).png" target="_blank" rel="noopener">
