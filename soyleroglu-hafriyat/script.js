@@ -154,6 +154,24 @@ document.querySelectorAll('.sahadan-video[data-video-src]').forEach(tile => {
   }, { once: true });
 });
 
+// Galeri videoları — ekrana yaklaşınca yüklenir, görünürken oynar, çıkınca durur
+const lazyVideos = document.querySelectorAll('video[data-lazy-src]');
+if (lazyVideos.length && 'IntersectionObserver' in window) {
+  const videoObserver = new IntersectionObserver(entries => {
+    entries.forEach(({ target: video, isIntersecting }) => {
+      if (isIntersecting) {
+        if (!video.src) video.src = video.dataset.lazySrc;
+        video.play().catch(() => {});
+      } else if (video.src) {
+        video.pause();
+      }
+    });
+  }, { rootMargin: '200px 0px' });
+  lazyVideos.forEach(video => videoObserver.observe(video));
+} else {
+  lazyVideos.forEach(video => { video.src = video.dataset.lazySrc; video.autoplay = true; });
+}
+
 // Quote form — builds a WhatsApp message (no backend on GitHub Pages)
 const quoteForm = document.getElementById('quoteForm');
 if (quoteForm) {
