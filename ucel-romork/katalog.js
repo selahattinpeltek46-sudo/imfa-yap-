@@ -304,5 +304,9 @@ urunleriCiz();
 baglantilariKur();
 
 // Bağlantıyla doğrudan bir ürün açılabilir: ucel-romork/#on-yukleyici
-const hash = location.hash.slice(1);
-if (URUNLER.some((u) => u.id === hash)) urunAc(hash);
+function hashtenAc() {
+  const hash = location.hash.slice(1);
+  if (URUNLER.some((u) => u.id === hash)) urunAc(hash);
+}
+hashtenAc();
+window.addEventListener('hashchange', hashtenAc);
