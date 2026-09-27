@@ -322,6 +322,7 @@
     box-shadow: 0 8px 20px -6px rgba(0,0,0,0.4); text-decoration: none;
   }
   .whatsapp-float svg { width: 1.45rem; height: 1.45rem; }
+  .mobile-cta-bar { display: none; }
 
   .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.is-visible { opacity: 1; transform: translateY(0); }
@@ -356,6 +357,20 @@
     .hero-ctas .btn { justify-content: center; }
     .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem 1.5rem; }
     .footer-top > div:first-child { grid-column: 1 / -1; }
+    body { padding-bottom: 3.9rem; }
+    .whatsapp-float { display: none; }
+    .mobile-cta-bar {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+      background: var(--charcoal); box-shadow: 0 -4px 16px -6px rgba(0,0,0,0.35);
+    }
+    .mcb-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem;
+      padding: 0.65rem 0.4rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
+      color: var(--ivory); text-decoration: none; font-size: 0.66rem; font-weight: 700;
+      letter-spacing: 0.02em; border-right: 1px solid rgba(243,240,233,0.14);
+    }
+    .mcb-item:last-child { border-right: none; }
+    .mcb-item svg { width: 1.2rem; height: 1.2rem; }
   }
 </style>
 </head>
@@ -608,7 +623,7 @@
           <div class="work-cap">
             <h3>Boy Dolaplı Mutfak</h3>
             <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, boy dolaplı mutfak modelinin hakkında fiyat teklifi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Fiyat Teklifi Alın</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, boy dolaplı mutfak modeli hakkında fiyat teklifi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Fiyat Teklifi Alın</a>
           </div>
         </div>
         <div class="work-item">
@@ -628,7 +643,7 @@
           <div class="work-cap">
             <h3>Siyah Kenar Detaylı Mutfak</h3>
             <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, bu mutfak modelini modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, siyah kenar detaylı mutfak modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
           </div>
         </div>
         <div class="work-item">
@@ -638,7 +653,7 @@
           <div class="work-cap">
             <h3>İki Tonlu Mutfak Köşesi</h3>
             <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, bu iki tonlu mutfak modelinin hakkında bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Sorun</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, iki tonlu mutfak köşesi modeli hakkında bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">WhatsApp'tan Sorun</a>
           </div>
         </div>
         <div class="work-item">
@@ -678,7 +693,7 @@
           <div class="work-cap">
             <h3>İki Renkli Mutfak Dolabı</h3>
             <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, iki renkli mutfak modeli modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, iki renkli mutfak modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
           </div>
         </div>
         <div class="work-item">
@@ -688,7 +703,7 @@
           <div class="work-cap">
             <h3>Mermer Panel Detaylı Mutfak</h3>
             <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, mermer panel detaylı mutfak modeli modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, mermer panel detaylı mutfak modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
           </div>
         </div>
         <div class="work-item">
@@ -718,7 +733,7 @@
           <div class="work-cap">
             <h3>Tamamlanmış Mutfak Projesi</h3>
             <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, bu tamamlanmış mutfak projesinin için ücretsiz keşif randevusu almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Keşif Randevusu İste</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, bu tamamlanmış mutfak projesi gibi bir mutfak için ücretsiz keşif randevusu almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Keşif Randevusu İste</a>
           </div>
         </div>
         <div class="work-item">
@@ -738,7 +753,7 @@
           <div class="work-cap">
             <h3>Salon Bağlantılı Mutfak</h3>
             <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, salon bağlantılı açık mutfak modeli modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, salon bağlantılı açık mutfak modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
           </div>
         </div>
         <div class="work-item">
@@ -748,7 +763,7 @@
           <div class="work-cap">
             <h3>Siyah Granit Tezgahlı Mutfak</h3>
             <p>Göksun / Kahramanmaraş — Mutfak Dolabı</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, siyah granit tezgahlı mutfak modeli modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, siyah granit tezgahlı mutfak modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
           </div>
         </div>
         <div class="work-item">
@@ -803,7 +818,7 @@
           <div class="work-cap">
             <h3>Kabartma Desenli Gardırop</h3>
             <p>Göksun / Kahramanmaraş — Gardırop</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, kabartma desenli gardırop modeli modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, kabartma desenli gardırop modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
           </div>
         </div>
         <div class="work-item">
@@ -868,7 +883,7 @@
           <div class="work-cap">
             <h3>Aynalı Gömme Dolap</h3>
             <p>Göksun / Kahramanmaraş — Gömme Dolap & Vestibül</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, aynalı gömme dolap modeli modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, aynalı gömme dolap modelini kendi mekânım için sipariş etmek istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Bu Modeli Sipariş Edin</a>
           </div>
         </div>
         <div class="work-item">
@@ -878,7 +893,7 @@
           <div class="work-cap">
             <h3>Vestibül Dolabı</h3>
             <p>Göksun / Kahramanmaraş — Gömme Dolap & Vestibül</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, vestibül dolabı modeli modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, vestibül dolabı modelinin benzerini istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Benzerini İsteyin</a>
           </div>
         </div>
         <div class="work-item">
@@ -903,7 +918,7 @@
           <div class="work-cap">
             <h3>Vestiyer</h3>
             <p>Göksun / Kahramanmaraş — Vestiyer & Hol Mobilyası</p>
-            <a class="work-cta js-wa" data-wa-msg="Merhaba, bu vestiyer modelini gibi özel bir çözüm için keşif randevusu almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Özel Ölçü İçin Keşif İste</a>
+            <a class="work-cta js-wa" data-wa-msg="Merhaba, bu vestiyer modeli gibi özel bir çözüm için keşif randevusu almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener">Özel Ölçü İçin Keşif İste</a>
           </div>
         </div>
         <div class="work-item">
@@ -1161,6 +1176,21 @@
 <a class="whatsapp-float js-wa" data-wa-msg="Merhaba, Babacan Mobilya'dan bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener" aria-label="WhatsApp'tan yazın">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.28-1.38a9.87 9.87 0 0 0 4.71 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.15c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.19-1.58-1.19-3.02 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.13-.28.28-.12.55.16.27.71 1.17 1.52 1.9 1.05.94 1.93 1.23 2.2 1.37.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.53.72 1.79.85.26.13.43.19.5.3.07.11.07.61-.17 1.29z"/></svg>
 </a>
+
+<div class="mobile-cta-bar">
+  <a class="mcb-item" href="tel:+905056088235" aria-label="Ara">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <span>Ara</span>
+  </a>
+  <a class="mcb-item js-wa" data-wa-msg="Merhaba, Babacan Mobilya'dan bilgi almak istiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener" aria-label="WhatsApp'tan yazın">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.28-1.38a9.87 9.87 0 0 0 4.71 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.15c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.19-1.58-1.19-3.02 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.13-.28.28-.12.55.16.27.71 1.17 1.52 1.9 1.05.94 1.93 1.23 2.2 1.37.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.53.72 1.79.85.26.13.43.19.5.3.07.11.07.61-.17 1.29z"/></svg>
+    <span>WhatsApp</span>
+  </a>
+  <a class="mcb-item js-wa" data-wa-msg="Merhaba, Babacan Mobilya'dan özel ölçü mobilya hakkında bilgi almak istiyorum. Mekânımın fotoğraflarını iletiyorum." href="https://wa.me/905056088235" target="_blank" rel="noopener" aria-label="Proje Gönder">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    <span>Proje Gönder</span>
+  </a>
+</div>
 
 <script>
   (function () {
