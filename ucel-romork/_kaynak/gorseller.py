@@ -5,6 +5,7 @@ from PIL import Image
 
 KOK = Path(__file__).resolve().parents[2]
 CIKTI = KOK / 'ucel-romork' / 'img'
+PDF_GORSEL = KOK / 'ucel-romork' / '_kaynak' / 'cikti' / 'pdf-gorsel'
 
 # kaynak dosya sonu -> (yeni ad, üstten kırpılacak px; ekran görüntüsündeki büyüteç simgeleri için)
 HARITA = {
@@ -46,6 +47,7 @@ def main():
     for eski in CIKTI.glob('*.webp'):
         eski.unlink()
     (CIKTI / 'og').mkdir(parents=True, exist_ok=True)
+    PDF_GORSEL.mkdir(parents=True, exist_ok=True)
     buyukler = {}
     for kaynak, (ad, ust) in HARITA.items():
         im = Image.open(KOK / f'Ekran görüntüsü 2026-09-09 {kaynak}.png').convert('RGB')
@@ -54,6 +56,9 @@ def main():
         buyukler[ad] = im.copy()
         b = im.copy(); b.thumbnail((1600, 1600)); b.save(CIKTI / f'{ad}.webp', 'WEBP', quality=80)
         k = im.copy(); k.thumbnail((800, 800)); k.save(CIKTI / f'{ad}-k.webp', 'WEBP', quality=76)
+        # PDF katalog için JPEG (Chromium JPEG'i yeniden sıkıştırmadan gömer); yayınlanmaz
+        pj = im.copy(); pj.thumbnail((1400, 1400)); pj.save(PDF_GORSEL / f'{ad}.jpg', 'JPEG', quality=78, optimize=True, progressive=True)
+        pk = im.copy(); pk.thumbnail((700, 700)); pk.save(PDF_GORSEL / f'{ad}-k.jpg', 'JPEG', quality=74, optimize=True, progressive=True)
         print(ad, b.size)
     for ad, gorsel in OG.items():
         kapla(buyukler[gorsel], 1200, 630).save(CIKTI / 'og' / f'{ad}.jpg', 'JPEG', quality=82, optimize=True)

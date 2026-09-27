@@ -1,0 +1,17 @@
+{
+  "name": "ucel-katalog-araclari",
+  "private": true,
+  "type": "module",
+  "description": "Üçel e-katalog: site ve PDF üretimi",
+  "scripts": {
+    "site": "node build.mjs",
+    "pdf": "node pdf.mjs",
+    "pdf:taslak": "node pdf.mjs --taslak"
+  },
+  "dependencies": {
+    "@fontsource/barlow": "5.1.1",
+    "@fontsource/barlow-condensed": "5.1.1",
+    "playwright-core": "1.56.1",
+    "qrcode": "1.5.4"
+  }
+}

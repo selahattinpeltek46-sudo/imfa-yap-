@@ -17,6 +17,10 @@ export const FIRMA = {
   harita: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Üçel Tarım Aletleri Göksun Kahramanmaraş'),
   // Yayın adresi (canonical, og:image ve WhatsApp mesajındaki linkler için)
   site: 'https://selahattinpeltek46-sudo.github.io/imfa-yap-/ucel-romork/',
+  // Üçel'den gelecek bilgiler (null olanlar yayında gösterilmez, taslak PDF'te işaretlenir)
+  adres: null,            // örn. 'X Mah. Y Cad. No: 12, 46xxx Göksun / Kahramanmaraş'
+  calismaSaatleri: null,  // örn. 'Pazartesi–Cumartesi 08.00–18.00'
+  hakkinda: null,         // 2–3 cümle: atölye, usta, ne zamandan beri (belgeli bilgi)
 };
 
 export const KATEGORILER = [
