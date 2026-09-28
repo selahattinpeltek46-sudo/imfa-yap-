@@ -6,12 +6,15 @@
   "scripts": {
     "site": "node build.mjs",
     "pdf": "node pdf.mjs",
-    "pdf:taslak": "node pdf.mjs --taslak"
+    "pdf:taslak": "node pdf.mjs --taslak",
+    "katalog2": "node katalog2.mjs"
   },
   "dependencies": {
     "@fontsource/barlow": "5.1.1",
     "@fontsource/barlow-condensed": "5.1.1",
     "playwright-core": "1.56.1",
-    "qrcode": "1.5.4"
+    "qrcode": "1.5.4",
+    "@fontsource/oswald": "5.1.1",
+    "@fontsource/inter": "5.1.1"
   }
 }
