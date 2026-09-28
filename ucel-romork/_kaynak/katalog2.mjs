@@ -8,6 +8,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import QRCode from 'qrcode';
 import { chromium } from 'playwright-core';
 import { FIRMA, KATEGORILER, URUNLER, DIGER, ISLER, NEDEN, IMALAT, SAHADAN, SSS } from './katalog2-veri.mjs';
+import { TEKNIK, DIGER_TEKNIK, STANDART_CEKIM, BEKLENIYOR } from './teknik-veri.mjs';
+
+// --taslak: eksik teknik veriler [TEKNİK VERİ BEKLENİYOR] olarak görünür (Üçel'e doldurması için)
+// varsayılan (yayın): yalnızca Üçel'in teyit ettiği veriler görünür (müşteriye gönderilen sürüm)
+const TASLAK = process.argv.includes('--taslak');
 
 const BURASI = dirname(fileURLToPath(import.meta.url));
 const CIKTI = join(BURASI, 'cikti');
@@ -29,8 +34,8 @@ const MESAJ = {
 
 // Sayfa numaraları
 const SAYFA = { kapak: 1, biz: 2, neden: 3, imalat: 4, harita: 5, bul: 6 };
-URUNLER.forEach((u, i) => { SAYFA[u.id] = 7 + i; });
-SAYFA._diger = 7 + URUNLER.length;
+URUNLER.forEach((u, i) => { SAYFA[u.id] = 7 + i * 2; });
+SAYFA._diger = 7 + URUNLER.length * 2;
 SAYFA._ikinciel = SAYFA._diger + 1;
 SAYFA.sahadan = SAYFA._ikinciel + 1;
 SAYFA.sss = SAYFA.sahadan + 1;
@@ -38,13 +43,38 @@ SAYFA.arka = SAYFA.sss + 1;
 const no = (n) => String(n).padStart(2, '0');
 
 const ust = (baslik) => `<header class="ust"><span class="mark">ÜÇEL</span><span>${esc(baslik)}</span></header>`;
-const alt = (n, koyu = false) => `<footer class="alt${koyu ? ' koyu' : ''}"><span>${esc(FIRMA.ad)} · ${FIRMA.telefon}</span><span class="pno">${no(n)}</span></footer>`;
+const alt = (n, koyu = false) => `<footer class="alt${koyu ? ' koyu' : ''}"><span>${esc(FIRMA.ad)} · ${FIRMA.telefon}${TASLAK ? ' · <b style="color:var(--earth)">TASLAK — Üçel onayı bekleniyor</b>' : ''}</span><span class="pno">${no(n)}</span></footer>`;
 const qrKutu = async (hedef, baslik, aciklama, sinif = '') => `<div class="qr ${sinif}"><div class="qr-kod">${await qr(hedef)}</div><p><b>${esc(baslik)}</b>${esc(aciklama)}</p></div>`;
 
+const bekleniyor = (metin = BEKLENIYOR) => `<span class="bekleniyor">${esc(metin)}</span>`;
+const doluMu = (v) => v !== null && v !== undefined && v !== '';
+
+// Teknik tablo: değer tek ise tek sütun, { model: değer } ise model sütunları
+function teknikTablo(satirlar) {
+  const modeller = [...new Set(satirlar.flatMap(([, , v]) => (v && typeof v === 'object' ? Object.keys(v) : [])))];
+  const gorunen = TASLAK ? satirlar : satirlar.filter(([, , v]) => doluMu(v));
+  if (!gorunen.length) return '';
+  const hucre = (v) => (doluMu(v) ? esc(v) : bekleniyor());
+  const bas = modeller.length ? modeller.map((m) => `<th>${esc(m)}</th>`).join('') : '<th>Değer</th>';
+  return `<table class="teknik"><thead><tr><th>Özellik</th>${bas}</tr></thead><tbody>${gorunen.map(([a, birim, v]) =>
+    `<tr><td>${esc(a)}${birim ? `<small>${esc(birim)}</small>` : ''}</td>${modeller.length
+      ? modeller.map((m) => `<td>${hucre(v && v[m])}</td>`).join('')
+      : `<td>${hucre(typeof v === 'object' ? null : v)}</td>`}</tr>`).join('')}</tbody></table>`;
+}
+
 async function urunSayfasi(u) {
+  const t = TEKNIK[u.id];
   const [ana, ...digerleri] = u.foto;
   const kucukler = digerleri.slice(0, 3);
-  return `<section class="page urun" id="u-${u.id}">
+  const eksikSayi = t.teknik.filter(([, , v]) => !doluMu(v)).length;
+  const opsiyonlar = TASLAK ? t.opsiyon : t.opsiyon.filter(([, x]) => doluMu(x));
+  const saha = t.saha
+    ? `<figure class="saha-kare"><div class="f"><img src="${foto(t.saha[0], true)}" alt="${esc(t.saha[1])}"></div><figcaption>${esc(t.saha[1])}</figcaption></figure>`
+    : TASLAK
+      ? `<div class="bos-kare">${bekleniyor('[SAHA FOTOĞRAFI BEKLENİYOR]')}<p>Bu ürünün tarlada / ahırda çalışırken çekilmiş gerçek karesi.</p></div>`
+      : `<a class="bos-kare yayin" href="#sahadan"><p>Teslimat ve saha karelerimiz: sayfa ${no(SAYFA.sahadan)}</p></a>`;
+
+  const sol = `<section class="page urun" id="u-${u.id}">
   ${ust(kat(u.kategori).ad)}
   <div class="sekme">${esc(kat(u.kategori).ad)}</div>
   <figure class="u-ana${kucukler.length ? '' : ' tek'}"><img src="${foto(ana[0])}" alt="${esc(ana[1])}"></figure>
@@ -56,30 +86,52 @@ async function urunSayfasi(u) {
   <p class="u-kisa">${esc(u.kisa)}</p>
   <div class="u-govde">
     <div>
-      <h3>Ne işinize yarar?</h3>
+      <h3>Ne işe yarar?</h3>
       <ul class="tik">${u.kullanim.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-      <h3>Kimler için uygun?</h3>
+      <h3>Kimler için uygundur?</h3>
       <p>${esc(u.kimler)}</p>
-      ${u.secenekler.length ? `<h3>Seçenekler</h3><ul class="tik">${u.secenekler.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
     </div>
     <div>
-      <div class="kutu">
-        <h3>Teknik bilgiler</h3>
-        <p>Ölçü, kapasite ve model seçenekleri ihtiyacınıza göre değişir. Traktörünüzü ve işinizi yazın, size uygun seçeneği birlikte belirleyelim.</p>
-      </div>
-      <div class="kutu uygun">
-        <h3>Size uygun mu?</h3>
-        <p>Değerlendirirken şu 4 bilgiye bakın:</p>
-        <ul class="tik"><li>Traktörünüzün HP değeri</li><li>Yapacağınız iş</li><li>Arazi şartları</li><li>İhtiyacınız olan kapasite</li></ul>
-      </div>
-      <div class="qrs">
-        ${await qrKutu(wa(MESAJ.urun(u.ad)), "WhatsApp'tan sor", 'Okutun, mesaj hazır gelsin')}
-        ${await qrKutu(u.url, 'Ürünü incele', 'İnternet sayfası')}
-      </div>
+      <h3>Sahadaki kullanım</h3>
+      ${saha}
     </div>
   </div>
+  ${TASLAK ? `<div class="foto-ihtiyac"><h3>Fotoğraf ihtiyacı <em>yalnızca taslakta</em></h3><p>Standart 6 kare (genel ön/arka 3/4, yakın detay, traktöre bağlı, sahada, teslimat) ve: ${t.cekim.map(esc).join(' · ')}</p></div>` : ''}
+  <p class="devam">Teknik özellikler, uyum kriterleri ve opsiyonlar → sayfa ${no(SAYFA[u.id] + 1)}</p>
   ${alt(SAYFA[u.id])}
 </section>`;
+
+  const sag = `<section class="page urun teknik-sayfa${t.teknik.length > 12 ? ' sik' : ''}" id="t-${u.id}">
+  ${ust(`${kat(u.kategori).ad} · ${u.ad}`)}
+  <div class="sekme">${esc(kat(u.kategori).ad)}</div>
+  <div class="t-baslik"><h2>${esc(u.ad)}</h2><span>Teknik bilgiler</span></div>
+  <h3>Teknik özellikler</h3>
+  ${teknikTablo(t.teknik) || '<p class="t-not">Ölçü, kapasite ve model seçeneklerini ihtiyacınıza göre birlikte belirliyoruz.</p>'}
+  ${!TASLAK && eksikSayi && eksikSayi < t.teknik.length ? '<p class="t-not">Tabloda olmayan ölçü ve seçenekleri sorabilirsiniz.</p>' : ''}
+  <div class="t-iki">
+    <div>
+      <h3>Uyum kriterleri</h3>
+      <p class="t-aciklama">Bu ürünü seçerken şunlara bakın:</p>
+      <table class="uyum">${t.uyum.map(([k, v]) => `<tr><td>${esc(k)}</td>${TASLAK || doluMu(v) ? `<td>${doluMu(v) ? esc(v) : bekleniyor()}</td>` : ''}</tr>`).join('')}</table>
+    </div>
+    <div>
+      <h3>Opsiyonlar</h3>
+      ${opsiyonlar.length ? `<ul class="tik ops">${opsiyonlar.map(([o, x]) => `<li><b>${esc(o)}</b>${doluMu(x) ? `<span>${esc(x)}</span>` : `<span>${bekleniyor()}</span>`}</li>`).join('')}</ul>` : '<p class="t-not">Opsiyonlar için bize sorun.</p>'}
+    </div>
+  </div>
+  <div class="cta">
+    <div>
+      <strong>Traktörünüzü söyleyin, işinizi söyleyin.</strong>
+      <p>Tabloya göre size uygun modeli birlikte belirleyelim. Mesajda traktörünüzün markasını, modelini, HP değerini ve yapacağınız işi yazın.</p>
+    </div>
+    <div class="qrs">
+      ${await qrKutu(wa(MESAJ.urun(u.ad)), "WhatsApp'tan sor", 'Okutun, mesaj hazır gelsin')}
+      ${await qrKutu(u.url, 'Ürünü incele', 'İnternet sayfası')}
+    </div>
+  </div>
+  ${alt(SAYFA[u.id] + 1)}
+</section>`;
+  return sol + '\n' + sag;
 }
 
 async function html() {
@@ -209,6 +261,48 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .u-kisa { font-size: 11pt; color: var(--ink2); margin: 2mm 0 4mm; max-width: 165mm; }
 .u-govde { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
 .u-govde > div > p { color: var(--ink2); margin-bottom: 4mm; }
+
+/* Teknik sayfa */
+.bekleniyor { display: inline-block; font: 600 7.6pt/1.2 'Inter', sans-serif; letter-spacing: .3pt; color: var(--earth); background: #F4ECE2; border: .25mm dashed var(--earth); border-radius: .6mm; padding: .7mm 1.6mm; white-space: nowrap; }
+.saha-kare { margin: 0; }
+.saha-kare .f { height: 44mm; border-radius: 1mm; overflow: hidden; }
+.saha-kare figcaption { font-size: 8.5pt; color: var(--ink2); margin-top: 1.5mm; }
+.bos-kare { display: block; height: 44mm; border: .3mm dashed var(--line); border-radius: 1mm; padding: 5mm; background: var(--cream); }
+.bos-kare p { font-size: 9pt; color: var(--muted); margin-top: 3mm; }
+.bos-kare.yayin { border-style: solid; }
+.devam { position: absolute; left: 14mm; right: 14mm; bottom: 17mm; font-size: 8.5pt; color: var(--gold-d); font-weight: 600; text-align: right; margin: 0; }
+.t-baslik { display: flex; align-items: baseline; gap: 4mm; margin: 0 0 5mm; border-bottom: .5mm solid var(--gold); padding-bottom: 3mm; }
+.t-baslik h2 { font-size: 24pt; }
+.t-baslik span { font: 600 9pt/1 'Inter', sans-serif; letter-spacing: 1pt; text-transform: uppercase; color: var(--muted); }
+table.teknik { width: 100%; border-collapse: collapse; font-size: 9.4pt; margin-bottom: 3mm; }
+table.teknik th { text-align: left; font: 700 7.5pt/1.2 'Inter', sans-serif; letter-spacing: .8pt; text-transform: uppercase; color: var(--muted); padding: 1.6mm 2mm; border-bottom: .4mm solid var(--ink); }
+table.teknik td { padding: 1.45mm 2mm; border-bottom: .25mm solid var(--line); vertical-align: middle; }
+table.teknik tr:nth-child(even) td { background: #FAF8F4; }
+table.teknik td:first-child { width: 52%; }
+table.teknik td small { display: inline; margin-left: 2mm; font-size: 7.6pt; color: var(--muted); }
+table.teknik td + td { font-weight: 700; font-variant-numeric: tabular-nums; }
+.t-not { font-size: 9.5pt; color: var(--muted); margin: 1mm 0 3mm; }
+.t-iki { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; margin-top: 4mm; }
+.t-aciklama { font-size: 9pt; color: var(--muted); margin-bottom: 1.5mm; }
+table.uyum { width: 100%; border-collapse: collapse; font-size: 9.2pt; }
+table.uyum td { padding: 1.5mm 0; border-bottom: .25mm solid var(--line); vertical-align: middle; }
+table.uyum td + td { text-align: right; }
+.ops li { margin-bottom: 1.6mm; }
+.ops li span .bekleniyor { margin-top: .4mm; }
+.ops li b { display: block; font-weight: 600; font-size: 9.4pt; }
+.ops li span { display: block; font-size: 8.4pt; color: var(--muted); margin-top: .6mm; }
+.foto-ihtiyac { margin-top: 5mm; border: .3mm dashed var(--earth); border-radius: 1mm; padding: 3mm 4mm; background: #FBF7F1; }
+.foto-ihtiyac h3 { color: var(--earth); margin-bottom: 1mm; }
+.foto-ihtiyac h3 em { font-style: normal; font-weight: 600; letter-spacing: .3pt; text-transform: none; color: var(--muted); margin-left: 2mm; }
+.foto-ihtiyac p { font-size: 8.5pt; color: var(--ink2); margin: 0; }
+.teknik-sayfa { display: flex; flex-direction: column; }
+.teknik-sayfa.sik table.teknik td { padding-top: 1.05mm; padding-bottom: 1.05mm; }
+.cta { margin-top: auto; display: grid; grid-template-columns: 1fr 1.25fr; gap: 6mm; align-items: center; background: var(--cream); border-radius: 1mm; padding: 4mm 5mm; }
+.cta strong { font: 600 13pt/1.2 'Oswald', sans-serif; display: block; margin-bottom: 1.5mm; }
+.cta p { font-size: 9pt; color: var(--ink2); margin: 0; }
+.cta .qrs { grid-template-columns: auto auto; gap: 5mm; }
+.dk-teknik { font-size: 8pt; color: var(--muted); line-height: 1.6; }
+.dk-teknik b { color: var(--ink); }
 
 /* Diğer ürünler */
 .dk { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-top: 8mm; }
@@ -352,7 +446,7 @@ ${urunSayfalari.join('\n')}
   <h2>Diğer ürünlerimiz</h2>
   <p class="lead" style="margin-top:3mm">Bu ürünler için güncel model ve fotoğrafları WhatsApp'tan paylaşıyoruz.</p>
   <div class="dk">
-    ${(await Promise.all(DIGER.map(async (d) => `<article><span>${esc(d.kategori)}</span><h2>${esc(d.ad)}</h2><p>${esc(d.kisa)}</p><div class="qrs">${await qrKutu(wa(MESAJ.diger(d.ad)), "WhatsApp'tan sor", 'Hazır mesaj')}${await qrKutu(d.url, 'İncele', 'İnternet sayfası')}</div></article>`))).join('')}
+    ${(await Promise.all(DIGER.map(async (d) => `<article><span>${esc(d.kategori)}</span><h2>${esc(d.ad)}</h2><p>${esc(d.kisa)}</p>${TASLAK && DIGER_TEKNIK[d.ad] ? `<div class="dk-teknik"><b>Teknik veriler</b> ${bekleniyor()}<br>${DIGER_TEKNIK[d.ad].map(esc).join(' · ')}<br>${bekleniyor('[ÜRÜN FOTOĞRAFI BEKLENİYOR]')}</div>` : ''}<div class="qrs">${await qrKutu(wa(MESAJ.diger(d.ad)), "WhatsApp'tan sor", 'Hazır mesaj')}${await qrKutu(d.url, 'İncele', 'İnternet sayfası')}</div></article>`))).join('')}
   </div>
   ${alt(SAYFA._diger)}
 </section>
@@ -425,13 +519,21 @@ ${urunSayfalari.join('\n')}
 }
 
 mkdirSync(CIKTI, { recursive: true });
-const ad = 'Ucel-Tarim-Aletleri-Katalog-2026';
+const ad = TASLAK ? 'Ucel-Tarim-Aletleri-Katalog-2026-TASLAK' : 'Ucel-Tarim-Aletleri-Katalog-2026';
 const htmlDosya = join(CIKTI, `${ad}.html`);
 writeFileSync(htmlDosya, await html());
 const tarayici = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
 const sayfa = await tarayici.newPage();
 await sayfa.goto(pathToFileURL(htmlDosya).href, { waitUntil: 'networkidle' });
 await sayfa.evaluate(() => document.fonts.ready);
+const tasan = await sayfa.evaluate(() => [...document.querySelectorAll('.page')].map((el, i) => {
+  const alt = el.querySelector('.alt'); if (!alt) return null;
+  const sinir = alt.getBoundingClientRect().top;
+  const icerik = [...el.children].filter((c) => !c.matches('.alt, .sekme, .ust, .devam, .k-foto'));
+  const enAlt = Math.max(...icerik.map((c) => c.getBoundingClientRect().bottom));
+  return enAlt > sinir + 1 ? `sayfa ${i + 1}: içerik alt bilgiye ${Math.round(enAlt - sinir)} px taşıyor` : null;
+}).filter(Boolean));
+if (tasan.length) console.warn('UYARI — taşan sayfalar:\n' + tasan.join('\n'));
 await sayfa.pdf({ path: join(CIKTI, `${ad}.pdf`), format: 'A4', printBackground: true, preferCSSPageSize: true });
 await tarayici.close();
 console.log('yazıldı:', join('ucel-romork/_kaynak/cikti', `${ad}.pdf`), '·', SAYFA.arka, 'sayfa');

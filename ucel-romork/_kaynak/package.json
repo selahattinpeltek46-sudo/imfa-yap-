@@ -7,7 +7,8 @@
     "site": "node build.mjs",
     "pdf": "node pdf.mjs",
     "pdf:taslak": "node pdf.mjs --taslak",
-    "katalog2": "node katalog2.mjs"
+    "katalog2": "node katalog2.mjs",
+    "katalog2:taslak": "node katalog2.mjs --taslak"
   },
   "dependencies": {
     "@fontsource/barlow": "5.1.1",
