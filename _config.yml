@@ -1,0 +1,7 @@
+# GitHub Pages (Jekyll) derlemesinde yayına çıkmaması gereken dosyalar.
+# Aynı liste .github/workflows/deploy-pages.yml içinde de uygulanır.
+exclude:
+  - CLAUDE.md
+  - .claude
+  - "Ekran*.png"
+  - "**/_proje"
