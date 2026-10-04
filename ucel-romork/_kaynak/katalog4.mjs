@@ -79,6 +79,8 @@ const SAYFALAR = [
   },
 ];
 const urunAd = (id) => URUNLER.find((u) => u.id === id).ad;
+// Ürünlerimiz sayfası: ürün sayfasındaki açıklamanın ilk cümlesi
+const kisaMetin = (id) => SAYFALAR.find((x) => x.id === id).aciklama.split(/(?<=\.)\s/)[0];
 
 const NO = { kapak: 1, biz: 2, urunler: 3 };
 SAYFALAR.forEach((s, i) => { NO[s.id] = 4 + i; });
@@ -356,71 +358,131 @@ figcaption { font-size: 8pt; color: var(--gri); margin-top: 1.5mm; }
 .sss span { font-size: 10.3pt; color: #3A3A3D; line-height: 1.45; display: block; }
 
 /* kapak */
-.kapak .k-sol { position: absolute; left: 0; top: 0; bottom: 0; width: 205mm; background: var(--koyu); clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%); }
-.kapak .k-serit { position: absolute; inset: 0; background: var(--vurgu); clip-path: polygon(48.8% 0, 52.4% 0, 39.6% 100%, 36% 100%); }
-.kapak .k-yazi { position: absolute; left: 20mm; top: 20mm; bottom: 18mm; width: 140mm; color: #fff; display: flex; flex-direction: column; }
-.kapak .k-logo { width: 44mm; border-radius: 1mm; margin-bottom: 12mm; }
-.kapak .firma { font: 700 12pt/1 'Oswald'; letter-spacing: 3pt; color: var(--ince); margin-bottom: 5mm; }
-.kapak h1 { font: 700 40pt/1.05 'Oswald'; white-space: normal; margin-bottom: 5mm; }
-.kapak .alt-slogan { font-size: 13pt; color: #CFCAC2; }
-.kapak .k-meta { margin-top: auto; display: flex; gap: 14mm; font-size: 9.5pt; color: #a3a19c; }
-.kapak .k-meta b { display: block; font: 600 14pt/1.2 'Oswald'; color: #fff; }
+.kapak .k-sol { position: absolute; left: 0; top: 0; bottom: 0; width: 222mm; background: var(--koyu); clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%); }
+.kapak .k-serit { position: absolute; inset: 0; background: var(--vurgu); clip-path: polygon(52.9% 0, 56.2% 0, 43.6% 100%, 40.3% 100%); }
+.kapak .k-yazi { position: absolute; left: 18mm; top: 16mm; bottom: 14mm; width: 150mm; color: #fff; display: flex; flex-direction: column; }
+.k-marka { display: flex; align-items: center; gap: 5mm; }
+.k-marka img { height: 17mm; border-radius: 1.5mm; }
+.k-marka b { display: block; font: 700 15pt/1 'Oswald'; letter-spacing: 2.5pt; }
+.k-marka span { display: block; font-size: 8.5pt; letter-spacing: 1.5pt; color: #a3a19c; margin-top: 1.4mm; text-transform: uppercase; }
+.kapak h1 { font: 700 54pt/.95 'Oswald'; letter-spacing: .5pt; margin-top: 13mm; white-space: normal; }
+.kapak h1 em { font-style: normal; color: var(--vurgu); }
+.kapak .slogan-b { margin-top: 5mm; font: 600 19pt/1.15 'Oswald'; letter-spacing: .3pt; }
+.kapak .alt-slogan { margin-top: 1.5mm; font-size: 11pt; color: #CFCAC2; }
+.icindekiler { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0 9mm; max-width: 132mm; }
+.icindekiler .ib { grid-column: 1 / -1; font: 700 7.6pt/1 'Inter'; letter-spacing: 1.6pt; text-transform: uppercase; color: var(--ince); margin-bottom: 2mm; }
+.icindekiler a { display: flex; gap: 3mm; align-items: baseline; padding: 1.5mm 0; border-top: .25mm solid rgba(255,255,255,.16); color: #fff; text-decoration: none; font-size: 9.6pt; }
+.icindekiler a b { font: 700 10.5pt/1 'Oswald'; color: var(--vurgu); min-width: 6mm; }
+.k-tel { margin-top: 6mm; display: flex; align-items: center; gap: 4mm; }
+.k-tel b { font: 700 22pt/1 'Oswald'; letter-spacing: .5pt; }
+.k-tel span { font-size: 8.5pt; color: #a3a19c; line-height: 1.3; }
 .kapak .k-urun { position: absolute; mix-blend-mode: multiply; object-fit: contain; }
-.kapak .k1 { right: 10mm; top: 12mm; width: 205mm; height: 118mm; }
-.kapak .k2 { right: 22mm; bottom: 14mm; width: 128mm; height: 72mm; }
-.kapak .k-yil { position: absolute; right: 16mm; top: 12mm; font: 700 11pt/1 'Oswald'; letter-spacing: 2pt; color: #fff; background: var(--vurgu); padding: 2.4mm 4mm; border-radius: 1mm; }
+.kapak .k1 { right: 8mm; top: 14mm; width: 196mm; height: 112mm; object-position: right top; }
+.kapak .k2 { right: 16mm; bottom: 10mm; width: 132mm; height: 70mm; object-position: right bottom; }
+.kapak .k-yil { position: absolute; right: 14mm; top: 10mm; font: 700 11pt/1 'Oswald'; letter-spacing: 2pt; color: #fff; background: var(--vurgu); padding: 2.4mm 4mm; border-radius: 1mm; }
+.kapak .k-rozet { position: absolute; left: 236mm; bottom: 20mm; font: 700 8pt/1 'Inter'; letter-spacing: 1.2pt; color: #fff; background: var(--koyu); padding: 2.4mm 3.5mm; border-radius: 1mm; border-left: 1.4mm solid var(--vurgu); }
+
+/* biz kimiz */
+.biz2 { display: grid; grid-template-columns: 1fr 1.05fr; gap: 11mm; height: 100%; }
+.biz2 .metin .one { font: 600 21pt/1.15 'Oswald'; line-height: 1.15; margin-bottom: 4mm; }
+.biz2 .one em { font-style: normal; color: var(--vurgu); }
+.biz2 .metin p { font-size: 12pt; line-height: 1.6; margin-bottom: 3mm; }
+.isler { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin: 6mm 0 7mm; }
+.isler div { background: var(--koyu); color: #fff; border-radius: 2mm; padding: 3.2mm 3.5mm; border-top: 1.2mm solid var(--vurgu); }
+.isler b { display: block; font: 600 13pt/1.1 'Oswald'; margin-bottom: 1.2mm; }
+.isler span { font-size: 9pt; color: #CFCAC2; line-height: 1.35; display: block; }
+.biz2 .metin { display: flex; flex-direction: column; }
+.deger4 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm 5mm; margin-top: auto; padding-top: 5mm; border-top: .3mm solid var(--cizgi); }
+.deger4 div { display: grid; grid-template-columns: 9mm 1fr; gap: 2.5mm; align-items: center; }
+.deger4 i { width: 9mm; height: 9mm; border-radius: 50%; background: #FBEAEC; display: grid; place-items: center; }
+.deger4 svg { width: 5mm; height: 5mm; }
+.deger4 b { display: block; font: 600 10.6pt/1.15 'Oswald'; }
+.deger4 span { display: block; font-size: 8.4pt; color: var(--gri); line-height: 1.3; }
+.mozaik { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1.25fr 1fr; gap: 4mm 5mm; min-height: 0; }
+.mozaik figure { display: flex; flex-direction: column; min-height: 0; }
+.mozaik .kutu { flex: 1; min-height: 0; }
+.mozaik .genis { grid-column: 1 / -1; }
+
+/* ürünlerimiz */
+.dizin2 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4.5mm; min-height: 0; }
+.dizin2 a { text-decoration: none; color: inherit; display: flex; flex-direction: column; background: #fff; border-radius: 2mm; overflow: hidden; box-shadow: 0 .8mm 2.5mm rgba(0,0,0,.12); }
+.dizin2 .d-foto { height: 66mm; background: var(--koyu); border-bottom: 1.2mm solid var(--vurgu); position: relative; }
+.dizin2 .d-foto.dek { background: #fff; padding: 2.5mm; }
+.dizin2 .d-foto img { width: 100%; height: 100%; object-fit: contain; }
+.dizin2 .d-foto img.dk { mix-blend-mode: multiply; }
+.dizin2 .d-no { position: absolute; left: 0; bottom: 0; font: 700 15pt/1 'Oswald'; color: #fff; background: var(--vurgu); padding: 1.8mm 2.8mm 1.4mm; border-radius: 0 1.5mm 0 0; }
+.dizin2 .d-yazi { padding: 3mm 3.5mm 3.5mm; flex: 1; display: flex; flex-direction: column; }
+.dizin2 .d-kat { font: 700 6.8pt/1 'Inter'; letter-spacing: 1pt; text-transform: uppercase; color: var(--vurgu); }
+.dizin2 h2 { font: 600 14pt/1.1 'Oswald'; margin: 1.5mm 0 2mm; }
+.dizin2 .d-kisa { font-size: 8.6pt; line-height: 1.42; color: #3A3A3D; }
+.dizin2 .d-alt { margin-top: auto; padding-top: 2.5mm; display: flex; justify-content: space-between; align-items: center; font: 700 7.6pt/1 'Inter'; color: var(--koyu); }
+.dizin2 .im { font: 700 6.2pt/1 'Inter'; letter-spacing: .6pt; color: #fff; background: var(--koyu); padding: 1.2mm 1.6mm; border-radius: .6mm; }
+.dizin-sayfa { display: grid; grid-template-rows: 1fr auto; gap: 5mm; }
+.dizin-sayfa .diger-serit { margin-top: 0; }
 
 /* arka kapak */
 .arka { background: var(--koyu); color: #F2F0EC; }
-.arka .a-serit { position: absolute; inset: 0; background: var(--vurgu); clip-path: polygon(58% 0, 61% 0, 53% 100%, 50% 100%); }
-.arka .a-sol { position: absolute; left: 20mm; top: 22mm; width: 190mm; }
-.arka .k-mark { font: 700 12pt/1 'Oswald'; letter-spacing: 3pt; color: var(--ince); }
-.arka h2 { font: 700 32pt/1.1 'Oswald'; margin: 5mm 0; }
-.arka .alt { font-size: 12.5pt; color: #CFCAC2; line-height: 1.55; }
-.arka .tel-et { font-size: 9pt; color: #a3a19c; margin-top: 12mm; letter-spacing: 1pt; text-transform: uppercase; }
-.arka .tel { font: 700 42pt/1 'Oswald'; letter-spacing: 1pt; margin-top: 2mm; }
-.arka .a-sag { position: absolute; left: 262mm; right: 18mm; top: 22mm; }
-.arka dl { margin: 0; display: grid; gap: 4mm; font-size: 10.8pt; }
-.arka dt { font-size: 7.8pt; letter-spacing: 1pt; text-transform: uppercase; color: #8f8b84; }
-.arka dd { margin: .6mm 0 0; }
-.arka .qrs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; margin-top: 9mm; }
-.arka .qrs div { text-align: center; font-size: 8.3pt; color: #CFCAC2; }
-.arka .qrs .kod { width: 28mm; height: 28mm; background: #fff; padding: 2mm; border-radius: 1.5mm; margin: 0 auto 2mm; }
+.arka .a-serit { position: absolute; inset: 0; background: var(--vurgu); clip-path: polygon(59% 0, 62% 0, 55.4% 100%, 52.4% 100%); }
+.arka .a-sol { position: absolute; left: 20mm; top: 16mm; width: 195mm; }
+.arka .k-marka { margin-bottom: 9mm; }
+.arka h2 { font: 700 30pt/1.1 'Oswald'; margin: 0 0 4mm; }
+.arka .alt { font-size: 12pt; color: #CFCAC2; line-height: 1.55; }
+.arka .tel-et { font-size: 8.5pt; color: #a3a19c; margin-top: 8mm; letter-spacing: 1pt; text-transform: uppercase; }
+.arka .tel { font: 700 40pt/1 'Oswald'; letter-spacing: 1pt; margin-top: 2mm; }
+.arka .a-sag { position: absolute; left: 268mm; right: 16mm; top: 16mm; }
+.arka dl { margin: 0; display: grid; gap: 3mm; font-size: 10.4pt; }
+.arka dt { font-size: 7.6pt; letter-spacing: 1pt; text-transform: uppercase; color: #8f8b84; }
+.arka dd { margin: .5mm 0 0; }
+.arka .qrs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; margin-top: 7mm; }
+.arka .qrs div { text-align: center; font-size: 8.1pt; color: #CFCAC2; }
+.arka .qrs .kod { width: 26mm; height: 26mm; background: #fff; padding: 2mm; border-radius: 1.5mm; margin: 0 auto 2mm; }
 .arka .qrs svg { width: 100%; height: 100%; display: block; }
-.arka .qrs b { display: block; color: #fff; font-size: 9.5pt; }
-.arka .a-logo { position: absolute; left: 20mm; bottom: 16mm; width: 30mm; border-radius: 1mm; }
+.arka .qrs b { display: block; color: #fff; font-size: 9.3pt; }
+.a-bant { position: absolute; left: 0; right: 0; bottom: 0; height: 46mm; background: #fff; display: grid; grid-template-columns: repeat(4, 1fr) 1.1fr; align-items: center; gap: 6mm; padding: 4mm 16mm; }
+.a-bant::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1.4mm; background: var(--vurgu); }
+.a-bant img { width: 100%; height: 36mm; object-fit: contain; mix-blend-mode: multiply; }
+.a-bant p { font: 600 14pt/1.2 'Oswald'; color: var(--koyu); }
+.a-bant p span { display: block; font: 400 9pt/1.4 'Inter'; color: var(--gri); margin-top: 1.5mm; }
 </style></head><body>
 
 <section class="page kapak">
   <div class="k-sol"></div><div class="k-serit"></div>
   <div class="k-yazi">
-    <img class="k-logo" src="${marka('logo-mark.png')}" alt="Üçel logosu">
-    <p class="firma">ÜÇEL TARIM ALETLERİ</p>
-    <h1>Tarlada da, yolda da<br>sağlam iş.</h1>
+    <div class="k-marka"><img src="${marka('logo-mark.png')}" alt="Üçel logosu"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
+    <h1>Ürün<br>Kataloğu <em>2026</em></h1>
+    <p class="slogan-b">${SLOGAN[0]}</p>
     <p class="alt-slogan">${SLOGAN[1]}</p>
-    <div class="k-meta"><span><b>Ürün Kataloğu</b>Tarım makineleri ve ekipmanları</span><span><b>${FIRMA.telefon}</b>Telefon / WhatsApp</span></div>
+    <nav class="icindekiler"><p class="ib">İçindekiler</p>${[...SAYFALAR.map((x) => [NO[x.id], urunAd(x.id), '#u-' + x.id]), [NO.biz, 'Biz kimiz?', '#biz'], [NO.sahadan, 'Sahadan kareler', '#sahadan'], [NO.takas, 'İkinci el · Takas · SSS', '#takas'], [NO.arka, 'İletişim', '#iletisim']].sort((a, b) => a[0] - b[0]).map(([no, ad, h]) => `<a href="${h}"><b>${n2(no)}</b>${esc(ad)}</a>`).join('')}</nav>
+    <div class="k-tel"><b>${FIRMA.telefon}</b><span>Telefon<br>WhatsApp</span></div>
   </div>
   <img class="k-urun k1" src="${dekupe('tarim-romorku-yesil-traktor')}" alt="Üçel tarım römorku">
   <img class="k-urun k2" src="${dekupe('yayli-kultivator-kirmizi-2')}" alt="Göksun yaylı kültivatör">
+  <span class="k-rozet">KENDİ İMALATIMIZ · GÖKSUN</span>
   <span class="k-yil">2026</span>
 </section>
 
-<section class="page bilgi">
+<section class="page bilgi" id="biz">
   ${ust({ kat: 'Hakkımızda', baslik: 'Biz kimiz?', alt: 'Göksun Sanayi Sitesi, Kahramanmaraş', qrSvg: qrHarita, qrB: 'Konum ve yorumlar', qrA: 'Google Haritalar' })}
-  <div class="icerik"><div class="biz">
+  <div class="icerik"><div class="biz2">
     <div class="metin">
+      <p class="one">Göksun'da <em>üretiyoruz.</em> Türkiye'ye ulaştırıyoruz.</p>
       <p>Üçel Tarım Aletleri, Göksun Sanayi Sitesi'nde tarım ekipmanı imalatı ve satışı yapan bir aile işletmesi. ${esc(FIRMA.yetkili)} mesleği babasının yanında öğrendi; bugün de babasıyla birlikte üretiyor.</p>
-      <p>Römork, kültivatör ve ön yükleyiciyi kendi atölyemizde imal ediyor; tarım ekipmanı satışı, ikinci el ve takas hizmeti veriyoruz.</p>
-      <div class="degerler">
-        <div><b>Kendi İmalatımız</b><span>Göksun'daki atölyemizde üretim</span></div>
-        <div><b>Sahadan Gelen Tecrübe</b><span>Ekipmanın sahada nasıl kullanıldığını biliyoruz</span></div>
-        <div><b>İhtiyaca Göre Çözüm</b><span>Standart dışı ölçüde özel imalat</span></div>
-        <div><b>Satış Sonrası Destek</b><span>Ürettiğimiz ve sattığımız ürünlere yedek parça</span></div>
+      <div class="isler">
+        <div><b>İmalat</b><span>Römork, kültivatör ve ön yükleyici kendi atölyemizde</span></div>
+        <div><b>Satış</b><span>Tarım makineleri ve ekipmanları</span></div>
+        <div><b>İkinci el &amp; takas</b><span>Eski ekipmanınızı değerlendiriyoruz</span></div>
+      </div>
+      <div class="deger4">
+        <div><i><svg viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l5 3V9l5 3V5h4v16"/></svg></i><p><b>Kendi İmalatımız</b><span>Göksun'daki atölyemizde üretim</span></p></div>
+        <div><i><svg viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4-4-7-7.5-7-11a7 7 0 0 1 14 0c0 3.5-3 7-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></i><p><b>Sahadan Gelen Tecrübe</b><span>Ekipmanın sahada nasıl kullanıldığını biliyoruz</span></p></div>
+        <div><i><svg viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></i><p><b>İhtiyaca Göre Çözüm</b><span>Standart dışı ölçüde özel imalat</span></p></div>
+        <div><i><svg viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></i><p><b>Satış Sonrası Destek</b><span>Ürettiğimiz ve sattığımız ürünlere yedek parça</span></p></div>
       </div>
     </div>
-    <div class="fotolar">
-      <figure class="cer"><div class="kutu"><img src="${marka('ucel-logo-tabela.jpg')}" alt="Üçel tabelası"></div><figcaption>Atölyemiz, Göksun Sanayi Sitesi</figcaption></figure>
-      <figure class="cer"><div class="kutu"><img src="${foto('on-yukleyici-atolye')}" alt="Atölye önünde ön yükleyici"></div><figcaption>Atölyemizin önünde ön yükleyici</figcaption></figure>
+    <div class="mozaik">
+      <figure class="cer genis"><div class="kutu"><img src="${marka('ucel-logo-tabela.jpg')}" alt="Üçel tabelası"></div><figcaption>Atölyemiz, Göksun Sanayi Sitesi</figcaption></figure>
+      <figure class="cer"><div class="kutu"><img src="${foto('on-yukleyici-atolye', true)}" alt="Atölye önünde ön yükleyici"></div><figcaption>Atölyemizin önünde</figcaption></figure>
+      <figure class="cer"><div class="kutu"><img src="${foto('tarim-romorku-yesil-teslimat', true)}" alt="Römork teslimatı"></div><figcaption>Müşterimize teslimat</figcaption></figure>
     </div>
   </div></div>
   ${footer(NO.biz)}
@@ -428,8 +490,8 @@ figcaption { font-size: 8pt; color: var(--gri); margin-top: 1.5mm; }
 
 <section class="page bilgi">
   ${ust({ kat: 'Ürün dizini', baslik: 'Ürünlerimiz', alt: 'Ürüne dokunun, sayfasına gidin', qrSvg: qrSite, qrB: 'Tüm ürünler', qrA: 'web sitemizde' })}
-  <div class="icerik">
-    <div class="dizin">${SAYFALAR.map((s) => `<a href="#u-${s.id}"><div class="d-foto${s.hero[0] === 'd' ? ' dek' : ''}">${kucukGorsel(s)}</div><div class="d-yazi"><p class="d-kat">${esc(s.kategori)}</p><h2>${esc(urunAd(s.id))}</h2><div class="d-alt"><span class="d-no">${n2(NO[s.id])}</span>${s.imalat ? '<span class="im">KENDİ İMALATIMIZ</span>' : ''}</div></div></a>`).join('')}</div>
+  <div class="icerik dizin-sayfa">
+    <div class="dizin2">${SAYFALAR.map((s) => `<a href="#u-${s.id}"><div class="d-foto${s.hero[0] === 'd' ? ' dek' : ''}">${kucukGorsel(s)}<span class="d-no">${n2(NO[s.id])}</span></div><div class="d-yazi"><p class="d-kat">${esc(s.kategori)}</p><h2>${esc(urunAd(s.id))}</h2><p class="d-kisa">${esc(kisaMetin(s.id))}</p><div class="d-alt"><span>Sayfaya git →</span>${s.imalat ? '<span class="im">KENDİ İMALATIMIZ</span>' : ''}</div></div></a>`).join('')}</div>
     <div class="diger-serit"><b>Bunlar da var</b><span>Mibzer · Çayır biçme makinesi · Yedek parça · İkinci el &amp; takas (sayfa ${n2(NO.takas)}) — model ve fotoğraf için WhatsApp'tan sorun.</span></div>
   </div>
   ${footer(NO.urunler)}
@@ -437,7 +499,7 @@ figcaption { font-size: 8pt; color: var(--gri); margin-top: 1.5mm; }
 
 ${urunler.join('\n')}
 
-<section class="page bilgi">
+<section class="page bilgi" id="sahadan">
   ${ust({ kat: 'Sahadan gerçek kareler', baslik: 'Üretimden tarlaya', alt: 'Atölyemizden ve teslimatlarımızdan', qrSvg: qrHarita, qrB: 'Google yorumları', qrA: 've konum' })}
   <div class="icerik"><div class="saha">${SAHADAN.slice(0, 6).map(([f, y]) => `<figure class="cer"><div class="kutu"><img src="${foto(f, true)}" alt="${esc(y)}"></div><figcaption>${esc(y)}</figcaption></figure>`).join('')}</div></div>
   ${footer(NO.sahadan)}
@@ -468,16 +530,15 @@ ${urunler.join('\n')}
   ${footer(NO.takas)}
 </section>
 
-<section class="page arka">
+<section class="page arka" id="iletisim">
   <div class="a-serit"></div>
   <div class="a-sol">
-    <p class="k-mark">ÜÇEL TARIM ALETLERİ</p>
+    <div class="k-marka"><img src="${marka('logo-mark.png')}" alt="Üçel logosu"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
     <h2>İhtiyacınız olan ekipmanı<br>birlikte bulalım.</h2>
     <p class="alt">Traktörünüzü söyleyin. Yapacağınız işi anlatın.<br>Size uygun seçeneği birlikte değerlendirelim.</p>
     <p class="tel-et">Telefon ve WhatsApp</p>
     <p class="tel">${FIRMA.telefon}</p>
   </div>
-  <img class="a-logo" src="${marka('logo-mark.png')}" alt="Üçel logosu">
   <div class="a-sag">
     <dl>
       <div><dt>Adres</dt><dd>${esc(FIRMA.adres1)}<br>${esc(FIRMA.adres2)}</dd></div>
@@ -490,6 +551,13 @@ ${urunler.join('\n')}
       <div><div class="kod">${qrSite}</div><b>Web sitesi</b>Tüm ürünler</div>
       <div><div class="kod">${qrHarita}</div><b>Konum</b>Yol tarifi</div>
     </div>
+  </div>
+  <div class="a-bant">
+    <img src="${dekupe('tarim-romorku-yesil-traktor')}" alt="Tarım römorku">
+    <img src="${dekupe('yayli-kultivator-kirmizi-2')}" alt="Kültivatör">
+    <img src="${dekupe('su-tankeri-2')}" alt="Su tankeri">
+    <img src="${dekupe('yayli-kultivator-mavi-2')}" alt="Kültivatör, mavi">
+    <p>${SLOGAN[0]}<span>${SLOGAN[1]}</span></p>
   </div>
 </section>
 </body></html>`;
@@ -517,7 +585,7 @@ const sorun = await s.evaluate(() => {
     const sayfa = p.getBoundingClientRect();
     p.querySelectorAll('.ek-kutu').forEach((el) => { if (el.scrollHeight > el.clientHeight + 2) out.push(`sayfa ${i + 1}: "${el.querySelector('h3').textContent}" kutusu taşıyor`); });
     const tbl = p.querySelector('table.teknik'); if (tbl && tbl.parentElement.getBoundingClientRect().right + 1 < tbl.getBoundingClientRect().right) out.push(`sayfa ${i + 1}: tablo sağa taşıyor`);
-    p.querySelectorAll('.sag, .sag-ust, .aciklama, table, .hero, .ek, .icerik, .dizin, .saha, .sss, .qr, .baslik, .slogan, .a-sag, .a-sol, .k-yazi').forEach((el) => {
+    p.querySelectorAll('.dizin2 a, .mozaik, .biz2, .icindekiler, .k-tel, .a-bant, .sag, .sag-ust, .aciklama, table, .hero, .ek, .icerik, .dizin, .saha, .sss, .qr, .baslik, .slogan, .a-sag, .a-sol, .k-yazi').forEach((el) => {
       const r = el.getBoundingClientRect();
       if (r.bottom > sinir + 1) out.push(`sayfa ${i + 1}: ${el.className || el.tagName} ${Math.round(r.bottom - sinir)}px alt şeride taşıyor`);
       if (r.right > sayfa.right + 1) out.push(`sayfa ${i + 1}: ${el.className || el.tagName} sağdan taşıyor`);
