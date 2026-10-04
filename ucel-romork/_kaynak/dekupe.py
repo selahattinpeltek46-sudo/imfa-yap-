@@ -3,7 +3,8 @@
 Gereken: pip install "rembg[cpu]"   (ilk çalıştırmada ~180 MB model indirilir)
 Çalıştırma (bu klasörde): python3 dekupe.py
 Girdi: cikti/pdf-gorsel/<ad>.jpg (gorseller.py üretir)
-Çıktı: cikti/dekupe/<ad>.jpg — beyaz zemin, yumuşak gölge, PDF için sıkıştırılmış JPEG
+       foto-beyaz/<ad>.jpg — Üçel'in gönderdiği, arka planı zaten beyaz fotoğraflar (rembg gerekmez)
+Çıktı: cikti/dekupe/<ad>.jpg — beyaz zemin, PDF için sıkıştırılmış JPEG
 
 Hangi fotoğrafın dekupe edileceği elle seçildi: pulluk ve ön yükleyici fotoğraflarında
 kenarlar temiz çıkmadığı (arka plan parçaları, insan, bina kaldığı) için bunlar listede yok;
@@ -17,6 +18,7 @@ BURASI = Path(__file__).resolve().parent
 GIRDI = BURASI / 'cikti' / 'pdf-gorsel'
 CIKTI = BURASI / 'cikti' / 'dekupe'
 
+HAZIR = BURASI / 'foto-beyaz'
 DEKUPE = ['tarim-romorku-yesil', 'yayli-kultivator-kirmizi', 'yayli-kultivator-mavi', 'su-tankeri']
 
 
@@ -38,9 +40,28 @@ def golgeli(on: Image.Image, uzun_kenar=1500) -> Image.Image:
     return tuval.convert('RGB')
 
 
+def hazir_kopyala():
+    """Beyaz zeminli hazır fotoğrafları boş kenarlarından kırpıp aynı klasöre yazar."""
+    for f in sorted(HAZIR.glob('*.jpg')):
+        im = Image.open(f).convert('RGB')
+        maske = im.convert('L').point(lambda v: 255 if v < 245 else 0)
+        kutu = maske.getbbox()
+        if kutu:
+            pay = 12
+            kutu = (max(0, kutu[0] - pay), max(0, kutu[1] - pay), min(im.width, kutu[2] + pay), min(im.height, kutu[3] + pay))
+            im = im.crop(kutu)
+        im.save(CIKTI / f.name, 'JPEG', quality=86, optimize=True, progressive=True)
+        print('hazır:', f.stem)
+
+
 def main():
-    from rembg import new_session, remove
     CIKTI.mkdir(parents=True, exist_ok=True)
+    hazir_kopyala()
+    try:
+        from rembg import new_session, remove
+    except ImportError:
+        print('rembg kurulu değil; yalnızca hazır fotoğraflar işlendi')
+        return
     oturum = new_session('isnet-general-use')
     for ad in DEKUPE:
         im = Image.open(GIRDI / f'{ad}.jpg').convert('RGB')

@@ -41,8 +41,8 @@ const SAYFALAR = [
     id: 'kultivator', kategori: 'Toprak İşleme', imalat: true, model: 'Göksun yaylı kültivatör',
     aciklama: 'Pullukla işlenmiş toprağın yüzeyini inceltip tohum yatağını hazırlar, yabani otla mücadelede kullanılır. Göksun Sanayi Sitesi\'ndeki atölyemizde üretiyoruz.',
     kullanim: ['Yüzey işleme', 'Tohum yatağı', 'Yabani ot mücadelesi'],
-    hero: ['d', 'yayli-kultivator-kirmizi', 'Göksun yaylı kültivatör, kırmızı'],
-    yan: [['d', 'yayli-kultivator-mavi', 'Mavi renkte']],
+    hero: ['d', 'yayli-kultivator-kirmizi-2', 'Göksun yaylı kültivatör, kırmızı'],
+    yan: [['d', 'yayli-kultivator-mavi-2', 'Mavi renkte']],
     alanlar: ['Ayak sayısı', 'Çalışma genişliği', 'Ağırlık', 'Gereken traktör gücü', 'Bağlantı tipi'],
   },
   {
@@ -57,7 +57,7 @@ const SAYFALAR = [
     id: 'romork', kategori: 'Taşıma & Yükleme', imalat: true, model: 'Damperli tarım römorku',
     aciklama: 'Tarladan eve, depodan tarlaya yük taşımanın temel ekipmanı. Kaynağından boyasına kadar atölyemizde üretiyoruz; kasa rengini ve yazısını isteğinize göre yapıyoruz.',
     kullanim: ['Ürün taşıma', 'Gübre ve yem', 'Odun ve malzeme', 'Hayvancılık'],
-    hero: ['d', 'tarim-romorku-yesil', 'Arkadan görünüm, kasada müşteri adı'],
+    hero: ['d', 'tarim-romorku-yesil-traktor', 'Traktöre bağlı, arkadan görünüm'],
     yan: [['f', 'tarim-romorku-mavi', 'Mavi kasa, yandan'], ['f', 'tarim-romorku-yesil-teslimat', 'Müşterimize teslimat']],
     alanlar: ['Taşıma kapasitesi', 'Kasa iç ölçüsü (U × G × Y)', 'Dingil sayısı', 'Lastik ebadı', 'Damper', 'Gereken traktör gücü'],
   },
@@ -65,16 +65,16 @@ const SAYFALAR = [
     id: 'su-tankeri', kategori: 'Taşıma & Yükleme', imalat: false, model: 'Traktörle çekilen su tankeri',
     aciklama: 'Tarla sulaması, hayvan suyu ve genel su taşımacılığı için traktörle çekilen tanker.',
     kullanim: ['Tarla sulama', 'Hayvan suyu', 'Su taşımacılığı'],
-    hero: ['d', 'su-tankeri', 'Su tankerleri'],
+    hero: ['d', 'su-tankeri-2', 'Su tankerleri'],
     yan: [],
     alanlar: ['Su kapasitesi', 'Tank malzemesi', 'Dingil sayısı', 'Pompa', 'Gereken traktör gücü'],
   },
   {
     id: 'on-yukleyici', kategori: 'Taşıma & Yükleme', imalat: true, model: 'Traktör ön yükleyici (kepçe)',
-    aciklama: 'Traktörünüzün önüne monte edilen; yem, gübre ve malzeme yükleme-boşaltma işlerini kolaylaştıran sistem. Kendi atölyemizde imal ediyor, montaj uygunluğunu traktör modelinize göre değerlendiriyoruz.',
+    aciklama: 'Traktörünüze monte edilen; yem, gübre ve malzeme yükleme-boşaltma işlerini kolaylaştıran sistem. Kendi atölyemizde imal ediyor, montaj uygunluğunu traktör modelinize göre değerlendiriyoruz.',
     kullanim: ['Yükleme-boşaltma', 'Ahır ve çiftlik işleri', 'Malzeme taşıma'],
-    hero: ['f', 'on-yukleyici-atolye', 'Ön yükleyici, atölyemizin önünde'],
-    yan: [['f', 'on-yukleyici-kubota', 'Kubota traktöre montaj'], ['f', 'on-yukleyici-kaldirma', 'Kepçe kaldırırken']],
+    hero: ['d', 'on-yukleyici-traktor', 'Traktöre takılı, kepçe yukarıda'],
+    yan: [['f', 'on-yukleyici-atolye', 'Atölyemizin önünde'], ['f', 'on-yukleyici-kubota', 'Kubota traktöre montaj']],
     alanlar: ['Kaldırma kapasitesi', 'Maksimum kaldırma yüksekliği', 'Kova genişliği', 'Ağırlık (kova dahil)', 'Uygun traktör gücü'],
   },
 ];
@@ -400,8 +400,8 @@ figcaption { font-size: 8pt; color: var(--gri); margin-top: 1.5mm; }
     <p class="alt-slogan">${SLOGAN[1]}</p>
     <div class="k-meta"><span><b>Ürün Kataloğu</b>Tarım makineleri ve ekipmanları</span><span><b>${FIRMA.telefon}</b>Telefon / WhatsApp</span></div>
   </div>
-  <img class="k-urun k1" src="${dekupe('tarim-romorku-yesil')}" alt="Üçel tarım römorku">
-  <img class="k-urun k2" src="${dekupe('yayli-kultivator-kirmizi')}" alt="Göksun yaylı kültivatör">
+  <img class="k-urun k1" src="${dekupe('tarim-romorku-yesil-traktor')}" alt="Üçel tarım römorku">
+  <img class="k-urun k2" src="${dekupe('yayli-kultivator-kirmizi-2')}" alt="Göksun yaylı kültivatör">
   <span class="k-yil">2026</span>
 </section>
 
