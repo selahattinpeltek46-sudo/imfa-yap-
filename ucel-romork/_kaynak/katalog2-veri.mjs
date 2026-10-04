@@ -39,7 +39,7 @@ export const URUNLER = [
     kullanim: ['Tarla toprağının derin işlenmesi', 'Ekim öncesi toprak hazırlığı', 'Anız bozma'],
     kimler: 'Tarlasını ekim öncesi derin işlemek isteyen, anız bozacak çiftçiler için.',
     secenekler: ['Farklı gövde sayısı seçenekleri için bizi arayın'],
-    foto: [['kulakli-pulluk', 'Mavi kulaklı pulluk'], ['on-yukleyici-ve-pulluk', 'Üçel pulluk ve ön yükleyici']],
+    foto: [['kulakli-pulluk', 'Mavi kulaklı pulluk'], ['on-yukleyici-ve-pulluk', 'Üçel pulluk ve loader kepçe']],
   },
   {
     id: 'kultivator', kategori: 'toprak', ad: 'Kültivatör / Tapan', imalat: true, url: SITE + 'urunler/kultivator/',
@@ -74,12 +74,12 @@ export const URUNLER = [
     foto: [['su-tankeri', 'Su tankerleri']],
   },
   {
-    id: 'on-yukleyici', kategori: 'tasima', ad: 'Ön Yükleyici (Loader)', imalat: true, url: SITE + 'urunler/on-yukleyici/',
-    kisa: 'Traktörünüzün önüne monte edilen, yem, gübre ve malzeme gibi yükleri kaldırıp taşımanızı sağlayan sistem. Kendi atölyemizde imal ediyoruz.',
+    id: 'on-yukleyici', kategori: 'tasima', ad: 'Loader Kepçe', imalat: true, url: SITE + 'urunler/on-yukleyici/',
+    kisa: 'Traktörünüze monte edilen, yem, gübre ve malzeme gibi yükleri kaldırıp taşımanızı sağlayan sistem. Kendi atölyemizde imal ediyoruz.',
     kullanim: ['Yükleme-boşaltma işleri', 'Ahır ve çiftlik işleri', 'Malzeme taşıma'],
     kimler: 'Ahır ve çiftlik işleri yapan, düzenli yükleme-boşaltma ihtiyacı olan çiftçiler için.',
     secenekler: ['Traktörünüzün modeline göre montaj uygunluğu birlikte değerlendirilir', 'Kırmızı ve mavi renk örnekleri'],
-    foto: [['on-yukleyici-atolye', 'Üçel atölyesi önünde ön yükleyici'], ['on-yukleyici-kubota', 'Kubota traktöre takılı ön yükleyici'], ['on-yukleyici-kaldirma', 'Ön yükleyici kepçeyi kaldırırken'], ['on-yukleyici-mavi', 'Mavi ön yükleyici']],
+    foto: [['on-yukleyici-atolye', 'Üçel atölyesi önünde loader kepçe'], ['on-yukleyici-kubota', 'Kubota traktöre takılı loader kepçe'], ['on-yukleyici-kaldirma', 'Loader kepçe yukarıdayken'], ['on-yukleyici-mavi', 'Mavi loader kepçe']],
   },
 ];
 
@@ -104,7 +104,7 @@ export const ISLER = [
 ];
 
 export const NEDEN = [
-  ['Kendi İmalatımız', 'Römork, kültivatör ve ön yükleyiciyi Göksun Sanayi Sitesi\'ndeki atölyemizde kendimiz üretiyoruz.'],
+  ['Kendi İmalatımız', 'Römork, kültivatör ve loader kepçeyi Göksun Sanayi Sitesi\'ndeki atölyemizde kendimiz üretiyoruz.'],
   ['Sahadan Gelen Tecrübe', 'Tarım makinelerinin yalnızca satışını değil, sahada nasıl kullanıldığını da biliyoruz.'],
   ['İhtiyaca Göre Çözüm', 'Kendi imal ettiğimiz ekipmanlarda standart ölçülerin dışında, ihtiyacınıza göre özel imalat yapabiliyoruz.'],
   ['Satış Sonrası Destek', 'Tesliminden sonra da yanınızdayız. Kendi ürettiğimiz ve sattığımız ürünler için yedek parça sağlıyoruz.'],
@@ -124,7 +124,7 @@ export const SAHADAN = [
   ['tarim-romorku-yesil-teslimat', 'Yeşil tarım römorku teslimatta. Kasada müşterinin adı yazılı.'],
   ['tarim-romorku-traktor', 'Mavi römork yük aracında, New Holland traktörün yanında.'],
   ['romork-ve-gubre-serpme', 'Römork ve gübre serpme makinesi, müşterimizle birlikte.'],
-  ['on-yukleyici-kubota', 'Kubota traktöre takılmış ön yükleyici.'],
+  ['on-yukleyici-kubota', 'Kubota traktöre takılmış loader kepçe.'],
   ['tarim-romorku-yuk-araci', 'Mavi tarım römorku teslimat için yük aracında.'],
   ['doner-ot-tirmigi-sevkiyat', 'Atölyemizin önünde teslimat için yükleme.'],
 ];

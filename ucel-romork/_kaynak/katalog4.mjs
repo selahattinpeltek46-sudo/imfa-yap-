@@ -34,7 +34,7 @@ const SAYFALAR = [
     aciklama: 'Tarlanın ekim öncesi derin işlenmesinde kullanılan temel ekipman. Toprağınıza ve traktörünüzün gücüne uygun pulluk, traktörünüzü gereksiz yormaz.',
     kullanim: ['Derin toprak işleme', 'Ekim öncesi hazırlık', 'Anız bozma'],
     hero: ['f', 'kulakli-pulluk', 'Kulaklı pulluk'],
-    yan: [['f', 'on-yukleyici-ve-pulluk', 'Pulluk ve ön yükleyici']],
+    yan: [['f', 'on-yukleyici-ve-pulluk', 'Pulluk ve loader kepçe']],
     alanlar: ['Gövde sayısı', 'Toplam çalışma genişliği', 'Ağırlık', 'Gereken traktör gücü', 'Bağlantı tipi'],
   },
   {
@@ -70,7 +70,7 @@ const SAYFALAR = [
     alanlar: ['Su kapasitesi', 'Tank malzemesi', 'Dingil sayısı', 'Pompa', 'Gereken traktör gücü'],
   },
   {
-    id: 'on-yukleyici', kategori: 'Taşıma & Yükleme', imalat: true, model: 'Traktör ön yükleyici (kepçe)',
+    id: 'on-yukleyici', kategori: 'Taşıma & Yükleme', imalat: true, model: 'Traktöre monte edilen kepçe',
     aciklama: 'Traktörünüze monte edilen; yem, gübre ve malzeme yükleme-boşaltma işlerini kolaylaştıran sistem. Kendi atölyemizde imal ediyor, montaj uygunluğunu traktör modelinize göre değerlendiriyoruz.',
     kullanim: ['Yükleme-boşaltma', 'Ahır ve çiftlik işleri', 'Malzeme taşıma'],
     hero: ['d', 'on-yukleyici-traktor', 'Traktöre takılı, kepçe yukarıda'],
@@ -468,7 +468,7 @@ figcaption { font-size: 8pt; color: var(--gri); margin-top: 1.5mm; }
       <p class="one">Göksun'da <em>üretiyoruz.</em> Türkiye'ye ulaştırıyoruz.</p>
       <p>Üçel Tarım Aletleri, Göksun Sanayi Sitesi'nde tarım ekipmanı imalatı ve satışı yapan bir aile işletmesi. ${esc(FIRMA.yetkili)} mesleği babasının yanında öğrendi; bugün de babasıyla birlikte üretiyor.</p>
       <div class="isler">
-        <div><b>İmalat</b><span>Römork, kültivatör ve ön yükleyici kendi atölyemizde</span></div>
+        <div><b>İmalat</b><span>Römork, kültivatör ve loader kepçe kendi atölyemizde</span></div>
         <div><b>Satış</b><span>Tarım makineleri ve ekipmanları</span></div>
         <div><b>İkinci el &amp; takas</b><span>Eski ekipmanınızı değerlendiriyoruz</span></div>
       </div>
@@ -481,7 +481,7 @@ figcaption { font-size: 8pt; color: var(--gri); margin-top: 1.5mm; }
     </div>
     <div class="mozaik">
       <figure class="cer genis"><div class="kutu"><img src="${marka('ucel-logo-tabela.jpg')}" alt="Üçel tabelası"></div><figcaption>Atölyemiz, Göksun Sanayi Sitesi</figcaption></figure>
-      <figure class="cer"><div class="kutu"><img src="${foto('on-yukleyici-atolye', true)}" alt="Atölye önünde ön yükleyici"></div><figcaption>Atölyemizin önünde</figcaption></figure>
+      <figure class="cer"><div class="kutu"><img src="${foto('on-yukleyici-atolye', true)}" alt="Atölye önünde loader kepçe"></div><figcaption>Atölyemizin önünde</figcaption></figure>
       <figure class="cer"><div class="kutu"><img src="${foto('tarim-romorku-yesil-teslimat', true)}" alt="Römork teslimatı"></div><figcaption>Müşterimize teslimat</figcaption></figure>
     </div>
   </div></div>
