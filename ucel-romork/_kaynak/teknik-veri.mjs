@@ -12,6 +12,14 @@
 // opsiyon : [ad, aciklama|null]       → açıklama null ise ayrıntı bekleniyor
 // saha    : [foto, açıklama] | null   → "Sahadaki kullanım"
 // cekim   : ürüne özel çekilmesi gereken kareler (standart 6 karenin üstüne)
+//
+// Elmaksan kataloğu analizinden eklenenler (katalog4: yalnızca dolu olanlar görünür):
+// modeller : [{ Model: 'ÜÇL-…', '<teknik alan adı>': '…', … }]  her model tabloda bir satır.
+//            Alan adları teknik listesindekilerle birebir aynı yazılır; boş alan '—' görünür.
+// malzeme  : [konu, deger]       → "Malzeme ve imalat" kutusu (kendi imalat ürünleri)
+// farkli   : ['…']               → "Modelimizi farklı kılan" maddeleri
+// atasman  : [ad, durum]         → "Takılabilen ataşmanlar"; durum true ya da açıklama = var, null = sorulacak
+// uyari    : ['…']               → "Kullanım ve bakım" uyarıları
 
 export const BEKLENIYOR = '[TEKNİK VERİ BEKLENİYOR]';
 
@@ -43,6 +51,9 @@ export const TEKNIK = {
     opsiyon: [['Farklı gövde sayısı seçenekleri', null], ['Ön kesici / diskli bıçak', null], ['Derinlik tekerleği', null]],
     saha: null,
     cekim: ['Gövde ve kulak yakın çekim', 'Emniyet sistemi detayı', 'Tarlada sürüm sırasında (toprak devrilirken)'],
+    modeller: [],
+    farkli: [],
+    uyari: [],
   },
   kultivator: {
     teknik: [
@@ -62,6 +73,10 @@ export const TEKNIK = {
     opsiyon: [['Farklı ayak sayısı ve ebat seçenekleri', 'Sitede belirtilmiş; seçenekler bekleniyor'], ['Kırmızı ve mavi renk', 'Fotoğraflarda görülüyor'], ['Merdane / tırmık eklentisi', null]],
     saha: null,
     cekim: ['Yay ve ayak yakın çekim', 'Uç demiri detayı', 'Tarlada çalışırken', 'Atölyede kaynak/montaj aşaması'],
+    modeller: [],
+    farkli: [],
+    uyari: [],
+    malzeme: [['Şase profili (ölçü × et kalınlığı)', null], ['Yay (tel çapı / tip)', null], ['Ayak ve uç demiri malzemesi', null], ['Isıl işlem / sertleştirme', null], ['Boya', null]],
   },
   'gubre-serpme': {
     teknik: [
@@ -80,6 +95,9 @@ export const TEKNIK = {
     opsiyon: [['Farklı kapasite seçenekleri', 'Sitede belirtilmiş; seçenekler bekleniyor'], ['Depo yükseltme (ilave)', null], ['Kenar serpme', null]],
     saha: ['romork-ve-gubre-serpme', 'Gübre serpme makinesi müşteriye teslim edilirken.'],
     cekim: ['Tek başına genel görünüm (römork üstünde değil)', 'Disk ve dağıtıcı detayı', 'Debi ayar kolu', 'Tarlada serpme yaparken'],
+    modeller: [],
+    farkli: [],
+    uyari: [],
   },
   romork: {
     teknik: [
@@ -103,6 +121,10 @@ export const TEKNIK = {
     opsiyon: [['Kasa rengi', 'Müşteri isteğine göre (fotoğraflarda mavi, yeşil)'], ['Kasa yazısı', 'İsim, firma adı ya da "Maşallah"'], ['Özel ölçü imalat', 'Standart dışı ölçüde üretim (sitede belirtilmiş)'], ['Damperli / dampersiz', null], ['Kasa ilavesi (yükseltme)', null], ['Branda / kasa üstü kafes', null]],
     saha: ['tarim-romorku-yesil-teslimat', 'Yeşil tarım römorku teslimatta; kasada müşterinin adı yazılı.'],
     cekim: ['Şasi ve dingil alttan', 'Çeki oku ve bağlantı', 'Kasa kapak mandalları', 'Damper silindiri (varsa)', 'Kasa içi, üstten', 'Yüklü halde yolda / tarlada'],
+    modeller: [],
+    farkli: [],
+    uyari: [],
+    malzeme: [['Şasi profili (ölçü × et kalınlığı)', null], ['Kasa taban / yan sacı', null], ['Dingil (marka / kapasite)', null], ['Kaynak', null], ['Boya (astar + son kat)', null]],
   },
   'su-tankeri': {
     teknik: [
@@ -125,6 +147,9 @@ export const TEKNIK = {
     opsiyon: [['Farklı kapasite seçenekleri', 'Sitede belirtilmiş; seçenekler bekleniyor'], ['Pompa', null], ['Hortum ve makara', null], ['Hayvan suluğu çıkışı', null]],
     saha: null,
     cekim: ['Dolum ağzı', 'Vana ve çıkışlar', 'Şasi ve dingil', 'Traktöre bağlı, dolu halde', 'Merada / ahırda kullanımda'],
+    modeller: [],
+    farkli: [],
+    uyari: [],
   },
   'on-yukleyici': {
     teknik: [
@@ -142,9 +167,14 @@ export const TEKNIK = {
       ['Montaj tipi', 'sabit / hızlı sökme', null],
     ],
     uyum: [['Traktör markası ve modeli', null], ['Traktör gücü', null], ['Traktör hidrolik debisi', null], ['Ön aks yük sınırı', null]],
-    opsiyon: [['Kırmızı ve mavi renk', 'Fotoğraflarda görülüyor'], ['Balya kıskacı', null], ['Palet çatalı', null], ['Kar küreği', null], ['Farklı kova ölçüleri', null]],
+    opsiyon: [['Kırmızı ve mavi renk', 'Fotoğraflarda görülüyor'], ['Farklı kova ölçüleri', null]],
     saha: ['on-yukleyici-kaldirma', 'Ön yükleyici kepçeyi kaldırırken.'],
     cekim: ['Traktöre bağlantı braketi', 'Hidrolik silindir ve hortumlar', 'Kumanda kolu (kabin içi)', 'Kova yakın çekim', 'Yüklü kova ile çalışırken (gübre, toprak, yem)'],
+    modeller: [],
+    farkli: [],
+    uyari: [],
+    malzeme: [['Kol / şase profili (ölçü × et kalınlığı)', null], ['Hidrolik silindir (marka / çap)', null], ['Pim ve burç', null], ['Hortum ve rakorlar', null], ['Boya', null]],
+    atasman: [['Toprak / gübre kovası', null], ['Balya kıskacı', null], ['Rulo balya şişi', null], ['Palet çatalı', null], ['Kar küreği', null], ['Tomruk kıskacı', null]],
   },
 };
 

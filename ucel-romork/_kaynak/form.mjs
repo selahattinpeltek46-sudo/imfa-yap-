@@ -35,11 +35,14 @@ const modelTablo = (satirlar) => `<table class="form">
   </tbody>
 </table>`;
 
-function urunSayfasi(id) {
+const cizgiler = (n) => `<div class="cizgiler">${'<span></span>'.repeat(n)}</div>`;
+
+// Her ürün iki sayfa: 1) teknik tablo, uyum, opsiyon  2) malzeme, farklı kılan, ataşman, uyarı, fotoğraf, not
+function urunSayfalari(id) {
   const t = TEKNIK[id];
-  return sayfa(`
+  const s1 = sayfa(`
   <h2>${esc(ad(id))}</h2>
-  <p class="yon">Her model için bir sütun kullanın. Tek model varsa yalnızca "Model 1" sütununu doldurun.</p>
+  <p class="yon">Her model için bir sütun kullanın. Tek model varsa yalnızca "Model 1" sütununu doldurun. Katalogda her model tabloda bir satır olur.</p>
   <h3>1. Teknik özellikler</h3>
   ${modelTablo(t.teknik)}
   <div class="iki">
@@ -52,17 +55,30 @@ function urunSayfasi(id) {
       <table class="cizgi ops">${t.opsiyon.map(([o]) => `<tr><td>${esc(o)}</td><td class="vy">${kutu} Var ${kutu} Yok</td></tr>`).join('')}
       <tr><td>Diğer: ______________________</td><td class="vy">${kutu} Var</td></tr></table>
     </div>
-  </div>
-  <div class="iki alt-iki${STANDART_CEKIM.length + t.cekim.length > 11 ? ' uzun' : ''}">
+  </div>`, `${ad(id)} · 1/2`);
+  let n = 4;
+  const bolum = (b) => `<h3>${n++}. ${b}</h3>`;
+  const s2 = sayfa(`
+  <h2>${esc(ad(id))} <span class="devam">devam</span></h2>
+  ${t.malzeme ? `${bolum('Malzeme ve imalat')}<p class="yon">Katalogda "Malzeme ve imalat" kutusunda yer alır. Ölçüyü birimiyle yazın (ör. profil 80×80×5 mm).</p>
+  <table class="cizgi">${t.malzeme.map(([k]) => `<tr><td>${esc(k)}</td><td class="yaz genis"></td></tr>`).join('')}</table>` : ''}
+  ${bolum('Modelimizi farklı kılan özellikler')}<p class="yon">Müşteri neden sizinkini seçmeli? Her satıra bir somut özellik yazın (ör. kullanılan malzeme, ayar kolaylığı, güçlendirilmiş bölge). Genel övgü değil, ölçülebilir bilgi.</p>
+  ${cizgiler(t.atasman ? 3 : 4)}
+  ${t.atasman ? `${bolum('Takılabilen ataşmanlar')}<table class="cizgi ops">${t.atasman.map(([o]) => `<tr><td>${esc(o)}</td><td class="vy">${kutu} Var ${kutu} Yok</td><td class="yaz">Not:</td></tr>`).join('')}
+  <tr><td>Diğer: ______________________</td><td class="vy">${kutu} Var</td><td class="yaz">Not:</td></tr></table>` : ''}
+  ${bolum('Kullanım ve bakım uyarıları')}<p class="yon">Müşterinin bilmesi gerekenler: yağlama, kontrol aralığı, kullanım sırasında dikkat edilecekler, kullanılacak yağ.</p>
+  ${cizgiler(t.atasman ? 2 : 4)}
+  <div class="iki alt-iki${STANDART_CEKIM.length + t.cekim.length > 10 ? ' uzun' : ''}">
     <div>
-      <h3>4. Fotoğraf (çekildikçe işaretleyin)</h3>
+      ${bolum('Fotoğraf (çekildikçe işaretleyin)')}
       <ul class="liste">${[...STANDART_CEKIM.map((x) => x.split(' — ')[0] + (x.includes('—') ? ' — ' + x.split(' — ')[1].split(',')[0] : '')), ...t.cekim].map((x) => `<li>${kutu} ${esc(x)}</li>`).join('')}</ul>
     </div>
     <div>
-      <h3>5. Not</h3>
-      <div class="not-kutu"></div>
+      ${bolum('Not')}
+      <div class="not-kutu kisa"></div>
     </div>
-  </div>`, ad(id));
+  </div>`, `${ad(id)} · 2/2`);
+  return s1 + s2;
 }
 
 const html = () => `<!DOCTYPE html>
@@ -99,7 +115,11 @@ table.cizgi td.vy { width: 30%; white-space: nowrap; font-size: 8.5pt; }
 .liste li { font-size: 8.4pt; padding: .9mm 0; }
 .alt-iki.uzun { grid-template-columns: 1.7fr 1fr; }
 .alt-iki.uzun .liste { columns: 2; column-gap: 4mm; }
-.alt-iki.uzun .not-kutu { height: 30mm; }
+.alt-iki.uzun .devam { font: 400 11pt 'Inter', sans-serif; color: var(--muted); }
+.cizgiler span { display: block; height: 7.5mm; border-bottom: .25mm solid var(--line); }
+table.cizgi td.yaz.genis { width: 55%; }
+.not-kutu.kisa { height: 34mm; }
+.not-kutu { height: 30mm; }
 .not-kutu { border: .25mm solid var(--line); border-radius: .6mm; height: 40mm; background-image: repeating-linear-gradient(transparent 0 6.9mm, var(--soft) 6.9mm 7mm); }
 /* kapak */
 .kutu-bilgi { border: .3mm solid var(--gold); border-radius: 1mm; padding: 4mm 5mm; margin: 4mm 0; background: #FBF8F2; }
@@ -142,6 +162,7 @@ ${sayfa(`
   <table class="firma">
     <tr><td>İmalat ürünlerinde ortalama teslim süresi</td><td>____ – ____ ${kutu} gün ${kutu} hafta</td></tr>
     <tr><td>Nakliye</td><td>${kutu} Biz götürüyoruz &nbsp; ${kutu} Anlaşmalı firma &nbsp; ${kutu} Müşteri teslim alıyor</td></tr>
+    <tr><td>Model kodu<br><small>(katalog tablosunda her satırın başında yer alır)</small></td><td>${kutu} Kendi kodlarımız var (ürün sayfalarına yazın)<br>${kutu} Siz önerin (ör. ÜÇL-RMK-4, ÜÇL-KLT-9) &nbsp; ${kutu} Kod kullanmayalım</td></tr>
     <tr><td>Katalogdaki müşteri fotoğrafları</td><td>${kutu} İzin alındı &nbsp; ${kutu} İzin alınacak &nbsp; ${kutu} Yüzler bulanıklaştırılsın</td></tr>
   </table>`)}
 
@@ -158,7 +179,7 @@ ${sayfa(`
   <h3>Yedek parça</h3>
   <table class="firma"><tr><td>Hangi ürünler için yedek parça var?</td><td>______________________________________________<br><br>______________________________________________</td></tr></table>`, 'Ürün listesi')}
 
-${Object.keys(TEKNIK).map(urunSayfasi).join('\n')}
+${Object.keys(TEKNIK).map(urunSayfalari).join('\n')}
 
 ${sayfa(`
   <h2>Mibzer ve Çayır Biçme Makinesi</h2>

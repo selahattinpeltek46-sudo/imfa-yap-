@@ -145,6 +145,7 @@ firma_satirlari = [
     ('İmalat ürünlerinde ortalama teslim süresi', ''),
     ('Nakliye nasıl yapılıyor?', ''),
     ('Katalogdaki müşteri fotoğrafları için izin', ''),
+    ('Model kodu (katalog tablosunda her satırın başında yer alır)', ''),
 ]
 for i, (a, b) in enumerate(firma_satirlari, start=6):
     etiket(wf, i, 1, a, kalin=True)
@@ -155,11 +156,13 @@ for i, (a, b) in enumerate(firma_satirlari, start=6):
         etiket(wf, i, 3, '—', renk=GRI)
     girdi(wf, i, 4)
     wf.row_dimensions[i].height = 32
-liste(wf, ['Evet', 'Hayır'], 'C6:C15')
+liste(wf, ['Evet', 'Hayır'], 'C6:C11')
 dv_nak = DataValidation(type='list', formula1='"Biz götürüyoruz,Anlaşmalı firma,Müşteri teslim alıyor"', allow_blank=True)
 wf.add_data_validation(dv_nak); dv_nak.add('D14')
 dv_izin = DataValidation(type='list', formula1='"İzin alındı,İzin alınacak,Yüzler bulanıklaştırılsın"', allow_blank=True)
 wf.add_data_validation(dv_izin); dv_izin.add('D15')
+dv_kod = DataValidation(type='list', formula1='"Kendi kodlarımız var (ürün sayfalarına yazın),Siz önerin (ör. ÜÇL-RMK-4),Kod kullanmayalım"', allow_blank=True)
+wf.add_data_validation(dv_kod); dv_kod.add('D16')
 wf.freeze_panes = 'A6'
 
 # ---------- 3. Ürün listesi ----------
@@ -192,12 +195,22 @@ wl.freeze_panes = 'A6'
 
 
 # ---------- 4. Ürün sayfaları ----------
-def urun_sayfasi(ad, teknik, uyum=None, opsiyon=None, cekim=None, sayfa_adi=None):
+def satirlar_yaz(w, r, n, ipucu):
+    """Serbest metin için n satır (A–E birleşik)."""
+    etiket(w, r, 1, ipucu, renk=GRI, boyut=9); w.merge_cells(start_row=r, start_column=1, end_row=r, end_column=5); r += 1
+    for _ in range(n):
+        girdi(w, r, 1); w.merge_cells(start_row=r, start_column=1, end_row=r, end_column=5)
+        w.row_dimensions[r].height = 22; r += 1
+    return r + 1
+
+
+def urun_sayfasi(ad, teknik, uyum=None, opsiyon=None, cekim=None, sayfa_adi=None, malzeme=None, farkli=False, atasman=None, uyari=False):
     w = wb.create_sheet(sayfa_adi or ad[:31])
     w.sheet_view.showGridLines = False
     for col, wd in zip('ABCDE', (36, 22, 20, 20, 20)):
         w.column_dimensions[col].width = wd
-    sayfa_basligi(w, ad, 'Her model için bir sütun. Bilmediğiniz hücreyi boş bırakın.')
+    sayfa_basligi(w, ad, 'Her model için bir sütun; katalogda her model tabloda bir satır olur. Bilmediğiniz hücreyi boş bırakın.')
+    no = iter(range(4, 20))
     r = 5
     yaz(w, f'A{r}', '1. TEKNİK ÖZELLİKLER', kalin=True, renk=ALTIN, boyut=9)
     r += 1
@@ -236,8 +249,36 @@ def urun_sayfasi(ad, teknik, uyum=None, opsiyon=None, cekim=None, sayfa_adi=None
             w.row_dimensions[r].height = 20; r += 1
         liste(w, ['Var', 'Yok'], f'B{o_ilk}:B{r - 1}')
         r += 1
+    if malzeme:
+        yaz(w, f'A{r}', f'{next(no)}. MALZEME VE İMALAT', kalin=True, renk=ALTIN, boyut=9); r += 1
+        baslik_satiri(w, r, ['Konu', 'Cevap (birimiyle, ör. 80×80×5 mm)']); w.merge_cells(start_row=r, start_column=2, end_row=r, end_column=5); r += 1
+        for k in malzeme:
+            etiket(w, r, 1, k[0]); girdi(w, r, 2)
+            w.merge_cells(start_row=r, start_column=2, end_row=r, end_column=5)
+            w.row_dimensions[r].height = 20; r += 1
+        r += 1
+    if farkli:
+        yaz(w, f'A{r}', f'{next(no)}. MODELİMİZİ FARKLI KILAN ÖZELLİKLER', kalin=True, renk=ALTIN, boyut=9); r += 1
+        r = satirlar_yaz(w, r, 4, 'Her satıra bir somut özellik (malzeme, ayar kolaylığı, güçlendirilmiş bölge…). Genel övgü değil, ölçülebilir bilgi.')
+    if atasman:
+        yaz(w, f'A{r}', f'{next(no)}. TAKILABİLEN ATAŞMANLAR', kalin=True, renk=ALTIN, boyut=9); r += 1
+        baslik_satiri(w, r, ['Ataşman', 'Var mı?', 'Not']); w.merge_cells(start_row=r, start_column=3, end_row=r, end_column=5); r += 1
+        a_ilk = r
+        for o in atasman + [['Diğer (yazın):', None]]:
+            if o[0] == 'Diğer (yazın):':
+                girdi(w, r, 1, None)
+            else:
+                etiket(w, r, 1, o[0])
+            girdi(w, r, 2); girdi(w, r, 3)
+            w.merge_cells(start_row=r, start_column=3, end_row=r, end_column=5)
+            w.row_dimensions[r].height = 20; r += 1
+        liste(w, ['Var', 'Yok'], f'B{a_ilk}:B{r - 1}')
+        r += 1
+    if uyari:
+        yaz(w, f'A{r}', f'{next(no)}. KULLANIM VE BAKIM UYARILARI', kalin=True, renk=ALTIN, boyut=9); r += 1
+        r = satirlar_yaz(w, r, 4, 'Yağlama, kontrol aralığı, kullanım sırasında dikkat edilecekler, kullanılacak yağ.')
     if cekim is not None:
-        yaz(w, f'A{r}', '4. FOTOĞRAF (çekildikçe "Çekildi" seçin)', kalin=True, renk=ALTIN, boyut=9); r += 1
+        yaz(w, f'A{r}', f'{next(no)}. FOTOĞRAF (çekildikçe "Çekildi" seçin)', kalin=True, renk=ALTIN, boyut=9); r += 1
         baslik_satiri(w, r, ['Kare', 'Durum']); r += 1
         f_ilk = r
         for k in V['standart'] + cekim:
@@ -255,7 +296,8 @@ ozet = []
 adlar = {u['id']: u['ad'] for u in V['urunler']}
 for uid, t in V['teknik'].items():
     sayfa_adi = adlar[uid].replace('/', '-').replace('  ', ' ')[:31]
-    ozet.append(urun_sayfasi(adlar[uid], t['teknik'], t['uyum'], t['opsiyon'], t['cekim'], sayfa_adi))
+    ozet.append(urun_sayfasi(adlar[uid], t['teknik'], t['uyum'], t['opsiyon'], t['cekim'], sayfa_adi,
+                             malzeme=t.get('malzeme'), farkli='farkli' in t, atasman=t.get('atasman'), uyari='uyari' in t))
 
 for ad, alanlar in V['diger'].items():
     teknik = []

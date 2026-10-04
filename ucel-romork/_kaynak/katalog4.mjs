@@ -3,7 +3,8 @@
 // Önce: python3 gorseller.py && python3 dekupe.py
 // Çalıştırma: node katalog4.mjs [--taslak]    (CHROMIUM_PATH gerekirse)
 //   --taslak : boş teknik alanlar [TEKNİK VERİ BEKLENİYOR] olarak görünür (Üçel'e kontrol için)
-//   varsayılan: boş alanlarda değer uydurulmaz, "Bilgi için arayın" yazar
+//   --deneme : yalnızca düzen testi — uydurma "00" değerlerle doldurur, her sayfaya DENEME damgası basar. ASLA dağıtılmaz.
+//   varsayılan: boş alanlarda değer uydurulmaz, "Bilgi için arayın" yazar; boş ek kutular görünmez
 import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -13,6 +14,7 @@ import { FIRMA, URUNLER, SAHADAN } from './katalog2-veri.mjs';
 import { TEKNIK, BEKLENIYOR } from './teknik-veri.mjs';
 
 const TASLAK = process.argv.includes('--taslak');
+const DENEME = process.argv.includes('--deneme');
 const BURASI = dirname(fileURLToPath(import.meta.url));
 const CIKTI = join(BURASI, 'cikti');
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -73,7 +75,7 @@ const SAYFALAR = [
     kullanim: ['Yükleme-boşaltma', 'Ahır ve çiftlik işleri', 'Malzeme taşıma'],
     hero: ['f', 'on-yukleyici-atolye', 'Ön yükleyici, atölyemizin önünde'],
     yan: [['f', 'on-yukleyici-kubota', 'Kubota traktöre montaj'], ['f', 'on-yukleyici-kaldirma', 'Kepçe kaldırırken']],
-    alanlar: ['Uygun traktör gücü', 'Kaldırma kapasitesi', 'Maksimum kaldırma yüksekliği', 'Kova genişliği', 'Ağırlık (kova dahil)'],
+    alanlar: ['Kaldırma kapasitesi', 'Maksimum kaldırma yüksekliği', 'Kova genişliği', 'Ağırlık (kova dahil)', 'Uygun traktör gücü'],
   },
 ];
 const urunAd = (id) => URUNLER.find((u) => u.id === id).ad;
@@ -100,34 +102,88 @@ const gorsel = ([tur, ad, yazi], sinif, kucuk = false) => tur === 'd'
   ? `<figure class="${sinif} dek"><img src="${dekupe(ad)}" alt="${esc(yazi)}"><figcaption>${esc(yazi)}</figcaption></figure>`
   : `<figure class="${sinif} cer"><div class="kutu"><img src="${foto(ad, kucuk)}" alt="${esc(yazi)}"></div><figcaption>${esc(yazi)}</figcaption></figure>`;
 
+// --deneme: düzeni dolu veriyle görmek için sahte değerler (gerçek veri DEĞİL, çıktı dağıtılmaz)
+function denemeVerisi(kaynak) {
+  const v = structuredClone(kaynak);
+  for (const t of Object.values(v)) {
+    const alanlar = t.teknik.map(([a]) => a).filter((a) => a !== 'Model');
+    t.modeller = [1, 2, 3].map((n) => Object.fromEntries([['Model', `DENEME-${n}`], ...alanlar.map((a) => [a, '00'])]));
+    t.farkli = ['Deneme maddesi: kısa bir cümle', 'Deneme maddesi: ikinci özellik', 'Deneme maddesi: üçüncü özellik'];
+    t.uyari = ['Deneme uyarısı: kullanım öncesi kontrol', 'Deneme uyarısı: bakım aralığı'];
+    if (t.malzeme) t.malzeme = t.malzeme.map(([k]) => [k, '00 mm']);
+    if (t.atasman) t.atasman = t.atasman.map(([k], i) => [k, i % 2 === 0 ? true : null]);
+  }
+  return v;
+}
+const VERI = DENEME ? denemeVerisi(TEKNIK) : TEKNIK;
+
+const bek = (kisa = false) => `<span class="bek">${kisa ? 'BEKLENİYOR' : BEKLENIYOR}</span>`;
+const birimYaz = (b) => (b && !b.includes(',') && !b.includes('/') && b !== 'adet' ? esc(b) : '');
+
+// Elmaksan düzeni: her model bir satır, sütunlar özellikler, en sağda gereken traktör gücü.
+// Model verisi yoksa: yayında tek sütunlu özellik listesi ("Bilgi için arayın"), taslakta boş model satırları.
 function teknikTablo(s) {
+  const t = VERI[s.id];
   const satirlar = s.alanlar.map((ad) => {
-    const r = TEKNIK[s.id].teknik.find(([a]) => a === ad);
+    const r = t.teknik.find(([a]) => a === ad);
     if (!r) throw new Error(`teknik-veri.mjs: ${s.id} / "${ad}" alanı yok`);
     return r;
   });
-  const modelSatiri = TEKNIK[s.id].teknik.find(([a]) => a === 'Model');
-  const mv = modelSatiri && modelSatiri[2];
-  const modeller = mv && typeof mv === 'object' ? Object.keys(mv) : [];
-  const bos = TASLAK ? `<span class="bek">${BEKLENIYOR}</span>` : '<span class="sor">Bilgi için arayın</span>';
-  const hucre = (v) => (dolu(v) ? esc(v) : bos);
-  const birim = (b) => (b && !b.includes(',') && !b.includes('/') && b !== 'adet' ? ` <small>(${esc(b)})</small>` : '');
-  const kolonlar = modeller.length ? modeller : [dolu(mv) ? mv : 'Değer'];
-  return `<table class="teknik">
-    <thead><tr><th>Teknik Özellikler</th>${kolonlar.map((m) => `<th>${esc(m)}</th>`).join('')}</tr></thead>
-    <tbody>${satirlar.map(([a, b, v]) => `<tr><td>${esc(a)}${birim(b)}</td>${
-      modeller.length ? modeller.map((m) => `<td>${hucre(v && v[m])}</td>`).join('') : `<td>${hucre(typeof v === 'object' ? null : v)}</td>`}</tr>`).join('')}</tbody>
+  const modeller = (t.modeller || []).filter((m) => dolu(m.Model));
+  const hp = (a) => /traktör gücü/i.test(a);
+  if (modeller.length || TASLAK) {
+    const sutun = modeller.length && !TASLAK ? satirlar.filter(([a]) => modeller.some((m) => dolu(m[a]))) : satirlar;
+    const govde = modeller.length
+      ? modeller.map((m) => `<tr><td class="mk">${esc(m.Model)}</td>${sutun.map(([a]) => `<td class="${hp(a) ? 'hp' : ''}">${dolu(m[a]) ? esc(m[a]) : (TASLAK ? bek(true) : '—')}</td>`).join('')}</tr>`).join('')
+      : [1, 2].map((n) => `<tr><td class="mk">${bek(true)}</td>${sutun.map(([a]) => `<td class="${hp(a) ? 'hp' : ''}"><span class="soru">?</span></td>`).join('')}</tr>`).join('');
+    return `<table class="teknik modelli">
+    <caption>Teknik Özellikler${modeller.length ? '' : ` <span class="cap-not">Her model bir satır · ${BEKLENIYOR}</span>`}</caption>
+    <thead><tr><th>Model</th>${sutun.map(([a, b]) => `<th class="${hp(a) ? 'hp' : ''}">${esc(a)}${birimYaz(b) ? `<small>${birimYaz(b)}</small>` : ''}</th>`).join('')}</tr></thead>
+    <tbody>${govde}</tbody>
   </table>`;
+  }
+  const tek = t.teknik.find(([a]) => a === 'Model');
+  return `<table class="teknik">
+    <thead><tr><th>Teknik Özellikler</th><th>${tek && dolu(tek[2]) && typeof tek[2] !== 'object' ? esc(tek[2]) : 'Değer'}</th></tr></thead>
+    <tbody>${satirlar.map(([a, b, v]) => `<tr><td>${esc(a)}${birimYaz(b) ? ` <small>(${birimYaz(b)})</small>` : ''}</td><td>${dolu(v) && typeof v !== 'object' ? esc(v) : '<span class="sor">Bilgi için arayın</span>'}</td></tr>`).join('')}</tbody>
+  </table>`;
+}
+
+// Ana görselin altındaki bilgi kutuları. Yayında yalnızca Üçel'in doldurduğu kutular görünür.
+function ekKutular(s) {
+  const t = VERI[s.id];
+  const k = [];
+  const liste = (xs) => `<ul>${xs.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  if (t.malzeme) {
+    const d = t.malzeme.filter(([, v]) => dolu(v));
+    if (d.length || TASLAK) k.push(['Malzeme ve imalat', `<dl>${(TASLAK ? t.malzeme : d).map(([a, v]) => `<dt>${esc(a)}</dt><dd>${dolu(v) ? esc(v) : bek(true)}</dd>`).join('')}</dl>`]);
+  }
+  if (t.farkli) {
+    if (t.farkli.length) k.push(['Modelimizi farklı kılan', liste(t.farkli)]);
+    else if (TASLAK && s.imalat) k.push(['Modelimizi farklı kılan', `<p class="bos">${bek()}<br>Ör. kullanılan malzeme, ayar kolaylığı, dayanıklılık detayı</p>`]);
+  }
+  if (t.atasman) {
+    const var_ = t.atasman.filter(([, v]) => v);
+    if (var_.length && !TASLAK) k.push(['Takılabilen ataşmanlar', liste(var_.map(([a, v]) => (typeof v === 'string' ? `${a} — ${v}` : a)))]);
+    else if (TASLAK) k.push(['Takılabilen ataşmanlar', `<p class="bos">${bek(true)} hangileri var?</p><ul class="sorgu">${t.atasman.map(([a, v]) => `<li>${v ? '<b class="ok">✓</b>' : '<span class="cb"></span>'} ${esc(a)}</li>`).join('')}</ul>`]);
+  }
+  if (t.uyari) {
+    if (t.uyari.length) k.push(['Kullanım ve bakım', liste(t.uyari)]);
+    else if (TASLAK) k.push(['Kullanım ve bakım', `<p class="bos">${bek()}<br>Ör. yağlama, kontrol, kullanım sırasında dikkat</p>`]);
+  }
+  return k.length ? `<div class="ek k${k.length}">${k.map(([b, i]) => `<div class="ek-kutu"><h3>${b}</h3>${i}</div>`).join('')}</div>` : '';
 }
 
 const ADIMLAR = `<div class="adimlar"><b>Size uygun olanı birlikte seçelim</b><ol><li>Traktörünüzün modelini ve HP değerini yazın.</li><li>Yapacağınız işi anlatın.</li><li>Uygun seçeneği birlikte belirleyelim.</li></ol></div>`;
 
 async function urunSayfasi(s) {
   const ad = urunAd(s.id);
+  const ek = ekKutular(s);
   const kod = await qr(wa(`Merhaba, ${ad} hakkında bilgi almak istiyorum.\nTraktör/model:\nHP:\nYapacağım iş:`));
   return `<section class="page urun" id="u-${s.id}">
   ${ust({ kat: s.kategori, baslik: ad, alt: s.model, qrSvg: kod, qrB: 'WhatsApp\'tan sor', qrA: 'okutun, mesaj hazır' })}
-  ${gorsel(s.hero, 'hero')}
+  ${ek ? gorsel(s.hero, 'hero kisa') : gorsel(s.hero, 'hero')}
+  ${ek}
   ${s.imalat ? '<span class="rozet">KENDİ İMALATIMIZ</span>' : ''}
   <div class="sag">
     <div class="sag-ust y${s.yan.length}">
@@ -136,6 +192,7 @@ async function urunSayfasi(s) {
     </div>
     ${teknikTablo(s)}
   </div>
+  ${DENEME ? '<div class="damga">DENEME — GERÇEK VERİ DEĞİL</div>' : ''}
   ${footer(NO[s.id])}
 </section>`;
 }
@@ -217,6 +274,34 @@ figcaption { font-size: 8pt; color: var(--gri); margin-top: 1.5mm; }
 .teknik td small { font-weight: 400; color: var(--gri); font-size: 8pt; }
 .teknik td + td { border-left: .6mm solid #fff; }
 .sor { font-size: 8.4pt; color: var(--gri); }
+/* model satırlı tablo */
+.teknik caption { caption-side: top; text-align: left; font: 700 8.6pt/1 'Inter'; letter-spacing: .6pt; text-transform: uppercase; color: #fff; background: var(--vurgu); padding: 2.4mm 3.5mm; border-radius: 1.5mm 1.5mm 0 0; }
+.cap-not { font-weight: 600; letter-spacing: 0; text-transform: none; font-size: 7.4pt; opacity: .9; margin-left: 2mm; }
+.modelli th { font-size: 7.8pt; line-height: 1.15; vertical-align: bottom; padding: 2mm 2mm; }
+.modelli th:first-child { background: var(--koyu); letter-spacing: 0; text-transform: none; font-size: 7.8pt; }
+.modelli th small { display: block; font-weight: 400; font-size: 7pt; opacity: .75; margin-top: .6mm; }
+.modelli td { padding: 1.9mm 2mm; text-align: center; font-variant-numeric: tabular-nums; font-size: 9.4pt; }
+.modelli td.mk { text-align: left; font-weight: 700; width: auto; white-space: nowrap; }
+.modelli th.hp { background: var(--vurgu); }
+.modelli td.hp { font-weight: 700; color: var(--vurgu); }
+.soru { color: #b9b3aa; font-weight: 700; }
+/* ana görsel altı bilgi kutuları */
+.hero.kisa { height: 86mm; }
+.ek { position: absolute; left: 14mm; width: 216mm; top: 143mm; bottom: 19mm; display: grid; gap: 4mm; }
+.ek.k1 { grid-template-columns: 1fr; } .ek.k2 { grid-template-columns: 1fr 1fr; } .ek.k3 { grid-template-columns: repeat(3, 1fr); } .ek.k4 { grid-template-columns: repeat(4, 1fr); }
+.ek-kutu { background: var(--zemin); border-top: 1.2mm solid var(--vurgu); border-radius: 0 0 2mm 2mm; padding: 3mm 3.5mm; overflow: hidden; min-height: 0; }
+.ek-kutu h3 { margin: 0 0 1.8mm; font: 600 10.5pt/1.1 'Oswald'; letter-spacing: .2pt; }
+.ek-kutu ul { margin: 0; padding: 0; list-style: none; }
+.ek-kutu li { font-size: 8.4pt; line-height: 1.35; padding: .8mm 0 .8mm 3.2mm; position: relative; }
+.ek-kutu li::before { content: ''; position: absolute; left: 0; top: 2.1mm; width: 1.4mm; height: 1.4mm; background: var(--vurgu); }
+.ek-kutu dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: .9mm 2mm; font-size: 8pt; line-height: 1.25; }
+.ek-kutu dt { color: #3A3A3D; } .ek-kutu dd { margin: 0; font-weight: 700; text-align: right; }
+.ek-kutu .sorgu li { padding: .35mm 0; } .ek-kutu .sorgu li::before { display: none; }
+.ek-kutu .cb { display: inline-block; width: 2.6mm; height: 2.6mm; border: .3mm solid var(--gri); border-radius: .4mm; vertical-align: -.4mm; margin-right: 1mm; }
+.ek-kutu .bos + .sorgu { margin-top: 1mm; }
+.ek-kutu .bos { font-size: 7.8pt; color: var(--gri); line-height: 1.5; }
+.ok { color: #1a7f37; }
+.damga { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-14deg); font: 700 46pt/1 'Oswald'; color: rgba(200,16,46,.16); border: 2mm solid rgba(200,16,46,.16); padding: 4mm 10mm; white-space: nowrap; pointer-events: none; }
 .bek { font: 700 7.2pt/1.2 'Inter'; color: #8A1020; background: #FBEAEC; border: .25mm dashed #C8102E; border-radius: .6mm; padding: .5mm 1.4mm; white-space: nowrap; }
 
 /* alt şerit */
@@ -417,7 +502,7 @@ for (const s of SAYFALAR) {
   }
 }
 mkdirSync(CIKTI, { recursive: true });
-const ad = TASLAK ? 'Ucel-Urun-Katalogu-2026-TASLAK' : 'Ucel-Urun-Katalogu-2026';
+const ad = DENEME ? 'Ucel-Urun-Katalogu-2026-DENEME' : TASLAK ? 'Ucel-Urun-Katalogu-2026-TASLAK' : 'Ucel-Urun-Katalogu-2026';
 const dosya = join(CIKTI, `${ad}.html`);
 writeFileSync(dosya, await html());
 const tarayici = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
@@ -430,7 +515,9 @@ const sorun = await s.evaluate(() => {
   document.querySelectorAll('.page').forEach((p, i) => {
     const foot = p.querySelector('.foot'); const sinir = foot ? foot.getBoundingClientRect().top : p.getBoundingClientRect().bottom;
     const sayfa = p.getBoundingClientRect();
-    p.querySelectorAll('.sag, .sag-ust, .aciklama, table, .hero, .icerik, .dizin, .saha, .sss, .qr, .baslik, .slogan, .a-sag, .a-sol, .k-yazi').forEach((el) => {
+    p.querySelectorAll('.ek-kutu').forEach((el) => { if (el.scrollHeight > el.clientHeight + 2) out.push(`sayfa ${i + 1}: "${el.querySelector('h3').textContent}" kutusu taşıyor`); });
+    const tbl = p.querySelector('table.teknik'); if (tbl && tbl.parentElement.getBoundingClientRect().right + 1 < tbl.getBoundingClientRect().right) out.push(`sayfa ${i + 1}: tablo sağa taşıyor`);
+    p.querySelectorAll('.sag, .sag-ust, .aciklama, table, .hero, .ek, .icerik, .dizin, .saha, .sss, .qr, .baslik, .slogan, .a-sag, .a-sol, .k-yazi').forEach((el) => {
       const r = el.getBoundingClientRect();
       if (r.bottom > sinir + 1) out.push(`sayfa ${i + 1}: ${el.className || el.tagName} ${Math.round(r.bottom - sinir)}px alt şeride taşıyor`);
       if (r.right > sayfa.right + 1) out.push(`sayfa ${i + 1}: ${el.className || el.tagName} sağdan taşıyor`);
