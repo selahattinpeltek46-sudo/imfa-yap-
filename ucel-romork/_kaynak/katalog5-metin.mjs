@@ -181,7 +181,7 @@ export const URUN_METIN = {
     neden: [S('Göksun\'daki atölyemizde üretiyoruz.'), S('Yaylı ayak sistemi'), S('Farklı ayak sayısı ve ebat seçenekleri')],
     secenekler: [S('Farklı ayak sayısı ve ebat seçenekleri'), S('Kırmızı ve mavi renk')],
     secenekBekleyen: ['Ayak sayısı seçenekleri', 'Merdane / tırmık eklentisi'],
-    detayFoto: Y('Yaylı ayaklar yakından'),
+    detayFoto: Y('Mavi Göksun yaylı kültivatör'),
     sayfa2Baslik: Y('Seçenekler ve teknik bilgi'),
     cta: Y('Traktörünüzün gücünü yazın, uygun modeli birlikte seçelim.'),
     wa: 'Merhaba, kültivatör hakkında bilgi almak istiyorum.\nTraktör / HP:\nTarla büyüklüğü:',
