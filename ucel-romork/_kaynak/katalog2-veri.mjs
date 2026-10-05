@@ -98,7 +98,7 @@ export const ISLER = [
   ['Gübreleme yapacağım', 'Gübre Serpme Makinesi', ['gubre-serpme']],
   ['Taşıma yapacağım', 'Tarım Römorku', ['romork']],
   ['Su taşıyacağım', 'Su Tankeri', ['su-tankeri']],
-  ['Yükleme yapacağım', 'Ön Yükleyici', ['on-yukleyici']],
+  ['Yükleme yapacağım', 'Loader Kepçe', ['on-yukleyici']],
   ['Yedek parça arıyorum', 'Yedek Parça', ['_diger']],
   ['İkinci el bakıyorum / takas', 'İkinci El & Takas', ['_ikinciel']],
 ];
