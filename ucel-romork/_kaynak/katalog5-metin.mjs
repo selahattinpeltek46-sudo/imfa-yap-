@@ -166,7 +166,7 @@ export const URUN_METIN = {
     kullanim: [S('Tarla ürünü'), S('Gübre ve yem'), S('Odun ve malzeme'), S('Hayvancılık')],
     kimler: S('Ürün taşıyan, hayvancılık yapan, gübre ve yem nakli olan ya da genel taşıma ihtiyacı olan çiftçiler için.'),
     neden: [S('Kaynağından boyasına kadar atölyemizde üretiyoruz.'), S('Kasa rengini ve yazısını isteğinize göre yapıyoruz.'), S('Standart dışı ölçüde özel imalat yapabiliyoruz.')],
-    secenekler: [S('Kasa rengi size özel'), S('Kasaya isim, firma adı ya da "Maşallah" yazısı'), S('Standart dışı ölçüde özel imalat')],
+    secenekler: [S('Kasa rengi size özel'), S('Kasaya isim, firma adı ya da “Maşallah” yazısı'), S('Standart dışı ölçüde özel imalat')],
     secenekBekleyen: ['Damperli / dampersiz', 'Kapasite seçenekleri (4 tonluk model teyidi)'],
     sayfa2Baslik: Y('Seçenekler ve teknik bilgi'),
     cta: Y('Ne taşıyacağınızı yazın, uygun römorku birlikte belirleyelim.'),

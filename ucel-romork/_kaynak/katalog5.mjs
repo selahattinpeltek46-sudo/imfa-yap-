@@ -381,7 +381,7 @@ async function telefon() {
   no += 1;
   ekranlar.push(`<section class="ekran t-kapak" id="t-kapak">
     <div class="tk-ust"><div class="marka-satir"><img src="${g('m', 'logo-mark.png')}" alt=""><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
-    <p class="k-ust">${t(P.kapak.ust)}</p><h1>${t(SLOGAN)}</h1><p class="k-alt">${t(ALT_SLOGAN)}</p></div>
+    <p class="k-ust">${t(P.kapak.ust)}</p><h1>${t(SLOGAN)}</h1><p class="k-alt">${t(ALT_SLOGAN)}</p><a class="tk-tel" href="${TEL}">${FIRMA.telefon}<span>Telefon · WhatsApp</span></a></div>
     <img class="tk-urun" src="${g('d', 'tarim-romorku-yesil-traktor')}" alt="">
     <a class="tk-git" href="#t-urunler">${t(P.kapak.telefonButon)} ${ikon('ok', '#fff')}</a>
     <nav class="t-bar"><a href="${esc(wa(P.iletisim.wa))}">${ikon('wa', '#fff')}${t(TELEFON.butonWa)}</a><a href="${TEL}">${ikon('tel', '#fff')}${t(TELEFON.butonAra)}</a></nav>
@@ -666,6 +666,7 @@ blockquote { font: 500 13.5pt/1.3 'Oswald'; border-left: 1.4mm solid var(--k); p
 .tk-urun { width: 100%; height: 100%; min-height: 0; object-fit: contain; background: #fff; padding: 3mm; mix-blend-mode: normal; border-top: 1.6mm solid var(--k); }
 .tk-git { display: flex; align-items: center; justify-content: center; gap: 2mm; background: var(--d); padding: 3.5mm; font: 600 13pt 'Oswald'; letter-spacing: .5pt; } .tk-git svg { width: 5mm; height: 5mm; }
 /* telefon: en küçük yazı 10 pt */
+.tk-tel { display: block; margin-top: 3mm; font: 700 19pt/1 'Oswald'; letter-spacing: .4pt; } .tk-tel span { display: block; font: 400 10pt 'Inter'; color: #a3a19c; margin-top: 1mm; }
 .t-ust .etk { font-size: 10pt; letter-spacing: .6pt; }
 .ekran .ara, .ekran .kimler b { font-size: 10pt; letter-spacing: .8pt; }
 .t-sahadan figcaption { font-size: 10pt; } .tl-yazi { font-size: 10pt; } .t-dl dt { font-size: 10pt; letter-spacing: .4pt; }
