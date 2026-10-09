@@ -152,3 +152,44 @@ Hepsi "Merhaba, Üçel kataloğunda gördüğüm [ürün] hakkında bilgi almak 
 3. Kısa alan adı (ör. uceltarim.com) → kartlara, tabelaya yazılabilir
 4. Teslimat yapılan illerin teyidi → bölgesel güven bandı
 5. Pulluk / gübre serpme yeni fotoğrafları
+
+---
+
+# Tur 3 — Katalog 2.0 uygulama (9 Ekim 2026)
+
+**Geri dönüş noktası:** site `4bd5622`, kaynak `e4fa1db` (bu turdan önceki yayın). Değişen tek kaynak dosya `web-katalog.mjs`; metin (`katalog5-metin.mjs`) ve PDF kataloglar değişmedi.
+
+## Yapı (Görev 1)
+| Parça | Dosya |
+|---|---|
+| Ürün metinleri, WhatsApp mesajları | `katalog5-metin.mjs` |
+| Firma, ürün listesi, imalat bilgisi, sahadan fotoğraflar | `katalog2-veri.mjs` |
+| Teknik tablo (hepsi boş, işletmeden bekleniyor) | `teknik-veri.mjs` |
+| Fiyat (boş; doldurulunca kartta görünür) | `fiyat-veri.mjs` |
+| Web sayfası, CSS, JS, görsel listesi | `web-katalog.mjs` → `cikti/web-katalog` → site `katalog/` |
+| PDF (yatay + telefon) | `katalog5.mjs` |
+
+## Değişiklikler (önem sırasıyla)
+| # | Önceki sorun | Yapılan | Gerekçe | Test |
+|---|---|---|---|---|
+| 1 | "Fiyat ve uygun model" kutusu 6 kartta aynı metinle tekrarlanıyordu | Kartlardan kaldırıldı; "Teslimat ve destek" bandına bir kez eklendi. Fiyat girilince kartta görünmeye devam eder | Aynı bilgi tekrarı; kartın kendi CTA cümlesi zaten ürüne özel soruyu soruyor | `.fiyat` sayısı 0, band 5 madde |
+| 2 | İmal edilen ürünlerde "atölyede üretiyoruz" 3 kez (rozet, tanım, avantaj) | Avantaj listesinden atölye maddesi çıkarıldı; rozet fotoğrafın köşesine taşındı | Tekrar + kategori etiketi ile rozet üst üste iki kırmızı satırdı | Görsel kontrol 390 px |
+| 3 | Ek fotoğraflar sütunun ~%50'si kadar küçüktü (tarayıcının `figure` için varsayılan 40 px kenar boşluğu) | `.ek-foto figure { margin: 0 }` | Hata | Ölçüm: her görsel ızgaranın %48–49'u (2 sütun, tam genişlik) |
+| 4 | Pulluk ve gübre serpme fotoğrafları dar, koyu çerçevede | Çerçevenin yanları aynı fotoğrafın bulanık hâliyle dolar; asıl fotoğraf kırpılmaz | Gerçek fotoğraf korunur, kart düzeni diğerleriyle uyumlu | Görsel kontrol; ek indirme yok (aynı dosya) |
+| 5 | "Neden Üçel" bölümündeki yedek parça ve gönderim maddeleri destek bandının tekrarıydı | Bu iki madde web'de gösterilmiyor; başlık "Bizi farklı kılan üç şey" | Tekrar | Başlık sayısı madde sayısından otomatik |
+| 6 | Gezinme çubuğunda bulunulan yer belli değildi; sorulara kısayol yoktu; düğmeler 37 px (dokunma için alçak) | Ekrandaki bölümün düğmesi koyulaşır ve görünür kaydırılır; "Sorular" düğmesi; destek bandına "Nakliye, garanti ve bakım soruları →"; düğmeler ≥ 40 px | Kategoriye ulaşmayı kolaylaştırmak | "Pulluk"a dokununca: düğme aktif, kart çubuğun 64 px altında |
+
+## Testler (yerel sunucu, yayına giden dosyaların aynısı; 360, 390, 820, 1440 px)
+- Yatay taşma: 0 · Kontrast hatası (WCAG AA): 0 · Kırık sayfa içi bağlantı: 0 · 40 px altı dokunma alanı: 0 · h1: 1
+- `tel:+905324803051`: 9 · WhatsApp butonu: 11, `?k=ig` ile 11'i de "(Instagram)" ile başlıyor · `about:invalid`: yok
+- Fotoğraf büyütme: açılıyor, 1400 px görsel yükleniyor
+- İlk yükleme: 275 KB (360 px), 311 KB (390 px ve üstü); alttaki görseller kaydırınca yüklenir
+- Konsol: JavaScript hatası 0. Tek 404 `../assets/icon.svg` — yerel testte site klasörü olmadığı için; dosya sitede mevcut
+- PDF: değişmedi; site `assets/katalog/` içindeki iki dosya bir önceki turda 16/16 QR okunarak doğrulandı
+
+## Test edilemeyen
+- Canlı adres bu ortamdan açılamıyor (ağ kısıtı); yayın GitHub Pages işinden takip edilir.
+- Gerçek Instagram / Facebook / TikTok uygulama içi tarayıcısı ve gerçek telefon: Chromium ile ekran boyutu benzetimi yapıldı.
+
+## İşletme onayı bekleyenler (değişmedi)
+Teknik ölçüler, fiyat listesi, teslimat illeri ve "kapıda teslim", garanti metni, fotoğraf çekim yerleri, pulluk / gübre serpme / su tankerinin imalat mı satış mı olduğu, pulluk ve gübre serpme için yeni ürün fotoğrafı.

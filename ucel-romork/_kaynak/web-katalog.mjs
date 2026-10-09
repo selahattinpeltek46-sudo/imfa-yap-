@@ -95,7 +95,7 @@ function teknik(id) {
 }
 
 function fiyat(id) {
-  if (!fiyatVar(id)) return `<div class="fiyat bos"><b>Fiyat ve uygun model</b><span>${t(SECIM_KUTUSU.giris)} ${SECIM_KUTUSU.maddeler.map((m) => t(m)).join(' · ')}</span></div>`;
+  if (!fiyatVar(id)) return '';
   return `<div class="fiyat"><b>Fiyat <small>${esc(FIYAT.guncelleme)}${FIYAT.not ? ' · ' + esc(FIYAT.not) : ''}</small></b><ul>${FIYAT.urunler[id].map(([m, f]) => `<li><span>${esc(m)}</span><strong>${esc(f)}</strong></li>`).join('')}</ul></div>`;
 }
 
@@ -104,18 +104,20 @@ function fiyat(id) {
 const avantajlar = (u) => {
   const kok = (x) => x.t.toLocaleLowerCase('tr').slice(0, 4);
   const gor = new Set();
-  return [...u.neden, ...(u.secenekler || [])].filter((x) => !/^Sattığımız/.test(x.t)).filter((x) => (gor.has(kok(x)) ? false : gor.add(kok(x))));
+  return [...u.neden, ...(u.secenekler || [])]
+    .filter((x) => !/^Sattığımız/.test(x.t))
+    .filter((x) => !(imalat(u.id) && /atölye/i.test(x.t)))
+    .filter((x) => (gor.has(kok(x)) ? false : gor.add(kok(x))));
 };
 
 function urunKart(id) {
-  const u = U[id];
+  const u = { ...U[id], id };
   const g = GORSEL[id];
   const [tur] = g.ana;
   return `<article class="urun" id="${id}">
-    <div class="u-foto ${tur === 'd' ? 'beyaz' : 'koyu'}"><img src="${img(g.ana, 1000)}" alt="${esc(ad(id))}" loading="lazy" width="1000" height="700"></div>
+    <div class="u-foto ${tur === 'd' ? 'beyaz' : 'koyu'}">${tur === 'd' ? '' : `<img class="arka" src="${img(g.ana, 1000)}" alt="" aria-hidden="true" loading="lazy">`}<img src="${img(g.ana, 1000)}" alt="${esc(ad(id))}" loading="lazy" width="1000" height="700">${imalat(id) ? '<p class="rozet">Kendi imalatımız · Göksun</p>' : ''}</div>
     <div class="u-ic">
       <p class="etk">${t(u.kategori)}</p>
-      ${imalat(id) ? '<p class="rozet">Kendi imalatımız · Göksun atölyesi</p>' : ''}
       <h2>${esc(ad(id))}</h2>
       <p class="fayda">${t(u.fayda)}</p>
       <p>${t(u.tanim)}</p>
@@ -137,8 +139,11 @@ const isSirali = () => {
   return P.secim.isler.map(([is, ids]) => [is, [...ids].sort((a, b) => sira(a) - sira(b))]).sort((a, b) => sira(a[1][0]) - sira(b[1][0]));
 };
 
+const SAYI = ['sıfır', 'bir', 'iki', 'üç', 'dört', 'beş'];
 function html() {
   const N = P.neden;
+  const nedenler = N.maddeler.filter((x) => !['destek', 'kamyon'].includes(x.ikon));
+  const nedenBaslik = t(N.baslik).replace('beş', SAYI[nedenler.length]);
   const kapak = img(['d', 'yayli-kultivator-kirmizi-2'], 1000);
   return `<!DOCTYPE html>
 <html lang="tr">
@@ -189,7 +194,8 @@ section, .urun { scroll-margin-top: 8px; }
 /* hızlı ürün gezinme: sayfanın üstüne yapışır, yatay kaydırılır */
 .urun-nav { position: sticky; top: 0; z-index: 8; display: flex; gap: 8px; overflow-x: auto; padding: 10px 12px; background: rgba(246,244,240,.97); border-bottom: 1px solid var(--c); scrollbar-width: none; }
 .urun-nav::-webkit-scrollbar { display: none; }
-.urun-nav a { flex: none; font: 700 15px/1 'Inter'; color: var(--d); text-decoration: none; background: #fff; border: 1px solid var(--c); border-radius: 99px; padding: 10px 14px; }
+.urun-nav a.aktif { background: var(--d); color: #fff; border-color: var(--d); }
+.urun-nav a { flex: none; font: 700 15px/1 'Inter'; color: var(--d); text-decoration: none; background: #fff; border: 1px solid var(--c); border-radius: 99px; padding: 13px 14px; }
 section, .urun { scroll-margin-top: 64px; }
 /* bölüm */
 .blok { padding: 26px 16px; }
@@ -204,9 +210,11 @@ section, .urun { scroll-margin-top: 64px; }
 .isler a { font-size: 15px; color: var(--k); font-weight: 700; text-decoration: none; padding: 6px 0; text-align: right; }
 /* ürün */
 .urun { background: #fff; margin: 0 0 18px; border-top: 6px solid var(--k); }
-.u-foto { aspect-ratio: 10 / 7; display: flex; align-items: center; justify-content: center; }
+.u-foto { aspect-ratio: 10 / 7; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
 .u-foto.beyaz { background: #fff; padding: 10px; } .u-foto.koyu { background: var(--d); }
-.u-foto img { width: 100%; height: 100%; object-fit: contain; }
+.u-foto img { width: 100%; height: 100%; object-fit: contain; position: relative; }
+.u-foto img.arka { position: absolute; inset: 0; object-fit: cover; filter: blur(22px) brightness(.7); transform: scale(1.2); }
+.u-foto .rozet { position: absolute; left: 12px; bottom: 12px; margin: 0; z-index: 1; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
 .u-ic { padding: 18px 16px 20px; }
 .u-ic h2 { font-size: 32px; margin-bottom: 8px; }
 .fayda { font: 500 21px/1.3 'Oswald'; }
@@ -230,6 +238,7 @@ summary::after { content: '+'; color: var(--k); font-size: 22px; line-height: 1;
 .avantaj li:first-child { border-top: 0; } .avantaj svg { width: 22px; height: 22px; flex: none; color: #fff; background: var(--k); border-radius: 50%; padding: 3px; }
 .destek ul { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 10px; }
 .destek li { display: flex; gap: 12px; align-items: flex-start; background: #fff; border-radius: 10px; padding: 12px 14px; }
+.sss-link { margin: 12px 0 0; } .sss-link a { font-weight: 700; color: var(--k); text-decoration: none; display: inline-block; padding: 6px 0; }
 .destek li svg { width: 28px; height: 28px; flex: none; color: var(--k); } .destek b { display: block; font: 500 18px/1.2 'Oswald'; } .destek span { font-size: 15px; color: var(--g); }
 button.buyut { all: unset; display: block; cursor: zoom-in; width: 100%; }
 dialog#kutu { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 92vh; }
@@ -239,7 +248,7 @@ dialog#kutu p { color: #fff; font-size: 15px; text-align: center; margin: 10px 0
 dialog#kutu .kapat { position: fixed; top: 12px; right: 12px; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #fff; color: var(--d); font-size: 30px; line-height: 1; cursor: pointer; }
 .tikli { list-style: none; padding: 0; margin: 0 0 12px; } .tikli li { display: flex; gap: 8px; padding: 4px 0; font-size: 16px; } .tikli svg { width: 20px; height: 20px; color: var(--k); flex: none; margin-top: 2px; }
 .ara { font: 700 14px 'Inter'; letter-spacing: 1px; text-transform: uppercase; color: var(--k); margin: 6px 0 4px; }
-.ek-foto { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; } .ek-foto img { border-radius: 8px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; } .ek-foto figcaption { font-size: 14px; color: var(--g); margin-top: 4px; }
+.ek-foto { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; } .ek-foto figure { margin: 0; } .ek-foto img { border-radius: 8px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; } .ek-foto figcaption { font-size: 14px; color: var(--g); margin-top: 4px; }
 .cta-yazi { font: 500 19px/1.3 'Oswald'; color: var(--k); margin: 6px 0 12px; }
 .butonlar { display: grid; grid-template-columns: 1.7fr 1fr; gap: 10px; }
 /* neden */
@@ -279,7 +288,7 @@ dialog#kutu .kapat { position: fixed; top: 12px; right: 12px; width: 48px; heigh
 <div class="kapak-foto"><img src="${kapak}" alt="Göksun yaylı kültivatör" width="1000" height="700"></div>
 <div class="ust-buton">${waBtn(P.iletisim.wa, 'WhatsApp\'tan yaz')}${telBtn()}</div>
 
-<nav class="urun-nav" aria-label="Ürünler">${SIRA.map((id) => `<a href="#${id}">${esc(KISA[id] || ad(id))}</a>`).join('')}<a href="#diger">Diğer</a><a href="#takas">Takas</a><a href="#iletisim">İletişim</a></nav>
+<nav class="urun-nav" aria-label="Ürünler">${SIRA.map((id) => `<a href="#${id}">${esc(KISA[id] || ad(id))}</a>`).join('')}<a href="#diger">Diğer</a><a href="#takas">Takas</a><a href="#sss">Sorular</a><a href="#iletisim">İletişim</a></nav>
 
 <section class="blok" id="sec">
   <p class="etk">${t(P.secim.etiket)}</p>
@@ -292,11 +301,13 @@ dialog#kutu .kapat { position: fixed; top: 12px; right: 12px; width: 48px; heigh
   <p class="etk">Teslimat ve destek</p>
   <h2>Göksun'dan Türkiye'ye</h2>
   <ul>
+    <li>${ikon.wa}<div><b>${t(SECIM_KUTUSU.baslik)}</b><span>WhatsApp'tan traktörünüzü (marka / model), beygir gücünü ve yapacağınız işi yazın. ${t(SECIM_KUTUSU.sonuc)}</span></div></li>
     <li>${ikon.kamyon}<div><b>Türkiye geneline gönderim</b><span>Şehrinizi yazın, nakliye seçeneğini birlikte belirleyelim.</span></div></li>
     <li>${ikon.pin}<div><b>Göksun ve çevresine yerinde</b><span>Atölyemize gelip ürünleri yerinde inceleyebilirsiniz.</span></div></li>
     <li>${ikon.parca}<div><b>Yedek parça</b><span>Ürettiğimiz ve sattığımız ürünler için.</span></div></li>
     <li>${ikon.takas}<div><b>İkinci el ve takas</b><span>Eski makinenizi değerlendiriyoruz.</span></div></li>
   </ul>
+  <p class="sss-link"><a href="#sss">Nakliye, garanti ve bakım soruları →</a></p>
 </section>
 
 ${SIRA.map(urunKart).join('\n')}
@@ -311,8 +322,8 @@ ${SIRA.map(urunKart).join('\n')}
 
 <section class="blok" id="neden">
   <p class="etk">${t(N.etiket)}</p>
-  <h2>${t(N.baslik)}</h2>
-  <div class="neden">${N.maddeler.map((x) => `<div><h3>${t(x.baslik)}</h3><p>${t(x.metin)}</p>${x.kanit ? `<p class="kanit">${t(x.kanit)}</p>` : ''}</div>`).join('')}</div>
+  <h2>${nedenBaslik}</h2>
+  <div class="neden">${nedenler.map((x) => `<div><h3>${t(x.baslik)}</h3><p>${t(x.metin)}</p>${x.kanit ? `<p class="kanit">${t(x.kanit)}</p>` : ''}</div>`).join('')}</div>
 </section>
 
 <section class="blok" id="takas">
@@ -361,6 +372,23 @@ ${SIRA.map(urunKart).join('\n')}
   var ust = document.querySelector('.ust-buton'), cubuk = document.querySelector('.cubuk');
   if (!ust || !('IntersectionObserver' in window)) { cubuk.classList.remove('gizli'); return; }
   new IntersectionObserver(function (e) { cubuk.classList.toggle('gizli', e[0].isIntersecting); }).observe(ust);
+})();
+// Gezinme: ekrandaki ürün / bölümün düğmesi koyulaşır ve çubukta görünür kalır
+(function () {
+  var nav = document.querySelector('.urun-nav');
+  if (!nav || !('IntersectionObserver' in window)) return;
+  var dugme = {};
+  nav.querySelectorAll('a').forEach(function (a) { dugme[a.getAttribute('href').slice(1)] = a; });
+  var gozcu = new IntersectionObserver(function (e) {
+    e.forEach(function (x) {
+      if (!x.isIntersecting) return;
+      nav.querySelectorAll('a.aktif').forEach(function (a) { a.classList.remove('aktif'); });
+      var a = dugme[x.target.id];
+      a.classList.add('aktif');
+      nav.scrollTo({ left: a.offsetLeft - 12, behavior: 'smooth' });
+    });
+  }, { rootMargin: '-30% 0px -65% 0px' });
+  Object.keys(dugme).forEach(function (id) { var el = document.getElementById(id); if (el) gozcu.observe(el); });
 })();
 // Fotoğraf büyütme
 (function () {
