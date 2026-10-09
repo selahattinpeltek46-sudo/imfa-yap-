@@ -25,7 +25,8 @@ const ad = (id) => URUNLER.find((u) => u.id === id).ad;
 const imalat = (id) => URUNLER.find((u) => u.id === id).imalat;
 const TEL = '+90' + FIRMA.telefon.replace(/\D/g, '').replace(/^0/, '');
 
-const SIRA = ['romork', 'kultivator', 'on-yukleyici', 'pulluk', 'gubre-serpme', 'su-tankeri'];
+// kategori sırası: taşıma → toprak işleme → yükleme → gübreleme → su; "Ne yapmak istiyorsunuz?" listesi de bu sırayı izler
+const SIRA = ['romork', 'kultivator', 'pulluk', 'on-yukleyici', 'gubre-serpme', 'su-tankeri'];
 // [tür, dosya] — d: beyaz zeminli ürün (cikti/dekupe), f: gerçek fotoğraf (cikti/pdf-gorsel), e: foto-ek
 const GORSEL = {
   romork: { ana: ['d', 'tarim-romorku-yesil-traktor'], ek: [['f', 'tarim-romorku-mavi', 'Mavi kasa'], ['f', 'tarim-romorku-yesil-teslimat', 'Teslimatta']] },
@@ -76,6 +77,9 @@ const ikon = {
   tel: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
   tik: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   pin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 21c-4-4-7-7.5-7-11a7 7 0 0 1 14 0c0 3.5-3 7-7 11z"/><circle cx="12" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+  kamyon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M2 7h11v9H2zM13 10h5l3 3v3h-8z"/><circle cx="6" cy="17.5" r="1.8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="17.5" r="1.8" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+  parca: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>',
+  takas: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 8h13l-3-3M20 16H7l3 3"/></svg>',
   pdf: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M6 2h8l5 5v15H6z M14 2v5h5 M9 14h6 M9 18h6"/></svg>',
 };
 // WhatsApp butonu: mesaj data-msg'de; sayfa betiği kaynak etiketini ekleyip href'i kurar
@@ -94,6 +98,14 @@ function fiyat(id) {
   return `<div class="fiyat"><b>Fiyat <small>${esc(FIYAT.guncelleme)}${FIYAT.not ? ' · ' + esc(FIYAT.not) : ''}</small></b><ul>${FIYAT.urunler[id].map(([m, f]) => `<li><span>${esc(m)}</span><strong>${esc(f)}</strong></li>`).join('')}</ul></div>`;
 }
 
+// neden + seçenekler, tekrarsız: aynı kelimeyle başlayan madde ikinci kez yazılmaz
+// (ör. "Kasa rengini … yapıyoruz" varken "Kasa rengi size özel" atlanır)
+const avantajlar = (u) => {
+  const ilk = (x) => x.t.toLocaleLowerCase('tr').split(/\s+/)[0];
+  const gor = new Set();
+  return [...u.neden, ...(u.secenekler || [])].filter((x) => (gor.has(ilk(x)) ? false : gor.add(ilk(x))));
+};
+
 function urunKart(id) {
   const u = U[id];
   const g = GORSEL[id];
@@ -101,7 +113,8 @@ function urunKart(id) {
   return `<article class="urun" id="${id}">
     <div class="u-foto ${tur === 'd' ? 'beyaz' : 'koyu'}"><img src="${img(g.ana, 1000)}" alt="${esc(ad(id))}" loading="lazy" width="1000" height="700"></div>
     <div class="u-ic">
-      <p class="etk">${t(u.kategori)}${imalat(id) ? ' · <span>Kendi imalatımız</span>' : ''}</p>
+      <p class="etk">${t(u.kategori)}</p>
+      ${imalat(id) ? '<p class="rozet">Kendi imalatımız · Göksun atölyesi</p>' : ''}
       <h2>${esc(ad(id))}</h2>
       <p class="fayda">${t(u.fayda)}</p>
       <p>${t(u.tanim)}</p>
@@ -109,16 +122,19 @@ function urunKart(id) {
       <p class="kimler"><b>Kimler için?</b> ${t(u.kimler)}</p>
       ${fiyat(id)}
       ${teknik(id)}
-      <details><summary>Neden Üçel? ${u.secenekler ? '· Seçenekler' : ''}</summary>
-        <ul class="tikli">${u.neden.map((x) => `<li>${ikon.tik}${t(x)}</li>`).join('')}</ul>
-        ${u.secenekler ? `<p class="ara">Seçenekler</p><ul class="tikli">${u.secenekler.map((x) => `<li>${ikon.tik}${t(x)}</li>`).join('')}</ul>` : ''}
-        ${g.ek.length ? `<div class="ek-foto">${g.ek.map(([tr, a, y]) => `<figure><img src="${img([tr, a], 600)}" alt="${esc(y)}" loading="lazy"><figcaption>${esc(y)}</figcaption></figure>`).join('')}</div>` : ''}
-      </details>
+      <div class="avantaj"><p class="ara">${imalat(id) ? 'Üçel imalat avantajları' : 'Neden Üçel?'}</p><ul>${avantajlar(u).map((x) => `<li>${ikon.tik}${t(x)}</li>`).join('')}</ul></div>
+      ${g.ek.length ? `<div class="ek-foto">${g.ek.map(([tr, a, y]) => `<figure><button type="button" class="buyut" data-buyuk="${img([tr, a], 1400)}" aria-label="Büyüt: ${esc(y)}"><img src="${img([tr, a], 600)}" alt="${esc(y)}" loading="lazy"></button><figcaption>${esc(y)}</figcaption></figure>`).join('')}</div>` : ''}
       <p class="cta-yazi">${t(u.cta)}</p>
       <div class="butonlar">${waBtn(u.wa, 'Fiyat ve bilgi al')}${telBtn()}</div>
     </div>
   </article>`;
 }
+
+// "Ne yapmak istiyorsunuz?" satırları ve içindeki ürünler, sayfadaki ürün kartı sırasıyla
+const isSirali = () => {
+  const sira = (i) => (i === '_diger' ? 90 : i === '_takas' ? 91 : SIRA.indexOf(i));
+  return P.secim.isler.map(([is, ids]) => [is, [...ids].sort((a, b) => sira(a) - sira(b))]).sort((a, b) => sira(a[1][0]) - sira(b[1][0]));
+};
 
 function html() {
   const N = P.neden;
@@ -166,8 +182,8 @@ section, .urun { scroll-margin-top: 8px; }
 .kapak-foto { background: #fff; padding: 12px 16px; border-bottom: 5px solid var(--k); }
 .ust-buton { display: grid; grid-template-columns: 1.6fr 1fr; gap: 10px; padding: 14px 16px; background: var(--d); }
 /* buton */
-.btn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 14px; border-radius: 10px; font: 700 16px/1.2 'Inter'; text-decoration: none; text-align: center; }
-.btn svg { width: 22px; height: 22px; flex: none; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 8px 16px; border-radius: 10px; font: 700 16px/1.2 'Inter'; text-decoration: none; text-align: center; }
+.btn svg { width: 24px; height: 24px; flex: none; }
 .btn.wa { background: var(--wa); color: #fff; } .btn.tel { background: var(--d); color: #fff; } .btn.acik { background: #fff; color: var(--d); border: 2px solid var(--c); }
 /* bölüm */
 .blok { padding: 26px 16px; }
@@ -177,8 +193,9 @@ section, .urun { scroll-margin-top: 8px; }
 .aciklama { color: var(--g); }
 /* iş seçimi */
 .isler { display: grid; gap: 8px; margin-top: 12px; }
-.isler a { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #fff; border-radius: 10px; padding: 13px 14px; text-decoration: none; border-left: 5px solid var(--k); }
-.isler b { font: 500 18px/1.2 'Oswald'; } .isler span { font-size: 14px; color: var(--k); font-weight: 700; text-align: right; }
+.isler .is { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #fff; border-radius: 10px; padding: 10px 12px 10px 14px; border-left: 5px solid var(--k); }
+.isler b { font: 500 18px/1.2 'Oswald'; } .isler span { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.isler a { font-size: 15px; color: var(--k); font-weight: 700; text-decoration: none; padding: 6px 0; text-align: right; }
 /* ürün */
 .urun { background: #fff; margin: 0 0 18px; border-top: 6px solid var(--k); }
 .u-foto { aspect-ratio: 10 / 7; display: flex; align-items: center; justify-content: center; }
@@ -189,11 +206,11 @@ section, .urun { scroll-margin-top: 8px; }
 .fayda { font: 500 21px/1.3 'Oswald'; }
 .cips { list-style: none; padding: 0; margin: 4px 0 14px; display: flex; flex-wrap: wrap; gap: 8px; }
 .cips li { background: var(--z); border: 1px solid var(--c); border-radius: 99px; padding: 6px 12px; font-size: 15px; font-weight: 700; }
-.kimler { background: var(--z); border-left: 5px solid var(--k); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: 16px; }
+.kimler { background: #F1EFEB; border-left: 4px solid var(--d); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: 16px; }
 .kimler b { color: var(--k); }
 .fiyat { border: 2px solid var(--d); border-radius: 10px; padding: 12px 14px; margin: 14px 0; }
 .fiyat b { display: block; font: 700 19px/1.2 'Oswald'; margin-bottom: 4px; } .fiyat b small { font: 400 13px 'Inter'; color: var(--g); }
-.fiyat.bos { border-style: dashed; border-color: var(--k); background: #FFF6F7; } .fiyat.bos span { font-size: 15px; }
+.fiyat.bos { border: 0; border-left: 4px solid var(--wa); border-radius: 0 10px 10px 0; background: #EEF7F1; } .fiyat.bos span { font-size: 15px; }
 .fiyat ul { list-style: none; margin: 0; padding: 0; } .fiyat li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--c); }
 .fiyat strong { color: var(--k); white-space: nowrap; }
 .tablo-kap { overflow-x: auto; margin: 0 0 14px; } table { border-collapse: collapse; font-size: 15px; min-width: 100%; }
@@ -201,6 +218,19 @@ th, td { padding: 8px 10px; border-bottom: 1px solid var(--c); text-align: left;
 details { border-top: 1px solid var(--c); border-bottom: 1px solid var(--c); margin: 14px 0; }
 summary { cursor: pointer; padding: 13px 0; font: 700 16px 'Inter'; list-style: none; display: flex; justify-content: space-between; }
 summary::after { content: '+'; color: var(--k); font-size: 22px; line-height: 1; } details[open] summary::after { content: '–'; }
+.rozet { display: inline-block; margin: 0 0 8px; font: 700 13px/1 'Inter'; letter-spacing: .6px; text-transform: uppercase; color: #fff; background: var(--k); padding: 7px 10px; border-radius: 6px; }
+.avantaj { background: #fff; border: 2px solid var(--c); border-radius: 10px; padding: 12px 14px 6px; margin: 14px 0; }
+.avantaj ul { list-style: none; padding: 0; margin: 0; } .avantaj li { display: flex; gap: 10px; padding: 6px 0; font-size: 16px; font-weight: 700; border-top: 1px solid var(--z); }
+.avantaj li:first-child { border-top: 0; } .avantaj svg { width: 22px; height: 22px; flex: none; color: #fff; background: var(--k); border-radius: 50%; padding: 3px; }
+.destek ul { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 10px; }
+.destek li { display: flex; gap: 12px; align-items: flex-start; background: #fff; border-radius: 10px; padding: 12px 14px; }
+.destek li svg { width: 28px; height: 28px; flex: none; color: var(--k); } .destek b { display: block; font: 500 18px/1.2 'Oswald'; } .destek span { font-size: 15px; color: var(--g); }
+button.buyut { all: unset; display: block; cursor: zoom-in; width: 100%; }
+dialog#kutu { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 92vh; }
+dialog#kutu::backdrop { background: rgba(0,0,0,.88); }
+dialog#kutu img { max-width: 96vw; max-height: 80vh; border-radius: 8px; margin: 0 auto; }
+dialog#kutu p { color: #fff; font-size: 15px; text-align: center; margin: 10px 0 0; }
+dialog#kutu .kapat { position: fixed; top: 12px; right: 12px; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #fff; color: var(--d); font-size: 30px; line-height: 1; cursor: pointer; }
 .tikli { list-style: none; padding: 0; margin: 0 0 12px; } .tikli li { display: flex; gap: 8px; padding: 4px 0; font-size: 16px; } .tikli svg { width: 20px; height: 20px; color: var(--k); flex: none; margin-top: 2px; }
 .ara { font: 700 13px 'Inter'; letter-spacing: 1px; text-transform: uppercase; color: var(--k); margin: 6px 0 4px; }
 .ek-foto { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; } .ek-foto img { border-radius: 8px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; } .ek-foto figcaption { font-size: 14px; color: var(--g); margin-top: 4px; }
@@ -247,7 +277,18 @@ summary::after { content: '+'; color: var(--k); font-size: 22px; line-height: 1;
   <p class="etk">${t(P.secim.etiket)}</p>
   <h2>${t(P.secim.baslik)}</h2>
   <p class="aciklama">${t(P.secim.alt)}</p>
-  <div class="isler">${P.secim.isler.map(([is, ids]) => `<a href="#${ids[0] === '_diger' ? 'diger' : ids[0] === '_takas' ? 'takas' : ids[0]}"><b>${t(is)}</b><span>${ids.map((i) => (i === '_diger' ? 'Mibzer' : i === '_takas' ? 'İkinci el & takas' : esc(ad(i)))).join(' · ')} →</span></a>`).join('')}</div>
+  <div class="isler">${isSirali().map(([is, ids]) => `<div class="is"><b>${t(is)}</b><span>${ids.map((i) => `<a href="#${i === '_diger' ? 'diger' : i === '_takas' ? 'takas' : i}">${i === '_diger' ? 'Mibzer' : i === '_takas' ? 'İkinci el & takas' : esc(ad(i))} →</a>`).join('')}</span></div>`).join('')}</div>
+</section>
+
+<section class="blok destek" id="destek">
+  <p class="etk">Teslimat ve destek</p>
+  <h2>Göksun'dan Türkiye'ye</h2>
+  <ul>
+    <li>${ikon.kamyon}<div><b>Türkiye geneline gönderim</b><span>Şehrinizi yazın, nakliye seçeneğini birlikte belirleyelim.</span></div></li>
+    <li>${ikon.pin}<div><b>Göksun ve çevresine yerinde</b><span>Atölyemize gelip ürünleri yerinde inceleyebilirsiniz.</span></div></li>
+    <li>${ikon.parca}<div><b>Yedek parça</b><span>Ürettiğimiz ve sattığımız ürünler için.</span></div></li>
+    <li>${ikon.takas}<div><b>İkinci el ve takas</b><span>Eski makinenizi değerlendiriyoruz.</span></div></li>
+  </ul>
 </section>
 
 ${SIRA.map(urunKart).join('\n')}
@@ -278,7 +319,8 @@ ${SIRA.map(urunKart).join('\n')}
 <section class="blok" id="sahadan">
   <p class="etk">${t(P.sahadan.etiket)}</p>
   <h2>${t(P.sahadan.baslik)}</h2>
-  <div class="saha">${SAHADAN.map(([f, y]) => `<figure><img src="${img(['f', f], 700)}" alt="${esc(y)}" loading="lazy"><figcaption>${esc(y)}</figcaption></figure>`).join('')}</div>
+  <p class="aciklama">Büyütmek için fotoğrafa dokunun.</p>
+  <div class="saha">${SAHADAN.map(([f, y]) => `<figure><button type="button" class="buyut" data-buyuk="${img(['f', f], 1400)}" aria-label="Büyüt: ${esc(y)}"><img src="${img(['f', f], 700)}" alt="${esc(y)}" loading="lazy"></button><figcaption>${esc(y)}</figcaption></figure>`).join('')}</div>
 </section>
 
 <section class="blok sss" id="sss">
@@ -301,6 +343,8 @@ ${SIRA.map(urunKart).join('\n')}
 <p class="alt-bilgi">© 2026 ${esc(FIRMA.ad)} · <a href="../">Web sitemiz</a></p>
 </div>
 
+<dialog id="kutu" aria-label="Fotoğraf"><form method="dialog"><button class="kapat" aria-label="Kapat">×</button></form><img alt=""><p></p></dialog>
+
 <nav class="cubuk gizli" aria-label="Hızlı iletişim"><div>${waBtn(P.iletisim.wa, 'WhatsApp\'tan yaz')}${telBtn()}</div></nav>
 
 <script>
@@ -309,6 +353,20 @@ ${SIRA.map(urunKart).join('\n')}
   var ust = document.querySelector('.ust-buton'), cubuk = document.querySelector('.cubuk');
   if (!ust || !('IntersectionObserver' in window)) { cubuk.classList.remove('gizli'); return; }
   new IntersectionObserver(function (e) { cubuk.classList.toggle('gizli', e[0].isIntersecting); }).observe(ust);
+})();
+// Fotoğraf büyütme
+(function () {
+  var d = document.getElementById('kutu');
+  if (!d || !d.showModal) return;
+  document.querySelectorAll('button.buyut').forEach(function (b) {
+    b.addEventListener('click', function () {
+      d.querySelector('img').src = b.getAttribute('data-buyuk');
+      d.querySelector('img').alt = b.querySelector('img').alt;
+      d.querySelector('p').textContent = b.querySelector('img').alt;
+      d.showModal();
+    });
+  });
+  d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
 })();
 // Kaynak etiketi: ?k=instagram → WhatsApp mesajı "(Instagram)" ile başlar; oturum boyunca hatırlanır.
 (function () {
