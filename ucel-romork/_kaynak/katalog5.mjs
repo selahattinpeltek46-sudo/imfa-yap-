@@ -177,7 +177,16 @@ const ust = (etiket, baslik, sag = '') => `<header class="ust"><div class="ust-k
 const foto = ([tur, a, yazi], sinif = '', kucuk = false) => tur === 'd'
   ? `<figure class="foto dek ${sinif}"><img src="${g('d', a)}" alt="${esc(yazi)}"><figcaption>${esc(yazi)}</figcaption></figure>`
   : `<figure class="foto cer ${sinif}"><div class="kutu"><img src="${g(kucuk && tur === 'f' ? 'k' : tur, a)}" alt="${esc(yazi)}"></div><figcaption>${esc(yazi)}</figcaption></figure>`;
-const ctaBant = async (cta, mesaj, alt = 'QR\'ı okutun, mesaj hazır gelsin') => `<div class="cta"><a class="q" href="${esc(wa(mesaj))}">${await qr(wa(mesaj))}</a><div class="cta-yazi"><h3>${t(cta)}</h3><p>${ikon('wa', '#fff')}${esc(alt)}</p></div><a class="cta-tel" href="${TEL}"><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></a></div>`;
+// Basılı QR için kısa mesaj: uzun mesaj QR'ı sıklaştırıp okunmaz yapıyor (ölçüldü: 6/16 okunamadı).
+// Web butonları uzun mesajı kullanır; QR'da giriş kısaltılır, soru satırları kodlanmış 180 karaktere sığana kadar eklenir
+// (ölçüm: 186'ya kadar okunuyor, 209 ve üstü okunmuyor).
+const qrMesaj = (m) => {
+  const [giris, ...sorular] = m.replace('Üçel kataloğunda gördüğüm ', '').split('\n');
+  let sonuc = giris;
+  for (const s of sorular) { if (encodeURIComponent(`${sonuc}\n${s}`).length > 180) break; sonuc += `\n${s}`; }
+  return sonuc;
+};
+const ctaBant = async (cta, mesaj, alt = 'QR\'ı okutun, mesaj hazır gelsin') => `<div class="cta"><a class="q" href="${esc(wa(mesaj))}">${await qr(wa(qrMesaj(mesaj)))}</a><div class="cta-yazi"><h3>${t(cta)}</h3><p>${ikon('wa', '#fff')}${esc(alt)}</p></div><a class="cta-tel" href="${TEL}"><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></a></div>`;
 const kullanim = (u) => `<ul class="kul">${u.kullanim.map((k) => `<li><i>${ikon(kulIkon(k.t))}</i>${t(k)}</li>`).join('')}</ul>`;
 const kimler = (u) => `<div class="kimler"><b>Kimler için?</b>${t(u.kimler)}</div>`;
 const neden = (u, baslik = 'Neden Üçel?') => `<div class="neden-u"><b>${baslik}</b><ul>${u.neden.map((x) => `<li>${ikon('tik')}${t(x)}</li>`).join('')}</ul></div>`;

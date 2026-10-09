@@ -26,6 +26,7 @@ const imalat = (id) => URUNLER.find((u) => u.id === id).imalat;
 const TEL = '+90' + FIRMA.telefon.replace(/\D/g, '').replace(/^0/, '');
 
 // kategori sırası: taşıma → toprak işleme → yükleme → gübreleme → su; "Ne yapmak istiyorsunuz?" listesi de bu sırayı izler
+const KISA = { 'kultivator': 'Kültivatör', 'gubre-serpme': 'Gübre Serpme', romork: 'Römork' };
 const SIRA = ['romork', 'kultivator', 'pulluk', 'on-yukleyici', 'gubre-serpme', 'su-tankeri'];
 // [tür, dosya] — d: beyaz zeminli ürün (cikti/dekupe), f: gerçek fotoğraf (cikti/pdf-gorsel), e: foto-ek
 const GORSEL = {
@@ -98,12 +99,12 @@ function fiyat(id) {
   return `<div class="fiyat"><b>Fiyat <small>${esc(FIYAT.guncelleme)}${FIYAT.not ? ' · ' + esc(FIYAT.not) : ''}</small></b><ul>${FIYAT.urunler[id].map(([m, f]) => `<li><span>${esc(m)}</span><strong>${esc(f)}</strong></li>`).join('')}</ul></div>`;
 }
 
-// neden + seçenekler, tekrarsız: aynı kelimeyle başlayan madde ikinci kez yazılmaz
-// (ör. "Kasa rengini … yapıyoruz" varken "Kasa rengi size özel" atlanır)
+// Ürüne özgü avantajlar: neden + seçenekler, aynı kökle başlayan madde bir kez (ör. "Kasa rengi…" / "Kasaya isim…").
+// Genel firma bilgisi ("Sattığımız … yedek parça") ürün kartında tekrarlanmaz; "Teslimat ve destek" bandında bir kez yazar.
 const avantajlar = (u) => {
-  const ilk = (x) => x.t.toLocaleLowerCase('tr').split(/\s+/)[0];
+  const kok = (x) => x.t.toLocaleLowerCase('tr').slice(0, 4);
   const gor = new Set();
-  return [...u.neden, ...(u.secenekler || [])].filter((x) => (gor.has(ilk(x)) ? false : gor.add(ilk(x))));
+  return [...u.neden, ...(u.secenekler || [])].filter((x) => !/^Sattığımız/.test(x.t)).filter((x) => (gor.has(kok(x)) ? false : gor.add(kok(x))));
 };
 
 function urunKart(id) {
@@ -122,7 +123,7 @@ function urunKart(id) {
       <p class="kimler"><b>Kimler için?</b> ${t(u.kimler)}</p>
       ${fiyat(id)}
       ${teknik(id)}
-      <div class="avantaj"><p class="ara">${imalat(id) ? 'Üçel imalat avantajları' : 'Neden Üçel?'}</p><ul>${avantajlar(u).map((x) => `<li>${ikon.tik}${t(x)}</li>`).join('')}</ul></div>
+      ${avantajlar(u).length ? `<div class="avantaj"><p class="ara">${imalat(id) ? 'Üçel imalat avantajları' : 'Neden Üçel?'}</p><ul>${avantajlar(u).map((x) => `<li>${ikon.tik}${t(x)}</li>`).join('')}</ul></div>` : ''}
       ${g.ek.length ? `<div class="ek-foto">${g.ek.map(([tr, a, y]) => `<figure><button type="button" class="buyut" data-buyuk="${img([tr, a], 1400)}" aria-label="Büyüt: ${esc(y)}"><img src="${img([tr, a], 600)}" alt="${esc(y)}" loading="lazy"></button><figcaption>${esc(y)}</figcaption></figure>`).join('')}</div>` : ''}
       <p class="cta-yazi">${t(u.cta)}</p>
       <div class="butonlar">${waBtn(u.wa, 'Fiyat ve bilgi al')}${telBtn()}</div>
@@ -161,7 +162,7 @@ function html() {
 <link rel="preload" href="font/oswald-latin-700.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 ${FONT_CSS}
-:root { --k:#C8102E; --ki:#E9454F; --d:#1F2124; --z:#F6F4F0; --c:#E2DED8; --g:#5F5B55; --wa:#1FA855; }
+:root { --k:#C8102E; --ki:#F0626B; --d:#1F2124; --z:#F6F4F0; --c:#E2DED8; --g:#5F5B55; --wa:#13843F; }
 * { box-sizing: border-box; } html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body { margin: 0; font: 400 17px/1.55 'Inter', system-ui, sans-serif; color: var(--d); background: #E9E6E1; padding-bottom: 76px; }
 img { display: block; max-width: 100%; height: auto; } a { color: inherit; }
@@ -175,7 +176,7 @@ section, .urun { scroll-margin-top: 8px; }
 .marka { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
 .marka img { width: 64px; border-radius: 6px; }
 .marka b { display: block; font: 700 18px/1.1 'Oswald'; letter-spacing: 1.5px; }
-.marka span { font-size: 13px; color: #b7b2aa; letter-spacing: .5px; }
+.marka span { font-size: 14px; color: #b7b2aa; letter-spacing: .5px; }
 .ust .etk { color: var(--ki); margin-top: 20px; }
 .ust h1 { font-size: 36px; position: relative; z-index: 1; }
 .ust .alt { color: #CFCAC2; margin: 8px 0 0; position: relative; z-index: 1; }
@@ -184,11 +185,16 @@ section, .urun { scroll-margin-top: 8px; }
 /* buton */
 .btn { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 8px 16px; border-radius: 10px; font: 700 16px/1.2 'Inter'; text-decoration: none; text-align: center; }
 .btn svg { width: 24px; height: 24px; flex: none; }
-.btn.wa { background: var(--wa); color: #fff; } .btn.tel { background: var(--d); color: #fff; } .btn.acik { background: #fff; color: var(--d); border: 2px solid var(--c); }
+.btn.wa { background: var(--wa); color: #fff; box-shadow: 0 3px 0 #0B5A2A; font-size: 17px; } .btn.tel { background: var(--d); color: #fff; } .btn.acik { background: #fff; color: var(--d); border: 2px solid var(--c); }
+/* hızlı ürün gezinme: sayfanın üstüne yapışır, yatay kaydırılır */
+.urun-nav { position: sticky; top: 0; z-index: 8; display: flex; gap: 8px; overflow-x: auto; padding: 10px 12px; background: rgba(246,244,240,.97); border-bottom: 1px solid var(--c); scrollbar-width: none; }
+.urun-nav::-webkit-scrollbar { display: none; }
+.urun-nav a { flex: none; font: 700 15px/1 'Inter'; color: var(--d); text-decoration: none; background: #fff; border: 1px solid var(--c); border-radius: 99px; padding: 10px 14px; }
+section, .urun { scroll-margin-top: 64px; }
 /* bölüm */
 .blok { padding: 26px 16px; }
 .blok > h2 { font-size: 28px; margin-bottom: 6px; }
-.etk { font: 700 13px/1.2 'Inter'; letter-spacing: 1.4px; text-transform: uppercase; color: var(--k); margin: 0 0 6px; }
+.etk { font: 700 14px/1.2 'Inter'; letter-spacing: 1.4px; text-transform: uppercase; color: var(--k); margin: 0 0 6px; }
 .etk span { color: var(--d); }
 .aciklama { color: var(--g); }
 /* iş seçimi */
@@ -206,11 +212,11 @@ section, .urun { scroll-margin-top: 8px; }
 .fayda { font: 500 21px/1.3 'Oswald'; }
 .cips { list-style: none; padding: 0; margin: 4px 0 14px; display: flex; flex-wrap: wrap; gap: 8px; }
 .cips li { background: var(--z); border: 1px solid var(--c); border-radius: 99px; padding: 6px 12px; font-size: 15px; font-weight: 700; }
-.kimler { background: #F1EFEB; border-left: 4px solid var(--d); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: 16px; }
-.kimler b { color: var(--k); }
+.kimler { background: #f4f6f4; border-left: 4px solid #2e7d32; padding: 10px 12px; margin: 10px 0; border-radius: 4px; font-size: 16px; }
+.kimler b { color: #2e7d32; }
 .fiyat { border: 2px solid var(--d); border-radius: 10px; padding: 12px 14px; margin: 14px 0; }
 .fiyat b { display: block; font: 700 19px/1.2 'Oswald'; margin-bottom: 4px; } .fiyat b small { font: 400 13px 'Inter'; color: var(--g); }
-.fiyat.bos { border: 0; border-left: 4px solid var(--wa); border-radius: 0 10px 10px 0; background: #EEF7F1; } .fiyat.bos span { font-size: 15px; }
+.fiyat.bos { border: 0; border-left: 4px solid #2e7d32; border-radius: 4px; background: #f4f6f4; padding: 10px 12px; margin: 10px 0; } .fiyat.bos span { font-size: 15px; }
 .fiyat ul { list-style: none; margin: 0; padding: 0; } .fiyat li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--c); }
 .fiyat strong { color: var(--k); white-space: nowrap; }
 .tablo-kap { overflow-x: auto; margin: 0 0 14px; } table { border-collapse: collapse; font-size: 15px; min-width: 100%; }
@@ -218,7 +224,7 @@ th, td { padding: 8px 10px; border-bottom: 1px solid var(--c); text-align: left;
 details { border-top: 1px solid var(--c); border-bottom: 1px solid var(--c); margin: 14px 0; }
 summary { cursor: pointer; padding: 13px 0; font: 700 16px 'Inter'; list-style: none; display: flex; justify-content: space-between; }
 summary::after { content: '+'; color: var(--k); font-size: 22px; line-height: 1; } details[open] summary::after { content: '–'; }
-.rozet { display: inline-block; margin: 0 0 8px; font: 700 13px/1 'Inter'; letter-spacing: .6px; text-transform: uppercase; color: #fff; background: var(--k); padding: 7px 10px; border-radius: 6px; }
+.rozet { display: inline-block; margin: 0 0 8px; font: 700 14px/1 'Inter'; letter-spacing: .6px; text-transform: uppercase; color: #fff; background: var(--k); padding: 7px 10px; border-radius: 6px; }
 .avantaj { background: #fff; border: 2px solid var(--c); border-radius: 10px; padding: 12px 14px 6px; margin: 14px 0; }
 .avantaj ul { list-style: none; padding: 0; margin: 0; } .avantaj li { display: flex; gap: 10px; padding: 6px 0; font-size: 16px; font-weight: 700; border-top: 1px solid var(--z); }
 .avantaj li:first-child { border-top: 0; } .avantaj svg { width: 22px; height: 22px; flex: none; color: #fff; background: var(--k); border-radius: 50%; padding: 3px; }
@@ -232,7 +238,7 @@ dialog#kutu img { max-width: 96vw; max-height: 80vh; border-radius: 8px; margin:
 dialog#kutu p { color: #fff; font-size: 15px; text-align: center; margin: 10px 0 0; }
 dialog#kutu .kapat { position: fixed; top: 12px; right: 12px; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #fff; color: var(--d); font-size: 30px; line-height: 1; cursor: pointer; }
 .tikli { list-style: none; padding: 0; margin: 0 0 12px; } .tikli li { display: flex; gap: 8px; padding: 4px 0; font-size: 16px; } .tikli svg { width: 20px; height: 20px; color: var(--k); flex: none; margin-top: 2px; }
-.ara { font: 700 13px 'Inter'; letter-spacing: 1px; text-transform: uppercase; color: var(--k); margin: 6px 0 4px; }
+.ara { font: 700 14px 'Inter'; letter-spacing: 1px; text-transform: uppercase; color: var(--k); margin: 6px 0 4px; }
 .ek-foto { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; } .ek-foto img { border-radius: 8px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; } .ek-foto figcaption { font-size: 14px; color: var(--g); margin-top: 4px; }
 .cta-yazi { font: 500 19px/1.3 'Oswald'; color: var(--k); margin: 6px 0 12px; }
 .butonlar { display: grid; grid-template-columns: 1.7fr 1fr; gap: 10px; }
@@ -272,6 +278,8 @@ dialog#kutu .kapat { position: fixed; top: 12px; right: 12px; width: 48px; heigh
 </header>
 <div class="kapak-foto"><img src="${kapak}" alt="Göksun yaylı kültivatör" width="1000" height="700"></div>
 <div class="ust-buton">${waBtn(P.iletisim.wa, 'WhatsApp\'tan yaz')}${telBtn()}</div>
+
+<nav class="urun-nav" aria-label="Ürünler">${SIRA.map((id) => `<a href="#${id}">${esc(KISA[id] || ad(id))}</a>`).join('')}<a href="#diger">Diğer</a><a href="#takas">Takas</a><a href="#iletisim">İletişim</a></nav>
 
 <section class="blok" id="sec">
   <p class="etk">${t(P.secim.etiket)}</p>

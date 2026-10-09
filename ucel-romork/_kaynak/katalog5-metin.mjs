@@ -165,12 +165,12 @@ export const URUN_METIN = {
     tanim: S('Tarladan eve, depodan tarlaya yük taşımanın temel ekipmanı. Kaynağından boyasına kadar Göksun\'daki atölyemizde üretiyoruz.'),
     kullanim: [S('Tarla ürünü'), S('Gübre ve yem'), S('Odun ve malzeme'), S('Hayvancılık')],
     kimler: S('Ürün taşıyan, hayvancılık yapan, gübre ve yem nakli olan ya da genel taşıma ihtiyacı olan çiftçiler için.'),
-    neden: [S('Kaynağından boyasına kadar atölyemizde üretiyoruz.'), S('Kasa rengini ve yazısını isteğinize göre yapıyoruz.'), S('Standart dışı ölçüde özel imalat yapabiliyoruz.')],
+    neden: [S('Kaynağından boyasına kadar atölyemizde üretiyoruz.'), Y('Kasa rengi ve yazısı isteğinize göre: isim, firma adı ya da “Maşallah”.'), S('Standart dışı ölçüde özel imalat yapabiliyoruz.')],
     secenekler: [S('Kasa rengi size özel'), S('Kasaya isim, firma adı ya da “Maşallah” yazısı'), S('Standart dışı ölçüde özel imalat')],
     secenekBekleyen: ['Damperli / dampersiz', 'Kapasite seçenekleri (4 tonluk model teyidi)'],
     sayfa2Baslik: Y('Seçenekler ve teknik bilgi'),
     cta: Y('Ne taşıyacağınızı yazın, uygun römorku birlikte belirleyelim.'),
-    wa: 'Merhaba, tarım römorku hakkında bilgi almak istiyorum.\nTaşıyacağım yük:\nTraktörüm:',
+    wa: 'Merhaba, Üçel kataloğunda gördüğüm tarım römorku hakkında bilgi almak istiyorum.\nTaşıyacağım yük:\nİstediğim kasa ölçüsü / kapasite:\nTraktörüm (marka / model):',
   },
   kultivator: {
     kategori: Y('Toprak işleme'), sayfa: 2,
@@ -184,7 +184,7 @@ export const URUN_METIN = {
     detayFoto: Y('Mavi Göksun yaylı kültivatör'),
     sayfa2Baslik: Y('Seçenekler ve teknik bilgi'),
     cta: Y('Traktörünüzün gücünü yazın, uygun modeli birlikte seçelim.'),
-    wa: 'Merhaba, kültivatör hakkında bilgi almak istiyorum.\nTraktör / HP:\nTarla büyüklüğü:',
+    wa: 'Merhaba, Üçel kataloğunda gördüğüm kültivatör hakkında bilgi almak istiyorum.\nTraktörüm ve HP:\nİstediğim ayak sayısı / çalışma genişliği:',
   },
   'on-yukleyici': {
     kategori: Y('Yükleme'), sayfa: 2,
@@ -197,7 +197,7 @@ export const URUN_METIN = {
     secenekBekleyen: ['Uyumlu traktörler', 'Ataşmanlar', 'Kova ölçüleri'],
     sayfa2Baslik: Y('Teknik bilgi ve montaj'),
     cta: Y('Traktörünüzün marka ve modelini yazın, montaja uygunluğuna bakalım.'),
-    wa: 'Merhaba, loader kepçe hakkında bilgi almak istiyorum.\nTraktör marka / model:\nHP:',
+    wa: 'Merhaba, Üçel kataloğunda gördüğüm loader kepçe hakkında bilgi almak istiyorum.\nTraktörüm (marka / model):\nNe için kullanacağım:',
   },
   pulluk: {
     kategori: Y('Toprak işleme'), sayfa: 1,
@@ -208,7 +208,7 @@ export const URUN_METIN = {
     neden: [Y('Traktörünüzün gücüne uygun pulluğu birlikte seçiyoruz.'), S('Sattığımız ve sık kullanılan ekipmanlar için yedek parça bulunduruyoruz.')],
     secenekBekleyen: ['Gövde sayısı seçenekleri', 'Marka / üretici'],
     cta: Y('Toprağınızı ve traktörünüzü anlatın, uygun pulluğu birlikte seçelim.'),
-    wa: 'Merhaba, pulluk hakkında bilgi almak istiyorum.\nTraktör / HP:\nToprak yapısı:',
+    wa: 'Merhaba, Üçel kataloğunda gördüğüm pulluk hakkında bilgi almak istiyorum.\nTraktörüm ve HP:\nToprak yapısı / istediğim model:',
   },
   'gubre-serpme': {
     kategori: Y('Gübreleme'), sayfa: 1,
@@ -219,7 +219,7 @@ export const URUN_METIN = {
     neden: [S('Sattığımız ve sık kullanılan ekipmanlar için yedek parça bulunduruyoruz.')],
     secenekBekleyen: ['Kapasite seçenekleri'],
     cta: Y('Traktörünüzü ve gübre türünü yazın, uygun makineyi birlikte seçelim.'),
-    wa: 'Merhaba, gübre serpme makinesi hakkında bilgi almak istiyorum.\nTraktör / HP:\nGübre türü (kimyasal / organik):',
+    wa: 'Merhaba, Üçel kataloğunda gördüğüm gübre serpme makinesi hakkında bilgi almak istiyorum.\nİstediğim kapasite:\nGübre türü (kimyasal / organik):\nTraktörüm ve HP:',
   },
   'su-tankeri': {
     kategori: Y('Taşıma'), sayfa: 1,
@@ -230,7 +230,7 @@ export const URUN_METIN = {
     neden: [S('Sattığımız ve sık kullanılan ekipmanlar için yedek parça bulunduruyoruz.')],
     secenekBekleyen: ['Kapasite seçenekleri', 'Pompa'],
     cta: Y('Suyu ne için taşıyacağınızı yazın, uygun tankeri birlikte seçelim.'),
-    wa: 'Merhaba, su tankeri hakkında bilgi almak istiyorum.\nKullanım (sulama / hayvan suyu):\nTraktörüm:',
+    wa: 'Merhaba, Üçel kataloğunda gördüğüm su tankeri hakkında bilgi almak istiyorum.\nİstediğim kapasite:\nNe için kullanacağım (sulama / hayvan suyu):\nTraktörüm:',
   },
 };
 
