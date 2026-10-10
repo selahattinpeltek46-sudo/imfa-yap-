@@ -60,3 +60,8 @@ Kullanıcı "ne yapacağını" değil, "neyi başarmak istediğini" söyler. SEL
 
 ## SYSTEM LEARNING
 _(Her projenin 22. aşamasında buraya yeni kurallar / hatalar / çözümler eklenir. Format: `- [tarih] [firma] TÜR: içerik`)_
+- [2026-10-10] [goksun-yorem] KURAL: Ürün menşei ("X yaylasından bal"), hayvan besleme ve "kuşaktan kuşağa" gibi aile geleneği ifadeleri kanıtsız iddiadır; brif metni yazarken bile ilk denetlenecek yerlerdir.
+- [2026-10-10] [goksun-yorem] HATA: Statik sitede form verisi hiçbir yere gitmezken metin "sizi arayacağız" diyordu. ÇÖZÜM: Form → doğrulama + `wa.me` özet mesajı; form metni verinin nereye gittiğini açıkça söyler.
+- [2026-10-10] [goksun-yorem] ÇÖZÜM: `window.open(url,'_blank','noopener')` her zaman `null` döner; `noopener` parametresi yerine `win.opener = null` kullan, `null` ise aynı sekmede aç.
+- [2026-10-10] [goksun-yorem] WORKFLOW: Test ortamında CDN'ler kapalıysa Playwright `route` ile Tailwind'i aynı config'le yerelde derleyip enjekte et; FontAwesome'u npm paketinden sun.
+- [2026-10-10] [goksun-yorem] STANDART: Mutlak konumlu dekoratif kutular (`-right-5` vb.) mobilde yatay taşma yapar; bölüme `overflow-x-clip` ver ve 375 px'te `scrollWidth - innerWidth = 0` testi yap.
