@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr" class="scroll-smooth">
+<html lang="tr" class="scroll-smooth no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,14 +41,16 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      { "@type": "Question", "name": "Sipariş nasıl veririm?", "acceptedAnswer": { "@type": "Answer", "text": "Sayfadaki WhatsApp butonlarından birine dokunun; ürün adı hazır yazılmış bir mesaj açılır. Miktarı ve teslim şeklini yazıp gönderin, siparişinizi teyit edelim." } },
+      { "@type": "Question", "name": "Sipariş nasıl veririm?", "acceptedAnswer": { "@type": "Answer", "text": "Ürünlerimizden seçip sepete ekleyin, teslimat bilgilerinizi yazın ve sipariş özetini oluşturun. Açılan WhatsApp mesajını gönderdiğinizde siparişiniz bize ulaşır; ürün, miktar ve tutarı teyit ederek siparişinizi kesinleştiririz." } },
       { "@type": "Question", "name": "Adrese teslimat var mı?", "acceptedAnswer": { "@type": "Answer", "text": "Evet, Göksun merkezde adrese teslimat yapıyoruz. Merkez dışı adresler için WhatsApp'tan yazın, imkânımızı birlikte değerlendirelim." } },
       { "@type": "Question", "name": "Eti istediğim gibi kestirebilir miyim?", "acceptedAnswer": { "@type": "Answer", "text": "Elbette. Kalınlık, porsiyon, kıymanın yağ oranı, şiş ve köfte hazırlığı gibi isteklerinizi sipariş notuna yazmanız yeterli." } },
       { "@type": "Question", "name": "Toplu veya mangal siparişini ne kadar önce vermeliyim?", "acceptedAnswer": { "@type": "Answer", "text": "Kalabalık siparişlerde en az bir gün önceden randevu formu ile talep iletmenizi öneririz; böylece ürün ve hazırlık zamanında planlanır." } },
-      { "@type": "Question", "name": "Fiyatları nereden öğrenebilirim?", "acceptedAnswer": { "@type": "Answer", "text": "Et ve süt ürünlerinde fiyatlar güne göre değişebildiği için güncel fiyatı WhatsApp'tan ya da telefonla sorabilirsiniz." } }
+      { "@type": "Question", "name": "Fiyatları nereden öğrenebilirim?", "acceptedAnswer": { "@type": "Answer", "text": "Fiyatı belirtilen ürünlerde tutar sepette hesaplanır. Fiyatı belirtilmeyen ürünlerin güncel fiyatı sipariş teyidinde bildirilir. Kilo ile satılan ürünlerde kesin tutar tartım sonrası belirlenir; ödeme teslimatta veya dükkanda yapılır." } }
     ]
   }
   </script>
+
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,10 +89,24 @@
     body { font-family: 'Open Sans', sans-serif; }
     h1, h2, h3, h4, .font-heading { font-family: 'Montserrat', sans-serif; }
     .img-fallback { background: linear-gradient(135deg, #6B0000 0%, #2A2A2A 100%); }
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .js .reveal.visible { opacity: 1; transform: none; }
+    .no-js .js-only { display: none; }
+    .alan-hata { margin-top: .4rem; font-size: .875rem; font-weight: 600; color: #B91C1C; }
+    [aria-invalid="true"] { border-color: #B91C1C !important; }
+    .teslimat-secenek:has(input:checked) { border-color: #8B0000; background: #FDF4F4; }
+    [hidden] { display: none !important; }
+    /* Sepet doluyken mobilde alt çubuk görünür, sabit WhatsApp butonu yukarı kayar */
+    #sepet-bar { transform: translateY(110%); transition: transform .25s ease; }
+    body.sepet-dolu:not(.sepet-gorunur) #sepet-bar { transform: none; }
+    @media (max-width: 1023px) {
+      body.sepet-dolu { padding-bottom: 5.5rem; }
+      body.sepet-dolu:not(.sepet-gorunur) #sabit-wa { bottom: 6rem; }
+      body.sepet-gorunur #sabit-wa { display: none; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      #sepet-bar { transition: none; }
       html { scroll-behavior: auto; }
     }
     #site-header.scrolled { background: rgba(26,26,26,.96); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
@@ -126,15 +142,21 @@
           <a href="#anasayfa" class="text-white/90 hover:text-white font-semibold text-sm transition">Ana Sayfa</a>
           <a href="#biz-kimiz" class="text-white/90 hover:text-white font-semibold text-sm transition">Biz Kimiz</a>
           <a href="#urunler" class="text-white/90 hover:text-white font-semibold text-sm transition">Ürünler</a>
+          <a href="#sepet" class="js-only text-white/90 hover:text-white font-semibold text-sm transition">Sepetim</a>
           <a href="#randevu" class="text-white/90 hover:text-white font-semibold text-sm transition">Randevu</a>
           <a href="#iletisim" class="text-white/90 hover:text-white font-semibold text-sm transition">İletişim</a>
         </nav>
 
         <div class="flex items-center gap-2 sm:gap-3 shrink-0 ml-2">
-          <a href="#" data-wa="Merhaba, Göksun Yörem'den sipariş vermek istiyorum." data-track="header" target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 bg-orman hover:bg-orman-dark text-white font-heading font-bold text-sm px-3 sm:px-5 py-2.5 rounded-full shadow-lg transition hover:-translate-y-0.5">
+          <a href="#sepet" data-sepet-etiket aria-label="Sepet"
+             class="js-only relative inline-flex items-center justify-center gap-2 w-11 h-11 sm:w-auto sm:px-4 bg-bordo hover:bg-bordo-light text-white font-heading font-bold text-sm rounded-full shadow-lg transition">
+            <i class="fa-solid fa-basket-shopping text-lg" aria-hidden="true"></i><span class="hidden sm:inline">Sepet</span>
+            <span data-sepet-adet hidden class="absolute -top-1.5 -right-1.5 min-w-[22px] h-[22px] px-1 rounded-full bg-white text-bordo text-xs font-extrabold flex items-center justify-center ring-2 ring-bordo">0</span>
+          </a>
+          <a href="#" data-wa="Merhaba, Göksun Yörem'den sipariş vermek istiyorum." data-track="header" target="_blank" rel="noopener" aria-label="WhatsApp ile yazın"
+             class="inline-flex items-center justify-center gap-2 w-11 h-11 sm:w-auto bg-orman hover:bg-orman-dark text-white font-heading font-bold text-sm sm:px-5 rounded-full shadow-lg transition">
             <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i>
-            <span class="hidden sm:inline">WhatsApp Sipariş</span><span class="sm:hidden">Sipariş</span>
+            <span class="hidden sm:inline">WhatsApp</span>
           </a>
           <button id="menu-btn" type="button" class="lg:hidden w-11 h-11 rounded-lg bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobile-menu">
             <i class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
@@ -149,6 +171,7 @@
         <a href="#anasayfa" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-house w-6 text-red-400" aria-hidden="true"></i> Ana Sayfa</a>
         <a href="#biz-kimiz" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-store w-6 text-red-400" aria-hidden="true"></i> Biz Kimiz</a>
         <a href="#urunler" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-drumstick-bite w-6 text-red-400" aria-hidden="true"></i> Ürünler</a>
+        <a href="#sepet" class="js-only mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-basket-shopping w-6 text-red-400" aria-hidden="true"></i> Sepetim</a>
         <a href="#randevu" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-calendar-check w-6 text-red-400" aria-hidden="true"></i> Randevu</a>
         <a href="#iletisim" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-phone w-6 text-red-400" aria-hidden="true"></i> İletişim</a>
         <a href="#" data-wa="Merhaba, Göksun Yörem'den sipariş vermek istiyorum." data-track="mobil-menu" target="_blank" rel="noopener"
@@ -185,7 +208,7 @@
 
           <div class="mt-10 flex flex-col sm:flex-row gap-4">
             <a href="#urunler" class="inline-flex items-center justify-center gap-3 bg-bordo hover:bg-bordo-light text-white font-heading font-bold px-8 py-4 rounded-full shadow-glow transition hover:-translate-y-0.5">
-              <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Ürünleri İncele
+              <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Sipariş Ver
             </a>
             <a href="#randevu" class="inline-flex items-center justify-center gap-3 bg-white/10 hover:bg-white hover:text-komur backdrop-blur border-2 border-white/70 text-white font-heading font-bold px-8 py-4 rounded-full transition hover:-translate-y-0.5">
               <i class="fa-solid fa-calendar-check" aria-hidden="true"></i> Özel Kesim Randevusu
@@ -307,102 +330,141 @@
       </div>
     </section>
 
-    <!-- ============ 4. ÖNE ÇIKAN ÜRÜNLER ============ -->
+    <!-- ============ 4. ÜRÜN KATALOĞU (veri: js/ayarlar.js) ============ -->
     <section id="urunler" class="py-20 lg:py-28 bg-white scroll-mt-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto reveal">
+        <div class="text-center max-w-2xl mx-auto">
           <p class="inline-flex items-center gap-2 text-bordo font-heading font-bold text-sm uppercase tracking-[0.2em]">
-            <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span> Öne Çıkan Ürünler <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span>
+            <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span> Online Sipariş <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span>
           </p>
-          <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-4">Tezgahımızın Gözdeleri</h2>
-          <p class="mt-4 text-komur/70 text-lg">Taze etten yayla kahvaltılığına, en çok tercih edilen lezzetlerimiz. Güncel fiyat ve stok bilgisi için tek dokunuşla WhatsApp'tan yazın.</p>
+          <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-4">Ürünlerimiz</h2>
+          <p class="mt-4 text-komur/70 text-lg">Ürünlerinizi sepete ekleyin, teslimat bilgilerinizi yazın; siparişiniz WhatsApp üzerinden bize ulaşsın. Ödeme, sipariş teyidinden sonra teslimatta veya dükkanda.</p>
         </div>
 
-        <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-7">
-          <!-- Kart 1 -->
-          <article class="reveal group bg-krem rounded-3xl overflow-hidden shadow-card hover:shadow-xl hover:-translate-y-1.5 transition duration-300 flex flex-col">
-            <div class="relative aspect-[4/3] overflow-hidden img-fallback">
-              <img src="https://images.unsplash.com/photo-1603048297172-c92544798d5a?auto=format&fit=crop&w=800&q=80"
-                   alt="Dana antrikot dilimleri (temsili görsel)" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" loading="lazy" width="800" height="600"
-                   onerror="this.style.display='none'">
-              <span class="absolute top-4 left-4 bg-bordo text-white text-xs font-heading font-bold uppercase tracking-wider px-3 py-1.5 rounded-full"><i class="fa-solid fa-cow mr-1" aria-hidden="true"></i> Kırmızı Et</span>
-            </div>
-            <div class="p-6 flex flex-col flex-1">
-              <h3 class="font-heading font-bold text-xl">Taze Dana Biftek / Antrikot</h3>
-              <p class="text-komur/70 text-sm mt-2 leading-relaxed flex-1">Izgara ve tava için isteğinize göre kalınlıkta kesilen dana antrikot ve bonfile.</p>
-              <a href="#" data-wa="Merhaba, Taze Dana Biftek / Antrikot sipariş etmek istiyorum. Miktar: " data-track="urun-dana" target="_blank" rel="noopener"
-                 class="mt-5 inline-flex items-center justify-center gap-2 bg-orman hover:bg-orman-dark text-white font-heading font-bold text-sm py-3 rounded-full transition">
-                <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i> Sipariş Ver
-              </a>
-            </div>
-          </article>
+        <nav class="sticky top-20 z-30 -mx-4 px-4 sm:mx-0 sm:px-0 mt-10 py-3 bg-white" aria-label="Ürün kategorileri">
+          <ul id="kategori-nav" class="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center"></ul>
+        </nav>
 
-          <!-- Kart 2 -->
-          <article class="reveal group bg-krem rounded-3xl overflow-hidden shadow-card hover:shadow-xl hover:-translate-y-1.5 transition duration-300 flex flex-col">
-            <div class="relative aspect-[4/3] overflow-hidden img-fallback">
-              <img src="https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?auto=format&fit=crop&w=800&q=80"
-                   alt="Çiğ kırmızı et ve pirzola (temsili görsel)" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" loading="lazy" width="800" height="600"
-                   onerror="this.style.display='none'">
-              <span class="absolute top-4 left-4 bg-bordo text-white text-xs font-heading font-bold uppercase tracking-wider px-3 py-1.5 rounded-full"><i class="fa-solid fa-drumstick-bite mr-1" aria-hidden="true"></i> Kuzu &amp; Kıyma</span>
-            </div>
-            <div class="p-6 flex flex-col flex-1">
-              <h3 class="font-heading font-bold text-xl">Özel Kıyma &amp; Kuzu Pirzola</h3>
-              <p class="text-komur/70 text-sm mt-2 leading-relaxed flex-1">İstediğiniz yağ oranında hazırlanan dana kıyma ve mangalın vazgeçilmezi kuzu pirzola.</p>
-              <a href="#" data-wa="Merhaba, Kıyma / Kuzu Pirzola sipariş etmek istiyorum. Miktar: " data-track="urun-kuzu" target="_blank" rel="noopener"
-                 class="mt-5 inline-flex items-center justify-center gap-2 bg-orman hover:bg-orman-dark text-white font-heading font-bold text-sm py-3 rounded-full transition">
-                <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i> Sipariş Ver
-              </a>
-            </div>
-          </article>
-
-          <!-- Kart 3 -->
-          <article class="reveal group bg-krem rounded-3xl overflow-hidden shadow-card hover:shadow-xl hover:-translate-y-1.5 transition duration-300 flex flex-col">
-            <div class="relative aspect-[4/3] overflow-hidden img-fallback">
-              <img src="https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=800&q=80"
-                   alt="Tereyağı (temsili görsel)" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" loading="lazy" width="800" height="600"
-                   onerror="this.style.display='none'">
-              <span class="absolute top-4 left-4 bg-orman text-white text-xs font-heading font-bold uppercase tracking-wider px-3 py-1.5 rounded-full"><i class="fa-solid fa-leaf mr-1" aria-hidden="true"></i> Süt Ürünü</span>
-            </div>
-            <div class="p-6 flex flex-col flex-1">
-              <h3 class="font-heading font-bold text-xl">Göksun Yayla Tereyağı</h3>
-              <p class="text-komur/70 text-sm mt-2 leading-relaxed flex-1">Yayla sütünden elde edilen, katkı maddesi eklenmemiş, kahvaltıların yıldızı tereyağı.</p>
-              <a href="#" data-wa="Merhaba, Göksun Yayla Tereyağı sipariş etmek istiyorum. Miktar: " data-track="urun-tereyagi" target="_blank" rel="noopener"
-                 class="mt-5 inline-flex items-center justify-center gap-2 bg-orman hover:bg-orman-dark text-white font-heading font-bold text-sm py-3 rounded-full transition">
-                <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i> Sipariş Ver
-              </a>
-            </div>
-          </article>
-
-          <!-- Kart 4 -->
-          <article class="reveal group bg-krem rounded-3xl overflow-hidden shadow-card hover:shadow-xl hover:-translate-y-1.5 transition duration-300 flex flex-col">
-            <div class="relative aspect-[4/3] overflow-hidden img-fallback">
-              <img src="https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=800&q=80"
-                   alt="Peynir çeşitleri (temsili görsel)" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" loading="lazy" width="800" height="600"
-                   onerror="this.style.display='none'">
-              <span class="absolute top-4 left-4 bg-orman text-white text-xs font-heading font-bold uppercase tracking-wider px-3 py-1.5 rounded-full"><i class="fa-solid fa-mug-hot mr-1" aria-hidden="true"></i> Kahvaltılık</span>
-            </div>
-            <div class="p-6 flex flex-col flex-1">
-              <h3 class="font-heading font-bold text-xl">Yöresel Peynirler &amp; Bal</h3>
-              <p class="text-komur/70 text-sm mt-2 leading-relaxed flex-1">Tulum peyniri, yöresel peynirler ve kahvaltıların tatlı eşlikçisi süzme bal.</p>
-              <a href="#" data-wa="Merhaba, Yöresel Peynir / Süzme Bal sipariş etmek istiyorum. Miktar: " data-track="urun-peynir-bal" target="_blank" rel="noopener"
-                 class="mt-5 inline-flex items-center justify-center gap-2 bg-orman hover:bg-orman-dark text-white font-heading font-bold text-sm py-3 rounded-full transition">
-                <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i> Sipariş Ver
-              </a>
-            </div>
-          </article>
+        <div id="katalog" class="mt-8 space-y-12">
+          <!-- JavaScript çalışmazsa görünen temel içerik; sepet hazır olunca yerini ürün listesi alır -->
+          <div class="bg-krem rounded-2xl p-6 text-komur/80">
+            <p class="font-heading font-bold text-lg">Dana eti · Kuzu eti · Peynir çeşitleri · Göksun doğal yayla balı · Kahvaltılık ve yöresel ürünler</p>
+            <p class="mt-2">Online sepet için tarayıcınızda JavaScript açık olmalıdır. Siparişinizi telefonla veya dükkanımıza gelerek de verebilirsiniz.</p>
+          </div>
         </div>
 
-        <!-- Diğer ürünler şeridi -->
-        <ul class="mt-12 reveal flex flex-wrap justify-center gap-3 text-sm" aria-label="Diğer ürünler">
-          <li class="px-4 py-2 rounded-full bg-krem border border-krem-dark font-semibold"><i class="fa-solid fa-kiwi-bird text-bordo mr-1.5" aria-hidden="true"></i>Taze Tavuk</li>
-          <li class="px-4 py-2 rounded-full bg-krem border border-krem-dark font-semibold"><i class="fa-solid fa-fish text-bordo mr-1.5" aria-hidden="true"></i>Balık</li>
-          <li class="px-4 py-2 rounded-full bg-krem border border-krem-dark font-semibold"><i class="fa-solid fa-bottle-droplet text-orman mr-1.5" aria-hidden="true"></i>Yayla Sütü</li>
-          <li class="px-4 py-2 rounded-full bg-krem border border-krem-dark font-semibold"><i class="fa-solid fa-jar text-orman mr-1.5" aria-hidden="true"></i>Süzme Bal</li>
-          <li class="px-4 py-2 rounded-full bg-krem border border-krem-dark font-semibold"><i class="fa-solid fa-mug-hot text-orman mr-1.5" aria-hidden="true"></i>Kahvaltılıklar</li>
-        </ul>
-        <p class="mt-6 text-center text-komur/55 text-sm">
-          Görseller temsilidir. <a href="#randevu" class="text-bordo font-semibold underline underline-offset-4">Toplu sipariş ve özel kesim için randevu alın.</a>
+        <p class="mt-10 text-center text-komur/60 text-sm">
+          Görseller temsilidir. Taze tavuk, balık ve listede olmayan ürünler için sipariş notuna yazabilir ya da WhatsApp'tan sorabilirsiniz.
+          <a href="#randevu" class="text-bordo font-semibold underline underline-offset-4">Toplu sipariş ve özel kesim için randevu alın.</a>
         </p>
+      </div>
+    </section>
+
+    <!-- ============ SEPET & SİPARİŞ ============ -->
+    <section id="sepet" class="js-only py-20 lg:py-24 scroll-mt-20" aria-labelledby="sepet-baslik">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 id="sepet-baslik" tabindex="-1" class="font-heading font-extrabold text-3xl sm:text-4xl flex items-center gap-3">
+          <i class="fa-solid fa-basket-shopping text-bordo" aria-hidden="true"></i> Sepetim
+        </h2>
+
+        <div class="mt-8 grid lg:grid-cols-5 gap-8 items-start">
+          <!-- Sepet içeriği -->
+          <div class="lg:col-span-2 bg-white rounded-3xl shadow-card p-5 sm:p-6 lg:sticky lg:top-24">
+            <div id="sepet-bos" class="text-center py-8">
+              <i class="fa-solid fa-basket-shopping text-4xl text-komur/25" aria-hidden="true"></i>
+              <p class="mt-3 font-heading font-bold">Sepetiniz boş</p>
+              <p class="mt-1 text-sm text-komur/65">Ürünlerimizden seçip sepete ekleyerek başlayın.</p>
+              <a href="#urunler" class="mt-4 inline-flex items-center gap-2 text-bordo font-semibold underline underline-offset-4 min-h-[44px]">Ürünlere git</a>
+            </div>
+            <ul id="sepet-liste" aria-live="polite"></ul>
+            <div id="sepet-ozet" hidden class="mt-2 pt-2 border-t-2 border-krem-dark"></div>
+          </div>
+
+          <!-- Müşteri ve teslimat formu -->
+          <div class="lg:col-span-3">
+            <form id="siparis-form" class="bg-white rounded-3xl shadow-card p-5 sm:p-8" novalidate>
+              <h3 class="font-heading font-bold text-xl">Teslimat Bilgileri</h3>
+              <p class="text-sm text-komur/65 mt-1">Yıldızlı (*) alanlar zorunludur. Bilgileriniz yalnızca siparişiniz için WhatsApp mesajına eklenir; sitede saklanmaz.</p>
+
+              <div class="mt-6 grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="siparis-ad" class="block text-sm font-semibold mb-2">Ad Soyad *</label>
+                  <input id="siparis-ad" name="ad" type="text" required maxlength="60" autocomplete="name" aria-describedby="hata-ad"
+                         class="w-full bg-white border-2 border-krem-dark rounded-xl px-4 min-h-[48px] focus:outline-none focus:border-bordo transition">
+                  <p id="hata-ad" class="alan-hata" hidden></p>
+                </div>
+                <div>
+                  <label for="siparis-telefon" class="block text-sm font-semibold mb-2">Telefon *</label>
+                  <input id="siparis-telefon" name="telefon" type="tel" required maxlength="20" autocomplete="tel" inputmode="tel" placeholder="05XX XXX XX XX" aria-describedby="hata-telefon"
+                         class="w-full bg-white border-2 border-krem-dark rounded-xl px-4 min-h-[48px] focus:outline-none focus:border-bordo transition">
+                  <p id="hata-telefon" class="alan-hata" hidden></p>
+                </div>
+              </div>
+
+              <fieldset class="mt-6">
+                <legend class="text-sm font-semibold mb-2">Teslimat tercihi *</legend>
+                <div id="teslimat-secenekleri" class="grid sm:grid-cols-2 gap-3"></div>
+                <p id="hata-teslimat" class="alan-hata" hidden></p>
+              </fieldset>
+
+              <div id="adres-alanlari" class="mt-6 grid gap-5">
+                <div>
+                  <label for="bolge" class="block text-sm font-semibold mb-2">Mahalle / Köy (Göksun) *</label>
+                  <div id="bolge-kutu"></div>
+                  <p id="hata-bolge" class="alan-hata" hidden></p>
+                </div>
+                <div>
+                  <label for="siparis-adres" class="block text-sm font-semibold mb-2">Açık adres *</label>
+                  <textarea id="siparis-adres" name="adres" rows="3" required maxlength="300" autocomplete="street-address" placeholder="Sokak, kapı no, kat, tarif…" aria-describedby="hata-adres"
+                            class="w-full bg-white border-2 border-krem-dark rounded-xl px-4 py-3 focus:outline-none focus:border-bordo transition resize-none"></textarea>
+                  <p id="hata-adres" class="alan-hata" hidden></p>
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <label for="siparis-not" class="block text-sm font-semibold mb-2">Sipariş ve teslimat notu</label>
+                <textarea id="siparis-not" name="not" rows="3" maxlength="500" placeholder="Örn: Kıyma az yağlı olsun, antrikot 2 cm kesilsin; akşam 18:00'den sonra evdeyim."
+                          class="w-full bg-white border-2 border-krem-dark rounded-xl px-4 py-3 focus:outline-none focus:border-bordo transition resize-none"></textarea>
+              </div>
+
+              <ul id="teslimat-bilgi" class="mt-5 space-y-1 text-xs text-komur/65 list-disc pl-5"></ul>
+
+              <p id="siparis-genel-hata" role="alert" class="mt-5 bg-red-50 border border-red-200 text-red-800 text-sm font-semibold rounded-xl px-4 py-3" hidden></p>
+
+              <button id="siparis-devam" type="submit"
+                      class="mt-6 w-full inline-flex items-center justify-center gap-3 bg-bordo hover:bg-bordo-light disabled:bg-komur/30 disabled:cursor-not-allowed text-white font-heading font-bold text-lg min-h-[56px] rounded-xl transition">
+                <i class="fa-solid fa-list-check" aria-hidden="true"></i> Sipariş Özetini Oluştur
+              </button>
+              <p class="mt-3 text-xs text-center text-komur/60">Siparişiniz, bir sonraki adımda WhatsApp mesajını gönderdiğinizde bize ulaşır ve teyidimizle kesinleşir.</p>
+            </form>
+
+            <!-- Sipariş özeti ve WhatsApp'a aktarım -->
+            <div id="siparis-onizleme" class="mt-6 bg-komur text-white rounded-3xl p-5 sm:p-8 scroll-mt-24" hidden>
+              <h3 id="onizleme-baslik" tabindex="-1" class="font-heading font-bold text-xl flex items-center gap-3">
+                <i class="fa-brands fa-whatsapp text-green-400 text-2xl" aria-hidden="true"></i> Sipariş Mesajınız Hazır
+              </h3>
+              <p class="mt-2 text-sm text-white/75">Mesajı kontrol edin. <strong>WhatsApp'ta Gönder</strong>'e dokunduğunuzda sohbet açılır; siparişin bize ulaşması için mesajı <strong>WhatsApp'ta göndermeniz</strong> gerekir.</p>
+              <pre id="onizleme-metin" class="mt-4 bg-white/5 border border-white/10 rounded-xl p-4 text-sm whitespace-pre-wrap break-words font-body max-h-80 overflow-auto"></pre>
+              <p id="onizleme-numara-uyari" class="mt-4 bg-yellow-100 text-yellow-900 text-sm font-semibold rounded-xl px-4 py-3" hidden>
+                WhatsApp sipariş hattımız henüz tanımlanmadı. Mesajı kopyalayıp bize ulaştırabilir veya dükkanımızı arayabilirsiniz.
+              </p>
+              <div class="mt-5 grid sm:grid-cols-2 gap-3">
+                <a id="onizleme-whatsapp" target="_blank" rel="noopener"
+                   class="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5b] text-komur font-heading font-extrabold min-h-[52px] rounded-xl transition">
+                  <i class="fa-brands fa-whatsapp text-xl" aria-hidden="true"></i> WhatsApp'ta Gönder
+                </a>
+                <button id="onizleme-kopyala" type="button" class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 font-heading font-bold min-h-[52px] rounded-xl transition">
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i> Mesajı Kopyala
+                </button>
+              </div>
+              <p id="onizleme-kopya-durum" class="mt-2 text-sm text-green-300 min-h-[1.25rem]" aria-live="polite"></p>
+              <div class="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <button id="onizleme-duzenle" type="button" class="underline underline-offset-4 text-white/80 hover:text-white min-h-[44px]">Bilgileri düzenle</button>
+                <button id="onizleme-temizle" type="button" class="underline underline-offset-4 text-white/80 hover:text-white min-h-[44px]">Mesajı gönderdim, sepeti temizle</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -522,7 +584,7 @@
         <div class="mt-10 space-y-4 reveal">
           <details class="group bg-white rounded-2xl shadow-card px-6 py-5">
             <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Sipariş nasıl veririm?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
-            <p class="mt-3 text-komur/75 leading-relaxed">Sayfadaki WhatsApp butonlarından birine dokunun; ürün adı hazır yazılmış bir mesaj açılır. Miktarı ve teslim şeklini yazıp gönderin, siparişinizi teyit edelim.</p>
+            <p class="mt-3 text-komur/75 leading-relaxed">Ürünlerimizden seçip sepete ekleyin, teslimat bilgilerinizi yazın ve sipariş özetini oluşturun. Açılan WhatsApp mesajını gönderdiğinizde siparişiniz bize ulaşır; ürün, miktar ve tutarı teyit ederek siparişinizi kesinleştiririz.</p>
           </details>
           <details class="group bg-white rounded-2xl shadow-card px-6 py-5">
             <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Adrese teslimat var mı?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
@@ -538,7 +600,7 @@
           </details>
           <details class="group bg-white rounded-2xl shadow-card px-6 py-5">
             <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Fiyatları nereden öğrenebilirim?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
-            <p class="mt-3 text-komur/75 leading-relaxed">Et ve süt ürünlerinde fiyatlar güne göre değişebildiği için güncel fiyatı WhatsApp'tan ya da telefonla sorabilirsiniz.</p>
+            <p class="mt-3 text-komur/75 leading-relaxed">Fiyatı belirtilen ürünlerde tutar sepette hesaplanır. Fiyatı belirtilmeyen ürünlerin güncel fiyatı sipariş teyidinde bildirilir. Kilo ile satılan ürünlerde kesin tutar tartım sonrası belirlenir; ödeme teslimatta veya dükkanda yapılır.</p>
           </details>
         </div>
       </div>
@@ -616,17 +678,30 @@
   </footer>
 
   <!-- Sabit WhatsApp butonu -->
-  <a href="#" data-wa="Merhaba, Göksun Yörem'den sipariş vermek istiyorum." data-track="sabit" target="_blank" rel="noopener" aria-label="WhatsApp ile sipariş ver"
+  <a id="sabit-wa" href="#" data-wa="Merhaba, Göksun Yörem'den sipariş vermek istiyorum." data-track="sabit" target="_blank" rel="noopener" aria-label="WhatsApp ile yazın"
      class="fixed bottom-5 right-5 z-40 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-2xl hover:scale-110 transition">
     <span class="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30 motion-reduce:hidden" aria-hidden="true"></span>
     <i class="fa-brands fa-whatsapp text-3xl sm:text-4xl relative" aria-hidden="true"></i>
   </a>
 
+  <!-- Mobil sepet çubuğu: sepet doluyken görünür -->
+  <a id="sepet-bar" href="#sepet" class="js-only lg:hidden fixed inset-x-3 bottom-3 z-40 flex items-center justify-between gap-3 bg-bordo text-white rounded-2xl shadow-2xl px-5 min-h-[60px]">
+    <span class="flex items-center gap-3 font-heading font-bold">
+      <i class="fa-solid fa-basket-shopping text-xl" aria-hidden="true"></i>
+      <span><span data-bar-adet>0 ürün</span> · <span data-bar-toplam></span></span>
+    </span>
+    <span class="font-heading font-extrabold text-sm whitespace-nowrap">Sepete Git <i class="fa-solid fa-arrow-right ml-1" aria-hidden="true"></i></span>
+  </a>
+
+  <!-- İşletme ayarları ve ürünler: js/ayarlar.js · Sepet ve sipariş: js/sepet.js -->
+  <script src="js/ayarlar.js"></script>
+  <script src="js/sepet.js"></script>
   <script>
-    // ====== AYARLAR: Gerçek numaraları buraya yazın (ülke kodu ile, boşluksuz) ======
-    const WHATSAPP_NUMARASI = '905XXXXXXXXX';   // ör. 905321234567
-    const TELEFON_NUMARASI = '+905XXXXXXXXX';   // ör. +905321234567
-    const TELEFON_GORUNEN = '0 (5XX) XXX XX XX'; // ör. 0 (532) 123 45 67
+    // İletişim bilgileri js/ayarlar.js dosyasından okunur.
+    const AYAR = (window.GOKSUN && window.GOKSUN.ayarlar) || {};
+    const WHATSAPP_NUMARASI = AYAR.whatsappNumarasi || '';
+    const TELEFON_NUMARASI = AYAR.telefon || '';
+    const TELEFON_GORUNEN = AYAR.telefonGorunen || '';
 
     const waLink = (text) => 'https://wa.me/' + WHATSAPP_NUMARASI + '?text=' + encodeURIComponent(text);
 
