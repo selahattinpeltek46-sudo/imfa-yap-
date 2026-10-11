@@ -42,7 +42,7 @@ export const URUNLER = [
     foto: [['kulakli-pulluk', 'Mavi kulaklı pulluk'], ['on-yukleyici-ve-pulluk', 'Üçel pulluk ve loader kepçe']],
   },
   {
-    id: 'kultivator', kategori: 'toprak', ad: 'Kültivatör / Tapan', imalat: true, url: SITE + 'urunler/kultivator/',
+    id: 'kultivator', kategori: 'toprak', ad: 'Kültivatör', imalat: true, url: SITE + 'urunler/kultivator/',
     kisa: 'Pullukla işlenmiş toprağın yüzeyini inceltip tohum yatağını hazırlayan ekipman. Göksun Sanayi Sitesi\'ndeki atölyemizde üretiyoruz.',
     kullanim: ['Toprak yüzey işleme', 'Tohum yatağı hazırlığı', 'Yabani ot mücadelesi'],
     kimler: 'Ekim öncesi toprak yüzeyini hazırlamak ve yabani otla mücadele etmek isteyen çiftçiler için.',
@@ -93,7 +93,7 @@ export const DIGER = [
 
 // "Ne yapmak istiyorsunuz?" (sitedeki "İşiniz Ne?" bölümü)
 export const ISLER = [
-  ['Toprağı hazırlıyorum', 'Pulluk · Kültivatör / Tapan', ['pulluk', 'kultivator']],
+  ['Toprağı hazırlıyorum', 'Pulluk · Kültivatör · Tapan', ['pulluk', 'kultivator']],
   ['Ekime hazırlanıyorum', 'Mibzer', ['_diger']],
   ['Gübreleme yapacağım', 'Gübre Serpme Makinesi', ['gubre-serpme']],
   ['Taşıma yapacağım', 'Tarım Römorku', ['romork']],

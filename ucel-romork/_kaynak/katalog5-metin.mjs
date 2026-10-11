@@ -103,10 +103,10 @@ export const SAYFALAR = {
     etiket: Y('Diğer ürünler'),
     baslik: Y('Bunlar da var'),
     urunler: [
+      [Y('Tapan'), Y('Ekimden önce tarlanın yüzeyini düzler, kesekleri kırar ve toprağı bastırır.')],
       [S('Mibzer'), S('Tohumu düzenli sıra aralığıyla ve dengeli şekilde toprağa yerleştiren ekim makinesi.')],
       [S('Çayır Biçme Makinesi'), S('Kaba yem üretimi için çayır, yonca ve otlak biçiminde kullanılır.')],
       [S('Yedek Parça'), S('Sattığımız ve sık kullanılan ekipmanlar için yedek parça bulunduruyoruz. İhtiyacınızı iletin, uygunluğuna bakalım.')],
-      [S('Diğer Tarım Aletleri'), S('Listede görmediğiniz bir ekipman mı arıyorsunuz? Sorun, birlikte bakalım.')],
     ],
     cta: Y('Aradığınız ekipmanı bulamadınız mı? Bize yazın.'),
     wa: 'Merhaba, bir ekipman arıyorum.\nAradığım ekipman:\nTraktörüm:',
