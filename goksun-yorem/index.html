@@ -12,7 +12,7 @@
   <meta property="og:title" content="Göksun Yörem Et ve Süt Ürünleri | Göksun Kasap & Şarküteri">
   <meta property="og:description" content="Ustasından taze et, yöresinden doğal kahvaltılık. Göksun / Kahramanmaraş. WhatsApp'tan sipariş.">
   <meta property="og:url" content="https://selahattinpeltek46-sudo.github.io/imfa-yap-/goksun-yorem/">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=1200&h=630&q=80">
+  <meta property="og:image" content="https://selahattinpeltek46-sudo.github.io/imfa-yap-/goksun-yorem/img/dana-dilim-1200.webp">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%238B0000'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='28' fill='%23FAF7F2' text-anchor='middle'%3EGY%3C/text%3E%3C/svg%3E">
 
   <!-- Yapılandırılmış veri: yerel işletme -->
@@ -23,7 +23,8 @@
     "name": "Göksun Yörem Et ve Süt Ürünleri",
     "description": "Göksun'da taze dana, kuzu, tavuk ve balık; yayla sütü, tereyağı, tulum peyniri, süzme bal ve kahvaltılıklar.",
     "url": "https://selahattinpeltek46-sudo.github.io/imfa-yap-/goksun-yorem/",
-    "image": "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://selahattinpeltek46-sudo.github.io/imfa-yap-/goksun-yorem/img/dana-dilim-1200.webp",
+    "telephone": "+905393009565",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Göksun Merkez",
@@ -43,9 +44,11 @@
     "mainEntity": [
       { "@type": "Question", "name": "Sipariş nasıl veririm?", "acceptedAnswer": { "@type": "Answer", "text": "Ürünlerimizden seçip sepete ekleyin, teslimat bilgilerinizi yazın ve sipariş özetini oluşturun. Açılan WhatsApp mesajını gönderdiğinizde siparişiniz bize ulaşır; ürün, miktar ve tutarı teyit ederek siparişinizi kesinleştiririz." } },
       { "@type": "Question", "name": "Adrese teslimat var mı?", "acceptedAnswer": { "@type": "Answer", "text": "Evet, Göksun merkezde adrese teslimat yapıyoruz. Merkez dışı adresler için WhatsApp'tan yazın, imkânımızı birlikte değerlendirelim." } },
-      { "@type": "Question", "name": "Eti istediğim gibi kestirebilir miyim?", "acceptedAnswer": { "@type": "Answer", "text": "Elbette. Kalınlık, porsiyon, kıymanın yağ oranı, şiş ve köfte hazırlığı gibi isteklerinizi sipariş notuna yazmanız yeterli." } },
+      { "@type": "Question", "name": "Eti istediğim gibi kestirebilir miyim?", "acceptedAnswer": { "@type": "Answer", "text": "Elbette. Ürün kartındaki hazırlama tercihini seçin (ör. az yağlı veya köftelik kıyma, şişlik kuşbaşı); daha özel isteklerinizi sepetteki ürünün hazırlama notuna ya da genel sipariş notuna yazın." } },
       { "@type": "Question", "name": "Toplu veya mangal siparişini ne kadar önce vermeliyim?", "acceptedAnswer": { "@type": "Answer", "text": "Kalabalık siparişlerde en az bir gün önceden randevu formu ile talep iletmenizi öneririz; böylece ürün ve hazırlık zamanında planlanır." } },
-      { "@type": "Question", "name": "Fiyatları nereden öğrenebilirim?", "acceptedAnswer": { "@type": "Answer", "text": "Fiyatı belirtilen ürünlerde tutar sepette hesaplanır. Fiyatı belirtilmeyen ürünlerin güncel fiyatı sipariş teyidinde bildirilir. Kilo ile satılan ürünlerde kesin tutar tartım sonrası belirlenir; ödeme teslimatta veya dükkanda yapılır." } }
+      { "@type": "Question", "name": "Kesin fiyat ne zaman belli olur?", "acceptedAnswer": { "@type": "Answer", "text": "Kilo ile satılan etlerde kesin ağırlık hazırlık sırasında tartılarak belirlenir. Fiyatı sitede yazan ürünlerde sepette tahmini tutar görürsünüz; fiyatı yazmayan ürünlerin güncel fiyatını ve kesin toplamı, siparişinizi teyit ederken WhatsApp'tan bildiririz." } },
+      { "@type": "Question", "name": "Teslimat nasıl teyit edilir?", "acceptedAnswer": { "@type": "Answer", "text": "Siparişinizi aldığımızda WhatsApp'tan size dönüş yaparak stok durumunu, kesin tutarı ve teslimat ya da teslim alma saatini birlikte netleştiririz. Teyit vermeden sipariş kesinleşmiş sayılmaz." } },
+      { "@type": "Question", "name": "Ödeme ne zaman yapılır?", "acceptedAnswer": { "@type": "Answer", "text": "Sitede online ödeme alınmaz. Ödemeyi sipariş teyidinden sonra, adrese teslimatta teslim alırken ya da dükkânda yaparsınız." } }
     ]
   }
   </script>
@@ -96,6 +99,10 @@
     [aria-invalid="true"] { border-color: #B91C1C !important; }
     .teslimat-secenek:has(input:checked) { border-color: #8B0000; background: #FDF4F4; }
     [hidden] { display: none !important; }
+    #sepet-bildirim { position: fixed; left: 50%; top: 5.5rem; z-index: 60; transform: translate(-50%, -8px); opacity: 0; pointer-events: none;
+      max-width: calc(100% - 2rem); background: #1A1A1A; color: #fff; font-weight: 600; font-size: .95rem; padding: .7rem 1.1rem; border-radius: 999px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25); transition: opacity .2s ease, transform .2s ease; }
+    #sepet-bildirim.gorunur { opacity: 1; transform: translate(-50%, 0); }
     /* Sepet doluyken mobilde alt çubuk görünür, sabit WhatsApp butonu yukarı kayar */
     #sepet-bar { transform: translateY(110%); transition: transform .25s ease; }
     body.sepet-dolu:not(.sepet-gorunur) #sepet-bar { transform: none; }
@@ -185,7 +192,7 @@
   <main id="ana-icerik">
     <!-- ============ 2. HERO ============ -->
     <section id="anasayfa" class="relative min-h-screen flex items-center overflow-hidden img-fallback">
-      <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=2000&q=80"
+      <img src="img/dana-dilim-1200.webp" srcset="img/dana-dilim-600.webp 600w, img/dana-dilim-1200.webp 1125w" sizes="100vw"
            alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover scale-105" fetchpriority="high"
            onerror="this.style.display='none'">
       <div class="absolute inset-0 bg-gradient-to-r from-komur/95 via-komur/80 to-bordo/50"></div>
@@ -246,11 +253,11 @@
             <div class="absolute -top-5 -left-5 w-32 h-32 rounded-2xl bg-bordo/10" aria-hidden="true"></div>
             <div class="absolute -bottom-5 -right-5 w-40 h-40 rounded-2xl bg-orman/10" aria-hidden="true"></div>
             <figure class="relative rounded-3xl overflow-hidden shadow-card aspect-[4/5] img-fallback">
-              <img src="https://images.unsplash.com/photo-1588168333986-5078d3ae3976?auto=format&fit=crop&w=1000&q=80"
-                   alt="Kasap tezgahında taze et (temsili görsel)" class="w-full h-full object-cover" loading="lazy" width="1000" height="1250"
+              <img src="img/vitrin-1200.webp" srcset="img/vitrin-600.webp 600w, img/vitrin-1200.webp 1125w" sizes="(min-width: 1024px) 560px, 100vw"
+                   alt="Göksun Yörem vitrininde streçlenmiş taze dana etleri" class="w-full h-full object-cover" loading="lazy" width="1125" height="1500"
                    onerror="this.style.display='none'">
               <div class="absolute inset-0 bg-gradient-to-t from-komur/40 to-transparent"></div>
-              <figcaption class="absolute top-4 right-4 bg-komur/60 text-white/80 text-[11px] px-2.5 py-1 rounded-full">Temsili görsel</figcaption>
+              <figcaption class="absolute top-4 right-4 bg-komur/70 text-white text-xs font-semibold px-3 py-1 rounded-full"><i class="fa-solid fa-camera mr-1" aria-hidden="true"></i>Dükkanımızdan</figcaption>
             </figure>
             <!-- Rozet -->
             <div class="absolute -bottom-6 left-6 sm:left-auto sm:-right-6 sm:bottom-10 bg-bordo text-white rounded-2xl shadow-glow px-6 py-5 flex items-center gap-4 ring-4 ring-krem">
@@ -327,6 +334,19 @@
             <p class="text-komur/70 text-sm mt-2 leading-relaxed">WhatsApp'tan sipariş verin, Göksun merkezde adresinize teslim edelim.</p>
           </div>
         </div>
+
+        <!-- Dükkanımızdan kareler (gerçek fotoğraflar) -->
+        <div class="mt-20">
+          <h3 class="font-heading font-extrabold text-2xl sm:text-3xl text-center">Dükkanımızdan Kareler</h3>
+          <p class="mt-2 text-center text-komur/70">Tezgahımızdan, vitrinimizden ve soğuk odamızdan gerçek fotoğraflar.</p>
+          <ul class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+            <li class="row-span-2 rounded-2xl overflow-hidden img-fallback"><img src="img/dana-kesim-600.webp" srcset="img/dana-kesim-600.webp 600w, img/dana-kesim-1200.webp 1200w" sizes="(min-width: 768px) 33vw, 50vw" alt="Kesim tezgahında taze dana eti" loading="lazy" width="600" height="800" class="w-full h-full object-cover"></li>
+            <li class="aspect-square rounded-2xl overflow-hidden img-fallback"><img src="img/dana-dilim-600.webp" alt="Dilimlenmiş taze dana biftekleri" loading="lazy" width="600" height="600" class="w-full h-full object-cover"></li>
+            <li class="aspect-square rounded-2xl overflow-hidden img-fallback"><img src="img/marine-tavuk-600.webp" alt="Vitrinde mangala hazır marine tavuk" loading="lazy" width="600" height="1066" class="w-full h-full object-cover"></li>
+            <li class="aspect-square rounded-2xl overflow-hidden img-fallback"><img src="img/vitrin-600.webp" alt="Vitrinde streçlenmiş dana etleri" loading="lazy" width="600" height="800" class="w-full h-full object-cover"></li>
+            <li class="aspect-square rounded-2xl overflow-hidden img-fallback"><img src="img/soguk-oda-600.webp" alt="Soğuk odada asılı dana karkası" loading="lazy" width="600" height="800" class="w-full h-full object-cover"></li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -338,23 +358,30 @@
             <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span> Online Sipariş <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span>
           </p>
           <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-4">Ürünlerimiz</h2>
-          <p class="mt-4 text-komur/70 text-lg">Ürünlerinizi sepete ekleyin, teslimat bilgilerinizi yazın; siparişiniz WhatsApp üzerinden bize ulaşsın. Ödeme, sipariş teyidinden sonra teslimatta veya dükkanda.</p>
+          <p class="mt-4 text-komur/75 text-lg">Kategoriyi seçin, ürünü ve miktarı belirleyip sepete ekleyin. Siparişinizi WhatsApp'tan gönderin; stok, kesin ağırlık, fiyat ve teslimat zamanını size teyit edelim.</p>
         </div>
 
-        <nav class="sticky top-20 z-30 -mx-4 px-4 sm:mx-0 sm:px-0 mt-10 py-3 bg-white" aria-label="Ürün kategorileri">
+        <ol class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3 text-sm" aria-label="Sipariş adımları">
+          <li class="bg-krem rounded-2xl p-4 flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-bordo text-white font-heading font-extrabold flex items-center justify-center">1</span><span><strong class="block font-heading">Ürünü seçin</strong>Kategori, hazırlama ve miktar</span></li>
+          <li class="bg-krem rounded-2xl p-4 flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-bordo text-white font-heading font-extrabold flex items-center justify-center">2</span><span><strong class="block font-heading">Sepeti kontrol edin</strong>Not ve teslimat bilgisi</span></li>
+          <li class="bg-krem rounded-2xl p-4 flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-orman text-white font-heading font-extrabold flex items-center justify-center">3</span><span><strong class="block font-heading">WhatsApp'tan gönderin</strong>Hazır mesajı siz gönderirsiniz</span></li>
+          <li class="bg-krem rounded-2xl p-4 flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-orman text-white font-heading font-extrabold flex items-center justify-center">4</span><span><strong class="block font-heading">Teyidimizi bekleyin</strong>Kesin tutar ve teslim saati</span></li>
+        </ol>
+
+        <nav class="sticky top-20 z-30 -mx-4 px-4 sm:mx-0 sm:px-0 mt-8 py-3 bg-white border-b border-krem-dark" aria-label="Ürün kategorileri">
           <ul id="kategori-nav" class="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center"></ul>
         </nav>
 
-        <div id="katalog" class="mt-8 space-y-12">
+        <div id="katalog" class="mt-6">
           <!-- JavaScript çalışmazsa görünen temel içerik; sepet hazır olunca yerini ürün listesi alır -->
           <div class="bg-krem rounded-2xl p-6 text-komur/80">
-            <p class="font-heading font-bold text-lg">Dana eti · Kuzu eti · Peynir çeşitleri · Göksun doğal yayla balı · Kahvaltılık ve yöresel ürünler</p>
+            <p class="font-heading font-bold text-lg">Dana eti · Kuzu eti · Tavuk · Kıyma · Kuşbaşı · Soslu ürünler · Süt ürünleri ve kahvaltılık</p>
             <p class="mt-2">Online sepet için tarayıcınızda JavaScript açık olmalıdır. Siparişinizi telefonla veya dükkanımıza gelerek de verebilirsiniz.</p>
           </div>
         </div>
 
         <p class="mt-10 text-center text-komur/60 text-sm">
-          Görseller temsilidir. Taze tavuk, balık ve listede olmayan ürünler için sipariş notuna yazabilir ya da WhatsApp'tan sorabilirsiniz.
+          "Dükkânımızdan" etiketli fotoğraflar kendi tezgahımızdandır; fotoğrafı olmayan ürünlerde simge gösterilir. Listede olmayan ürünler için sipariş notuna yazabilir ya da WhatsApp'tan sorabilirsiniz.
           <a href="#randevu" class="text-bordo font-semibold underline underline-offset-4">Toplu sipariş ve özel kesim için randevu alın.</a>
         </p>
       </div>
@@ -443,10 +470,15 @@
               <h3 id="onizleme-baslik" tabindex="-1" class="font-heading font-bold text-xl flex items-center gap-3">
                 <i class="fa-brands fa-whatsapp text-green-400 text-2xl" aria-hidden="true"></i> Sipariş Mesajınız Hazır
               </h3>
+              <p class="mt-2 text-sm text-white/80">Sipariş referansınız: <strong id="onizleme-ref" class="font-heading text-white"></strong></p>
               <p class="mt-2 text-sm text-white/75">Mesajı kontrol edin. <strong>WhatsApp'ta Gönder</strong>'e dokunduğunuzda sohbet açılır; siparişin bize ulaşması için mesajı <strong>WhatsApp'ta göndermeniz</strong> gerekir.</p>
               <pre id="onizleme-metin" class="mt-4 bg-white/5 border border-white/10 rounded-xl p-4 text-sm whitespace-pre-wrap break-words font-body max-h-80 overflow-auto"></pre>
               <p id="onizleme-numara-uyari" class="mt-4 bg-yellow-100 text-yellow-900 text-sm font-semibold rounded-xl px-4 py-3" hidden>
                 WhatsApp sipariş hattımız henüz tanımlanmadı. Mesajı kopyalayıp bize ulaştırabilir veya dükkanımızı arayabilirsiniz.
+              </p>
+              <p id="onizleme-acildi" role="status" class="mt-4 bg-white text-komur text-sm font-semibold rounded-xl px-4 py-3" hidden>
+                <i class="fa-solid fa-circle-exclamation text-bordo mr-1" aria-hidden="true"></i>
+                WhatsApp açıldıysa mesajı <u>gönder</u> tuşuna basarak iletin. Mesaj gönderilmeden sipariş bize ulaşmaz; teyidimizle kesinleşir.
               </p>
               <div class="mt-5 grid sm:grid-cols-2 gap-3">
                 <a id="onizleme-whatsapp" target="_blank" rel="noopener"
@@ -470,7 +502,7 @@
 
     <!-- ============ 5. RANDEVU & ÖZEL SİPARİŞ ============ -->
     <section id="randevu" class="relative py-20 lg:py-28 scroll-mt-20 overflow-hidden img-fallback">
-      <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=2000&q=70"
+      <img src="img/marine-tavuk-1200.webp"
            alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover" loading="lazy"
            onerror="this.style.display='none'">
       <div class="absolute inset-0 bg-komur/90"></div>
@@ -592,15 +624,23 @@
           </details>
           <details class="group bg-white rounded-2xl shadow-card px-6 py-5">
             <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Eti istediğim gibi kestirebilir miyim?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
-            <p class="mt-3 text-komur/75 leading-relaxed">Elbette. Kalınlık, porsiyon, kıymanın yağ oranı, şiş ve köfte hazırlığı gibi isteklerinizi sipariş notuna yazmanız yeterli.</p>
+            <p class="mt-3 text-komur/75 leading-relaxed">Elbette. Ürün kartındaki hazırlama tercihini seçin (ör. az yağlı veya köftelik kıyma, şişlik kuşbaşı); daha özel isteklerinizi sepetteki ürünün hazırlama notuna ya da genel sipariş notuna yazın.</p>
           </details>
           <details class="group bg-white rounded-2xl shadow-card px-6 py-5">
             <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Toplu veya mangal siparişini ne kadar önce vermeliyim?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
             <p class="mt-3 text-komur/75 leading-relaxed">Kalabalık siparişlerde en az bir gün önceden <a href="#randevu" class="text-bordo font-semibold underline underline-offset-4">randevu formu</a> ile talep iletmenizi öneririz; böylece ürün ve hazırlık zamanında planlanır.</p>
           </details>
           <details class="group bg-white rounded-2xl shadow-card px-6 py-5">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Fiyatları nereden öğrenebilirim?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
-            <p class="mt-3 text-komur/75 leading-relaxed">Fiyatı belirtilen ürünlerde tutar sepette hesaplanır. Fiyatı belirtilmeyen ürünlerin güncel fiyatı sipariş teyidinde bildirilir. Kilo ile satılan ürünlerde kesin tutar tartım sonrası belirlenir; ödeme teslimatta veya dükkanda yapılır.</p>
+            <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Kesin fiyat ne zaman belli olur?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
+            <p class="mt-3 text-komur/75 leading-relaxed">Kilo ile satılan etlerde kesin ağırlık hazırlık sırasında tartılarak belirlenir. Fiyatı sitede yazan ürünlerde sepette tahmini tutar görürsünüz; fiyatı yazmayan ürünlerin güncel fiyatını ve kesin toplamı, siparişinizi teyit ederken WhatsApp'tan bildiririz.</p>
+          </details>
+          <details class="group bg-white rounded-2xl shadow-card px-6 py-5">
+            <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Teslimat nasıl teyit edilir?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
+            <p class="mt-3 text-komur/75 leading-relaxed">Siparişinizi aldığımızda WhatsApp'tan size dönüş yaparak stok durumunu, kesin tutarı ve teslimat ya da teslim alma saatini birlikte netleştiririz. Teyit vermeden sipariş kesinleşmiş sayılmaz.</p>
+          </details>
+          <details class="group bg-white rounded-2xl shadow-card px-6 py-5">
+            <summary class="flex items-center justify-between gap-4 cursor-pointer font-heading font-bold text-lg">Ödeme ne zaman yapılır?<i class="faq-icon fa-solid fa-plus text-bordo transition" aria-hidden="true"></i></summary>
+            <p class="mt-3 text-komur/75 leading-relaxed">Sitede online ödeme alınmaz. Ödemeyi sipariş teyidinden sonra, adrese teslimatta teslim alırken ya da dükkânda yaparsınız.</p>
           </details>
         </div>
       </div>
@@ -684,6 +724,9 @@
     <i class="fa-brands fa-whatsapp text-3xl sm:text-4xl relative" aria-hidden="true"></i>
   </a>
 
+  <!-- Sepete ekleme geri bildirimi -->
+  <div id="sepet-bildirim" class="js-only" role="status" aria-live="polite"></div>
+
   <!-- Mobil sepet çubuğu: sepet doluyken görünür -->
   <a id="sepet-bar" href="#sepet" class="js-only lg:hidden fixed inset-x-3 bottom-3 z-40 flex items-center justify-between gap-3 bg-bordo text-white rounded-2xl shadow-2xl px-5 min-h-[60px]">
     <span class="flex items-center gap-3 font-heading font-bold">
@@ -703,6 +746,7 @@
     const TELEFON_NUMARASI = AYAR.telefon || '';
     const TELEFON_GORUNEN = AYAR.telefonGorunen || '';
 
+    const WA_HAZIR = /^\d{10,15}$/.test(String(WHATSAPP_NUMARASI));
     const waLink = (text) => 'https://wa.me/' + WHATSAPP_NUMARASI + '?text=' + encodeURIComponent(text);
 
     // Ölçüm: GA4 eklendiğinde gtag'e bağlanır; yoksa sessizce geçer.
@@ -712,6 +756,11 @@
 
     // WhatsApp, telefon ve Instagram bağlantıları
     document.querySelectorAll('[data-wa]').forEach(el => {
+      if (!WA_HAZIR) { // numara tanımlı değilse yanlış bağlantı üretme
+        el.removeAttribute('href'); el.setAttribute('aria-disabled', 'true');
+        el.title = 'WhatsApp sipariş hattı henüz tanımlanmadı'; el.style.opacity = '.5';
+        return;
+      }
       el.href = waLink(el.dataset.wa);
       el.addEventListener('click', () => track('whatsapp_click', { konum: el.dataset.track || '' }));
     });
@@ -784,6 +833,10 @@
         '• Ad Soyad: ' + ad + '\n• Telefon: ' + tel + '\n• Talep: ' + talep + '\n• Tarih/Saat: ' + tarihStr +
         (not ? '\n• Not: ' + not : '');
 
+      if (!WA_HAZIR) {
+        alert('WhatsApp sipariş hattımız henüz tanımlanmadı. Lütfen dükkânımızı arayın.');
+        return;
+      }
       track('form_submit', { talep: talep });
       alert('Teşekkürler ' + ad + '!\n\n"' + talep + '" talebiniz ' + tarihStr + ' için hazırlandı.\n' +
             'Onaylamak için WhatsApp açılacak; mesajı göndermeniz yeterli.\n\n— Göksun Yörem Et ve Süt Ürünleri');
