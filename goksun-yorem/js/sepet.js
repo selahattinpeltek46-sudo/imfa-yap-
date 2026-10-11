@@ -302,16 +302,15 @@
     });
   }
 
-  function rozet(metin, sinif) { return h('span', { class: 'inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full ' + sinif, text: metin }); }
-
-  function teyitRozeti(urun) {
-    if (stoktaYok(urun)) return rozet('Şu an yok', 'bg-red-100 text-red-800');
-    var t = teyitler(urun);
-    var stok = t.indexOf('stok') !== -1, fiyat = t.indexOf('fiyat') !== -1;
-    if (stok && fiyat) return rozet('Stok ve fiyat teyitte', 'bg-yellow-100 text-yellow-900');
-    if (stok) return rozet('Stok teyitte', 'bg-yellow-100 text-yellow-900');
-    if (fiyat) return rozet('Fiyat teyitte', 'bg-yellow-100 text-yellow-900');
-    return rozet('Stokta', 'bg-green-100 text-green-900');
+  // Kartta tek satırlık sade bilgi: birim, tartım ve teyit durumu.
+  function kartBilgisi(urun) {
+    if (stoktaYok(urun)) return h('p', { class: 'mt-2 text-sm font-semibold text-red-700', text: 'Şu an mevcut değil' });
+    var b = birimOf(urun), t = teyitler(urun), parca = [b.ad + ' ile satılır'];
+    if (b.tartimli) parca.push('tutar tartımla kesinleşir');
+    if (t.indexOf('stok') !== -1 && t.indexOf('fiyat') !== -1) parca.push('fiyat ve stok siparişte teyit edilir');
+    else if (t.indexOf('fiyat') !== -1) parca.push('fiyat siparişte teyit edilir');
+    else if (t.indexOf('stok') !== -1) parca.push('stok siparişte teyit edilir');
+    return h('p', { class: 'mt-2 text-sm text-komur/65 leading-snug', text: parca.join(' · ') });
   }
 
   function kartCiz(urun) {
@@ -330,7 +329,6 @@
         src: urun.gorsel, alt: urun.gorselAciklama || urun.ad, loading: 'lazy', width: '600', height: '450',
         class: 'absolute inset-0 w-full h-full object-cover', onerror: function () { this.remove(); }
       }));
-      gorselKutu.appendChild(h('span', { class: 'absolute bottom-2 left-2 bg-komur/75 text-white text-xs font-semibold px-2.5 py-1 rounded-full' }, [ikon('fa-camera mr-1'), 'Dükkânımızdan']));
     }
 
     var secimEl = null;
@@ -350,12 +348,8 @@
       h('div', { class: 'p-4 flex-1 flex flex-col' }, [
         h('h3', { class: 'font-heading font-bold text-lg leading-snug', text: urun.ad }),
         urun.aciklama ? h('p', { class: 'text-komur/75 text-sm mt-1 leading-relaxed', text: urun.aciklama }) : null,
-        h('p', { class: 'mt-2 ' + (tlToKurus(urun.fiyat) === null ? 'text-sm text-komur/80' : 'font-heading font-bold text-bordo text-lg'), text: fiyatYazi(urun) }),
-        h('div', { class: 'mt-2 flex flex-wrap gap-1.5' }, [
-          rozet('Birim: ' + b.ad, 'bg-krem text-komur/80'),
-          b.tartimli ? rozet('Tartımla kesinleşir', 'bg-krem text-komur/80') : null,
-          teyitRozeti(urun)
-        ]),
+        tlToKurus(urun.fiyat) === null ? null : h('p', { class: 'mt-2 font-heading font-bold text-bordo text-lg', text: fiyatYazi(urun) }),
+        kartBilgisi(urun),
         h('div', { class: 'mt-auto' }, [secimEl, d.kutu])
       ])
     ]);

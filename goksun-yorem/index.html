@@ -27,7 +27,7 @@
     "telephone": "+905393009565",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Göksun Merkez",
+      "streetAddress": "Kayabaşı Mahallesi, Cumhuriyet Bulvarı No: 41A",
       "addressLocality": "Göksun",
       "addressRegion": "Kahramanmaraş",
       "addressCountry": "TR"
@@ -147,12 +147,10 @@
 
         <!-- Masaüstü menü -->
         <nav class="hidden lg:flex items-center gap-8" aria-label="Ana menü">
-          <a href="#anasayfa" class="text-white/90 hover:text-white font-semibold text-sm transition">Ana Sayfa</a>
           <a href="#biz-kimiz" class="text-white/90 hover:text-white font-semibold text-sm transition">Biz Kimiz</a>
-          <a href="#dana-eti" class="text-white/90 hover:text-white font-semibold text-sm transition">Etlerimiz</a>
-          <a href="#urunler" class="text-white/90 hover:text-white font-semibold text-sm transition">Online Sipariş</a>
-          <a href="#sepet" class="js-only text-white/90 hover:text-white font-semibold text-sm transition">Sepetim</a>
-          <a href="#randevu" class="text-white/90 hover:text-white font-semibold text-sm transition">Randevu</a>
+          <a href="#etlerimiz" class="text-white/90 hover:text-white font-semibold text-sm transition">Etlerimiz</a>
+          <a href="#urunler" class="text-white/90 hover:text-white font-semibold text-sm transition">Sipariş</a>
+          <a href="#randevu" class="text-white/90 hover:text-white font-semibold text-sm transition">Toplu Sipariş</a>
           <a href="#iletisim" class="text-white/90 hover:text-white font-semibold text-sm transition">İletişim</a>
         </nav>
 
@@ -179,10 +177,10 @@
       <nav class="px-4 py-4 flex flex-col" aria-label="Mobil menü">
         <a href="#anasayfa" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-house w-6 text-red-400" aria-hidden="true"></i> Ana Sayfa</a>
         <a href="#biz-kimiz" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-store w-6 text-red-400" aria-hidden="true"></i> Biz Kimiz</a>
-        <a href="#urunler" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-drumstick-bite w-6 text-red-400" aria-hidden="true"></i> Online Sipariş</a>
-        <a href="#dana-eti" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-cow w-6 text-red-400" aria-hidden="true"></i> Etlerimiz</a>
+        <a href="#urunler" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-drumstick-bite w-6 text-red-400" aria-hidden="true"></i> Sipariş</a>
+        <a href="#etlerimiz" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-cow w-6 text-red-400" aria-hidden="true"></i> Etlerimiz</a>
         <a href="#sepet" class="js-only mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-basket-shopping w-6 text-red-400" aria-hidden="true"></i> Sepetim</a>
-        <a href="#randevu" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-calendar-check w-6 text-red-400" aria-hidden="true"></i> Randevu</a>
+        <a href="#randevu" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-calendar-check w-6 text-red-400" aria-hidden="true"></i> Toplu Sipariş</a>
         <a href="#iletisim" class="mobile-link py-3 px-3 rounded-lg text-white font-semibold hover:bg-white/10"><i class="fa-solid fa-phone w-6 text-red-400" aria-hidden="true"></i> İletişim</a>
         <a href="#" data-wa="Merhaba, Göksun Yörem'den sipariş vermek istiyorum." data-track="mobil-menu" target="_blank" rel="noopener"
            class="mt-3 inline-flex items-center justify-center gap-2 bg-orman text-white font-heading font-bold py-3 rounded-full">
@@ -193,32 +191,30 @@
   </header>
 
   <main id="ana-icerik">
-    <!-- ============ 2. HERO (tek parça, tam ekran) ============ -->
-    <section id="anasayfa" class="relative min-h-[100svh] flex items-end lg:items-center overflow-hidden img-fallback">
+    <!-- ============ GİRİŞ ============ -->
+    <section id="anasayfa" class="relative min-h-[100svh] flex items-end overflow-hidden img-fallback">
       <img src="img/dana-dilim-1200.webp" srcset="img/dana-dilim-600.webp 600w, img/dana-dilim-1200.webp 1125w" sizes="100vw"
            alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover" fetchpriority="high"
            onerror="this.style.display='none'">
-      <div class="absolute inset-0 bg-gradient-to-t from-komur via-komur/60 to-komur/10 lg:bg-gradient-to-r lg:from-komur lg:via-komur/75 lg:to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-komur via-komur/75 to-komur/25"></div>
 
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-14 lg:pb-24 w-full">
-        <div class="max-w-2xl">
-          <p class="inline-flex items-center gap-2 bg-bordo text-white text-xs sm:text-sm font-heading font-bold uppercase tracking-[0.18em] px-4 py-2 rounded-full">
-            <i class="fa-solid fa-award" aria-hidden="true"></i> 2008'den beri Göksun'da
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 lg:pb-20 w-full">
+        <div class="max-w-3xl">
+          <p class="font-heading font-semibold text-krem/80 text-sm sm:text-base tracking-wide">
+            Kayabaşı Mahallesi, Cumhuriyet Bulvarı · Göksun
           </p>
-          <h1 class="mt-6 font-heading font-black text-white text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.05] tracking-tight">
-            Göksun'un tanıdık kasabı,<br>
-            <span class="text-red-300">sofranızın güvencesi.</span>
+          <h1 class="mt-4 font-heading font-extrabold text-white text-[2.4rem] leading-[1.08] sm:text-6xl lg:text-7xl tracking-tight">
+            Göksun'un kasabı,<br>2008'den beri<br class="sm:hidden"> aynı tezgâhta.
           </h1>
-          <p class="mt-6 text-lg sm:text-xl text-krem/90 leading-relaxed">
-            Göksun yöresi üreticilerinden gelen dana ve kuzu etini, ustalarımız dükkânımızda sizin için parçalar ve hazırlar.
-            Siparişinizi telefonunuzdan verin; teyit edelim, hazırlayalım, kapınıza getirelim.
+          <p class="mt-6 text-lg sm:text-xl text-krem/90 leading-relaxed max-w-2xl">
+            Etinizi yine biz hazırlıyoruz. Dükkâna uğrayamadığınız gün telefondan söyleyin; hazırlayalım, kapınıza getirelim.
           </p>
-          <div class="mt-9 flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <a href="#urunler" class="inline-flex items-center justify-center gap-3 bg-bordo hover:bg-bordo-light text-white font-heading font-bold text-lg px-8 min-h-[56px] rounded-full shadow-glow transition">
-              <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Online Sipariş Ver
+          <div class="mt-9 flex flex-col sm:flex-row gap-3">
+            <a href="#urunler" class="inline-flex items-center justify-center gap-3 bg-bordo hover:bg-bordo-light text-white font-heading font-bold text-lg px-8 min-h-[56px] rounded-full transition">
+              <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Sipariş Ver
             </a>
             <a href="#" data-wa="Merhaba, Göksun Yörem'den sipariş vermek istiyorum." data-track="hero" target="_blank" rel="noopener"
-               class="inline-flex items-center justify-center gap-3 bg-white/10 hover:bg-white hover:text-komur backdrop-blur border-2 border-white/70 text-white font-heading font-bold text-lg px-8 min-h-[56px] rounded-full transition">
+               class="inline-flex items-center justify-center gap-3 border-2 border-white/80 hover:bg-white hover:text-komur text-white font-heading font-bold text-lg px-8 min-h-[56px] rounded-full transition">
               <i class="fa-brands fa-whatsapp text-xl" aria-hidden="true"></i> WhatsApp'tan Yazın
             </a>
           </div>
@@ -226,170 +222,65 @@
       </div>
     </section>
 
-    <!-- Güven şeridi -->
-    <section aria-label="Neden Göksun Yörem" class="bg-komur text-white border-t border-white/10">
-      <ul class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
-        <li class="flex items-center gap-3"><span class="w-11 h-11 shrink-0 rounded-full bg-bordo flex items-center justify-center"><i class="fa-solid fa-store" aria-hidden="true"></i></span><span><strong class="block font-heading">2008'den beri</strong><span class="text-sm text-white/70">Göksun esnafı</span></span></li>
-        <li class="flex items-center gap-3"><span class="w-11 h-11 shrink-0 rounded-full bg-bordo flex items-center justify-center"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span><span><strong class="block font-heading">Göksun yöresinden</strong><span class="text-sm text-white/70">Yerel üreticiler</span></span></li>
-        <li class="flex items-center gap-3"><span class="w-11 h-11 shrink-0 rounded-full bg-bordo flex items-center justify-center"><i class="fa-solid fa-scissors" aria-hidden="true"></i></span><span><strong class="block font-heading">Dükkânda parçalama</strong><span class="text-sm text-white/70">İsteğinize göre</span></span></li>
-        <li class="flex items-center gap-3"><span class="w-11 h-11 shrink-0 rounded-full bg-orman flex items-center justify-center"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></span><span><strong class="block font-heading">Adrese teslimat</strong><span class="text-sm text-white/70">Göksun içi</span></span></li>
-      </ul>
+    <!-- ============ BİZ KİMİZ ============ -->
+    <section id="biz-kimiz" class="py-20 lg:py-28 scroll-mt-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div>
+          <p class="text-bordo font-heading font-bold text-sm uppercase tracking-[0.2em]">Biz kimiz</p>
+          <h2 class="mt-3 font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight">
+            Bu dükkânın önünden geçen herkes bizi tanır.
+          </h2>
+          <div class="mt-6 space-y-4 text-lg text-komur/80 leading-relaxed">
+            <p>2008'den beri Göksun'da aynı işi yapıyoruz. Kimin kıymayı az yağlı sevdiğini, kimin bayramda kuzu aldığını biliriz.</p>
+            <p>Etimiz Göksun yöresinin üreticilerinden gelir. Kesimi resmi mezbahada yapılır; parçalama ve hazırlık bizim tezgâhımızda, sizin istediğiniz gibi.</p>
+            <p>Değişen tek şey şu: artık dükkâna gelemediğiniz gün de siparişiniz bizde.</p>
+          </div>
+          <p class="mt-8 flex items-start gap-3 text-komur/75">
+            <i class="fa-solid fa-location-dot text-bordo mt-1" aria-hidden="true"></i>
+            <span>Kayabaşı Mah. Cumhuriyet Bulvarı No: 41A, Göksun / Kahramanmaraş</span>
+          </p>
+        </div>
+        <figure class="rounded-3xl overflow-hidden img-fallback aspect-[4/5] shadow-card">
+          <img src="img/vitrin-1200.webp" srcset="img/vitrin-600.webp 600w, img/vitrin-1200.webp 1125w" sizes="(min-width: 1024px) 560px, 100vw"
+               alt="Vitrinimizde streçlenmiş taze dana etleri" loading="lazy" width="1125" height="1500" class="w-full h-full object-cover" onerror="this.style.display='none'">
+        </figure>
+      </div>
     </section>
 
-    <!-- ============ 3. HİKAYEMİZ / BİZ KİMİZ ============ -->
-    <section id="biz-kimiz" class="py-20 lg:py-28 scroll-mt-20 overflow-x-clip">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div class="relative reveal">
-            <figure class="relative rounded-3xl overflow-hidden shadow-card aspect-[4/5] img-fallback">
-              <img src="img/vitrin-1200.webp" srcset="img/vitrin-600.webp 600w, img/vitrin-1200.webp 1125w" sizes="(min-width: 1024px) 560px, 100vw"
-                   alt="Göksun Yörem vitrininde streçlenmiş taze dana etleri" class="w-full h-full object-cover" loading="lazy" width="1125" height="1500"
-                   onerror="this.style.display='none'">
-              <figcaption class="absolute top-4 right-4 bg-komur/75 text-white text-xs font-semibold px-3 py-1 rounded-full"><i class="fa-solid fa-camera mr-1" aria-hidden="true"></i>Vitrinimizden</figcaption>
-            </figure>
-            <div class="absolute -bottom-6 left-6 sm:left-auto sm:-right-6 sm:bottom-10 bg-bordo text-white rounded-2xl shadow-glow px-6 py-5 ring-4 ring-krem text-center">
-              <span class="block font-heading font-black text-4xl leading-none">2008</span>
-              <span class="block font-heading font-semibold text-sm mt-1">'den beri Göksun'da</span>
+    <!-- ============ ETLERİMİZ ============ -->
+    <section id="etlerimiz" class="py-20 lg:py-28 bg-white scroll-mt-20" aria-labelledby="etler-baslik">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-bordo font-heading font-bold text-sm uppercase tracking-[0.2em]">Etlerimiz</p>
+          <h2 id="etler-baslik" class="mt-3 font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight">Ne pişireceğinizi söyleyin, etini biz hazırlayalım.</h2>
+        </div>
+
+        <div class="mt-12 grid md:grid-cols-3 gap-6">
+          <article class="flex flex-col">
+            <div class="rounded-2xl overflow-hidden img-fallback aspect-[4/5]">
+              <img src="img/dana-kesim-600.webp" alt="Tezgâhımızda dana eti" loading="lazy" width="600" height="800" class="w-full h-full object-cover" onerror="this.style.display='none'">
             </div>
-          </div>
-
-          <div class="reveal mt-6 lg:mt-0">
-            <p class="inline-flex items-center gap-2 text-bordo font-heading font-bold text-sm uppercase tracking-[0.2em]">
-              <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span> Hikayemiz
-            </p>
-            <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-4 leading-tight">
-              Müşterilerimizi tanıyoruz, <span class="text-bordo">etimizi de.</span>
-            </h2>
-            <p class="mt-6 text-komur/80 text-lg leading-relaxed">
-              Göksun Yörem, 2008'den beri Göksun'da hizmet veren bir mahalle kasabı ve şarküteridir. Müşterilerimizin
-              çoğu bizi yıllardır tanır; ne istediklerini bilir, bize güvenerek alışveriş yaparlar.
-            </p>
-            <p class="mt-4 text-komur/80 leading-relaxed">
-              Etlerimiz Göksun yöresi üreticilerinden gelir. Kesimi resmi mezbahada yapılan karkaslar dükkânımıza ulaşır;
-              parçalama ve hazırlığı ustalarımız, sizin isteğinize göre yapar. Biftek kalınlığından kıymanın yağ oranına
-              kadar söylemeniz yeterli.
-            </p>
-
-            <ol class="mt-8 grid sm:grid-cols-2 gap-3" aria-label="Etin dükkânımıza yolculuğu">
-              <li class="flex gap-3 bg-white rounded-2xl p-4 shadow-sm border border-krem-dark"><span class="w-9 h-9 shrink-0 rounded-full bg-bordo text-white font-heading font-extrabold flex items-center justify-center">1</span><span><strong class="block font-heading">Yöre üreticisi</strong><span class="text-sm text-komur/70">Göksun ve çevresinden</span></span></li>
-              <li class="flex gap-3 bg-white rounded-2xl p-4 shadow-sm border border-krem-dark"><span class="w-9 h-9 shrink-0 rounded-full bg-bordo text-white font-heading font-extrabold flex items-center justify-center">2</span><span><strong class="block font-heading">Resmi mezbaha</strong><span class="text-sm text-komur/70">Kesim ve karkas</span></span></li>
-              <li class="flex gap-3 bg-white rounded-2xl p-4 shadow-sm border border-krem-dark"><span class="w-9 h-9 shrink-0 rounded-full bg-bordo text-white font-heading font-extrabold flex items-center justify-center">3</span><span><strong class="block font-heading">Usta eller</strong><span class="text-sm text-komur/70">Dükkânda parçalama</span></span></li>
-              <li class="flex gap-3 bg-white rounded-2xl p-4 shadow-sm border border-krem-dark"><span class="w-9 h-9 shrink-0 rounded-full bg-orman text-white font-heading font-extrabold flex items-center justify-center">4</span><span><strong class="block font-heading">Sizin sofranız</strong><span class="text-sm text-komur/70">İsteğinize göre hazır</span></span></li>
-            </ol>
-          </div>
+            <h3 class="mt-5 font-heading font-bold text-2xl">Dana eti</h3>
+            <p class="mt-2 text-komur/75 leading-relaxed">Biftek, kuşbaşı, kıyma, kemikli haşlamalık. İnce mi kalın mı, yağlı mı az yağlı mı; siz söyleyin, tezgâhta öyle hazırlansın.</p>
+            <a href="#urunler" data-kategori-git="dana" class="mt-4 inline-flex items-center gap-2 text-bordo font-heading font-bold min-h-[44px] hover:gap-3 transition-all">Dana etlerini gör <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </article>
+          <article class="flex flex-col">
+            <div class="rounded-2xl overflow-hidden img-fallback aspect-[4/5]">
+              <img src="img/soguk-oda-600.webp" alt="Soğuk odamızda asılı karkaslar" loading="lazy" width="600" height="800" class="w-full h-full object-cover" onerror="this.style.display='none'">
+            </div>
+            <h3 class="mt-5 font-heading font-bold text-2xl">Kuzu eti</h3>
+            <p class="mt-2 text-komur/75 leading-relaxed">Mangala pirzola, fırına ya da güvece istediğiniz parça. Kuzu mevsime göre değişir; ne olduğunu siparişte söyleriz.</p>
+            <a href="#urunler" data-kategori-git="kuzu" class="mt-4 inline-flex items-center gap-2 text-bordo font-heading font-bold min-h-[44px] hover:gap-3 transition-all">Kuzu etlerini gör <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </article>
+          <article class="flex flex-col">
+            <div class="rounded-2xl overflow-hidden img-fallback aspect-[4/5]">
+              <img src="img/marine-tavuk-600.webp" alt="Vitrinimizde soslu marine tavuk" loading="lazy" width="600" height="1066" class="w-full h-full object-cover" onerror="this.style.display='none'">
+            </div>
+            <h3 class="mt-5 font-heading font-bold text-2xl">Mangallık ve tavuk</h3>
+            <p class="mt-2 text-komur/75 leading-relaxed">Soslu tavuk, şişlik kuşbaşı, köftelik kıyma. Kaç kişi olacağınızı yazın, ne kadar et gerektiğini birlikte hesaplayalım.</p>
+            <a href="#urunler" data-kategori-git="soslu" class="mt-4 inline-flex items-center gap-2 text-bordo font-heading font-bold min-h-[44px] hover:gap-3 transition-all">Mangallıkları gör <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </article>
         </div>
-      </div>
-    </section>
-
-    <!-- ============ ETLERİMİZ: DANA ============ -->
-    <section id="dana-eti" class="bg-white scroll-mt-20" aria-labelledby="dana-baslik">
-      <div class="grid lg:grid-cols-2">
-        <figure class="relative min-h-[320px] sm:min-h-[420px] lg:min-h-[640px] img-fallback">
-          <img src="img/dana-kesim-1200.webp" srcset="img/dana-kesim-600.webp 600w, img/dana-kesim-1200.webp 1200w" sizes="(min-width: 1024px) 50vw, 100vw"
-               alt="Kesim tezgahımızda taze dana eti" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="1200" height="1600"
-               onerror="this.style.display='none'">
-          <figcaption class="absolute bottom-4 left-4 bg-komur/75 text-white text-xs font-semibold px-3 py-1 rounded-full"><i class="fa-solid fa-camera mr-1" aria-hidden="true"></i>Kesim tezgahımızdan</figcaption>
-        </figure>
-        <div class="px-4 sm:px-10 lg:px-16 py-14 lg:py-20 flex flex-col justify-center reveal">
-          <p class="text-bordo font-heading font-bold text-sm uppercase tracking-[0.2em]">Etlerimiz · 01</p>
-          <h2 id="dana-baslik" class="mt-3 font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight">Dana Eti</h2>
-          <p class="mt-5 text-komur/80 text-lg leading-relaxed">
-            Göksun yöresinden gelen dana karkasını dükkânımızda parçalıyoruz. Hangi yemeği yapacağınızı söyleyin,
-            ona uygun parçayı ve kesimi birlikte seçelim.
-          </p>
-          <dl class="mt-8 grid sm:grid-cols-2 gap-4">
-            <div class="border-l-4 border-bordo pl-4"><dt class="font-heading font-bold">Biftek / Antrikot</dt><dd class="text-sm text-komur/75 mt-1">Izgara ve tava; ince veya kalın dilim.</dd></div>
-            <div class="border-l-4 border-bordo pl-4"><dt class="font-heading font-bold">Kuşbaşı</dt><dd class="text-sm text-komur/75 mt-1">Sote, kavurma ve iri kesim şişlik.</dd></div>
-            <div class="border-l-4 border-bordo pl-4"><dt class="font-heading font-bold">Kıyma</dt><dd class="text-sm text-komur/75 mt-1">Normal, az yağlı veya köftelik.</dd></div>
-            <div class="border-l-4 border-bordo pl-4"><dt class="font-heading font-bold">Kemikli</dt><dd class="text-sm text-komur/75 mt-1">Haşlama ve yemeklik.</dd></div>
-          </dl>
-          <div class="mt-9 flex flex-col sm:flex-row gap-3">
-            <a href="#urunler" data-kategori-git="dana" class="inline-flex items-center justify-center gap-2 bg-bordo hover:bg-bordo-light text-white font-heading font-bold px-7 min-h-[52px] rounded-full transition">
-              <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Dana Etlerini Sipariş Et
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ ETLERİMİZ: KUZU ============ -->
-    <section id="kuzu-eti" class="bg-krem scroll-mt-20" aria-labelledby="kuzu-baslik">
-      <div class="grid lg:grid-cols-2">
-        <figure class="relative min-h-[320px] sm:min-h-[420px] lg:min-h-[600px] img-fallback lg:order-2">
-          <img src="img/soguk-oda-1200.webp" srcset="img/soguk-oda-600.webp 600w, img/soguk-oda-1200.webp 1125w" sizes="(min-width: 1024px) 50vw, 100vw"
-               alt="Soğuk odamızda asılı karkaslar" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="1125" height="1500"
-               onerror="this.style.display='none'">
-          <figcaption class="absolute bottom-4 left-4 bg-komur/75 text-white text-xs font-semibold px-3 py-1 rounded-full"><i class="fa-solid fa-camera mr-1" aria-hidden="true"></i>Soğuk odamızdan</figcaption>
-        </figure>
-        <div class="px-4 sm:px-10 lg:px-16 py-14 lg:py-20 flex flex-col justify-center reveal lg:order-1">
-          <p class="text-bordo font-heading font-bold text-sm uppercase tracking-[0.2em]">Etlerimiz · 02</p>
-          <h2 id="kuzu-baslik" class="mt-3 font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight">Kuzu Eti</h2>
-          <p class="mt-5 text-komur/80 text-lg leading-relaxed">
-            Kuzu eti de dana gibi yöre üreticilerinden gelir ve dükkânımızda hazırlanır. Mangal için pirzola,
-            fırın ya da güveç için istediğiniz parça; porsiyonunu ve kesimini siz belirleyin.
-          </p>
-          <dl class="mt-8 grid sm:grid-cols-2 gap-4">
-            <div class="border-l-4 border-bordo pl-4"><dt class="font-heading font-bold">Pirzola</dt><dd class="text-sm text-komur/75 mt-1">Mangal ve ızgaranın vazgeçilmezi.</dd></div>
-            <div class="border-l-4 border-bordo pl-4"><dt class="font-heading font-bold">İstediğiniz kesim</dt><dd class="text-sm text-komur/75 mt-1">Parça ve porsiyonu nota yazın.</dd></div>
-          </dl>
-          <p class="mt-6 text-sm text-komur/70"><i class="fa-solid fa-circle-info text-orman mr-1" aria-hidden="true"></i>Kuzu, mevsime göre değişebilir; stok durumunu sipariş teyidinde bildiririz.</p>
-          <div class="mt-8">
-            <a href="#urunler" data-kategori-git="kuzu" class="inline-flex items-center justify-center gap-2 bg-bordo hover:bg-bordo-light text-white font-heading font-bold px-7 min-h-[52px] rounded-full transition">
-              <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Kuzu Etini Sipariş Et
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ MANGAL & MARİNE ============ -->
-    <section id="mangal" class="relative overflow-hidden img-fallback scroll-mt-20" aria-labelledby="mangal-baslik">
-      <img src="img/marine-tavuk-1200.webp" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">
-      <div class="absolute inset-0 bg-gradient-to-r from-komur/95 via-komur/85 to-komur/50"></div>
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <div class="max-w-xl text-white reveal">
-          <p class="text-red-300 font-heading font-bold text-sm uppercase tracking-[0.2em]">Etlerimiz · 03</p>
-          <h2 id="mangal-baslik" class="mt-3 font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight">Mangal ve Marine Ürünler</h2>
-          <p class="mt-5 text-lg text-white/85 leading-relaxed">
-            Soslu marine tavuk, şişlik kuşbaşı, köftelik kıyma… Hafta sonu mangalınız ya da kalabalık davetiniz için
-            ne kadar et gerektiğini birlikte hesaplayalım, siz sadece ateşi yakın.
-          </p>
-          <div class="mt-8 flex flex-col sm:flex-row gap-3">
-            <a href="#urunler" data-kategori-git="soslu" class="inline-flex items-center justify-center gap-2 bg-bordo hover:bg-bordo-light text-white font-heading font-bold px-7 min-h-[52px] rounded-full transition">
-              <i class="fa-solid fa-fire" aria-hidden="true"></i> Marine Ürünleri Gör
-            </a>
-            <a href="#randevu" class="inline-flex items-center justify-center gap-2 border-2 border-white/70 hover:bg-white hover:text-komur text-white font-heading font-bold px-7 min-h-[52px] rounded-full transition">
-              <i class="fa-solid fa-users" aria-hidden="true"></i> Toplu Mangal Siparişi
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ GÖKSUN & KAHVALTILIK ============ -->
-    <section id="goksun" class="py-20 lg:py-28 bg-white scroll-mt-20" aria-labelledby="goksun-baslik">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-5 gap-10 lg:gap-16 items-center">
-        <div class="lg:col-span-3 reveal">
-          <p class="text-orman font-heading font-bold text-sm uppercase tracking-[0.2em]">Yöremiz</p>
-          <h2 id="goksun-baslik" class="mt-3 font-heading font-extrabold text-3xl sm:text-4xl leading-tight">Göksun: yaylanın, serin havanın memleketi</h2>
-          <p class="mt-5 text-komur/80 text-lg leading-relaxed">
-            Kahramanmaraş'ın kuzeyindeki Göksun, yüksek rakımlı yaylaları ve serin iklimiyle bilinir. Yayla kültürü bu
-            topraklarda hâlâ yaşar; sofralarda tereyağı, peynir ve bal eksik olmaz.
-          </p>
-          <p class="mt-4 text-komur/80 leading-relaxed">
-            Dükkânımızda etin yanında bu sofranın tamamlayıcılarını da bulursunuz: tereyağı, tulum peyniri, süzme bal,
-            yayla sütü ve kahvaltılıklar. Et siparişinize ekleyin, hepsi tek seferde gelsin.
-          </p>
-          <a href="#urunler" data-kategori-git="sut" class="mt-8 inline-flex items-center justify-center gap-2 bg-orman hover:bg-orman-dark text-white font-heading font-bold px-7 min-h-[52px] rounded-full transition">
-            <i class="fa-solid fa-cheese" aria-hidden="true"></i> Süt Ürünleri ve Kahvaltılık
-          </a>
-        </div>
-        <ul class="lg:col-span-2 grid grid-cols-2 gap-3 reveal" aria-label="Kahvaltılık ürünler">
-          <li class="bg-krem rounded-2xl p-5"><i class="fa-solid fa-bottle-droplet text-orman text-2xl" aria-hidden="true"></i><strong class="block mt-3 font-heading">Yayla Tereyağı</strong></li>
-          <li class="bg-krem rounded-2xl p-5"><i class="fa-solid fa-cheese text-orman text-2xl" aria-hidden="true"></i><strong class="block mt-3 font-heading">Tulum Peyniri</strong></li>
-          <li class="bg-krem rounded-2xl p-5"><i class="fa-solid fa-jar text-orman text-2xl" aria-hidden="true"></i><strong class="block mt-3 font-heading">Süzme Bal</strong></li>
-          <li class="bg-krem rounded-2xl p-5"><i class="fa-solid fa-mug-hot text-orman text-2xl" aria-hidden="true"></i><strong class="block mt-3 font-heading">Yayla Sütü</strong></li>
-        </ul>
       </div>
     </section>
 
@@ -400,7 +291,7 @@
           <p class="inline-flex items-center gap-2 text-bordo font-heading font-bold text-sm uppercase tracking-[0.2em]">
             <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span> Online Sipariş <span class="w-8 h-0.5 bg-bordo" aria-hidden="true"></span>
           </p>
-          <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-4">Ürünlerimiz</h2>
+          <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-4">Bugün ne lazım?</h2>
           <p class="mt-4 text-komur/75 text-lg">Kategoriyi seçin, ürünü ve miktarı belirleyip sepete ekleyin. Siparişinizi WhatsApp'tan gönderin; stok, kesin ağırlık, fiyat ve teslimat zamanını size teyit edelim.</p>
         </div>
 
@@ -543,24 +434,6 @@
       </div>
     </section>
 
-    <!-- ============ DÜKKÂNIMIZDAN KARELER ============ -->
-    <section id="galeri" class="py-20 lg:py-24 bg-white scroll-mt-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Dükkanımızdan kareler (gerçek fotoğraflar) -->
-        <div>
-          <h3 class="font-heading font-extrabold text-2xl sm:text-3xl text-center">Dükkânımızdan Kareler</h3>
-          <p class="mt-2 text-center text-komur/70">Tezgahımızdan, vitrinimizden ve soğuk odamızdan gerçek fotoğraflar.</p>
-          <ul class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-            <li class="row-span-2 rounded-2xl overflow-hidden img-fallback"><img src="img/dana-kesim-600.webp" srcset="img/dana-kesim-600.webp 600w, img/dana-kesim-1200.webp 1200w" sizes="(min-width: 768px) 33vw, 50vw" alt="Kesim tezgahında taze dana eti" loading="lazy" width="600" height="800" class="w-full h-full object-cover"></li>
-            <li class="aspect-square rounded-2xl overflow-hidden img-fallback"><img src="img/dana-dilim-600.webp" alt="Dilimlenmiş taze dana biftekleri" loading="lazy" width="600" height="600" class="w-full h-full object-cover"></li>
-            <li class="aspect-square rounded-2xl overflow-hidden img-fallback"><img src="img/marine-tavuk-600.webp" alt="Vitrinde mangala hazır marine tavuk" loading="lazy" width="600" height="1066" class="w-full h-full object-cover"></li>
-            <li class="aspect-square rounded-2xl overflow-hidden img-fallback"><img src="img/vitrin-600.webp" alt="Vitrinde streçlenmiş dana etleri" loading="lazy" width="600" height="800" class="w-full h-full object-cover"></li>
-            <li class="aspect-square rounded-2xl overflow-hidden img-fallback"><img src="img/soguk-oda-600.webp" alt="Soğuk odada asılı dana karkası" loading="lazy" width="600" height="800" class="w-full h-full object-cover"></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ 5. RANDEVU & ÖZEL SİPARİŞ ============ -->
     <section id="randevu" class="relative py-20 lg:py-28 scroll-mt-20 overflow-hidden img-fallback">
       <img src="img/marine-tavuk-1200.webp"
@@ -572,12 +445,12 @@
         <div class="grid lg:grid-cols-5 gap-12 items-center">
           <div class="lg:col-span-2 text-white reveal">
             <p class="inline-flex items-center gap-2 text-red-300 font-heading font-bold text-sm uppercase tracking-[0.2em]">
-              <span class="w-8 h-0.5 bg-red-300" aria-hidden="true"></span> Online Randevu
+              <span class="w-8 h-0.5 bg-red-300" aria-hidden="true"></span> Bayram · Düğün · Mevlit
             </p>
-            <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-4 leading-tight">Özel Kesim &amp; Toplu Sipariş</h2>
-            <p class="mt-5 text-white/75 text-lg leading-relaxed">
-              Mangal davetiniz ya da kalabalık bir sofranız mı var? Formu doldurun, talebiniz WhatsApp üzerinden bize
-              ulaşsın; ustamız ürün, miktar ve saati sizinle teyit etsin.
+            <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-4 leading-tight">Kalabalık sofranız varsa önceden haber verin.</h2>
+            <p class="mt-5 text-white/80 text-lg leading-relaxed">
+              Bayram öncesi tezgâhımız yoğun olur; düğün, mevlit ve toplu yemeklerde de etin zamanında, doğru miktarda
+              hazır olması gerekir. Kaç kişi olacağınızı ve ne zaman lazım olduğunu yazın, gerisini birlikte planlayalım.
             </p>
             <h3 class="font-heading font-bold text-lg mt-8 text-white/90">Nasıl işler?</h3>
             <ol class="mt-4 space-y-4">
@@ -627,6 +500,9 @@
                     <select id="talep" name="talep" required
                             class="w-full appearance-none bg-white/5 border border-white/15 rounded-xl pl-11 pr-10 py-3.5 text-white focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-bordo/50 transition">
                       <option value="" disabled selected>Seçiniz</option>
+                      <option>Bayram Siparişi</option>
+                      <option>Düğün / Mevlit / Toplu Yemek</option>
+                      <option>Kışlık Et Hazırlığı</option>
                       <option>Özel Kesim</option>
                       <option>Toplu Mangal Hazırlığı</option>
                       <option>Dükkandan Teslimat</option>
@@ -643,7 +519,7 @@
                 </div>
                 <div class="sm:col-span-2">
                   <label for="not" class="block text-white/85 text-sm font-semibold mb-2">Notunuz</label>
-                  <textarea id="not" name="not" rows="4" placeholder="Örn: 15 kişilik mangal için 3 kg kuzu pirzola, 2 kg köfte..."
+                  <textarea id="not" name="not" rows="4" placeholder="Örn: Cumartesi 200 kişilik mevlit yemeği; kuşbaşı ve kemikli et lazım."
                             class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-bordo/50 transition resize-none"></textarea>
                 </div>
                 <div class="sm:col-span-2">
@@ -661,6 +537,31 @@
               <p class="text-white/55 text-xs text-center mt-4"><i class="fa-brands fa-whatsapp mr-1" aria-hidden="true"></i> Gönderdiğinizde talebiniz özetlenerek WhatsApp'ta açılır.</p>
             </form>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GÖKSUN ============ -->
+    <section id="goksun" class="relative overflow-hidden bg-komur text-white scroll-mt-20" aria-labelledby="goksun-baslik">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 text-center">
+        <p class="text-red-300 font-heading font-bold text-sm uppercase tracking-[0.2em]">Göksun</p>
+        <h2 id="goksun-baslik" class="mt-4 font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight">
+          Göksun'da kış uzun,<br>sofralar kalabalık olur.
+        </h2>
+        <p class="mt-8 text-lg sm:text-xl text-white/80 leading-relaxed max-w-2xl mx-auto">
+          Misafir eksik olmaz, bayram gelir, düğün olur, mevlit okunur. Biz de 2008'den beri bu sofraların etini hazırlıyoruz;
+          aynı yerde, aynı özenle.
+        </p>
+        <p class="mt-6 text-white/70 leading-relaxed max-w-2xl mx-auto">
+          Etin yanında Göksun sofrasının tamamlayıcıları da bizde: tereyağı, tulum peyniri, süzme bal, yayla sütü.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="#urunler" class="inline-flex items-center justify-center gap-3 bg-bordo hover:bg-bordo-light text-white font-heading font-bold text-lg px-8 min-h-[56px] rounded-full transition">
+            <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Sipariş Ver
+          </a>
+          <a href="#urunler" data-kategori-git="sut" class="inline-flex items-center justify-center gap-3 border-2 border-white/70 hover:bg-white hover:text-komur text-white font-heading font-bold text-lg px-8 min-h-[56px] rounded-full transition">
+            Süt ürünleri ve kahvaltılık
+          </a>
         </div>
       </div>
     </section>
@@ -752,7 +653,8 @@
           <h2 class="font-heading font-bold text-lg mb-5">İletişim</h2>
           <address class="not-italic">
             <ul class="space-y-4 text-white/75 text-sm">
-              <li class="flex gap-3"><i class="fa-solid fa-location-dot text-red-400 mt-1" aria-hidden="true"></i><span>Göksun Merkez,<br>Göksun / Kahramanmaraş</span></li>
+              <li class="flex gap-3"><i class="fa-solid fa-location-dot text-red-400 mt-1" aria-hidden="true"></i><span>Kayabaşı Mah. Cumhuriyet Bulvarı No: 41A<br>Göksun / Kahramanmaraş<br>
+                <a href="https://www.google.com/maps/search/?api=1&amp;query=Kayaba%C5%9F%C4%B1+Mahallesi+Cumhuriyet+Bulvar%C4%B1+41A+G%C3%B6ksun+Kahramanmara%C5%9F" target="_blank" rel="noopener" class="inline-block mt-1 text-white underline underline-offset-4 hover:text-red-300">Haritada aç</a></span></li>
               <li class="flex gap-3"><i class="fa-solid fa-phone text-red-400 mt-1" aria-hidden="true"></i><a href="#" data-tel class="hover:text-white transition" data-tel-text>Telefon</a></li>
               <li class="flex gap-3"><i class="fa-brands fa-whatsapp text-green-400 mt-0.5 text-base" aria-hidden="true"></i><a href="#" data-wa="Merhaba, sipariş vermek istiyorum." data-track="footer" target="_blank" rel="noopener" class="hover:text-white transition">WhatsApp Sipariş Hattı</a></li>
               <li class="flex gap-3"><i class="fa-brands fa-instagram text-pink-400 mt-0.5 text-base" aria-hidden="true"></i><a href="https://www.instagram.com/selahattin_peltek/" data-track-ig target="_blank" rel="noopener" class="hover:text-white transition">@selahattin_peltek</a></li>
