@@ -90,3 +90,15 @@ Test edilemeyenler: canlı GitHub Pages (bu ortamdan github.io erişimi yok), ge
 - Canlıda telefondan bir deneme siparişi (mesajın işletmenin WhatsApp'ına düştüğünün kontrolü).
 
 **Önemli:** Sipariş sunucuya kaydedilmez. Müşteri açılan WhatsApp mesajını **gönderdiğinde** işletmeye ulaşır ve işletmenin teyidiyle kesinleşir.
+
+---
+
+## 8. Tasarım yenilemesi (v3 — 2026-10-11)
+
+İşletmeden alınan bilgiler: **kuruluş 2008**; etler **Göksun yöresi üreticilerinden**; kesim **resmi mezbahada**, karkas dükkânda **ustalarca parçalanır**; **Saray Çiftliği** satılan bir markadır (işletmenin çiftliği gibi gösterilmez); öne çıkacaklar: dana/biftek, kuzu, mangal/marine, süt ürünleri.
+
+Yeni sayfa akışı: tam ekran tek parça hero ("Göksun'un tanıdık kasabı, sofranızın güvencesi", 2008 rozeti, Online Sipariş + WhatsApp) → güven şeridi → Hikayemiz (2008, 4 adımlı et yolculuğu) → Etlerimiz 01 Dana Eti → 02 Kuzu Eti → 03 Mangal ve Marine → Yöremiz Göksun + kahvaltılık → Online Sipariş (katalog + sepet) → Dükkânımızdan Kareler → Randevu → SSS → İletişim. Bölüm butonları katalogda ilgili kategoriyi açar (`data-kategori-git`).
+
+Testler: 55/55 geçti (önceki 52 + bölüm bağlantıları ve yeni bölümlerle mobil taşma kontrolü).
+
+Bekleyenler: kuzu eti fotoğrafı (Kuzu bölümünde şimdilik soğuk oda fotoğrafı "Soğuk odamızdan" etiketiyle), dükkân cephesi ve sohbette görüntü olarak gönderilen diğer fotoğrafların dosya olarak gönderilmesi, çiftlik fotoğrafı (işletmenin kendi çiftliği varsa bilgisiyle birlikte).
