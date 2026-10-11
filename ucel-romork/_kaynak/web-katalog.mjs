@@ -3,7 +3,7 @@
 // Metin: katalog5-metin.mjs · Teknik: teknik-veri.mjs · Fiyat: fiyat-veri.mjs (boşsa fiyat gösterilmez)
 //
 // Çalıştırma: node web-katalog.mjs [hedef-klasör]
-//   varsayılan hedef: cikti/web-katalog  (siteye: ucel-tarim-aletleri/katalog/ olarak kopyalanır)
+//   varsayılan hedef: cikti/web-katalog. NOT (11 Ekim 2026): site katalog/ artık kısa giriş sayfası (elle); bu çıktı siteye kopyalanmaz.
 // Kaynak etiketi: sayfa ?k=instagram gibi açılırsa WhatsApp mesajı "(Instagram)" ile başlar.
 import { writeFileSync, readFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
