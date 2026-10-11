@@ -739,6 +739,19 @@
     }, { threshold: 0.05 }).observe(sepetBolumu);
   }
 
+  // Sayfadaki "Dana Etlerini Sipariş Et" gibi bağlantılar katalogda ilgili kategoriyi açar.
+  function kategoriSec(id) {
+    var var_ = id === 'tumu' || G.kategoriler.some(function (k) { return k.id === id; });
+    if (!var_) return;
+    secilenKategori = id;
+    filtreCiz();
+    katalogCiz();
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-kategori-git]');
+    if (a) kategoriSec(a.getAttribute('data-kategori-git'));
+  });
+
   // ---------- Başlat ----------
   sepetiYukle();
   filtreCiz();
@@ -756,5 +769,5 @@
   });
 
   // Test ve hata ayıklama için salt-okunur erişim
-  window.GOKSUN_SEPET = { hesapla: hesapla, mesajOlustur: mesajOlustur, telefonNormalize: telefonNormalize, whatsappHazir: whatsappHazir };
+  window.GOKSUN_SEPET = { kategoriSec: kategoriSec, hesapla: hesapla, mesajOlustur: mesajOlustur, telefonNormalize: telefonNormalize, whatsappHazir: whatsappHazir };
 })();
