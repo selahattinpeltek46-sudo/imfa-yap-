@@ -18,7 +18,7 @@ h1,h2,h3 { font-family:Oswald,sans-serif; font-weight:600; line-height:1.1; }
 .sekme span { writing-mode:vertical-rl; white-space:nowrap; font:700 7.5pt/1 Inter; letter-spacing:.2em; text-transform:uppercase; color:var(--ink); }
 .sno { position:absolute; right:var(--kenar); bottom:6mm; width:11mm; height:11mm; z-index:3; } .sno .disli { width:100%; height:100%; }
 .dcizgi { display:flex; align-items:center; gap:3mm; } .dcizgi span { flex:1; height:2mm; background:linear-gradient(var(--altin),var(--altin)) center/100% .35mm no-repeat, repeating-linear-gradient(90deg,var(--altin) 0 .8mm,transparent .8mm 2.4mm) center/100% 1.6mm no-repeat; opacity:.8; } .dcizgi img { width:8mm; height:8mm; }
-.dcizgi.ince { margin:0 var(--kenar); }
+.dcizgi.ince { margin:0 calc(var(--kenar) + 8mm) 0 var(--kenar); }
 .qrc { width:24mm; height:24mm; background:#fff; padding:1.8mm; border-radius:1.5mm; outline:.5mm solid var(--altin); outline-offset:.8mm; } .qrc svg { width:100%; height:100%; }
 
 /* 1 · KAPAK */
