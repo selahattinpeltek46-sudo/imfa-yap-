@@ -3,6 +3,7 @@
 // Metinler sitede onaylı metinlerden (katalog2-veri.mjs). Teknik değerler uydurulmaz: "Form ile eklenecek".
 // Çalıştırma: node katalog8.mjs  →  cikti/Ucel-Katalog-2026.pdf, cikti/katalog8/index.html (+ telefon.png)
 import { writeFileSync, mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import QRCode from 'qrcode';
@@ -15,8 +16,18 @@ const CIKTI = join(BURASI, 'cikti');
 const SITE_IMG = '/home/user/ucel-tarim-aletleri/katalog/img/';
 const SITE_AS = '/home/user/ucel-tarim-aletleri/assets/';
 const url = (p) => pathToFileURL(p).href;
-const img = (f) => url(SITE_IMG + f);
-const yerel = (f) => url(join(BURASI, f));
+// PDF küçük kalsın: kullanılan her fotoğraf en fazla 1400 px, kaliteli JPEG'e çevrilip cikti/katalog8/img'den okunur
+// (Chromium JPEG'i olduğu gibi gömer; WebP ve PNG'yi kayıpsız yeniden sıkıştırıp PDF'i şişirir).
+const JPG_KLASOR = join(BURASI, 'cikti/katalog8/img');
+mkdirSync(JPG_KLASOR, { recursive: true });
+const jpg = (kaynak) => {
+  if (kaynak.endsWith('.svg')) return url(kaynak);
+  const hedef = join(JPG_KLASOR, kaynak.split('/').pop().replace(/\.\w+$/, '.jpg'));
+  execFileSync('python3', ['-I', '-c', 'import sys\nfrom PIL import Image\na=Image.open(sys.argv[1]).convert("RGB")\na.thumbnail((1400,1400))\na.save(sys.argv[2],quality=84,optimize=True)', kaynak, hedef]);
+  return url(hedef);
+};
+const img = (f) => jpg(SITE_IMG + f);
+const yerel = (f) => jpg(join(BURASI, f));
 const font = (p, w) => url(join(BURASI, 'node_modules/@fontsource', p, `${w}.css`));
 const wa = (m) => `https://wa.me/${FIRMA.whatsapp}?text=${encodeURIComponent(m)}`;
 const qr = (x) => QRCode.toString(x, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#1B1B1D', light: '#FFFFFF00' } });
