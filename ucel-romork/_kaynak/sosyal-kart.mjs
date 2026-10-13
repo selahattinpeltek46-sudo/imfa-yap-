@@ -31,7 +31,7 @@ const kart = (id, [tur, a]) => {
   const u = U[id];
   const urun = URUNLER.find((x) => x.id === id);
   return `<section class="kart" data-ad="${id}">
-    <header><img class="logo" src="${url(join(BURASI, 'marka', 'logo-mark.png'))}"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div>${urun.imalat ? '<em>KENDİ İMALATIMIZ</em>' : ''}</header>
+    <header><img class="logo" src="${url(join(BURASI, 'marka', 'logo-k3.svg'))}"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div>${urun.imalat ? '<em>KENDİ İMALATIMIZ</em>' : ''}</header>
     <div class="foto ${tur === 'd' ? 'beyaz' : 'koyu'}"><img src="${url(YOL[tur](a))}"></div>
     <div class="yazi"><p class="kat">${t(u.kategori)}</p><h1>${esc(urun.ad)}</h1><p class="fayda">${t(u.fayda)}</p>
       <ul>${u.kullanim.slice(0, 3).map((k) => `<li>${t(k)}</li>`).join('')}</ul></div>
@@ -39,7 +39,7 @@ const kart = (id, [tur, a]) => {
   </section>`;
 };
 const genel = `<section class="kart genel" data-ad="katalog">
-  <header><img class="logo" src="${url(join(BURASI, 'marka', 'logo-mark.png'))}"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></header>
+  <header><img class="logo" src="${url(join(BURASI, 'marka', 'logo-k3.svg'))}"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></header>
   <div class="g-ust"><p class="kat">Ürün Kataloğu 2026</p><h1>${t(SLOGAN)}</h1><p class="fayda">${t(ALT_SLOGAN)}</p></div>
   <div class="g-izgara">${KARTLAR.map(([, [tur, a]]) => `<div class="${tur === 'd' ? 'beyaz' : 'koyu'}"><img src="${url(YOL[tur](a))}"></div>`).join('')}</div>
   <footer><div><b>Tüm ürünler ve fiyat için</b><span>WhatsApp'tan yazın, kataloğu gönderelim</span></div><strong>${FIRMA.telefon}</strong></footer>
@@ -50,7 +50,7 @@ const css = (kare) => `
 .kart { width: 1080px; height: ${kare ? 1080 : 1350}px; background: #F6F4F0; display: flex; flex-direction: column; overflow: hidden; position: relative; }
 header { background: #1F2124; color: #fff; display: flex; align-items: center; gap: 20px; padding: 30px 48px; position: relative; overflow: hidden; }
 header::after { content: ''; position: absolute; right: -40px; top: 0; bottom: 0; width: 110px; background: #C8102E; transform: skewX(-18deg); }
-.logo { height: 66px; border-radius: 8px; } header b { display: block; font: 700 34px/1 'Oswald'; letter-spacing: 3px; } header span { font-size: 22px; color: #b7b2aa; }
+.logo { height: 72px; } header b { display: block; font: 700 34px/1 'Oswald'; letter-spacing: 3px; } header span { font-size: 22px; color: #b7b2aa; }
 header em { margin-left: auto; margin-right: 70px; font: 700 22px 'Inter'; font-style: normal; letter-spacing: 1.5px; background: #C8102E; padding: 10px 16px; border-radius: 6px; position: relative; z-index: 1; }
 .foto { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; border-bottom: 10px solid #C8102E; }
 .foto.beyaz { background: #fff; padding: 20px 40px; } .foto.koyu { background: #1F2124; }

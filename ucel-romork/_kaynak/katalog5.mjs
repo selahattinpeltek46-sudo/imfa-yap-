@@ -206,7 +206,7 @@ async function yatay() {
   sayfalar.push(`<section class="page kapak" id="kapak">
     <div class="k-koyu"></div><div class="k-serit"></div>
     <div class="k-sol">
-      <div class="marka-satir"><img src="${g('m', 'logo-mark.png')}" alt="Üçel logosu"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
+      <div class="marka-satir"><img src="${g('m', 'logo-k3.svg')}" alt="Üçel logosu"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
       <p class="k-ust">${t(K.ust)}</p>
       <h1>${t(K.baslik).replace(', ', ',<br>')}</h1>
       <p class="k-alt">${t(K.alt)}</p>
@@ -344,7 +344,7 @@ async function yatay() {
   sayfalar.push(`<section class="page iletisim" id="iletisim">
     <div class="il-serit"></div>
     <div class="il-sol">
-      <div class="marka-satir"><img src="${g('m', 'logo-mark.png')}" alt="Üçel logosu"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
+      <div class="marka-satir"><img src="${g('m', 'logo-k3.svg')}" alt="Üçel logosu"><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
       <h2>${t(I.baslik)}</h2>
       <p class="il-alt">${t(I.alt)}</p>
       <p class="il-et">${t(I.hizli)}</p>
@@ -389,7 +389,7 @@ async function telefon() {
   // kapak
   no += 1;
   ekranlar.push(`<section class="ekran t-kapak" id="t-kapak">
-    <div class="tk-ust"><div class="marka-satir"><img src="${g('m', 'logo-mark.png')}" alt=""><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
+    <div class="tk-ust"><div class="marka-satir"><img src="${g('m', 'logo-k3.svg')}" alt=""><div><b>ÜÇEL TARIM ALETLERİ</b><span>Göksun · Kahramanmaraş</span></div></div>
     <p class="k-ust">${t(P.kapak.ust)}</p><h1>${t(SLOGAN)}</h1><p class="k-alt">${t(ALT_SLOGAN)}</p><a class="tk-tel" href="${TEL}">${FIRMA.telefon}<span>Telefon · WhatsApp</span></a></div>
     <img class="tk-urun" src="${g('d', 'tarim-romorku-yesil-traktor')}" alt="">
     <a class="tk-git" href="#t-urunler">${t(P.kapak.telefonButon)} ${ikon('ok', '#fff')}</a>
@@ -444,7 +444,7 @@ a { color: inherit; text-decoration: none; } img { display: block; }
 svg { display: block; }
 .bek { font: 700 8.5pt/1.2 'Inter'; color: #8A1020; background: #FBEAEC; border: .3mm dashed var(--k); border-radius: .6mm; padding: .4mm 1.4mm; white-space: nowrap; }
 .marka-satir { display: flex; align-items: center; gap: 4mm; }
-.marka-satir img { height: 15mm; border-radius: 1.5mm; }
+.marka-satir img { height: 15mm; }
 .marka-satir b { display: block; font: 700 14pt/1 'Oswald'; letter-spacing: 2.4pt; }
 .marka-satir span { display: block; font-size: 9pt; letter-spacing: 1.4pt; text-transform: uppercase; color: #a3a19c; margin-top: 1.2mm; }
 .ara { font: 700 9pt/1 'Inter'; letter-spacing: 1.4pt; text-transform: uppercase; color: var(--k); margin-bottom: 2mm; }

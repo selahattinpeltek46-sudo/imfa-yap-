@@ -443,12 +443,12 @@ const og = `<!DOCTYPE html><html><head><meta charset="utf-8">${['oswald/700.css'
 <style>body{margin:0}.k{width:1200px;height:630px;position:relative;overflow:hidden;background:#fff;font-family:Inter}
 .s{position:absolute;left:0;top:0;bottom:0;width:640px;background:#1F2124;clip-path:polygon(0 0,100% 0,82% 100%,0 100%)}
 .r{position:absolute;inset:0;background:#C8102E;clip-path:polygon(51% 0,55% 0,46% 100%,42% 100%)}
-.y{position:absolute;left:56px;top:52px;width:470px;color:#fff}.y img{height:56px;border-radius:6px}
+.y{position:absolute;left:56px;top:52px;width:470px;color:#fff}.y img{height:64px}
 .y b{display:block;font:700 22px Oswald;letter-spacing:3px;margin-top:22px}.y h1{font:700 64px/1.02 Oswald;margin:18px 0 0}
 .y p{font-size:24px;color:#CFCAC2;margin:16px 0 0}.t{position:absolute;left:56px;bottom:46px;font:700 40px Oswald;color:#fff}
 .u{position:absolute;right:30px;top:60px;width:560px;height:440px;object-fit:contain}
 .e{position:absolute;right:40px;bottom:40px;background:#C8102E;color:#fff;font:700 24px Inter;padding:14px 22px;border-radius:8px}</style></head>
-<body><div class="k"><div class="s"></div><div class="r"></div><div class="y"><img src="${pathToFileURL(join(BURASI, 'marka', 'logo-mark.png')).href}"><b>ÜÇEL TARIM ALETLERİ</b><h1>Ürün Kataloğu 2026</h1><p>${t(ALT_SLOGAN)}</p></div>
+<body><div class="k"><div class="s"></div><div class="r"></div><div class="y"><img src="${pathToFileURL(join(BURASI, 'marka', 'logo-k3.svg')).href}"><b>ÜÇEL TARIM ALETLERİ</b><h1>Ürün Kataloğu 2026</h1><p>${t(ALT_SLOGAN)}</p></div>
 <p class="t">${FIRMA.telefon}</p><img class="u" src="${pathToFileURL(YOL.d('tarim-romorku-yesil-traktor')).href}"><span class="e">Fiyat için WhatsApp'tan yazın</span></div></body></html>`;
 const ogDosya = join(BURASI, 'cikti', 'web-og.html');
 writeFileSync(ogDosya, og);
