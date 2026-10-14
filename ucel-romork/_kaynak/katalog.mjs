@@ -1,11 +1,10 @@
-// Üçel basılı ürün kataloğu (A4, 16 sayfa).
+// Üçel basılı ürün kataloğu (A4, 12 sayfa) — Üçel'in Canva kataloğundaki sarı-siyah tasarım üzerine.
 //   python3 ucel-romork/_kaynak/katalog_qr.py   (QR kodları — bir kez)
 //   python3 ucel-romork/_kaynak/katalog_gorsel.py (fotoğraflar + dekupe — bir kez)
 //   node ucel-romork/_kaynak/katalog.mjs        (katalog/index.html)
 //   node ucel-romork/_kaynak/katalog.mjs --pdf  (+ katalog/Ucel-Katalog-2026.pdf)
 //
 // KURAL (veri.mjs ile aynı): Üçel'in teyit etmediği teknik değer yazılmaz.
-// Bilinmeyen ölçüler sayfada tek bir "Ölçüler modele göre" listesinde toplanır.
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -55,73 +54,72 @@ const IKON = {
 };
 const i = (ad) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${IKON[ad]}</svg>`;
 
-const DISLI = 'M39.9 10.3 L42.8 0.5 L57.2 0.5 L60.1 10.3 L61.1 10.5 L68.5 3.6 L81.0 10.7 L78.6 20.6 L79.4 21.4 L89.3 19.0 L96.4 31.5 L89.5 38.9 L89.7 39.9 L99.5 42.8 L99.5 57.2 L89.7 60.1 L89.5 61.1 L96.4 68.5 L89.3 81.0 L79.4 78.6 L78.6 79.4 L81.0 89.3 L68.5 96.4 L61.1 89.5 L60.1 89.7 L57.2 99.5 L42.8 99.5 L39.9 89.7 L38.9 89.5 L31.5 96.4 L19.0 89.3 L21.4 79.4 L20.6 78.6 L10.7 81.0 L3.6 68.5 L10.5 61.1 L10.3 60.1 L0.5 57.2 L0.5 42.8 L10.3 39.9 L10.5 38.9 L3.6 31.5 L10.7 19.0 L20.6 21.4 L21.4 20.6 L19.0 10.7 L31.5 3.6 L38.9 10.5Z';
-// Üçel amblemi: dişli + Ü (Üçel onayladı).
-const amblem = `<svg viewBox="0 0 100 100" aria-hidden="true"><path d="${DISLI}" fill="#D4A24C"/><circle cx="50" cy="50" r="33" fill="#2A211B"/><circle cx="50" cy="50" r="29" fill="none" stroke="#D4A24C" stroke-width="1.5"/><text x="50" y="66" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="44" fill="#D4A24C">Ü</text></svg>`;
-const logo = (cls = '') => `<div class="logo ${cls}">${amblem}<div><b>ÜÇEL</b><small>Tarım Aletleri · Göksun</small></div></div>`;
-const serit = '<div class="stripes" aria-hidden="true"><i></i><i></i><i></i></div>';
+
+// ---------- Marka öğeleri (Üçel'in Canva kataloğundan: sarı-siyah-açık gri, Poppins, dişli amblem) ----------
+const AMBLEM = 'img/logo-amblem.png'; // Canva kataloğundan alınan amblem (dişli + monogram)
+const logo = (cls = '') => `<div class="logo ${cls}"><img src="${AMBLEM}" alt=""><div><b>ÜÇEL</b><small>TARIM ALETLERİ</small></div></div>`;
 const foto = (ad) => `img/${ad}.jpg`;      // katalog_gorsel.py: sıcak tonlu fotoğraf
 const kesit = (ad) => `img/${ad}.png`;     // katalog_gorsel.py: dekupe (arka planı ayrılmış ürün)
+const susler = '<i class="corner-tl" aria-hidden="true"></i><i class="corner-tr" aria-hidden="true"><b></b><b></b></i>';
 
 // ---------- Ürünler ----------
-// sahne: kesit (stüdyo görünümü) ya da foto. ikinci: sahnede küçük renk seçeneği.
-// bilinen: Üçel'in teyit ettiği değerler. olcu: modele göre değişen ölçüler (sayfada tek listede).
-const RENK = { mavi: ['Mavi', '#1F5FA8'], yesil: ['Yeşil', '#1E6A55'], kirmizi: ['Kırmızı', '#B8132C'] };
+// sahne: kesit (dekupe) ya da foto. bilinen: Üçel'in teyit ettiği değerler.
+// olcu: modele göre değişen ölçüler (sayfada tek listede; değer gelince bilinen'e taşınır).
+const RENK = { mavi: ['Mavi', '#1F5FA8'], yesil: ['Yeşil', '#1E6A55'], kirmizi: ['Kırmızı', '#C0172F'] };
 const URUNLER = [
   {
     no: '01', qr: 'romork', ad: 'Tarım Römorku', bolum: 'A', cat: 'Taşıma', imalat: true,
-    tag: 'Ürününüzü, yeminizi, odununuzu tek römorkla taşıyın.',
-    sahne: { kesit: 'k-romork', gen: 150 }, ikinci: { kesit: 'k-romork-yesil', not: 'Yeşil kasa, üzerinde müşterimizin adı' },
-    lead: 'Tarladan eve, depodan tarlaya yük taşımanın temel aleti. Kaynağından boyasına kadar Göksun Sanayi Sitesi’ndeki atölyemizde üretiyoruz.',
-    ozellik: [['wheat', 'Hasat ve yem', 'Ürün, saman, yem ve gübre'], ['logs', 'Odun ve malzeme', 'Yakacaktan yapı malzemesine'], ['pen', 'Size özel', 'Kasa rengi ve kasa yazısı isteğinize göre']],
+    tag: 'Ürününüzü, yeminizi ve odununuzu tek römorkla taşıyın.',
+    lead: 'Tarladan eve, depodan tarlaya yük taşımanın temel aleti. Kaynağından boyasına kadar Göksun’daki atölyemizde üretiyoruz.',
+    sahne: { kesit: 'k-romork' },
+    uses: [['wheat', 'Tarla ürünü'], ['sack', 'Gübre ve yem'], ['logs', 'Odun ve malzeme']], usesH: 'Ne taşır?',
     bilinen: [['Üretim', 'Üçel · Göksun atölyesi'], ['Kasa rengi', 'İsteğe göre'], ['Kasa yazısı', 'İsim, firma adı, “Maşallah”']],
-    olcu: ['Taşıma kapasitesi', 'Kasa iç ölçüsü', 'Dingil', 'Damper', 'Lastik ebadı', 'Traktör gücü'],
-    renk: ['mavi', 'yesil', 'kirmizi'], renkNot: 've istediğiniz diğer renkler',
+    olcu: ['Kapasite (ton)', 'Kasa iç ölçüsü', 'Dingil', 'Damper', 'Lastik ebadı', 'Traktör gücü'],
+    renk: ['mavi', 'yesil', 'kirmizi'], renkNot: 've diğer renkler',
     sec: ['Standart dışı ölçüde özel imalat'],
     saha: [['tarim-romorku-yesil-teslimat', 'Teslim günü: kasada müşterimizin adı yazılı.'], ['tarim-romorku-traktor', 'Mavi römork, yola çıkmadan önce.']],
   },
   {
     no: '02', qr: 'kultivator', ad: 'Yaylı Kültivatör', bolum: 'A', cat: 'Toprak işleme', imalat: true,
     tag: 'Pulluktan sonra toprağı inceltir, tohum yatağını hazırlar.',
-    sahne: { kesit: 'k-kultivator', gen: 140 }, ikinci: { kesit: 'k-kultivator-mavi', not: 'Mavi renk seçeneği' },
-    lead: 'Göksun model yaylı kültivatör. Yaylı ayaklar taşa çarpınca esner; hem aleti hem traktörü korur.',
-    ozellik: [['soil', 'Toprağı inceltir', 'Sürülmüş toprağı ufalar'], ['sprout', 'Tohum yatağı', 'Ekim için düzgün yatak'], ['noweed', 'Ot mücadelesi', 'Yabancı otu söker']],
+    lead: 'Göksun model yaylı kültivatör. Yaylı ayaklar taşa çarpınca esner; hem aleti hem traktörü korur. Atölyemizde üretiyoruz.',
+    sahne: { kesit: 'k-kultivator' },
+    uses: [['soil', 'Toprak yüzey işleme'], ['sprout', 'Tohum yatağı'], ['noweed', 'Yabani ot mücadelesi']], usesH: 'Ne işe yarar?',
     bilinen: [['Ayak tipi', 'Yaylı'], ['Model', 'Göksun'], ['Üretim', 'Üçel · Göksun atölyesi']],
     olcu: ['Ayak sayısı', 'Çalışma genişliği', 'Çalışma derinliği', 'Traktör gücü'],
     renk: ['kirmizi', 'mavi'],
-    sec: ['Farklı ayak sayısı ve ebat'],
-    saha: [['yayli-kultivator-kirmizi', 'Kırmızı Göksun kültivatörler, teslime hazır.'], ['yayli-kultivator-mavi', 'Mavi seçenek, atölyemizin önünde.']],
+    sec: ['Farklı ayak sayısı ve ebat seçenekleri'],
+    saha: [['yayli-kultivator-kirmizi', 'Kırmızı kültivatörler, teslime hazır.'], ['yayli-kultivator-mavi', 'Mavi seçenek, atölyemizin önünde.']],
   },
   {
     no: '03', qr: 'kepce', ad: 'Loader Kepçe', bolum: 'A', cat: 'Yükleme', imalat: true,
     tag: 'Gübre, yem ve malzemeyi traktörünüzle yükleyin.',
-    sahne: { kesit: 'k-kepce', gen: 120 },
     lead: 'Traktörünüzün önüne takılan hidrolik kepçe. Yem, gübre ve malzemeyi kaldırıp taşır. Kendi atölyemizde imal ediyoruz.',
-    ozellik: [['lift', 'Yükleme', 'Gübre, yem, toprak, malzeme'], ['barn', 'Ahır ve çiftlik', 'Günlük işte kol gücünü azaltır'], ['tractor', 'Traktörünüze göre', 'Montaj uygunluğunu birlikte kontrol ederiz']],
+    sahne: { kesit: 'k-kepce' },
+    uses: [['lift', 'Yükleme ve boşaltma'], ['barn', 'Ahır ve çiftlik işleri'], ['box', 'Malzeme taşıma']], usesH: 'Ne işe yarar?',
     bilinen: [['Çalışma', 'Hidrolik'], ['Montaj', 'Traktörünüzün modeline göre'], ['Üretim', 'Üçel · Göksun atölyesi']],
     olcu: ['Kaldırma kapasitesi', 'Kaldırma yüksekliği', 'Kepçe genişliği', 'Traktör gücü'],
     renk: ['kirmizi', 'mavi'],
-    sec: [],
+    sec: ['Traktörünüze montaj uygunluğunu birlikte kontrol ederiz'],
     saha: [['on-yukleyici-kubota', 'Traktöre takılmış kırmızı loader.'], ['on-yukleyici-mavi', 'Mavi traktöre mavi loader.']],
   },
   {
     no: '04', qr: 'tanker', ad: 'Su Tankeri', bolum: 'A', cat: 'Su', imalat: true,
     tag: 'Tarla sulaması ve hayvan suyu için traktörle çekilen tanker.',
-    sahne: { kesit: 'k-tanker', gen: 155 },
     lead: 'Merada ve yaylada hayvanlara, bahçede fidana, tarla başında ilaçlamaya su taşır. Göksun’daki atölyemizde imal ediyoruz.',
-    ozellik: [['drop', 'Tarla sulama', 'Bahçe, fidan ve tarla başı'], ['cow', 'Hayvan suyu', 'Merada ve yaylada'], ['truck', 'Su taşıma', 'Traktörle çekilir, çeki oklu şasi']],
+    sahne: { kesit: 'k-tanker' },
+    uses: [['drop', 'Tarla sulama'], ['cow', 'Hayvan suyu'], ['truck', 'Genel su taşıma']], usesH: 'Ne işe yarar?',
     bilinen: [['Çekiş', 'Traktörle, çeki oklu şasi'], ['Üretim', 'Üçel · Göksun atölyesi']],
     olcu: ['Kapasite (lt)', 'Tank malzemesi', 'Dingil', 'Pompa', 'Traktör gücü'],
-    sec: ['Farklı kapasite seçenekleri'],
-    bilgi: ['Hangi kapasite size uygun?', 'Hayvan sayınızı, sulayacağınız alanı ve traktörünüzün gücünü yazın; ihtiyacınıza uygun tank kapasitesini birlikte seçelim.', [['cow', 'Hayvan sayısı'], ['drop', 'Sulama alanı'], ['gauge', 'Traktör gücü']]],
-    saha: [['su-tankeri', 'Teslime hazır su tankerleri, Göksun.']],
+    sec: ['Farklı kapasite seçenekleri', 'Hayvan sayınıza ve sulama alanınıza göre birlikte seçelim'],
+    saha: [['su-tankeri', 'Teslime hazır su tankerleri, Göksun atölyemizin önünde.']],
   },
   {
     no: '05', qr: 'tapan', ad: 'Tapan', bolum: 'B', cat: 'Toprak işleme',
     tag: 'Ekim öncesi tarlayı düzler, kesek kırar.',
-    sahne: { kesit: 'tapan-temsili', uzanti: 'webp', gen: 135, not: 'Temsili görsel' },
     lead: 'Pulluk ve kültivatörden sonra tarlanın yüzeyini düzleyip keseği kıran, ekime hazırlayan alet.',
-    ozellik: [['flat', 'Düzler', 'Tarla yüzeyini düzgünleştirir'], ['hammer', 'Kesek kırar', 'İri toprak parçalarını ufalar'], ['sprout', 'Ekime hazırlar', 'Ekim makinesi düzgün çalışır']],
+    sahne: { kesit: 'tapan-temsili', uzanti: 'webp', not: 'Temsili görsel' },
+    uses: [['flat', 'Tarlayı düzler'], ['hammer', 'Kesek kırar'], ['sprout', 'Ekime hazırlar']], usesH: 'Ne işe yarar?',
     bilinen: [],
     olcu: ['Çalışma genişliği', 'Katlanır / sabit', 'Ağırlık', 'Traktör gücü'],
     sec: ['Farklı genişlik seçenekleri'],
@@ -130,293 +128,187 @@ const URUNLER = [
   {
     no: '06', qr: 'pulluk', ad: 'Pulluk', bolum: 'B', cat: 'Toprak işleme',
     tag: 'Tarlanın ekim öncesi derin işlenmesinde temel alet.',
-    sahne: { kesit: 'k-pulluk', gen: 92 },
-    lead: 'Toprağı devirerek sürer, anızı ve bitki artıklarını toprağa gömer. Toprağınıza ve traktörünüzün gücüne uygun pulluk traktörü gereksiz yormaz.',
-    ozellik: [['soil', 'Derin işleme', 'Toprağı devirerek sürer'], ['plough', 'Anız bozma', 'Artıkları toprağa gömer'], ['gauge', 'Gücüne uygun', 'Traktörünüzü gereksiz yormaz']],
+    lead: 'Toprağı devirerek sürer, anızı toprağa gömer. Toprağınıza ve traktörünüzün gücüne uygun pulluk, traktörünüzü gereksiz yormaz.',
+    sahne: { kesit: 'k-pulluk' },
+    uses: [['soil', 'Derin toprak işleme'], ['sprout', 'Ekim öncesi hazırlık'], ['plough', 'Anız bozma']], usesH: 'Ne işe yarar?',
     bilinen: [['Tip', 'Kulaklı'], ['Gövde sayısı', '4 (fotoğraftaki model)']],
     olcu: ['Çalışma genişliği', 'Çalışma derinliği', 'Traktör gücü'],
     sec: ['Farklı gövde sayısı seçenekleri'],
-    saha: [['kulakli-pulluk', 'Kulaklı pulluklar, teslime hazır.'], ['on-yukleyici-ve-pulluk', 'Akşam teslimatı: pulluk ve loader birlikte.']],
+    saha: [['kulakli-pulluk', 'Kulaklı pulluklar, teslime hazır.'], ['on-yukleyici-ve-pulluk', 'Akşam teslimatı: pulluk ve loader.']],
   },
   {
     no: '07', qr: 'gubre', ad: 'Gübre Serpme Makinesi', bolum: 'B', cat: 'Gübreleme',
     tag: 'Gübreyi tarlanıza dengeli şekilde dağıtın.',
-    sahne: { foto: 'romork-ve-gubre-serpme', pos: '50% 42%', not: 'Teslim günü, müşterimizle birlikte' },
-    lead: 'Traktörün arkasına takılır; granül gübreyi tarlaya eşit şekilde serper. Elle serpmeye göre hem zaman kazandırır hem gübre israfını azaltır.',
-    ozellik: [['spread', 'Dengeli serpme', 'Granül gübreyi eşit dağıtır'], ['clock', 'Zaman kazandırır', 'Elle serpmeye göre çok hızlı'], ['tractor', 'Arkaya takılır', 'Traktör arkasına monte edilir']],
+    lead: 'Traktörün arkasına takılır; granül gübreyi tarlaya eşit serper. Elle serpmeye göre zaman kazandırır.',
+    sahne: { foto: 'romork-ve-gubre-serpme', pos: '55% 40%', not: 'Teslim günü, müşterimizle' },
+    uses: [['spread', 'Granül gübre serpme'], ['wheat', 'Dengeli dağıtım'], ['tractor', 'Traktör arkasına takılır']], usesH: 'Ne işe yarar?',
     bilinen: [],
-    olcu: ['Depo hacmi', 'Serpme genişliği', 'Tip', 'Traktör gücü'],
+    olcu: ['Depo hacmi (lt)', 'Serpme genişliği', 'Tip', 'Traktör gücü'],
     sec: ['Farklı kapasite seçenekleri'],
     akis: 3,
   },
 ];
 const A = URUNLER.filter((u) => u.bolum === 'A');
 const B = URUNLER.filter((u) => u.bolum === 'B');
-// Sayfa numaraları: kapak 1, tanıtım 2, rehber 3, A ayırıcı 4, A ürünleri 5-8, B ayırıcı 9, B ürünleri 10-12, sahadan 13, hizmetler 14, fiyat 15, arka 16
-const SAYFA = { romork: 5, kultivator: 6, kepce: 7, tanker: 8, tapan: 10, pulluk: 11, gubre: 12 };
-const AKIS = ['Pulluk', 'Kültivatör', 'Tapan', 'Gübre serpme', 'Ekim'];
+// Sayfa numaraları: kapak 1, A 2, A ürünleri 3-6, B 7, B ürünleri 8-10, hizmetler 11, arka kapak 12
+const SAYFA = { romork: 3, kultivator: 4, kepce: 5, tanker: 6, tapan: 8, pulluk: 9, gubre: 10 };
+const AKIS = ['Pulluk', 'Kültivatör', 'Tapan', 'Gübre', 'Ekim'];
 
 const sahneSrc = (s) => (s.kesit ? `img/${s.kesit}.${s.uzanti || 'png'}` : foto(s.foto));
-// Küçük önizleme (bölüm sayfası, rehber): dekupe varsa dekupe, yoksa fotoğraf
-const kucuk = (u, cls = '') => (u.sahne.kesit
-  ? `<img class="${cls} cut" src="${sahneSrc(u.sahne)}" alt="${u.ad}">`
-  : `<img class="${cls} ph" src="${foto(u.sahne.foto)}" alt="${u.ad}" style="object-position:${u.sahne.pos || '50% 50%'}">`);
+const kucuk = (u) => (u.sahne.kesit
+  ? `<img class="cut" src="${sahneSrc(u.sahne)}" alt="${u.ad}">`
+  : `<img class="ph" src="${foto(u.sahne.foto)}" alt="${u.ad}" style="object-position:${u.sahne.pos || '50% 50%'}">`);
+const etiket = (ik, t) => `<div class="tagbar">${i(ik)}<span>${t}</span></div>`;
 
-const altBant = (qr, no, cta = 'Fiyat için QR’ı okutun', alt = 'WhatsApp’ta mesajınız hazır açılır') => `
+const altBant = (no, qr = 'whatsapp', ust = 'Fiyat ve bilgi için', alt = 'QR’ı okutun, WhatsApp’ta mesajınız hazır açılır') => `
   <footer class="pf">
     <div class="qr"><img src="qr/${qr}.svg" alt="WhatsApp QR kodu"></div>
-    <div class="pf-cta"><b>${cta}</b><span>${alt}</span></div>
-    <div class="pf-sep"></div>
-    <div class="pf-tel">${i('phone')}<div><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></div></div>
+    <div class="pf-cta"><b>${ust}</b><span>${alt}</span></div>
+    <div class="pf-tel"><em class="wa">${i('chat')}</em><div><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></div></div>
     <div class="pf-no">${no}</div>
   </footer>`;
 
-const ustCizgi = (sag) => `<header class="top">${logo('logo-ink')}<span class="top-rule"></span><span class="top-meta">${sag}</span></header>`;
+const ustSerit = (sag) => `
+  <header class="top">
+    ${logo()}
+    <div class="top-r"><p class="top-k">ÜRÜN KATALOĞU <em>2026</em> · GÖKSUN</p>${sag}</div>
+  </header>`;
 
+// ---------- Ürün sayfası (7 ürün aynı düzen) ----------
 const urunSayfa = (u) => {
   const s = u.sahne;
   const sahne = s.kesit
-    ? `<div class="stage ${u.ikinci ? 'has-second' : ''}">
-        <span class="stage-no">${u.no}</span>
-        <div class="stage-title">
-          <span class="badge ${u.imalat ? 'made' : ''}">${i(u.imalat ? 'gear' : 'hand')} ${u.imalat ? 'Kendi imalatımız' : 'Satışını yapıyoruz'}</span>
-          <h1>${u.ad}</h1><p class="tag">${u.tag}</p>
-        </div>
-        <figure class="product" style="--w:${s.gen}mm"><img src="${sahneSrc(s)}" alt="${u.ad}"></figure>
-        ${u.ikinci ? `<figure class="second"><img src="${kesit(u.ikinci.kesit)}" alt="${u.ikinci.not}"><figcaption>${u.ikinci.not}</figcaption></figure>` : ''}
-        ${s.not ? `<span class="stage-note">${i('camera')} ${s.not}</span>` : ''}
-      </div>`
-    : `<div class="stage photo">
-        <img class="stage-photo" src="${foto(s.foto)}" alt="${u.ad}" style="object-position:${s.pos}">
-        <span class="stage-no">${u.no}</span>
-        <div class="stage-title">
-          <span class="badge">${i('hand')} Satışını yapıyoruz</span>
-          <h1>${u.ad}</h1><p class="tag">${u.tag}</p>
-        </div>
-        <span class="stage-note">${i('camera')} ${s.not}</span>
-      </div>`;
-
+    ? `<figure class="hero"><span class="hero-band"></span><img class="hero-cut" src="${sahneSrc(s)}" alt="${u.ad}">${s.not ? `<figcaption>${i('camera')} ${s.not}</figcaption>` : `<figcaption>${i('camera')} Gerçek ürün</figcaption>`}</figure>`
+    : `<figure class="hero photo"><img src="${foto(s.foto)}" alt="${u.ad}" style="object-position:${s.pos}"><figcaption>${i('camera')} ${s.not}</figcaption></figure>`;
   const renk = u.renk
     ? `<div class="swatches">${u.renk.map((r) => `<span><i style="background:${RENK[r][1]}"></i>${RENK[r][0]}</span>`).join('')}${u.renkNot ? `<em>${u.renkNot}</em>` : ''}</div>`
     : '';
-  const alt = u.saha && !u.bilgi
-    ? `<div class="saha"><div class="lbl">${i('camera')} Sahadan · gerçek fotoğraflar</div>
+  const alt = u.saha
+    ? `<div class="saha">${etiket('camera', 'Sahadan')}
         <div class="saha-grid n${u.saha.length}">${u.saha.map(([f, c]) => `<figure><img src="${foto(f)}" alt="${c}"><figcaption>${c}</figcaption></figure>`).join('')}</div></div>`
-    : u.bilgi
-    ? `<div class="saha"><div class="lbl">${i('camera')} Sahadan · ${u.bilgi[0]}</div>
-        <div class="saha-grid mix"><figure><img src="${foto(u.saha[0][0])}" alt="${u.saha[0][1]}"><figcaption>${u.saha[0][1]}</figcaption></figure>
-        <div class="flow"><ol>${u.bilgi[2].map(([ik, t]) => `<li>${i(ik)}<span>${t}</span></li>`).join('')}</ol><p>${u.bilgi[1]}</p></div></div></div>`
-    : `<div class="saha"><div class="lbl">${i('tractor')} Tarlada iş sırası</div>
-        <div class="flow wide"><ol class="seq">${AKIS.map((a, k) => `<li class="${k === u.akis ? 'on' : ''}"><b>${k + 1}</b>${a}</li>`).join('')}</ol>
-        <p><b>${u.ad}</b> ${u.akis + 1}. adımda kullanılır. Hangi aletin hangi işe yaradığını sayfa 3’teki rehberde bulabilirsiniz.</p></div></div>`;
+    : `<div class="saha">${etiket('tractor', 'Tarlada iş sırası')}
+        <div class="flow"><ol>${AKIS.map((a, k) => `<li class="${k === u.akis ? 'on' : ''}"><b>${k + 1}</b>${a}</li>`).join('')}</ol>
+        <p><b>${u.ad}</b>, ekim öncesi işlerin ${u.akis + 1}. adımında kullanılır. Saha fotoğrafları yakında eklenecek.</p></div></div>`;
 
   return `
-<section class="page product-page ${u.imalat ? '' : 'sale'}" id="${u.qr}">
-  ${ustCizgi(`<b>${u.no}</b> / 07 · ${u.cat}`)}
-  ${sahne}
-  <ul class="feats">${u.ozellik.map(([ik, t, d]) => `<li><span class="fi">${i(ik)}</span><div><b>${t}</b><span>${d}</span></div></li>`).join('')}</ul>
-  <div class="info">
-    <div class="info-l">
+<section class="page product" id="${u.qr}">
+  ${susler}
+  ${ustSerit(`<div class="cat"><b>${u.no}</b><span>${u.cat} · ${u.imalat ? 'Üçel imalatı' : 'Satışını yapıyoruz'}</span></div>`)}
+  <div class="intro-row">
+    <div class="intro-txt">
+      <h1 class="${u.ad.length > 16 ? 'long' : ''}">${u.ad}</h1>
+      <p class="tag">${u.tag}</p>
+      <span class="bar"></span>
       <p class="lead">${u.lead}</p>
-      ${u.bilinen.length ? `<table class="spec">${u.bilinen.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join('')}</table>` : ''}
-
+      <span class="badge ${u.imalat ? 'made' : ''}">${i(u.imalat ? 'gear' : 'hand')} ${u.imalat ? 'Kendi imalatımız' : 'Satışını yapıyoruz'}</span>
     </div>
-    <div class="info-r">
-      <div class="h3">${i('ruler')} Ölçüler modele göre</div>
+    ${sahne}
+  </div>
+  <div class="uses-row">
+    <h2>${u.usesH}</h2>
+    <ul class="uses">${u.uses.map(([ik, t]) => `<li><em class="ui">${i(ik)}</em>${t}</li>`).join('')}</ul>
+  </div>
+  <div class="cols">
+    <div>
+      ${etiket('gear', 'Teknik bilgiler')}
+      ${u.bilinen.length ? `<table class="spec">${u.bilinen.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join('')}</table>` : ''}
+      <p class="olcu-h">Modele göre değişen ölçüler:</p>
       <ul class="chips">${u.olcu.map((o) => `<li>${o}</li>`).join('')}</ul>
-      <p class="note">Size uygun modelin ölçü tablosunu WhatsApp’tan hemen gönderiyoruz.</p>
-      ${u.renk ? `<div class="h3">${i('paint')} Renk seçenekleri</div>${renk}` : ''}
-      ${u.sec.length ? `<ul class="checks">${u.sec.map((x) => `<li>${i('check')}<span>${x}</span></li>`).join('')}</ul>` : ''}
-      ${u.imalat ? '' : `<div class="assure"><div class="h3">${i('hand')} Üçel’den alırken</div><ul class="checks">
-        <li>${i('check')}<span>Traktörünüze uygunluğunu birlikte kontrol ederiz</span></li>
-        <li>${i('check')}<span>Yedek parça desteği</span></li>
-        <li>${i('check')}<span>Türkiye geneline gönderim</span></li></ul></div>`}
+      <p class="note">${i('chat')} Ölçü tablosunu WhatsApp’tan hemen gönderiyoruz.</p>
+    </div>
+    <div>
+      ${etiket('list', 'Seçenekler')}
+      <ul class="checks">${u.sec.map((x) => `<li>${i('check')}<span>${x}</span></li>`).join('')}
+        ${u.imalat ? '' : `<li>${i('check')}<span>Traktörünüze uygunluğunu birlikte kontrol ederiz</span></li><li>${i('check')}<span>Yedek parça desteği</span></li>`}
+      </ul>
+      ${u.renk ? `<p class="olcu-h">Renk seçenekleri:</p>${renk}` : ''}
     </div>
   </div>
   ${alt}
-  ${altBant(u.qr, SAYFA[u.qr])}
+  ${altBant(SAYFA[u.qr], u.qr)}
 </section>`;
 };
 
 // ---------- Kapak ----------
 const kapak = `
-<section class="page dark cover">
-  <div class="cover-top"><span>Ürün kataloğu <em>2026</em></span>${serit}<span><em>Göksun</em> · Kahramanmaraş</span></div>
+<section class="page cover">
+  ${susler}
+  <p class="cover-k">ÜRÜN KATALOĞU <em>2026</em> · GÖKSUN</p>
   ${logo('logo-lg')}
-  <h1>Tarlada da, yolda da<br><em>sağlam iş.</em></h1>
+  <h1>Tarlada da,<br>yolda da sağlam iş.</h1>
+  <p class="sub">Römork, kültivatör, loader kepçe ve su tankerini Göksun’da kendimiz üretiyoruz. Diğer tarım aletlerinin satışını yapıyoruz.</p>
   <div class="showroom">
+    <span class="sr-band"></span>
     <img class="s-romork" src="${kesit('k-romork')}" alt="Üçel tarım römorku">
     <img class="s-kepce" src="${kesit('k-kepce')}" alt="Üçel loader kepçe">
     <img class="s-kult" src="${kesit('k-kultivator')}" alt="Üçel yaylı kültivatör">
   </div>
-  <p class="sub">Römork, kültivatör, loader kepçe ve su tankerini Göksun’daki atölyemizde kendimiz üretiyoruz. Diğer tarım aletlerinin satışını yapıyoruz.</p>
   <div class="cover-bottom">
     <div><div class="toc-h">${i('gear')} Kendi imalatımız</div>
-      <ul class="toc-mini">${A.map((u) => `<li><b>${u.no}</b>${u.ad}<span>${SAYFA[u.qr]}</span></li>`).join('')}</ul></div>
-    <div><div class="toc-h">${i('hand')} Sattığımız ürünler</div>
-      <ul class="toc-mini">${B.map((u) => `<li><b>${u.no}</b>${u.ad}<span>${SAYFA[u.qr]}</span></li>`).join('')}</ul></div>
-    <div class="cover-call">${i('phone')}<b>${FIRMA.telefon}</b><span>Telefon · WhatsApp<br>Her gün 08:00–19:00</span></div>
+      <ul class="toc">${A.map((u) => `<li><b>${u.no}</b>${u.ad}<span>${SAYFA[u.qr]}</span></li>`).join('')}</ul></div>
+    <div><div class="toc-h">${i('gear')} Sattığımız ürünler</div>
+      <ul class="toc">${B.map((u) => `<li><b>${u.no}</b>${u.ad}<span>${SAYFA[u.qr]}</span></li>`).join('')}
+        <li><b>${i('wrench')}</b>Hizmetlerimiz<span>11</span></li></ul></div>
+    <div class="cover-call"><em class="wa">${i('phone')}</em><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></div>
   </div>
 </section>`;
 
-const sayfaBaslik = (kicker, baslik) => `<div><p class="kicker">${kicker}</p><h2 class="display">${baslik}</h2></div>`;
-const basitAlt = (no) => altBant('whatsapp', no, 'Sorunuz mu var?', 'QR’ı okutun, WhatsApp’tan yazın');
-
-// ---------- Tanıtım ----------
-const tanitim = `
-<section class="page">
-  <figure class="intro-hero">
-    <img src="${foto('tarim-romorku-yesil-teslimat')}" alt="Üçel römorkunu teslim alan müşteri">
-    <div class="intro-hero-txt"><p class="kicker">Hoş geldiniz</p><h2 class="display">Göksun’dan,<br>tarlanıza.</h2></div>
-    <figcaption>Yeni römorkunu teslim alan müşterimiz. Kasada kendi adı yazılı.</figcaption>
-  </figure>
-  <div class="intro">
-    <div class="intro-grid">
-      <p class="big">Üçel Tarım Aletleri olarak Göksun Sanayi Sitesi’ndeki atölyemizde <strong>römork, yaylı kültivatör, loader kepçe ve su tankerini kaynağından boyasına kadar kendimiz üretiyoruz.</strong> Ürünlerimizin üzerinde <strong>ÜÇEL · GÖKSUN</strong> yazar.</p>
-      <p class="big">Pulluk, tapan ve gübre serpme makinesi gibi diğer aletlerin satışını da yapıyoruz. Traktörünüze ve işinize uygun olanı <strong>birlikte seçiyoruz.</strong></p>
-    </div>
-    <ul class="values">
-      <li>${i('gear')}<b>Kendi imalatımız</b><span>Dört ürün Göksun’daki atölyemizden çıkar.</span></li>
-      <li>${i('paint')}<b>Size özel</b><span>Kasa rengi ve kasa yazısı isteğinize göre.</span></li>
-      <li>${i('truck')}<b>Türkiye geneli</b><span>Anlaşmalı nakliyeyle kapınıza.</span></li>
-      <li>${i('wrench')}<b>Satıştan sonra</b><span>Yedek parça, takas, ikinci el.</span></li>
-    </ul>
-    <div class="toc">
-      <div><h3>A · Kendi imalatımız</h3><ul>${A.map((u) => `<li><b>${u.no}</b>${u.ad}<span></span><em>${SAYFA[u.qr]}</em></li>`).join('')}</ul></div>
-      <div><h3>B · Sattığımız ürünler</h3><ul>${B.map((u) => `<li><b>${u.no}</b>${u.ad}<span></span><em>${SAYFA[u.qr]}</em></li>`).join('')}
-        <li><b>${i('tractor')}</b>Hangi iş için hangi alet?<span></span><em>3</em></li>
-        <li><b>${i('wrench')}</b>Sahadan · Hizmetler · Fiyat<span></span><em>13</em></li></ul></div>
-    </div>
-  </div>
-  ${basitAlt(2)}
-</section>`;
-
-// ---------- Rehber ----------
-const urun = Object.fromEntries(URUNLER.map((u) => [u.qr, u]));
-const ADIM = [
-  ['pulluk', '1 · Sonbahar / ilkbahar', 'Toprağı sürmek', 'Toprağı devirir, anızı gömer. Derin işleme için ilk adım.'],
-  ['kultivator', '2 · Ekim öncesi', 'Toprağı inceltmek', 'Sürülmüş toprağı ufalar, tohum yatağını hazırlar.'],
-  ['tapan', '3 · Ekim öncesi', 'Tarlayı düzlemek', 'Keseği kırar, yüzeyi düzler; ekim makinesi düzgün çalışır.'],
-  ['gubre', '4 · Ekimle birlikte', 'Gübre vermek', 'Granül gübreyi tarlaya dengeli şekilde serper.'],
-  ['tanker', '5 · Yaz boyunca', 'Su taşımak', 'Tarla sulaması, merada ve yaylada hayvan suyu.'],
-  ['romork', '6 · Hasat ve kış', 'Taşımak', 'Ürün, saman, yem, odun ve gübre taşıma.'],
-  ['kepce', '7 · Her mevsim', 'Yüklemek', 'Gübre, yem ve malzemeyi kaldırır, römorka yükler.'],
-];
-const rehber = `
-<section class="page">
-  <div class="intro" style="padding-top:14mm">
-    ${sayfaBaslik('Rehber', 'Hangi iş için hangi alet?')}
-    <p class="big">Tarlanın sürümünden hasadın taşınmasına kadar, sezon boyunca işinizi gören aletler.</p>
-    <ol class="steps">
-      ${ADIM.map(([q, z, t, d]) => `<li><span class="thumb">${kucuk(urun[q])}</span><div><h3><small>${z}</small>${t}</h3><p>${d}</p></div><div class="go">${urun[q].ad}<span>Sayfa ${SAYFA[q]} ${i('arrow')}</span></div></li>`).join('')}
-    </ol>
-    <div class="tip">${i('gauge')}<p><b>Önce traktörünüze bakın.</b> Her aletin istediği traktör gücü farklıdır. Traktörünüzün marka, model ve beygir gücünü yazın; gücüne uygun olanı söyleyelim.</p></div>
-  </div>
-  ${basitAlt(3)}
-</section>`;
-
-// ---------- Bölüm ayırıcı ----------
-const bolumSayfa = (harf, baslik, metin, liste, no, sekme) => `
-<section class="page dark">
-  <div class="section">
-    <svg class="gear-bg" viewBox="0 0 100 100" aria-hidden="true"><path d="${DISLI}"/></svg>
-    <span class="tab">${sekme}</span>
-    <p class="kicker">Bölüm ${harf}</p>
-    <h2 class="display">${baslik}</h2>
-    <p class="sub">${metin}</p>
-    <ul class="cards n${liste.length}">
-      ${liste.map((u) => `<li><div class="card-img">${kucuk(u)}</div><div class="card-txt"><b>${u.no}</b><strong>${u.ad}</strong><span>Sayfa ${SAYFA[u.qr]} ${i('arrow')}</span></div></li>`).join('')}
-    </ul>
-    <div class="sec-foot">${serit}<span>${no}</span></div>
-  </div>
-</section>`;
-
-// ---------- Sahadan ----------
-const sahadan = `
-<section class="page">
-  <div class="intro">
-    ${sayfaBaslik('Sahadan', 'Teslim ettiklerimiz')}
-    <p class="quote">Bu sayfadaki fotoğrafların hepsi gerçek: atölyemizden çıkan aletler, müşterilerimizin elinde.</p>
-    <div class="gallery">
-      <figure class="wide"><img src="${foto('tarim-romorku-yesil')}" alt="Yeşil tarım römorku" style="object-position:50% 60%"><figcaption>Yeşil römork, kasasında müşterimizin adıyla.</figcaption></figure>
-      <figure><img src="${foto('on-yukleyici-kaldirma')}" alt="Loader kepçe kaldırırken"><figcaption>Loader kepçe tam yükseklikte.</figcaption></figure>
-      <figure><img src="${foto('on-yukleyici-saha')}" alt="Loader kepçe sahada"><figcaption>Traktöre takılı, işe hazır.</figcaption></figure>
-      <figure><img src="${foto('tarim-romorku-yuk-araci')}" alt="Römork yük aracında"><figcaption>Uzak illere: römork yük aracında yola çıkıyor.</figcaption></figure>
-      <figure><img src="${foto('on-yukleyici-atolye')}" alt="Atölye önünde loader"><figcaption>Göksun Sanayi Sitesi’ndeki atölyemizin önü.</figcaption></figure>
-    </div>
-  </div>
-  ${basitAlt(13)}
+// ---------- Bölüm sayfası ----------
+const bolumSayfa = (harf, baslik, metin, liste, no) => `
+<section class="page section">
+  ${susler}
+  <p class="cover-k">ÜRÜN KATALOĞU <em>2026</em> · GÖKSUN</p>
+  ${logo('logo-md')}
+  <div class="sec-title"><p class="sec-k">Bölüm ${harf}</p><h2>${baslik}</h2><span class="bar"></span><p class="sub">${metin}</p></div>
+  <ul class="cards n${liste.length}">
+    ${liste.map((u) => `<li><span class="card-no">${u.no}</span><div class="card-img">${kucuk(u)}</div><div class="card-txt"><strong>${u.ad}</strong><span>${u.tag}</span><em>Sayfa ${SAYFA[u.qr]} ${i('arrow')}</em></div></li>`).join('')}
+  </ul>
+  <div class="sec-no"><span>SAYFA</span><b>${no}</b></div>
 </section>`;
 
 // ---------- Hizmetler ----------
 const hizmetler = `
-<section class="page">
-  <div class="intro">
-    ${sayfaBaslik('Satıştan sonra da yanınızdayız', 'Hizmetlerimiz')}
-    <p class="big">Sadece satış değil; aletinizin her aşamasında yanınızdayız.</p>
-    <ul class="svc">
-      <li><span class="n">${i('cycle')}</span><div><b>İkinci el</b><span>İkinci el tarım aleti alıp satıyoruz; gerçek durumunu dürüstçe paylaşıyoruz.</span></div></li>
-      <li><span class="n">${i('swap')}</span><div><b>Takas</b><span>Eski aletinizin fotoğrafını gönderin; yeni ya da ikinci el bir aletle takas edelim.</span></div></li>
-      <li><span class="n">${i('ruler')}</span><div><b>Özel imalat</b><span>Kendi imal ettiğimiz aletlerde ihtiyacınıza göre özel ölçü yapabiliyoruz.</span></div></li>
-      <li><span class="n">${i('gear')}</span><div><b>Yedek parça</b><span>Sattığımız ve sık kullanılan aletler için yedek parça bulunduruyoruz.</span></div></li>
-    </ul>
-    <figure class="intro-photo"><img src="${foto('doner-ot-tirmigi-sevkiyat')}" alt="Atölye önünde sevkiyat" style="object-position:50% 35%"><figcaption>Atölyemizin önünde: bir alet müşterimize gönderilmek üzere yükleniyor.</figcaption></figure>
-    <div class="ask">
-      <div><h3>Listede yoksa sorun</h3><p>Katalogda görmediğiniz aletler için de bize yazın; birlikte bakalım.</p>
-        <ul class="chips"><li>Mibzer</li><li>Çayır biçme makinesi</li><li>Döner ot tırmığı</li><li>Tesviye küreği</li><li>ve diğerleri</li></ul></div>
-      <span class="ask-i">${i('question')}</span>
-    </div>
-    <div class="ship">${i('truck')}<p><b>Türkiye geneline gönderim.</b> Nakliyeyi genellikle anlaşmalı nakliye firmalarıyla sağlıyoruz. Şehrinizi yazın, seçeneği birlikte belirleyelim.</p></div>
-  </div>
-  ${basitAlt(14)}
-</section>`;
-
-// ---------- Fiyat ----------
-const fiyat = `
-<section class="page">
-  <div class="intro">
-    ${sayfaBaslik('Kolay sipariş', '3 adımda fiyat alın')}
-    <ol class="three">
-      <li><b>1</b>${i('list')}<strong>Ürünü seçin</strong><span>Bu katalogdan ihtiyacınıza uygun aleti bulun.</span></li>
-      <li><b>2</b>${i('chat')}<strong>WhatsApp’tan yazın</strong><span>Ürün sayfasındaki QR’ı okutun; mesajınız hazır açılır.</span></li>
-      <li><b>3</b>${i('hand')}<strong>Fiyatı konuşalım</strong><span>Fiyatı, seçenekleri ve teslimatı birlikte netleştirelim.</span></li>
-    </ol>
-    <div class="form">
-      <h3>Bize yazarken bunları ekleyin</h3>
-      <p>Bu bilgilerle size en uygun aleti ve doğru fiyatı ilk mesajda verebiliriz. Kalemle doldurup fotoğrafını da gönderebilirsiniz.</p>
-      <div class="form-rows">
-        <div>${i('list')} İstediğiniz alet:</div>
-        <div>${i('tractor')} Traktör marka / model:</div>
-        <div>${i('gauge')} Traktör gücü (HP):</div>
-        <div>${i('pin')} İl / ilçe:</div>
-        <div>${i('soil')} Arazi (taşlı, ağır, düz…):</div>
-        <div>${i('paint')} Renk / kasa yazısı:</div>
-        <div>${i('user')} Ad soyad:</div>
-        <div>${i('phone')} Telefon:</div>
-      </div>
-      <div class="form-notes"><span>Notlarım</span></div>
-    </div>
-  </div>
-  ${basitAlt(15)}
+<section class="page product services">
+  ${susler}
+  ${ustSerit(`<div class="cat"><b>C</b><span>Satıştan sonra da yanınızdayız</span></div>`)}
+  <div class="svc-head"><h1>Hizmetlerimiz</h1><p class="tag">Sadece satış değil; aletinizin her aşamasında yanınızdayız.</p></div>
+  <ul class="svc">
+    <li><em class="ui">${i('cycle')}</em><b>İkinci el</b><span>İkinci el tarım aleti alıp satıyoruz; gerçek durumunu dürüstçe paylaşıyoruz.</span></li>
+    <li><em class="ui">${i('swap')}</em><b>Takas</b><span>Eski aletinizin fotoğrafını gönderin; yeni ya da ikinci el bir aletle takas edelim.</span></li>
+    <li><em class="ui">${i('ruler')}</em><b>Özel imalat</b><span>Kendi imal ettiğimiz aletlerde ihtiyacınıza göre özel ölçü yapıyoruz.</span></li>
+    <li><em class="ui">${i('gear')}</em><b>Yedek parça</b><span>Sattığımız ve sık kullanılan aletler için yedek parça bulunduruyoruz.</span></li>
+  </ul>
+  <div class="ask"><em class="ui">${i('question')}</em><div><h3>Listede yoksa sorun</h3><p>Mibzer, çayır biçme makinesi, döner ot tırmığı, tesviye küreği ve katalogda görmediğiniz diğer aletler için de bize yazın; birlikte bakalım.</p></div></div>
+  <div class="three-h"><h2>3 adımda fiyat alın</h2></div>
+  <ol class="three">
+    <li><b>1</b><div><strong>Ürünü seçin</strong><span>Bu katalogdan ihtiyacınıza uygun aleti bulun.</span></div></li>
+    <li><b>2</b><div><strong>WhatsApp’tan yazın</strong><span>Ürün adını, traktörünüzü ve ilinizi yazmanız yeterli.</span></div></li>
+    <li><b>3</b><div><strong>Fiyatı konuşalım</strong><span>Fiyatı, seçenekleri ve teslimatı birlikte netleştirelim.</span></div></li>
+  </ol>
+  <div class="ship"><em class="ui">${i('truck')}</em><p><b>Türkiye geneline gönderim.</b> Nakliyeyi genellikle anlaşmalı nakliye firmalarıyla sağlıyoruz; şehrinizi yazın, seçeneği birlikte belirleyelim.</p></div>
+  ${altBant(11, 'whatsapp', 'Sorunuz mu var?', 'QR’ı okutun, WhatsApp’tan yazın')}
 </section>`;
 
 // ---------- Arka kapak ----------
 const arka = `
-<section class="page dark">
-  <div class="back">
-    ${logo('logo-lg')}
-    <p class="lbl">Fiyat ve bilgi için</p>
-    <p class="tel">${FIRMA.telefon}</p>
-    <p class="hours">Telefon ve WhatsApp · Her gün 08:00 – 19:00</p>
-    <ul class="qrs">
-      <li><div class="qr"><img src="qr/whatsapp.svg" alt="WhatsApp QR"></div><b>${i('chat')} WhatsApp</b><span>Mesajınız hazır açılır</span></li>
-      <li><div class="qr"><img src="qr/harita.svg" alt="Konum QR"></div><b>${i('pin')} Konum</b><span>Yol tarifi alın</span></li>
-      <li><div class="qr"><img src="qr/site.svg" alt="Web sitesi QR"></div><b>${i('globe')} Web sitesi</b><span>Tüm ürünler ve fotoğraflar</span></li>
-    </ul>
+<section class="page back">
+  ${susler}
+  ${logo('logo-lg')}
+  <p class="lbl">Fiyat ve bilgi için</p>
+  <p class="tel">${FIRMA.telefon}</p>
+  <p class="hours">Telefon ve WhatsApp · Her gün 08:00 – 19:00</p>
+  <ul class="qrs">
+    <li><em class="ui">${i('chat')}</em><b>WhatsApp</b><span>Mesajınız hazır açılır</span><div class="qr"><img src="qr/whatsapp.svg" alt="WhatsApp QR"></div></li>
+    <li><em class="ui">${i('pin')}</em><b>Konum</b><span>Yol tarifi alın</span><div class="qr"><img src="qr/harita.svg" alt="Konum QR"></div></li>
+    <li><em class="ui">${i('globe')}</em><b>Web sitesi</b><span>Tüm ürünler</span><div class="qr"><img src="qr/site.svg" alt="Web sitesi QR"></div></li>
+  </ul>
+  <div class="back-foot">
     <div class="back-row"><img src="${kesit('k-kultivator-mavi')}" alt=""><img src="${kesit('k-romork-yesil')}" alt=""><img src="${kesit('k-tanker')}" alt=""></div>
-    <p class="svcs"><b>Hizmetlerimiz</b>İkinci el · Takas · Özel imalat · Yedek parça</p>
-    <address>Üçel Tarım Aletleri · Yeni Mah., Göksun Sanayi Sitesi, 46660 Göksun / Kahramanmaraş</address>
-    ${serit}
+    <em class="ui">${i('gear')}</em>
+    <h3>Hizmetlerimiz</h3>
+    <p class="svcs">İkinci el · Takas · Özel imalat · Yedek parça</p>
+    <address>${i('pin')} Üçel Tarım Aletleri · Yeni Mah., Göksun Sanayi Sitesi, 46660 Göksun / Kahramanmaraş</address>
+    <span class="pf-no">12</span>
   </div>
 </section>`;
 
@@ -430,20 +322,16 @@ const html = `<!doctype html>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="katalog.css">
 </head>
 <body>
 ${kapak}
-${tanitim}
-${rehber}
-${bolumSayfa('A', 'Kendi<br><em>imalatımız</em>', 'Göksun Sanayi Sitesi’ndeki atölyemizde kaynağından boyasına kadar kendimiz üretiyoruz. Ürünlerimizin üzerinde <b>ÜÇEL · GÖKSUN</b> yazar.', A, 4, 'A · İmalat')}
+${bolumSayfa('A', 'Kendi imalatımız', 'Göksun Sanayi Sitesi’ndeki atölyemizde kaynağından boyasına kadar kendimiz üretiyoruz. Ürünlerimizin üzerinde <b>ÜÇEL · GÖKSUN</b> yazar.', A, 2)}
 ${A.map(urunSayfa).join('')}
-${bolumSayfa('B', 'Sattığımız<br><em>ürünler</em>', 'Toprak hazırlığından gübrelemeye. Traktörünüze ve işinize uygun olanı birlikte seçelim.', B, 9, 'B · Satış')}
+${bolumSayfa('B', 'Sattığımız ürünler', 'Toprak hazırlığından gübrelemeye; traktörünüze ve işinize uygun aleti birlikte seçelim.', B, 7)}
 ${B.map(urunSayfa).join('')}
-${sahadan}
 ${hizmetler}
-${fiyat}
 ${arka}
 </body>
 </html>

@@ -32,5 +32,5 @@ KODLAR = {
 hedef = pathlib.Path(__file__).resolve().parent.parent / 'katalog' / 'qr'
 hedef.mkdir(parents=True, exist_ok=True)
 for ad, veri in KODLAR.items():
-    segno.make(veri, error='m').save(hedef / f'{ad}.svg', scale=4, border=0, dark='#2A211B', light=None)
+    segno.make(veri, error='m').save(hedef / f'{ad}.svg', scale=4, border=0, dark='#1E1E1E', light=None)
     print(ad, '→', veri)

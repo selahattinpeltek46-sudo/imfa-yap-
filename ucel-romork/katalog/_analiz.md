@@ -77,3 +77,13 @@ v1'in "özenilecek" seviyeye ulaşamama nedenleri ve yapılanlar:
 | Fotoğraflar farklı renk tonlarında | Tüm fotoğraflara aynı sıcak ton düzeltmesi |
 
 Sınır: Kaynak fotoğraflar yaklaşık 1000–1300 piksel. Ekranda ve A4 baskıda iyi görünür; büyük afiş baskısı için daha yüksek çözünürlüklü çekim gerekir.
+
+## 6. v3 — Üçel'in sarı-siyah Canva kataloğu üzerine (14.10.2026)
+Üçel'in yeni Canva kataloğu (açık gri + sarı + siyah, Poppins, dişli amblem) temel alındı. Kararlar:
+- 12 sayfa, Canva'daki sıra: Kapak → Bölüm A → 4 imalat ürünü → Bölüm B → 3 satış ürünü → Hizmetler → Arka kapak.
+- Su tankeri A bölümünde (kendi imalatı). Kapak metni buna göre.
+- 7 ürün sayfası tek düzende: başlık + açıklama solda, ürün sağda (sarı çerçeve, kırık köşe); "Ne işe yarar?"; teknik bilgiler + seçenekler; sahadan; alt bant (ürüne özel WhatsApp QR'ı + telefon + sayfa no).
+- Tek yazı ailesi (Poppins), telefonda okunacak boyutlar.
+- Amblem Canva kataloğundan alındı (katalog/img/logo-amblem.png); vektör dosyası gelirse değiştirilir.
+- "Bilgi için iletişime geçin" tekrarları yerine: bilinen değerler tabloda, diğerleri tek "Modele göre değişen ölçüler" listesinde.
+- Gübre serpme metni "granül gübre" olarak düzeltildi.
