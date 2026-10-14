@@ -87,3 +87,11 @@ Sınır: Kaynak fotoğraflar yaklaşık 1000–1300 piksel. Ekranda ve A4 baskı
 - Amblem Canva kataloğundan alındı (katalog/img/logo-amblem.png); vektör dosyası gelirse değiştirilir.
 - "Bilgi için iletişime geçin" tekrarları yerine: bilinen değerler tabloda, diğerleri tek "Modele göre değişen ölçüler" listesinde.
 - Gübre serpme metni "granül gübre" olarak düzeltildi.
+
+## 7. v3 son denetim (14.10.2026)
+- Kepçe: fotoğrafların hepsinde kepçe traktörün **arkasına** takılı (arka stop lambaları, büyük arka tekerlek). Metin "önüne takılan" → "arkasına takılan" düzeltildi. Not: web sitesinde ürün "Ön Yükleyici" adıyla ve "önüne takılan" diye geçiyor; Üçel'e sorulup site de düzeltilmeli.
+- Teyit edilmemiş ifadeler kaldırıldı ("teslime hazır", "atölyemizin önünde" gibi fotoğraftan anlaşılamayan bilgiler; römorkta kırmızı renk).
+- "Ölçü tablosunu hemen gönderiyoruz" → "WhatsApp'tan isteyin, gönderelim" (söz vermeyen dil).
+- PDF telefonda açılacağı için QR'lar, telefon numarası ve WhatsApp yazıları dokunulabilir bağlantı yapıldı (tel: ve wa.me).
+- Konum QR'ı işletme adı + açık adresle arar.
+- Düşük çözünürlüklü saha fotoğrafları değiştirildi; 11 QR kodun hepsi PDF'ten okutularak doğrulandı.

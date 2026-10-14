@@ -5,7 +5,7 @@
 //   node ucel-romork/_kaynak/katalog.mjs --pdf  (+ katalog/Ucel-Katalog-2026.pdf)
 //
 // KURAL (veri.mjs ile aynı): Üçel'in teyit etmediği teknik değer yazılmaz.
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FIRMA } from './veri.mjs';
@@ -75,9 +75,9 @@ const URUNLER = [
     uses: [['wheat', 'Tarla ürünü'], ['sack', 'Gübre ve yem'], ['logs', 'Odun ve malzeme']], usesH: 'Ne taşır?',
     bilinen: [['Üretim', 'Üçel · Göksun atölyesi'], ['Kasa rengi', 'İsteğe göre'], ['Kasa yazısı', 'İsim, firma adı, “Maşallah”']],
     olcu: ['Kapasite (ton)', 'Kasa iç ölçüsü', 'Dingil', 'Damper', 'Lastik ebadı', 'Traktör gücü'],
-    renk: ['mavi', 'yesil', 'kirmizi'], renkNot: 've diğer renkler',
+    renk: ['mavi', 'yesil'], renkNot: 've istediğiniz diğer renkler',
     sec: ['Standart dışı ölçüde özel imalat'],
-    saha: [['tarim-romorku-yesil-teslimat', 'Teslim günü: kasada müşterimizin adı yazılı.'], ['tarim-romorku-traktor', 'Mavi römork, yola çıkmadan önce.']],
+    saha: [['tarim-romorku-yesil-teslimat', 'Teslim günü: kasada müşterimizin adı yazılı.'], ['tarim-romorku-traktor', 'Mavi römork, teslimat için yükleniyor.']],
   },
   {
     no: '02', qr: 'kultivator', ad: 'Yaylı Kültivatör', bolum: 'A', cat: 'Toprak işleme', imalat: true,
@@ -89,19 +89,19 @@ const URUNLER = [
     olcu: ['Ayak sayısı', 'Çalışma genişliği', 'Çalışma derinliği', 'Traktör gücü'],
     renk: ['kirmizi', 'mavi'],
     sec: ['Farklı ayak sayısı ve ebat seçenekleri'],
-    saha: [['yayli-kultivator-kirmizi', 'Kırmızı kültivatörler, teslime hazır.'], ['yayli-kultivator-mavi', 'Mavi seçenek, atölyemizin önünde.']],
+    saha: [['yayli-kultivator-kirmizi', 'Kırmızı Göksun kültivatörler.'], ['yayli-kultivator-mavi', 'Mavi renk seçeneği.']],
   },
   {
     no: '03', qr: 'kepce', ad: 'Loader Kepçe', bolum: 'A', cat: 'Yükleme', imalat: true,
     tag: 'Gübre, yem ve malzemeyi traktörünüzle yükleyin.',
-    lead: 'Traktörünüzün önüne takılan hidrolik kepçe. Yem, gübre ve malzemeyi kaldırıp taşır. Kendi atölyemizde imal ediyoruz.',
+    lead: 'Traktörünüzün arkasına takılan hidrolik kepçe. Yem, gübre ve malzemeyi kaldırıp taşır. Kendi atölyemizde imal ediyoruz.',
     sahne: { kesit: 'k-kepce' },
     uses: [['lift', 'Yükleme ve boşaltma'], ['barn', 'Ahır ve çiftlik işleri'], ['box', 'Malzeme taşıma']], usesH: 'Ne işe yarar?',
-    bilinen: [['Çalışma', 'Hidrolik'], ['Montaj', 'Traktörünüzün modeline göre'], ['Üretim', 'Üçel · Göksun atölyesi']],
+    bilinen: [['Çalışma', 'Hidrolik'], ['Montaj', 'Traktörün arkasına'], ['Üretim', 'Üçel · Göksun atölyesi']],
     olcu: ['Kaldırma kapasitesi', 'Kaldırma yüksekliği', 'Kepçe genişliği', 'Traktör gücü'],
     renk: ['kirmizi', 'mavi'],
     sec: ['Traktörünüze montaj uygunluğunu birlikte kontrol ederiz'],
-    saha: [['on-yukleyici-kubota', 'Traktöre takılmış kırmızı loader.'], ['on-yukleyici-mavi', 'Mavi traktöre mavi loader.']],
+    saha: [['on-yukleyici-kubota', 'Traktöre takılmış kırmızı loader kepçe.'], ['on-yukleyici-atolye', 'Atölyemizin önünde, kepçe yukarıda.']],
   },
   {
     no: '04', qr: 'tanker', ad: 'Su Tankeri', bolum: 'A', cat: 'Su', imalat: true,
@@ -112,7 +112,7 @@ const URUNLER = [
     bilinen: [['Çekiş', 'Traktörle, çeki oklu şasi'], ['Üretim', 'Üçel · Göksun atölyesi']],
     olcu: ['Kapasite (lt)', 'Tank malzemesi', 'Dingil', 'Pompa', 'Traktör gücü'],
     sec: ['Farklı kapasite seçenekleri', 'Hayvan sayınıza ve sulama alanınıza göre birlikte seçelim'],
-    saha: [['su-tankeri', 'Teslime hazır su tankerleri, Göksun atölyemizin önünde.']],
+    saha: [['su-tankeri', 'Üçel su tankerleri.']],
   },
   {
     no: '05', qr: 'tapan', ad: 'Tapan', bolum: 'B', cat: 'Toprak işleme',
@@ -123,7 +123,7 @@ const URUNLER = [
     bilinen: [],
     olcu: ['Çalışma genişliği', 'Katlanır / sabit', 'Ağırlık', 'Traktör gücü'],
     sec: ['Farklı genişlik seçenekleri'],
-    akis: 2,
+    akis: 2, akisNot: 'Tapan, pulluk ve kültivatörden sonra, ekimden hemen önce kullanılır.',
   },
   {
     no: '06', qr: 'pulluk', ad: 'Pulluk', bolum: 'B', cat: 'Toprak işleme',
@@ -134,7 +134,7 @@ const URUNLER = [
     bilinen: [['Tip', 'Kulaklı'], ['Gövde sayısı', '4 (fotoğraftaki model)']],
     olcu: ['Çalışma genişliği', 'Çalışma derinliği', 'Traktör gücü'],
     sec: ['Farklı gövde sayısı seçenekleri'],
-    saha: [['kulakli-pulluk', 'Kulaklı pulluklar, teslime hazır.'], ['on-yukleyici-ve-pulluk', 'Akşam teslimatı: pulluk ve loader.']],
+    saha: [['kulakli-pulluk', 'Kulaklı pulluklar.'], ['on-yukleyici-ve-pulluk', 'Mavi pulluk ve kırmızı loader kepçe.']],
   },
   {
     no: '07', qr: 'gubre', ad: 'Gübre Serpme Makinesi', bolum: 'B', cat: 'Gübreleme',
@@ -145,12 +145,15 @@ const URUNLER = [
     bilinen: [],
     olcu: ['Depo hacmi (lt)', 'Serpme genişliği', 'Tip', 'Traktör gücü'],
     sec: ['Farklı kapasite seçenekleri'],
-    akis: 3,
+    akis: 3, akisNot: 'Taban gübresi için ekimden önce, üst gübre için bitki büyürken kullanılır.',
   },
 ];
 const A = URUNLER.filter((u) => u.bolum === 'A');
 const B = URUNLER.filter((u) => u.bolum === 'B');
 // Sayfa numaraları: kapak 1, A 2, A ürünleri 3-6, B 7, B ürünleri 8-10, hizmetler 11, arka kapak 12
+// QR kodlarıyla aynı adresler (katalog_qr.py üretir): PDF telefonda açılınca QR okutulamaz, dokunulur
+const WA = JSON.parse(readFileSync(join(KOK, 'qr', 'linkler.json'), 'utf8'));
+const TEL = 'tel:' + FIRMA.telefonE164;
 const SAYFA = { romork: 3, kultivator: 4, kepce: 5, tanker: 6, tapan: 8, pulluk: 9, gubre: 10 };
 const AKIS = ['Pulluk', 'Kültivatör', 'Tapan', 'Gübre', 'Ekim'];
 
@@ -160,11 +163,11 @@ const kucuk = (u) => (u.sahne.kesit
   : `<img class="ph" src="${foto(u.sahne.foto)}" alt="${u.ad}" style="object-position:${u.sahne.pos || '50% 50%'}">`);
 const etiket = (ik, t) => `<div class="tagbar">${i(ik)}<span>${t}</span></div>`;
 
-const altBant = (no, qr = 'whatsapp', ust = 'Fiyat ve bilgi için', alt = 'QR’ı okutun, WhatsApp’ta mesajınız hazır açılır') => `
+const altBant = (no, qr = 'whatsapp', ust = 'Fiyat ve bilgi için', alt = 'QR’ı okutun ya da dokunun; WhatsApp’ta mesajınız hazır açılır') => `
   <footer class="pf">
-    <div class="qr"><img src="qr/${qr}.svg" alt="WhatsApp QR kodu"></div>
-    <div class="pf-cta"><b>${ust}</b><span>${alt}</span></div>
-    <div class="pf-tel"><em class="wa">${i('chat')}</em><div><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></div></div>
+    <a class="qr" href="${WA[qr]}"><img src="qr/${qr}.svg" alt="WhatsApp QR kodu"></a>
+    <a class="pf-cta" href="${WA[qr]}"><b>${ust}</b><span>${alt}</span></a>
+    <a class="pf-tel" href="${TEL}"><em class="wa">${i('phone')}</em><div><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></div></a>
     <div class="pf-no">${no}</div>
   </footer>`;
 
@@ -178,7 +181,7 @@ const ustSerit = (sag) => `
 const urunSayfa = (u) => {
   const s = u.sahne;
   const sahne = s.kesit
-    ? `<figure class="hero"><span class="hero-band"></span><img class="hero-cut" src="${sahneSrc(s)}" alt="${u.ad}">${s.not ? `<figcaption>${i('camera')} ${s.not}</figcaption>` : `<figcaption>${i('camera')} Gerçek ürün</figcaption>`}</figure>`
+    ? `<figure class="hero"><span class="hero-band"></span><img class="hero-cut" src="${sahneSrc(s)}" alt="${u.ad}">${s.not ? `<figcaption>${i('camera')} ${s.not}</figcaption>` : `<figcaption>${i('camera')} Gerçek fotoğraf</figcaption>`}</figure>`
     : `<figure class="hero photo"><img src="${foto(s.foto)}" alt="${u.ad}" style="object-position:${s.pos}"><figcaption>${i('camera')} ${s.not}</figcaption></figure>`;
   const renk = u.renk
     ? `<div class="swatches">${u.renk.map((r) => `<span><i style="background:${RENK[r][1]}"></i>${RENK[r][0]}</span>`).join('')}${u.renkNot ? `<em>${u.renkNot}</em>` : ''}</div>`
@@ -188,7 +191,8 @@ const urunSayfa = (u) => {
         <div class="saha-grid n${u.saha.length}">${u.saha.map(([f, c]) => `<figure><img src="${foto(f)}" alt="${c}"><figcaption>${c}</figcaption></figure>`).join('')}</div></div>`
     : `<div class="saha">${etiket('tractor', 'Tarlada iş sırası')}
         <div class="flow"><ol>${AKIS.map((a, k) => `<li class="${k === u.akis ? 'on' : ''}"><b>${k + 1}</b>${a}</li>`).join('')}</ol>
-        <p><b>${u.ad}</b>, ekim öncesi işlerin ${u.akis + 1}. adımında kullanılır. Saha fotoğrafları yakında eklenecek.</p></div></div>`;
+        <p>${u.akisNot}</p></div></div>
+       <a class="ask-cta" href="${WA[u.qr]}">${i('chat')}<span><b>Fotoğraf ve ölçü isteyin</b>${u.ad} için güncel fotoğrafları ve ölçüleri WhatsApp’tan gönderelim.</span>${i('arrow')}</a>`;
 
   return `
 <section class="page product" id="${u.qr}">
@@ -214,7 +218,7 @@ const urunSayfa = (u) => {
       ${u.bilinen.length ? `<table class="spec">${u.bilinen.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join('')}</table>` : ''}
       <p class="olcu-h">Modele göre değişen ölçüler:</p>
       <ul class="chips">${u.olcu.map((o) => `<li>${o}</li>`).join('')}</ul>
-      <p class="note">${i('chat')} Ölçü tablosunu WhatsApp’tan hemen gönderiyoruz.</p>
+      <a class="note" href="${WA[u.qr]}">${i('chat')} Ölçü tablosunu WhatsApp’tan isteyin, gönderelim.</a>
     </div>
     <div>
       ${etiket('list', 'Seçenekler')}
@@ -249,7 +253,7 @@ const kapak = `
     <div><div class="toc-h">${i('gear')} Sattığımız ürünler</div>
       <ul class="toc">${B.map((u) => `<li><b>${u.no}</b>${u.ad}<span>${SAYFA[u.qr]}</span></li>`).join('')}
         <li><b>${i('wrench')}</b>Hizmetlerimiz<span>11</span></li></ul></div>
-    <div class="cover-call"><em class="wa">${i('phone')}</em><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></div>
+    <a class="cover-call" href="${WA.whatsapp}"><em class="wa">${i('chat')}</em><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></a>
   </div>
 </section>`;
 
@@ -285,6 +289,15 @@ const hizmetler = `
     <li><b>2</b><div><strong>WhatsApp’tan yazın</strong><span>Ürün adını, traktörünüzü ve ilinizi yazmanız yeterli.</span></div></li>
     <li><b>3</b><div><strong>Fiyatı konuşalım</strong><span>Fiyatı, seçenekleri ve teslimatı birlikte netleştirelim.</span></div></li>
   </ol>
+  <div class="atolye-row">
+    <figure class="atolye"><img src="${foto('doner-ot-tirmigi-sevkiyat')}" alt="Üçel atölyesi önünde sevkiyat"><figcaption>Atölyemizin önünde sevkiyat.</figcaption></figure>
+    <div class="atolye-txt">
+      <h3>Atölyemiz</h3>
+      <p>${i('pin')}<span>Yeni Mah., Göksun Sanayi Sitesi,<br>46660 Göksun / Kahramanmaraş</span></p>
+      <p>${i('clock')}<span>Her gün 08:00 – 19:00</span></p>
+      <a class="yol" href="${WA.harita}">${i('pin')} Yol tarifi alın</a>
+    </div>
+  </div>
   <div class="ship"><em class="ui">${i('truck')}</em><p><b>Türkiye geneline gönderim.</b> Nakliyeyi genellikle anlaşmalı nakliye firmalarıyla sağlıyoruz; şehrinizi yazın, seçeneği birlikte belirleyelim.</p></div>
   ${altBant(11, 'whatsapp', 'Sorunuz mu var?', 'QR’ı okutun, WhatsApp’tan yazın')}
 </section>`;
@@ -295,19 +308,19 @@ const arka = `
   ${susler}
   ${logo('logo-lg')}
   <p class="lbl">Fiyat ve bilgi için</p>
-  <p class="tel">${FIRMA.telefon}</p>
+  <a class="tel" href="${TEL}">${FIRMA.telefon}</a>
   <p class="hours">Telefon ve WhatsApp · Her gün 08:00 – 19:00</p>
   <ul class="qrs">
-    <li><em class="ui">${i('chat')}</em><b>WhatsApp</b><span>Mesajınız hazır açılır</span><div class="qr"><img src="qr/whatsapp.svg" alt="WhatsApp QR"></div></li>
-    <li><em class="ui">${i('pin')}</em><b>Konum</b><span>Yol tarifi alın</span><div class="qr"><img src="qr/harita.svg" alt="Konum QR"></div></li>
-    <li><em class="ui">${i('globe')}</em><b>Web sitesi</b><span>Tüm ürünler</span><div class="qr"><img src="qr/site.svg" alt="Web sitesi QR"></div></li>
+    <li><a href="${WA.whatsapp}"><em class="ui">${i('chat')}</em><b>WhatsApp</b><span>Mesajınız hazır açılır</span><span class="qr"><img src="qr/whatsapp.svg" alt="WhatsApp QR"></span></a></li>
+    <li><a href="${WA.harita}"><em class="ui">${i('pin')}</em><b>Konum</b><span>Yol tarifi alın</span><span class="qr"><img src="qr/harita.svg" alt="Konum QR"></span></a></li>
+    <li><a href="${WA.site}"><em class="ui">${i('globe')}</em><b>Web sitesi</b><span>Tüm ürünler</span><span class="qr"><img src="qr/site.svg" alt="Web sitesi QR"></span></a></li>
   </ul>
   <div class="back-foot">
-    <div class="back-row"><img src="${kesit('k-kultivator-mavi')}" alt=""><img src="${kesit('k-romork-yesil')}" alt=""><img src="${kesit('k-tanker')}" alt=""></div>
+    <div class="back-row"><img src="${kesit('k-kultivator-mavi')}" alt=""><img src="${kesit('k-romork')}" alt=""><img src="${kesit('k-tanker')}" alt=""></div>
     <em class="ui">${i('gear')}</em>
     <h3>Hizmetlerimiz</h3>
     <p class="svcs">İkinci el · Takas · Özel imalat · Yedek parça</p>
-    <address>${i('pin')} Üçel Tarım Aletleri · Yeni Mah., Göksun Sanayi Sitesi, 46660 Göksun / Kahramanmaraş</address>
+    <address>${i('pin')} Üçel Tarım Aletleri · Yeni Mah., Göksun Sanayi Sitesi, <span class="nw">46660 Göksun / Kahramanmaraş</span></address>
     <span class="pf-no">12</span>
   </div>
 </section>`;
