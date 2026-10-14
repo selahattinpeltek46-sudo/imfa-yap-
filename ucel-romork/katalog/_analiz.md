@@ -62,3 +62,18 @@ python3 ucel-romork/_kaynak/katalog_qr.py      # QR kodları (pip install segno)
 python3 ucel-romork/_kaynak/katalog_gorsel.py  # fotoğraflar (JPEG)
 node ucel-romork/_kaynak/katalog.mjs --pdf     # index.html + Ucel-Katalog-2026.pdf
 ```
+
+## 5. v2 — kalite artırımı (14.10.2026)
+v1'in "özenilecek" seviyeye ulaşamama nedenleri ve yapılanlar:
+
+| v1'deki eksik | v2'de |
+|---|---|
+| Ürünler kalabalık arka planlı telefon fotoğraflarıyla (binalar, araçlar) gösteriliyordu | Ürünler arka plandan ayrıldı (dekupe) ve sıcak "stüdyo" zemininde, gölgesiyle gösteriliyor. Gerçek fotoğraflar "Sahadan" şeridinde kaldı |
+| Her sayfada çok sayıda küçük kutu; form gibi görünüyordu | Daha az kutu, daha büyük başlıklar (46 pt), daha çok boşluk; ürün sayfası sırası: sahne → 3 öne çıkan → bilgi → sahadan |
+| Teknik tabloda 5–6 kez "Modele göre" | Bilinen değerler tabloda; bilinmeyen ölçüler tek bir "Ölçüler modele göre" listesinde |
+| Renk seçeneği sadece yazıyla | Renk örnekleri (mavi, yeşil, kırmızı) ve ikinci renk dekupesi sahnede |
+| Kapakta tek römork fotoğrafı | Kapakta römork, kültivatör ve kepçe birlikte, altın ışıkta "vitrin" düzeni |
+| Bölüm sayfalarında kırpılmış fotoğraflar | Stüdyo kartları; rehber sayfasında her adımda ürünün kendi görseli |
+| Fotoğraflar farklı renk tonlarında | Tüm fotoğraflara aynı sıcak ton düzeltmesi |
+
+Sınır: Kaynak fotoğraflar yaklaşık 1000–1300 piksel. Ekranda ve A4 baskıda iyi görünür; büyük afiş baskısı için daha yüksek çözünürlüklü çekim gerekir.
