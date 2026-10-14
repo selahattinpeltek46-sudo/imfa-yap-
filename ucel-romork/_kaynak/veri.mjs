@@ -93,7 +93,7 @@ export const URUNLER = [
     secenekler: [],
     kullanim: ['su', 'hayvancilik'],
     foto: [['su-tankeri', 'İki adet su tankeri römorku, oval gövdeli tank ve mavi şasi']],
-    kanit: 'Fotoğraf: iki tanker, tek dingil görünümlü şasi, park ayağı.',
+    kanit: 'Fotoğraf: iki tanker, tek dingil görünümlü şasi, park ayağı. Üçel teyidi: kendi imalatları.',
   },
   {
     id: 'on-yukleyici', eskiId: 'on-yukleyici', kategori: 'on-yukleyiciler', one: true,
@@ -184,7 +184,7 @@ export const URUNLER = [
     secenekler: [],
     kullanim: ['gubre', 'tarla'],
     foto: [['romork-ve-gubre-serpme', 'Mavi gübre serpme makinesi, römork üzerinde teslimatta']],
-    kanit: 'Üçel imalatı mı bayi ürünü mü — teyit bekleniyor.',
+    kanit: 'Üçel teyidi: bayi ürünü (satışını yapıyorlar). "İmal ediyoruz" yazılmaz.',
   },
 ];
 

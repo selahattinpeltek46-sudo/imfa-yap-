@@ -47,12 +47,14 @@
 | Yeni sayfalar | — | "Hoş geldiniz + içindekiler", "Hangi iş için hangi alet?" (sezon rehberi), "Sahadan" galerisi, "Bize yazarken bunları ekleyin" doldurulabilir not formu |
 | Dosya | 27 MB, 115 dpi resim | 4 MB, yazılar vektör (her ölçüde net) |
 
-## 3. Üçel'den beklenenler (katalog bunlarla tamamlanır)
-1. **Logo dosyası** (vektör: AI, SVG ya da PDF). Şu an geçici bir dişli + Ü amblemi kullanılıyor.
-2. **Tapan fotoğrafı** (gerçek ürün) — şu an temsili görsel var.
-3. Pulluk, gübre serpme ve su tankeri için daha net, sade arka planlı birer fotoğraf (varsa).
-4. Teknik değerler: römork kapasitesi/kasa ölçüsü, kültivatör ayak sayısı ve genişliği, loader kaldırma kapasitesi, tanker hacmi vb. Gelen her değer `_kaynak/katalog.mjs` içinde ilgili satıra yazılır, "Modele göre" kendiliğinden kalkar.
-5. Teyit: Gübre serpme ve su tankeri gerçekten bayi ürünü mü? (Fotoğraflarda ÜÇEL yazısı var.) Çalışma saatleri "Her gün 08:00–19:00" doğru mu?
+## 3. Üçel'in teyitleri (14.10.2026)
+- Logo: katalogdaki dişli + Ü amblemi doğru.
+- Tapan: temsili görsel kalabilir.
+- Çalışma saatleri: her gün 08:00–19:00 doğru.
+- Su tankeri: **kendi imalatları** → A bölümüne taşındı (A: Römork, Kültivatör, Loader, Su Tankeri; B: Tapan, Pulluk, Gübre serpme).
+- Gübre serpme makinesi: **bayi ürünü** (satışını yapıyorlar).
+
+Hâlâ açık: teknik değerler (römork kapasitesi, kültivatör ayak sayısı, loader kaldırma kapasitesi, tanker hacmi vb.). Gelen her değer `_kaynak/katalog.mjs` içinde ilgili satıra yazılır, "Modele göre" kendiliğinden kalkar.
 
 ## 4. Yeniden üretme
 ```
