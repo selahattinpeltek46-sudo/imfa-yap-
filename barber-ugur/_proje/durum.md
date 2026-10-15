@@ -1,6 +1,6 @@
 # Barber Uğur — Proje Durumu (SELAHATTİN AI v2.1)
 
-Son güncelleme: 2026-10-15
+Son güncelleme: 2026-10-15 · Revizyon 2: randevu hatırlatması — `revizyon-2-hatirlatma.md` · Revizyon 3: fotoğraflar — `revizyon-3-fotograflar.md`
 
 | # | Aşama | Modül | Durum | Not |
 |---|---|---|---|---|
@@ -17,9 +17,9 @@ Son güncelleme: 2026-10-15
 | 11 | Website Blueprint & Legal | 2 | ✅ TAMAMLANDI | KVKK şablon; banner gerekmez |
 | 12 | Copywriting Engine | 2 | ✅ TAMAMLANDI | Fotoğraflarla güncellendi |
 | 13 | SEO & Analytics | 2 | ✅ TAMAMLANDI | GA4 kurulmadı (altyapı hazır) |
-| 14 | Visual Intelligence | 2 | ⚠️ RİSK | Fotoğraf dosyaları ulaşmadı; tasarım dili gece cephesinden |
+| 14 | Visual Intelligence | 2 | ✅ TAMAMLANDI | Revizyon 3: 4 gerçek fotoğraf (kişiler bulanık/kırpık), OG yenilendi |
 | 15 | Tech Stack & Plan | 3 | ✅ TAMAMLANDI | Statik + Apps Script randevu |
-| 16 | Development | 3 | ✅ TAMAMLANDI | Uçtan uca testler geçti |
+| 16 | Development | 3 | ✅ TAMAMLANDI | Uçtan uca testler geçti; + 2 saat önce hatırlatma (.ics alarmı + dükkândan WhatsApp) |
 | 17 | Evaluation | 4 | ✅ TAMAMLANDI | |
 | 18 | Audit | 4 | ✅ TAMAMLANDI | 9 bulgu, KRİTİK yok |
 | 19 | Revision | 4 | ⚠️ RİSK | YÜKSEK 2 bulgu müşteri girdisine bağlı |

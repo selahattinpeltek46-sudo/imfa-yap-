@@ -20,6 +20,35 @@ Müşteri (site)                      Google (salonun hesabı, ücretsiz)       
 - **Kapasite:** `koltuk: 2` — aynı saatte en fazla 2 online randevu. Dükkânda daha fazla koltuk var; geri kalanlar randevusuz gelenlere kalır. Daha fazla ya da az online randevu istenirse bu sayı değiştirilir.
 - **Sistem kurulmadan / çökerse:** Form otomatik olarak **WhatsApp moduna** geçer; müşteri talebi hazır WhatsApp mesajı olarak gönderir. Site hiçbir zaman "kırık" görünmez.
 
+## 1b. Randevu hatırlatması (2 saat önce, ücretsiz)
+
+İki katmanlı:
+
+| Katman | Kim | Nasıl çalışır |
+|---|---|---|
+| **Müşterinin telefonu** | Otomatik | Randevu ekranındaki **"Telefonuma ekle"** bir takvim dosyası (.ics) indirir; içinde 2 saat önce çalan alarm var. iPhone Takvim, Android'de Google/Samsung Takvim açar. "Google Takvim" düğmesi yedek olarak durur (o, kişinin kendi varsayılan bildirim süresini kullanır). |
+| **Dükkândan WhatsApp** | Tek dokunuş | Randevudan 2 saat önce dükkânın telefonuna **iki bildirim** gelir: (1) Google Takvim bildirimi — etkinliği açınca açıklamada "Hatırlatma gönder (WhatsApp)" bağlantısı; (2) Gmail'e "Hatırlatma gönder: 16:00 Ahmet" e-postası — içinde aynı bağlantı. Bağlantıya dokununca **müşterinin** WhatsApp sohbeti hazır mesajla açılır → **Gönder**. |
+
+Hazır mesaj:
+```
+Merhaba Ahmet,
+Bugün saat 16:00 Saç Kesimi randevunuzu hatırlatırız.
+Gelemeyecekseniz lütfen bu mesaja yazın; saatinizi başkasına açalım.
+Randevu kodu: BU-XXXXX
+Barber Uğur · Gazi Muhtar Paşa Blv. Gazi Apt. No:46/E, Şehitkamil
+```
+
+Kurallar (`hatirlatilacaklar` fonksiyonu):
+- Her randevu için **bir kez** bildirilir (etkinliğe "bildirildi" etiketi yazılır).
+- Randevuya 2 saatten az kala alınan randevular için bildirim gelmez (müşteri az önce almış).
+- Telefonla alınıp takvime **elle** eklenen randevular: açıklamaya müşterinin cep numarasını yazarsanız (ör. `0532 111 22 33`) e-posta bildirimi onlar için de gelir.
+- KAPALI etkinlikleri ve telefonu olmayan etkinlikler atlanır.
+- Süre: `Code.gs → AYAR.hatirlatmaDakika` (varsayılan 120) **ve** sitede `js/ayarlar.js → hatirlatmaDakika` — ikisi aynı olmalı. Yalnız takvim bildirimi istenirse `hatirlatmaEposta: false`.
+
+Kontrol (dükkân telefonunda bir kez): Google Takvim → Ayarlar → "Barber Uğur Randevular" → bildirimler açık · Gmail uygulamasında bildirimler açık.
+
+> Tam otomatik (dükkân dokunmadan) gönderim için ileride SMS firması (Netgsm, İleti Merkezi vb.) bağlanabilir: `hatirlatmaKontrol` içinde e-posta yerine SMS API çağrısı. Ücretli; SMS başlığı gerekir.
+
 ## 2. Salon randevuları nasıl kontrol eder?
 
 | İş | Nasıl |
@@ -28,7 +57,8 @@ Müşteri (site)                      Google (salonun hesabı, ücretsiz)       
 | Yeni randevu bildirimi | Takvim bildirimi + Gmail'e "Yeni randevu" e-postası (içinde müşteriye WhatsApp linki). |
 | **İptal etmek** | Takvimde etkinliği **silin** → o saat sitede hemen yeniden boş görünür. |
 | Saati değiştirmek | Etkinliği takvimde sürükleyin / saatini düzenleyin. Müşteriye WhatsApp'tan haber verin. |
-| Telefonla gelen randevu | Takvime elle etkinlik ekleyin (ör. "Ahmet saç"). 1 koltuk dolu sayılır. |
+| Telefonla gelen randevu | Takvime elle etkinlik ekleyin (ör. "Ahmet saç"). 1 koltuk dolu sayılır. Açıklamaya cep numarasını yazarsanız 2 saat önce hatırlatma bildirimi gelir. |
+| Hatırlatma göndermek | 2 saat önce gelen takvim bildirimi ya da "Hatırlatma gönder" e-postasındaki bağlantıya dokunun → WhatsApp'ta **Gönder**. |
 | Mola, izin, erken kapanış | Takvime başlığında **KAPALI** geçen etkinlik ekleyin (ör. "KAPALI öğle arası" 13:00–14:00). O aralık tüm hizmetlere kapanır. Tüm gün etkinliği = tüm gün kapalı. |
 | Usta izinli → kapasite 1 | O gün için "Usta izinli" adlı tüm gün etkinliği ekleyin → bir koltuk tüm gün dolu sayılır. |
 | Geçmiş kayıtlar, rapor | "Barber Uğur Randevu Kayıtları" E-Tablosu: kayıt zamanı, kod, tarih, saat, hizmet, ad, telefon, not, durum. |
@@ -49,7 +79,7 @@ Gerekli: salonun bir Google (Gmail) hesabı.
    - `hizmetler`: süreler (dakika). **Hizmet adlarını değiştirirseniz** sitedeki formdaki adlarla (index.html → `f-hizmet`) birebir aynı olmalı.
    - `bildirimEposta`: bildirim gidecek adres (boş = bu Google hesabı)
 5. Üstteki fonksiyon listesinden **`kurulum`** seçin → **Çalıştır**. İzin ekranında hesabı seçin → "Gelişmiş" → "Barber Uğur Randevu'ya git (güvenli değil)" → **İzin ver**. (Uyarı, betiğin Google tarafından incelenmemiş kişisel betik olmasındandır.)
-   Bu adım takvimi ve kayıt tablosunu oluşturur; Yürütme günlüğünde tablo linki görünür.
+   Bu adım takvimi, kayıt tablosunu ve **15 dakikada bir çalışan hatırlatma tetikleyicisini** oluşturur; Yürütme günlüğünde tablo linki görünür. (Sol menü **Tetikleyiciler**'de `hatirlatmaKontrol` görünmeli.)
 6. **Dağıt → Yeni dağıtım → Tür: Web uygulaması**
    - Yürütme yetkisi: **Ben**
    - Erişimi olanlar: **Herkes**

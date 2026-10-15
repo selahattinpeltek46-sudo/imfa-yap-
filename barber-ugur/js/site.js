@@ -6,6 +6,8 @@
   var WHATSAPP = A.whatsapp || '905428253389';
   var API = A.randevuApi || '';
   var ILERI_GUN = A.ileriGun || 21;
+  var HATIRLATMA_DK = A.hatirlatmaDakika || 120;
+  var ADRES = 'Barber Uğur, Gazi Muhtar Paşa Blv. Gazi Apt. No:46/E, Mücahitler, Şehitkamil/Gaziantep';
 
   // GA4 eklendiğinde (çerez onayından sonra) window.gtag tanımlı olur; o zamana kadar sessizce geçer.
   function olay(ad, yer) {
@@ -27,6 +29,28 @@
     var pencere = window.open(url, '_blank');
     if (pencere) pencere.opener = null;
     else window.location.href = url;
+  }
+
+  /* Telefon takvimine eklenecek .ics dosyası: randevudan HATIRLATMA_DK dakika önce alarm çalar
+     (iPhone Takvim, Android'de Google Takvim / Samsung Takvim açar). */
+  function icsMetni(v, bas, bit) {
+    function zaman(d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
+    function kacis(t) { return String(t).replace(/\\/g, '\\\\').replace(/[,;]/g, '\\$&').replace(/\n/g, '\\n'); }
+    var baslik = 'Barber Uğur — ' + v.hizmet;
+    return [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Barber Ugur//Randevu//TR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + v.kod + '@barber-ugur',
+      'DTSTAMP:' + zaman(new Date()),
+      'DTSTART:' + zaman(bas),
+      'DTEND:' + zaman(bit),
+      'SUMMARY:' + kacis(baslik),
+      'DESCRIPTION:' + kacis('Randevu kodu: ' + v.kod + '\nDeğişiklik/iptal: 0542 825 33 89 (telefon ve WhatsApp)'),
+      'LOCATION:' + kacis(ADRES),
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + kacis(baslik + ' — ' + v.saat),
+      'TRIGGER:-PT' + HATIRLATMA_DK + 'M', 'END:VALARM',
+      'END:VEVENT', 'END:VCALENDAR', ''
+    ].join('\r\n');
   }
 
   function iki(n) { return (n < 10 ? '0' : '') + n; }
@@ -195,7 +219,10 @@
         '&text=' + encodeURIComponent("Barber Uğur — " + v.hizmet) +
         '&dates=' + gcal(bas) + '/' + gcal(bit) +
         '&details=' + encodeURIComponent('Randevu kodu: ' + v.kod + '\nTel: 0542 825 33 89') +
-        '&location=' + encodeURIComponent("Barber Uğur, Gazi Muhtar Paşa Blv. Gazi Apt. No:46/E, Mücahitler, Şehitkamil/Gaziantep");
+        '&location=' + encodeURIComponent(ADRES);
+      var ics = document.getElementById('s-ics');
+      ics.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsMetni(v, bas, bit));
+      ics.download = 'barber-ugur-randevu-' + v.kod + '.ics';
       document.getElementById('s-wa').href = waUrl('Merhaba, randevu kodum ' + v.kod + ' (' + uzunTarih(v.tarih) + ' ' + v.saat + ', ' + v.hizmet + ').');
       form.hidden = true;
       sonuc.hidden = false;
