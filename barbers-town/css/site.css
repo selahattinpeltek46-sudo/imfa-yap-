@@ -157,6 +157,32 @@ p { margin: 0 0 1em; }
 .tabela__aciklama p { margin: 0 0 .2rem; }
 .tabela__aciklama a { color: var(--led); font-family: var(--f-etiket); font-weight: 600; letter-spacing: .05em; font-size: 1.05rem; }
 
+/* Paketler: tabelada olmadığı için levha değil, açık kart */
+.paketler { margin-top: clamp(1.8rem, 4vw, 2.6rem); }
+.paketler__baslik { font-family: var(--f-baslik); font-weight: 400; font-size: clamp(1.4rem, 3vw, 1.9rem); margin: 0 0 .3rem; }
+.paketler .kucuk { max-width: 56ch; }
+.paketler .kucuk a { color: var(--bakir); }
+.paket-liste { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.paket-liste li { background: #fbfbf9; border-radius: 4px; padding: 1.1rem 1.2rem; border-top: 4px solid var(--led); box-shadow: 0 1px 0 #c9c9c4; display: flex; flex-direction: column; }
+.paket-liste h4 { margin: 0 0 .35rem; font-family: var(--f-levha); font-size: 1.15rem; letter-spacing: .02em; text-transform: uppercase; }
+.paket-liste p { margin: 0 0 .7rem; color: var(--gri); font-size: .98rem; flex: 1; }
+.paket-liste a { color: var(--bakir); font-family: var(--f-etiket); font-weight: 600; letter-spacing: .05em; font-size: 1.05rem; }
+
+/* Ustamız (salondan bilgi gelene kadar gizli) */
+[hidden] { display: none !important; }
+.usta__duzen { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+.usta__foto { margin: 0; padding: 10px; background: var(--panel); border-radius: 4px; box-shadow: 0 0 0 2px var(--led), 0 0 24px rgba(242, 184, 75, .35); }
+.usta__foto img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 2px; }
+.usta__ust { font-family: var(--f-etiket); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--bakir); margin-bottom: .4rem; }
+.usta__metin p { max-width: 54ch; }
+.usta__kunye { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 1.4rem; border-top: 1px solid #b9b9b4; }
+.usta__kunye div { padding: .8rem .8rem .8rem 0; border-bottom: 1px solid #b9b9b4; }
+.usta__kunye dt { font-size: .85rem; color: var(--gri); }
+.usta__kunye dd { margin: .1rem 0 0; font-weight: 700; }
+.usta__belgeler { list-style: none; margin: 0; padding: 0; }
+.usta__belgeler li { padding: .5rem 0 .5rem 1.1rem; position: relative; }
+.usta__belgeler li::before { content: ""; position: absolute; left: 0; top: 1.05rem; width: 8px; height: 2px; background: var(--hali); }
+
 /* Salon */
 .bolum__giris { max-width: 58ch; color: #d9d8d3; font-size: 1.12rem; }
 .salon-izgara {
@@ -192,6 +218,7 @@ p { margin: 0 0 1em; }
 .randevu__giris p { color: var(--gri); }
 .randevu__giris .randevu__tel { font-family: var(--f-etiket); font-size: 1.3rem; color: var(--murekkep); letter-spacing: .03em; }
 .randevu__tel a { color: var(--murekkep); font-variant-numeric: tabular-nums; }
+.randevu__giris .randevu__soz { padding: .8rem 1rem; background: #fbfbf9; border-left: 4px solid var(--led); color: var(--murekkep); font-size: .98rem; }
 .randevu__kart {
   background: #fbfbf9; border-radius: 4px; padding: clamp(1.3rem, 3.5vw, 2.2rem);
   border-top: 6px solid var(--hali); box-shadow: 0 1px 0 #c9c9c4, 0 18px 40px -24px rgba(0, 0, 0, .35);
@@ -303,7 +330,8 @@ p { margin: 0 0 1em; }
 .mobil-bar .btn { min-height: 48px; padding: .5rem .8rem; }
 
 @media (max-width: 960px) {
-  .acilis__ic, .hizmet-duzen, .randevu, .adres, .sss-duzen { grid-template-columns: 1fr; }
+  .acilis__ic, .hizmet-duzen, .randevu, .adres, .sss-duzen, .usta__duzen { grid-template-columns: 1fr; }
+  .usta__foto { max-width: 420px; }
   .ayna { justify-self: center; max-width: 400px; }
   .hizmet-giris { position: static; }
   .menu a:not(.menu__tel) { display: none; }
@@ -314,6 +342,7 @@ p { margin: 0 0 1em; }
 @media (max-width: 640px) {
   body { font-size: 1.02rem; }
   .tabela__satir { grid-template-columns: 1fr; gap: .5rem; }
+  .paket-liste, .usta__kunye { grid-template-columns: 1fr; }
   .levha { justify-self: start; }
   .salon-izgara { grid-template-columns: 1fr; grid-template-areas: "kahve" "pano" "raf" "logo"; }
   .pano { transform: none; }

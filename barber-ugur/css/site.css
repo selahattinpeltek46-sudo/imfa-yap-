@@ -182,11 +182,31 @@ p { margin: 0 0 1em; }
 .liste__nokta { flex: 1; min-width: 1.5rem; border-bottom: 2px dotted #9d9a93; transform: translateY(-.3em); }
 .liste__ust a { font-weight: 700; white-space: nowrap; }
 .liste p { margin: .35rem 0 0; color: var(--gri); }
+.paketler { margin-top: clamp(32px, 5vw, 48px); }
+.paketler__baslik { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: .3rem; }
+.paketler .kucuk { max-width: 52ch; }
+.liste--paket { border-top-color: var(--gul); }
+
+/* Ustamız (dükkândan bilgi gelene kadar gizli) */
+[hidden] { display: none !important; }
+.usta__duzen { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 6vw, 80px); align-items: center; }
+.usta__foto { margin: 0; background: var(--kayit); padding: 10px; }
+.usta__foto img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.usta__ust { font-weight: 600; color: var(--gul-koyu); margin-bottom: .4rem; }
+.usta__metin p { max-width: 52ch; }
+.usta__kunye { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 1.4rem; border-top: 3px solid var(--murekkep); }
+.usta__kunye div { padding: .8rem .8rem .8rem 0; border-bottom: 1px solid #bdbbb5; }
+.usta__kunye dt { font-size: .85rem; color: var(--gri); }
+.usta__kunye dd { margin: .1rem 0 0; font-weight: 700; }
+.usta__belgeler { list-style: none; margin: 0; padding: 0; }
+.usta__belgeler li { padding: .5rem 0 .5rem 1.1rem; position: relative; }
+.usta__belgeler li::before { content: ""; position: absolute; left: 0; top: 1.05rem; width: 8px; height: 2px; background: var(--gul); }
 
 /* Randevu */
 .randevu { display: grid; grid-template-columns: 1fr 1.45fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
 .randevu__giris p { max-width: 40ch; }
 .randevu__tel a { font-weight: 700; font-variant-numeric: tabular-nums; }
+.randevu__soz { padding: .8rem 1rem; background: #fff; border-left: 4px solid var(--isik); font-size: .98rem; }
 .randevu__kart { background: #fff; padding: clamp(20px, 3.6vw, 40px); border-top: 4px solid var(--gul); box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 20px 40px -28px rgba(0,0,0,.35); min-width: 0; }
 
 .form__satir { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -301,13 +321,14 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--isik); outl
 .mobil-bar .btn--koyu { border-color: rgba(243,241,236,.35); }
 
 @media (max-width: 960px) {
-  .hizmet-duzen, .randevu, .adres, .sss-duzen, .vitrin { grid-template-columns: 1fr; }
+  .hizmet-duzen, .randevu, .adres, .sss-duzen, .vitrin, .usta__duzen { grid-template-columns: 1fr; }
+  .usta__foto { max-width: 420px; }
   .vitrin__foto { grid-row: auto; aspect-ratio: 4 / 5; }
   .menu a:not(.menu__tel) { display: none; }
 }
 @media (max-width: 600px) {
   body { font-size: 1rem; }
-  .form__satir, .alt__ic { grid-template-columns: 1fr; }
+  .form__satir, .alt__ic, .usta__kunye { grid-template-columns: 1fr; }
   .acilis__cta .btn { flex: 1 1 auto; }
   .acilis__cta .btn--gul { flex-basis: 100%; }
   .mobil-bar { display: grid; }

@@ -65,6 +65,7 @@
       { "@type": "Question", "name": "Tekerlekli sandalyeyle girebilir miyim?", "acceptedAnswer": { "@type": "Answer", "text": "Google Haritalar'da girişimiz tekerlekli sandalyeyle erişilebilir olarak işaretli. Özel bir ihtiyacınız varsa randevu notuna yazın." } },
       { "@type": "Question", "name": "İstediğim modeli nasıl anlatırım?", "acceptedAnswer": { "@type": "Answer", "text": "Randevu formundaki not alanına yazın ya da beğendiğiniz kesimin fotoğrafını WhatsApp'tan gönderin." } },
       { "@type": "Question", "name": "Randevumu bana hatırlatır mısınız?", "acceptedAnswer": { "@type": "Answer", "text": "Evet. Online randevu aldığınızda ekrandaki Telefonuma ekle ile randevu takviminize kaydolur ve 2 saat önce hatırlatır. Ayrıca randevudan önce dükkândan WhatsApp hatırlatması gelir." } },
+      { "@type": "Question", "name": "Sıra gecikirse dükkânda beklemek zorunda kalır mıyım?", "acceptedAnswer": { "@type": "Answer", "text": "Hayır. Önceki tıraş uzar da sıra kayarsa, randevu saatinizden önce WhatsApp'tan yazar, ne zaman gelmeniz gerektiğini söyleriz. Yeni saat size uymazsa aynı mesaja yazın, başka bir saate alalım." } },
       { "@type": "Question", "name": "Randevumu nasıl değiştirir veya iptal ederim?", "acceptedAnswer": { "@type": "Answer", "text": "Randevu kodunuzla WhatsApp'tan yazın ya da arayın. Gelemeyecekseniz haber vermeniz, o saati başka birine açmamızı sağlar." } },
       { "@type": "Question", "name": "Dükkân tam olarak nerede?", "acceptedAnswer": { "@type": "Answer", "text": "Mücahitler Mahallesi, Gazi Muhtar Paşa Bulvarı, Gazi Apartmanı No:46/E, Şehitkamil/Gaziantep. Üstte ışıklı Men's Hair Design tabelası, altında Barber Uğur yazan siyah tente var. Haritada 39G8+4J koduyla da bulabilirsiniz." } }
     ]
@@ -148,6 +149,7 @@
           <p>İçeride ışıklı aynalı koltuklar ve çocuklar için oyuncak araba şeklinde bir tıraş koltuğu var. Modelinizi randevu alırken not olarak yazabilirsiniz.</p>
           <p class="kucuk">Fiyatlar oda tarifesine göre dönem dönem değişiyor. Güncel fiyatı <a href="https://wa.me/905428253389?text=Merhaba%2C%20g%C3%BCncel%20fiyatlar%C4%B1n%C4%B1z%C4%B1%20%C3%B6%C4%9Frenebilir%20miyim%3F" target="_blank" rel="noopener" data-olay="whatsapp_tik" data-yer="fiyat">WhatsApp'tan sorun</a>. Listede olmayan bir hizmet için de önce yazın.</p>
         </div>
+        <div>
         <ul class="liste" role="list">
           <li>
             <div class="liste__ust"><h3>Saç kesimi</h3><span class="liste__nokta" aria-hidden="true"></span><a href="#randevu" data-hizmet="Saç Kesimi" data-olay="randevu_cta_tik" data-yer="hizmet-sac">Randevu al</a></div>
@@ -170,6 +172,23 @@
             <p>Tıraşın ardından yapılıyor; istiyorsanız randevu notuna yazın.</p>
           </li>
         </ul>
+
+        <!-- PAKETLER: yalnız yukarıdaki hizmetlerin art arda tek randevuda alınması; indirim/fiyat iddiası yok -->
+        <div class="paketler">
+          <h3 class="paketler__baslik">Birlikte alın</h3>
+          <p class="kucuk">İki hizmeti tek randevuda, art arda ayırıyoruz; ayrı ayrı saat aramanıza gerek kalmıyor. Paket fiyatını <a href="https://wa.me/905428253389?text=Merhaba%2C%20paket%20fiyatlar%C4%B1n%C4%B1%20%C3%B6%C4%9Frenebilir%20miyim%3F" target="_blank" rel="noopener" data-olay="whatsapp_tik" data-yer="paket-fiyat">WhatsApp'tan sorun</a>.</p>
+          <ul class="liste liste--paket" role="list">
+            <li>
+              <div class="liste__ust"><h3>Baba &amp; çocuk</h3><span class="liste__nokta" aria-hidden="true"></span><a href="#randevu" data-hizmet="Baba &amp; Çocuk" data-olay="randevu_cta_tik" data-yer="paket-baba-cocuk">Randevu al</a></div>
+              <p>Sizin saç kesiminiz ve çocuğunuzun tıraşı art arda. Küçükler oyuncak araba koltuğunda tıraş oluyor. Yaklaşık 1 saat.</p>
+            </li>
+            <li>
+              <div class="liste__ust"><h3>Saç &amp; sakal + yüz maskesi</h3><span class="liste__nokta" aria-hidden="true"></span><a href="#randevu" data-hizmet="Saç &amp; Sakal + Yüz Maskesi" data-olay="randevu_cta_tik" data-yer="paket-maske">Randevu al</a></div>
+              <p>Saç ve sakalın ardından yüz maskesi, tek oturuşta. Yaklaşık 1 saat.</p>
+            </li>
+          </ul>
+        </div>
+        </div>
       </div>
     </section>
 
@@ -194,6 +213,32 @@
       </div>
     </section>
 
+    <!-- USTAMIZ — GİZLİ: dükkândan bilgi gelene kadar yayında görünmez.
+         Doldurma: _proje/usta-bilgi-formu.md (sorular dükkâna sorulur, uydurma bilgi YAZILMAZ).
+         Açmak için: [DOLDURULACAK] alanlarını doldurun, foto ekleyin, section'daki "hidden" özniteliğini silin
+         ve menüye <a href="#usta">Ustamız</a> ekleyin. -->
+    <section class="bolum usta" id="usta" aria-labelledby="usta-baslik" hidden>
+      <div class="kap usta__duzen">
+        <figure class="usta__foto">
+          <img src="img/usta.webp" width="640" height="800" loading="lazy" alt="[DOLDURULACAK: ustanın adı] dükkânda, aynanın önünde">
+        </figure>
+        <div class="usta__metin">
+          <p class="usta__ust">Ustamız</p>
+          <h2 id="usta-baslik">[DOLDURULACAK: Ad Soyad]</h2>
+          <dl class="usta__kunye">
+            <div><dt>Meslekte</dt><dd>[DOLDURULACAK: kaç yıl]</dd></div>
+            <div><dt>Bu dükkânda</dt><dd>[DOLDURULACAK: açılış yılı]</dd></div>
+            <div><dt>Uzmanlık</dt><dd>[DOLDURULACAK: ör. fade, sakal şekillendirme]</dd></div>
+          </dl>
+          <p>[DOLDURULACAK: 2–3 cümle — mesleğe nasıl başladı, nerede yetişti, müşteriye nasıl çalışır. Ustanın kendi anlatımından.]</p>
+          <!-- Belge/sertifika/haber varsa: fotoğrafı veya bağlantısıyla. Yoksa bu listeyi silin. -->
+          <ul class="usta__belgeler" role="list">
+            <li>[DOLDURULACAK: belge / sertifika / haber — kanıt bağlantısıyla]</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <!-- RANDEVU -->
     <section class="bolum bolum--duvar" id="randevu" aria-labelledby="randevu-baslik">
       <div class="kap randevu">
@@ -201,6 +246,7 @@
           <h2 id="randevu-baslik">Randevu</h2>
           <p>Hizmeti ve günü seçin, o günün boş saatleri listelensin. Seçtiğiniz saat size ayrılır ve ekranda bir randevu kodu görürsünüz.</p>
           <p>Randevu ücretsizdir, ön ödeme yoktur. Gelemeyecekseniz kodunuzla haber verin; o saati başkasına açalım.</p>
+          <p class="randevu__soz"><strong>Sıra kayarsa haber veririz.</strong> Önceki tıraş uzarsa randevu saatinizden önce WhatsApp'tan yazar, ne zaman gelmeniz gerektiğini söyleriz. Dükkânda beklemezsiniz.</p>
           <p class="randevu__tel">Telefonla: <a href="tel:+905428253389" data-olay="telefon_tik" data-yer="randevu">0542 825 33 89</a></p>
         </div>
 
@@ -214,6 +260,10 @@
                 <option>Sakal Tıraşı</option>
                 <option>Saç &amp; Sakal</option>
                 <option>Çocuk Tıraşı</option>
+                <optgroup label="Paketler">
+                  <option>Baba &amp; Çocuk</option>
+                  <option>Saç &amp; Sakal + Yüz Maskesi</option>
+                </optgroup>
               </select>
               <p class="alan-hata" id="h-hizmet" role="alert"></p>
             </div>
@@ -319,6 +369,10 @@
           <details>
             <summary>Randevumu bana hatırlatır mısınız?</summary>
             <p>Evet. Online randevu aldığınızda ekrandaki "Telefonuma ekle" ile randevu takviminize kaydolur ve 2 saat önce hatırlatır. Ayrıca randevudan önce dükkândan WhatsApp hatırlatması gelir.</p>
+          </details>
+          <details>
+            <summary>Sıra gecikirse dükkânda beklemek zorunda kalır mıyım?</summary>
+            <p>Hayır. Önceki tıraş uzar da sıra kayarsa, randevu saatinizden önce WhatsApp'tan yazar, ne zaman gelmeniz gerektiğini söyleriz. Yeni saat size uymazsa aynı mesaja yazın, başka bir saate alalım.</p>
           </details>
           <details>
             <summary>Randevumu nasıl değiştirir veya iptal ederim?</summary>

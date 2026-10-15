@@ -8,6 +8,8 @@
  *    salona e-posta bildirimi gönderir.
  *  - Randevudan 2 saat önce dükkâna "hatırlatma gönder" bildirimi verir (takvim bildirimi + e-posta);
  *    bildirimdeki bağlantıya dokununca müşteriye hazır WhatsApp hatırlatma mesajı açılır.
+ *  - Gecikme bildirimi: dükkân panelinde (GET ?islem=panel&anahtar=…) günün kalan randevuları listelenir;
+ *    "15 dk" / "30 dk" düğmesi müşteriye "sıra kaydı, şu saatte gelin" hazır WhatsApp mesajını açar.
  *
  * Salon nasıl yönetir?
  *  - Telefondaki Google Takvim uygulamasında "Barber Uğur Randevular" takvimini görür.
@@ -49,7 +51,10 @@ var AYAR = {
     'Saç Kesimi':   { sure: 30, kaynak: 'koltuk' },
     'Sakal Tıraşı': { sure: 20, kaynak: 'koltuk' },
     'Saç & Sakal':  { sure: 45, kaynak: 'koltuk' },
-    'Çocuk Tıraşı': { sure: 30, kaynak: 'koltuk' }
+    'Çocuk Tıraşı': { sure: 30, kaynak: 'koltuk' },
+    // Paketler: sitede zaten sunulan hizmetlerin art arda tek randevuda alınması (indirim iddiası yok)
+    'Baba & Çocuk':              { sure: 60, kaynak: 'koltuk' },
+    'Saç & Sakal + Yüz Maskesi': { sure: 60, kaynak: 'koltuk' }
   },
 
   gunlukTelefonSiniri: 3,  // aynı numaradan bir günde en fazla kaç randevu
@@ -59,6 +64,8 @@ var AYAR = {
   // Sitedeki js/ayarlar.js → hatirlatmaDakika ile aynı olmalı (müşterinin takvim alarmı).
   hatirlatmaDakika: 120,
   hatirlatmaEposta: true,  // false: yalnız takvim bildirimi (e-posta gönderilmez)
+  // Panelde ve takvim etkinliğinde sunulan gecikme düğmeleri (dakika)
+  gecikmeSecenekleri: [15, 30],
   dukkanAdi: 'Barber Uğur',
   dukkanAdres: 'Gazi Muhtar Paşa Blv. Gazi Apt. No:46/E, Şehitkamil'
 };
@@ -201,6 +208,85 @@ function hatirlatilacaklar(ayar, etkinlikler, simdi) {
   });
 }
 
+/* ───────────── Gecikme bildirimi ve dükkân paneli (saf fonksiyonlar) ───────────── */
+
+/** Müşteriye gidecek gecikme metni. r: {ad, saat, hizmet, kod}, dk: gecikme dakikası */
+function gecikmeMetni(ayar, r, dk) {
+  var ad = String(r.ad || '').trim().split(/\s+/)[0];
+  var yeni = saate((dakikaya(r.saat) + dk) % 1440);
+  var satirlar = [
+    'Merhaba' + (ad ? ' ' + ad : '') + ',',
+    'Bugün saat ' + r.saat + ' randevunuz için sıramız yaklaşık ' + dk + ' dakika kaydı.',
+    'Beklememeniz için ' + yeni + ' gibi gelmeniz yeterli.',
+    'Bu saat size uymuyorsa bu mesaja yazın, başka bir saate alalım. Kusura bakmayın.'
+  ];
+  if (r.kod) satirlar.push('Randevu kodu: ' + r.kod);
+  satirlar.push(ayar.dukkanAdi + ' · ' + ayar.dukkanAdres);
+  return satirlar.join('\n');
+}
+
+function gecikmeLinki(ayar, r, dk) {
+  return 'https://wa.me/90' + r.telefon.slice(1) + '?text=' + encodeURIComponent(gecikmeMetni(ayar, r, dk));
+}
+
+/**
+ * Panelde gösterilecek randevular: başlamamış ya da 60 dk'dan kısa süre önce başlamış, KAPALI olmayan,
+ * saate göre sıralı. etkinlikler: [{baslik, aciklama, bas (ms), telefon?, ad?, hizmet?, kod?}]
+ */
+function panelListesi(etkinlikler, simdi) {
+  return etkinlikler.filter(function (e) {
+    return !/KAPALI/i.test(e.baslik) && e.bas > simdi - 60 * 6e4;
+  }).sort(function (a, b) { return a.bas - b.bas; }).map(function (e) {
+    var parca = String(e.baslik || '').split(' — ');
+    return {
+      bas: e.bas,
+      telefon: e.telefon || aciklamadanTelefon(e.aciklama),
+      ad: e.ad || parca[parca.length - 1],
+      hizmet: e.hizmet || (parca.length > 1 ? parca[0] : ''),
+      kod: e.kod || '',
+      basladi: e.bas <= simdi
+    };
+  });
+}
+
+function htmlKacis(t) {
+  return String(t).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+/** Dükkân paneli HTML'i. liste: panelListesi() çıktısı + her satırda saat ('HH:mm') */
+function panelHtml(ayar, liste, gunEtiketi) {
+  var satirlar = liste.map(function (r) {
+    var dugmeler = '';
+    if (r.telefon) {
+      if (ayar.hatirlatmaDakika) {
+        dugmeler += '<a class="d" target="_blank" rel="noopener" href="' + htmlKacis(hatirlatmaLinki(ayar, r)) + '">Hatırlat</a>';
+      }
+      ayar.gecikmeSecenekleri.forEach(function (dk) {
+        dugmeler += '<a class="d g" target="_blank" rel="noopener" href="' + htmlKacis(gecikmeLinki(ayar, r, dk)) + '">' + dk + ' dk gecikme</a>';
+      });
+      dugmeler += '<a class="d" href="tel:+90' + r.telefon.slice(1) + '">Ara</a>';
+    } else {
+      dugmeler = '<span class="y">Telefon yok — etkinlik açıklamasına cep numarası yazın</span>';
+    }
+    return '<li' + (r.basladi ? ' class="b"' : '') + '><p><strong>' + htmlKacis(r.saat) + '</strong> ' + htmlKacis(r.ad) +
+      (r.hizmet ? ' <span>· ' + htmlKacis(r.hizmet) + '</span>' : '') + '</p><div>' + dugmeler + '</div></li>';
+  }).join('');
+  return '<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">' +
+    '<title>' + htmlKacis(ayar.dukkanAdi) + ' — Bugünün randevuları</title><style>' +
+    'body{margin:0;font:16px/1.45 system-ui,sans-serif;background:#f3f1ec;color:#1b1b1b}' +
+    'header{background:#121212;color:#f3f1ec;padding:16px}h1{margin:0;font-size:1.25rem}header p{margin:.2rem 0 0;color:#b9b7b1;font-size:.9rem}' +
+    'ul{list-style:none;margin:0;padding:8px 12px 40px}li{background:#fff;margin:8px 0;padding:12px;border-left:4px solid #f0a64b}' +
+    'li.b{opacity:.6}li p{margin:0 0 .6rem}li span{color:#565654}' +
+    '.d{display:inline-block;margin:0 6px 6px 0;padding:10px 12px;border:1px solid #1b1b1b;color:#1b1b1b;text-decoration:none;font-weight:600;min-height:44px;box-sizing:border-box}' +
+    '.g{background:#121212;color:#fff}.y{color:#b3261e;font-size:.9rem}.bos{padding:24px 16px;color:#565654}' +
+    '</style></head><body><header><h1>' + htmlKacis(ayar.dukkanAdi) + ' — ' + htmlKacis(gunEtiketi) + '</h1>' +
+    '<p>Sıra kayarsa müşterinin "gecikme" düğmesine dokunun; WhatsApp\'ta hazır mesaj açılır, Gönder\'e basın.</p></header>' +
+    (satirlar ? '<ul>' + satirlar + '</ul>' : '<p class="bos">Bugün kalan randevu yok.</p>') + '</body></html>';
+}
+
 /* ───────────── Google servisleri ───────────── */
 
 function ozellik(ad) { return PropertiesService.getScriptProperties().getProperty(ad); }
@@ -248,6 +334,7 @@ function doGet(e) {
       if (s.hata) return json({ ok: false, hata: s.hata });
       return json({ ok: true, tarih: p.tarih, kapali: s.kapali, saatler: s.saatler });
     }
+    if (p.islem === 'panel') return panel(p.anahtar);
     return json({ ok: true, servis: 'Barber Uğur randevu' });
   } catch (hata) {
     return json({ ok: false, hata: 'Sunucu hatası' });
@@ -298,8 +385,11 @@ function doPost(e) {
     // bağlantıya dokununca müşteriye hazır WhatsApp hatırlatması açılır.
     etkinlik.removeAllReminders();
     etkinlik.addPopupReminder(AYAR.hatirlatmaDakika);
-    etkinlik.setDescription(etkinlik.getDescription() + '\n\nHatırlatma gönder (WhatsApp):\n' +
-      hatirlatmaLinki(AYAR, { ad: r.ad, telefon: r.telefon, saat: r.saat, hizmet: r.hizmet, kod: kod }));
+    var kisi = { ad: r.ad, telefon: r.telefon, saat: r.saat, hizmet: r.hizmet, kod: kod };
+    etkinlik.setDescription(etkinlik.getDescription() + '\n\nHatırlatma gönder (WhatsApp):\n' + hatirlatmaLinki(AYAR, kisi) +
+      AYAR.gecikmeSecenekleri.map(function (dk) {
+        return '\n\n' + dk + ' dk gecikme bildir (WhatsApp):\n' + gecikmeLinki(AYAR, kisi, dk);
+      }).join(''));
 
     SpreadsheetApp.openById(ozellik('TABLO_ID')).getSheets()[0].appendRow([
       new Date(), kod, r.tarih, r.saat, r.hizmet, r.ad, "'" + r.telefon, r.not, 'Alındı'
@@ -313,7 +403,8 @@ function doPost(e) {
     MailApp.sendEmail(AYAR.bildirimEposta || Session.getEffectiveUser().getEmail(),
       'Yeni randevu: ' + r.tarih + ' ' + r.saat + ' — ' + r.hizmet,
       r.ad + ' (' + r.telefon + ')\n' + r.hizmet + '\n' + r.tarih + ' ' + r.saat + '\nNot: ' + (r.not || '-') +
-      '\nKod: ' + kod + '\n\nİptal için etkinliği Google Takvim\'den silin.\nMüşteriye yaz: https://wa.me/90' + r.telefon.slice(1));
+      '\nKod: ' + kod + '\n\nİptal için etkinliği Google Takvim\'den silin.\nMüşteriye yaz: https://wa.me/90' + r.telefon.slice(1) +
+      panelSatiri());
   } catch (x) { /* e-posta kotası dolsa da randevu kaydı geçerli */ }
 
   return json({ ok: true, kod: kod, tarih: r.tarih, saat: r.saat, hizmet: r.hizmet, sure: AYAR.hizmetler[r.hizmet].sure });
@@ -347,7 +438,7 @@ function hatirlatmaKontrol() {
       MailApp.sendEmail(AYAR.bildirimEposta || Session.getEffectiveUser().getEmail(),
         'Hatırlatma gönder: ' + secilen.map(function (r) { return r.saat + ' ' + r.ad; }).join(', '),
         'Yaklaşan randevular. Bağlantıya dokunun, WhatsApp\'ta hazır mesaj açılır, Gönder\'e basın.\n\n' +
-        satirlar.join('\n\n'));
+        satirlar.join('\n\n') + panelSatiri());
     } catch (x) { return; } // kota dolduysa işaretleme yapma, sonraki turda tekrar dene
   }
   etkinlikler.forEach(function (e) {
@@ -355,9 +446,47 @@ function hatirlatmaKontrol() {
   });
 }
 
-/** Bir kez elle çalıştırın: takvimi, kayıt tablosunu ve hatırlatma tetikleyicisini oluşturur. */
+/** E-postaların sonuna eklenen panel bağlantısı (web uygulaması yayınlanmamışsa boş). */
+function panelSatiri() {
+  try {
+    var url = ScriptApp.getService().getUrl();
+    var anahtar = ozellik('PANEL_ANAHTARI');
+    return url && anahtar ? '\n\nSıra kayarsa gecikme bildirimi — bugünün listesi:\n' + url + '?islem=panel&anahtar=' + anahtar : '';
+  } catch (x) { return ''; }
+}
+
+/**
+ * Dükkân paneli: GET ?islem=panel&anahtar=… — günün kalan randevuları, hatırlatma ve gecikme düğmeleri.
+ * Anahtar kurulum() ile üretilir; bilinmeden müşteri bilgisi görüntülenemez.
+ */
+function panel(anahtar) {
+  var gercek = ozellik('PANEL_ANAHTARI');
+  if (!gercek || anahtar !== gercek) {
+    return HtmlService.createHtmlOutput('<p style="font:16px system-ui;padding:16px">Bu bağlantı geçersiz.</p>');
+  }
+  var simdi = Date.now();
+  var tarih = bugunTarih();
+  var gunSonu = new Date(gunBaslangici(tarih).getTime() + 864e5);
+  var etkinlikler = takvim().getEvents(new Date(simdi - 60 * 6e4), gunSonu).map(function (e) {
+    return {
+      baslik: e.getTitle(), aciklama: e.getDescription(), bas: e.getStartTime().getTime(),
+      telefon: e.getTag('telefon'), ad: e.getTag('ad'), hizmet: e.getTag('hizmet'), kod: e.getTag('kod')
+    };
+  });
+  var liste = panelListesi(etkinlikler, simdi).map(function (r) {
+    r.saat = Utilities.formatDate(new Date(r.bas), 'Europe/Istanbul', 'HH:mm');
+    return r;
+  });
+  var gunEtiketi = Utilities.formatDate(new Date(), 'Europe/Istanbul', 'dd.MM.yyyy');
+  return HtmlService.createHtmlOutput(panelHtml(AYAR, liste, gunEtiketi))
+    .setTitle(AYAR.dukkanAdi + ' — Bugünün randevuları')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+/** Bir kez elle çalıştırın: takvimi, kayıt tablosunu, hatırlatma tetikleyicisini ve panel anahtarını oluşturur. */
 function kurulum() {
   var p = PropertiesService.getScriptProperties();
+  if (!p.getProperty('PANEL_ANAHTARI')) p.setProperty('PANEL_ANAHTARI', Utilities.getUuid().replace(/-/g, ''));
   if (!p.getProperty('TAKVIM_ID')) {
     var t = CalendarApp.createCalendar(AYAR.takvimAdi, { timeZone: 'Europe/Istanbul', color: CalendarApp.Color.YELLOW });
     p.setProperty('TAKVIM_ID', t.getId());
@@ -372,6 +501,7 @@ function kurulum() {
   if (!tetikVar) ScriptApp.newTrigger('hatirlatmaKontrol').timeBased().everyMinutes(15).create();
   Logger.log('Takvim: ' + p.getProperty('TAKVIM_ID'));
   Logger.log('Tablo: https://docs.google.com/spreadsheets/d/' + p.getProperty('TABLO_ID'));
+  Logger.log('Panel: <web uygulaması adresi>?islem=panel&anahtar=' + p.getProperty('PANEL_ANAHTARI'));
 }
 
 /* Node testleri için dışa aktarım (Apps Script'te etkisizdir) */
@@ -379,5 +509,7 @@ if (typeof module !== 'undefined') {
   module.exports = { AYAR: AYAR, bosSaatler: bosSaatler, dogrula: dogrula, telefonTemizle: telefonTemizle,
     kaynakBul: kaynakBul, haftaninGunu: haftaninGunu, cakisanSayisi: cakisanSayisi,
     hatirlatmaMetni: hatirlatmaMetni, hatirlatmaLinki: hatirlatmaLinki, aciklamadanTelefon: aciklamadanTelefon,
-    hatirlatilacaklar: hatirlatilacaklar, hatirlatmaKontrol: hatirlatmaKontrol };
+    hatirlatilacaklar: hatirlatilacaklar, hatirlatmaKontrol: hatirlatmaKontrol,
+    gecikmeMetni: gecikmeMetni, gecikmeLinki: gecikmeLinki, panelListesi: panelListesi, panelHtml: panelHtml,
+    htmlKacis: htmlKacis, panel: panel };
 }

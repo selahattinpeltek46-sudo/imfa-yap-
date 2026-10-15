@@ -20,6 +20,25 @@ Müşteri (site)                      Google (salonun hesabı, ücretsiz)       
 - **Kapasite:** `koltuk: 2` (Saç & Sakal, Anatomik kesim), `bakim: 1` (Cilt bakımı, Lazer), `vip: 1` (VİP salon). Aynı saatte 2 koltuk randevusu + 1 lazer randevusu birlikte alınabilir.
 - **Sistem kurulmadan / çökerse:** Form otomatik olarak **WhatsApp moduna** geçer; müşteri talebi hazır WhatsApp mesajı olarak gönderir. Site hiçbir zaman "kırık" görünmez.
 
+## 1b. Sıra kayarsa gecikme bildirimi (ücretsiz, tek dokunuş)
+
+Sitede müşteriye söz veriliyor: *"Sıra kayarsa randevu saatinizden önce WhatsApp'tan haber veririz, salonda beklemezsiniz."* Bu sözü tutmak için iki yol var:
+
+| Nerede | Ne yapılır |
+|---|---|
+| **Salon paneli** (önerilen) | Telefonun ana ekranına eklenen tek bağlantı: `<web uygulaması URL>?islem=panel&anahtar=<PANEL_ANAHTARI>`. Günün kalan randevuları saat sırasıyla listelenir; her müşterinin yanında **15 dk gecikme**, **30 dk gecikme** ve **Ara** düğmeleri var. Düğmeye dokunun → WhatsApp'ta "sıramız 15 dakika kaydı, 14:45 gibi gelin" hazır mesajı açılır → **Gönder**. |
+| Takvim etkinliği | Siteden alınan her randevunun açıklamasında "15 dk / 30 dk gecikme bildir" bağlantıları var. |
+
+- Panel bağlantısı: `kurulum` çalıştırılınca Yürütme günlüğünde `Panel: …anahtar=…` satırı çıkar; başına web uygulaması URL'sini koyun. "Yeni randevu" e-postalarının sonunda da hazır bağlantı gelir.
+- Bağlantıyı **yalnız salon telefonunda** tutun: müşteri adlarını ve telefonlarını gösterir. Sızarsa Proje Ayarları → Komut dosyası özellikleri → `PANEL_ANAHTARI`'nı silip `kurulum`'u tekrar çalıştırın (eski bağlantı geçersiz olur).
+- Elle eklenen (telefonla alınan) randevular da panelde görünür; düğmeler için açıklamaya cep numarası yazılmalı.
+- Gecikme süreleri `AYAR.gecikmeSecenekleri` (varsayılan `[15, 30]`).
+- **Daha önce kurulduysa:** yeni `Code.gs`'yi yapıştırın, `kurulum`'u bir kez daha çalıştırın (yalnız panel anahtarını ekler), Dağıt → Dağıtımları yönet → **Yeni sürüm**.
+
+## 1c. Paketler (art arda iki adım)
+
+"Saç & Sakal Kesim + Cilt Bakımı" ve "Anatomik Kesim + Cilt Bakımı": önce koltukta 45 dk, ardından bakım odasında 45 dk [VARSAYIM süreler]. Saat yalnız **iki adım da boşsa** sunulur. Takvimde tek etkinlik (90 dk) görünür; silmek ikisini birden iptal eder. Paket adları sitedeki formla (`f-hizmet` → "Paketler") birebir aynı olmalı.
+
 ## 2. Salon randevuları nasıl kontrol eder?
 
 | İş | Nasıl |
@@ -29,6 +48,7 @@ Müşteri (site)                      Google (salonun hesabı, ücretsiz)       
 | **İptal etmek** | Takvimde etkinliği **silin** → o saat sitede hemen yeniden boş görünür. |
 | Saati değiştirmek | Etkinliği takvimde sürükleyin / saatini düzenleyin. Müşteriye WhatsApp'tan haber verin. |
 | Telefonla gelen randevu | Takvime elle etkinlik ekleyin (ör. "Ahmet saç"). 1 koltuk dolu sayılır. Lazer/cilt için başlığı `[bakim]`, VİP için `[vip]` ile başlatın. |
+| Sıra kaydı, müşteriye haber vermek | **Panel** (§1b) → müşterinin yanındaki "15 dk gecikme" → WhatsApp'ta **Gönder**. |
 | Mola, izin, erken kapanış | Takvime başlığında **KAPALI** geçen etkinlik ekleyin (ör. "KAPALI öğle arası" 13:00–14:00). O aralık tüm hizmetlere kapanır. Tüm gün etkinliği = tüm gün kapalı. |
 | Usta izinli → kapasite 1 | O gün için "Mehmet izinli" adlı tüm gün etkinliği ekleyin → bir koltuk tüm gün dolu sayılır. |
 | Geçmiş kayıtlar, rapor | "Barber's Town Randevu Kayıtları" E-Tablosu: kayıt zamanı, kod, tarih, saat, hizmet, ad, telefon, not, durum. |
@@ -49,7 +69,7 @@ Gerekli: salonun bir Google (Gmail) hesabı.
    - `hizmetler`: süreler (dakika). **Hizmet adlarını değiştirirseniz** sitedeki formdaki adlarla (index.html → `f-hizmet`) birebir aynı olmalı.
    - `bildirimEposta`: bildirim gidecek adres (boş = bu Google hesabı)
 5. Üstteki fonksiyon listesinden **`kurulum`** seçin → **Çalıştır**. İzin ekranında hesabı seçin → "Gelişmiş" → "Barber's Town Randevu'ya git (güvenli değil)" → **İzin ver**. (Uyarı, betiğin Google tarafından incelenmemiş kişisel betik olmasındandır.)
-   Bu adım takvimi ve kayıt tablosunu oluşturur; Yürütme günlüğünde tablo linki görünür.
+   Bu adım takvimi, kayıt tablosunu ve **panel anahtarını** (§1b) oluşturur; Yürütme günlüğünde tablo ve panel satırı görünür.
 6. **Dağıt → Yeni dağıtım → Tür: Web uygulaması**
    - Yürütme yetkisi: **Ben**
    - Erişimi olanlar: **Herkes**
@@ -63,7 +83,7 @@ Gerekli: salonun bir Google (Gmail) hesabı.
 
 ## 4. Güvenlik ve sınırlar
 
-- Siteden yalnız "boş saatler" okunabilir; müşteri adları/telefonları dışarı verilmez.
+- Siteden yalnız "boş saatler" okunabilir; müşteri adları/telefonları dışarı verilmez. Panel yalnız gizli anahtarla açılır (yanlış/eksik anahtarda takvim okunmaz).
 - Spam: gizli tuzak alanı (botlar doldurur, kayıt yapılmaz), telefon doğrulaması (05xx), aynı numaradan günde en fazla 3 randevu.
 - Google ücretsiz kotaları: günlük ~100 e-posta (tüketici hesabı), takvim etkinliği oluşturma ~5.000/gün — bir salon için fazlasıyla yeterli. E-posta kotası dolarsa randevu yine kaydedilir.
 - KVKK: Veriler salonun Google hesabında tutulur; aydınlatma metni buna göre güncellendi (hukuki kontrol gerekir). Kayıt tablosundaki 1 yılı aşan satırlar silinmeli.

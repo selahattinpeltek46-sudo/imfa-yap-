@@ -57,6 +57,7 @@
       { "@type": "Question", "name": "Lazer epilasyon ve cilt bakımı için de randevu alabilir miyim?", "acceptedAnswer": { "@type": "Answer", "text": "Evet. Randevu formunda hizmeti seçtiğinizde o hizmetin boş saatleri listelenir. Seans planı ve fiyat için WhatsApp'tan bilgi alabilirsiniz." } },
       { "@type": "Question", "name": "Çalışma saatleriniz nedir?", "acceptedAnswer": { "@type": "Answer", "text": "Akşam 21:00'e kadar açığız. Açılış saati ve tatil günü için gelmeden önce aramanızı öneririz." } },
       { "@type": "Question", "name": "İstediğim modeli nasıl anlatırım?", "acceptedAnswer": { "@type": "Answer", "text": "Randevu formundaki not alanına yazın ya da beğendiğiniz kesimin fotoğrafını WhatsApp'tan gönderin; gelmeden önce birlikte konuşalım." } },
+      { "@type": "Question", "name": "Sıra gecikirse salonda beklemek zorunda kalır mıyım?", "acceptedAnswer": { "@type": "Answer", "text": "Hayır. Önceki müşteri uzar da sıra kayarsa, randevu saatinizden önce WhatsApp'tan yazar, ne zaman gelmeniz gerektiğini söyleriz. Yeni saat size uymazsa aynı mesaja yazın, başka bir saate alalım." } },
       { "@type": "Question", "name": "Randevumu nasıl değiştirir veya iptal ederim?", "acceptedAnswer": { "@type": "Answer", "text": "Randevu kodunuzla birlikte WhatsApp'tan yazın ya da bizi arayın; saatinizi değiştirir veya iptal ederiz. Gelemeyecekseniz haber vermeniz, o saati başka bir müşterimize açmamızı sağlar." } },
       { "@type": "Question", "name": "Dükkân tam olarak nerede?", "acceptedAnswer": { "@type": "Answer", "text": "7 Tepe Mahallesi, 85043 Nolu Cadde, Maliyeci Ahmet Sitesi A Blok No:75/A, Şahinbey/Gaziantep. Haritada 28MF+QQ kodu ile de bulabilirsiniz." } }
     ]
@@ -138,6 +139,7 @@
           <p>Girişteki ışıklı tabelada altı satır var. Hepsini aşağıda bulacaksınız; randevu alabileceğiniz hizmetlerde süreyi salon takvimine göre ayırıyoruz.</p>
           <p class="kucuk">Fiyatlar dönem dönem değişiyor. Güncel fiyatı <a href="https://wa.me/905357294333?text=Merhaba%2C%20g%C3%BCncel%20fiyatlar%C4%B1n%C4%B1z%C4%B1%20%C3%B6%C4%9Frenebilir%20miyim%3F" target="_blank" rel="noopener" data-olay="whatsapp_tik" data-yer="fiyat">WhatsApp'tan sorun</a>, hemen yazalım.</p>
         </div>
+        <div>
         <ol class="tabela" role="list">
           <li class="tabela__satir">
             <span class="levha">VİP Salon</span>
@@ -164,6 +166,26 @@
             <div class="tabela__aciklama"><p>Kafa yapınıza ve saçınızın çıkış yönüne göre kesim.</p><a href="#randevu" data-hizmet="Anatomik Saç Kesim" data-olay="randevu_cta_tik" data-yer="hizmet-anatomik">Randevu al</a></div>
           </li>
         </ol>
+
+        <!-- PAKETLER: tabeladaki hizmetlerin art arda tek randevuda alınması; indirim/fiyat iddiası yok.
+             Tabelada yer almadıkları için levha görünümü kullanılmaz. -->
+        <div class="paketler">
+          <h3 class="paketler__baslik">Birlikte alın</h3>
+          <p class="kucuk">Kesimin ardından cilt bakımı, tek randevuda. Koltuk ve bakım odası art arda size ayrılır; iki ayrı saat aramazsınız. Paket fiyatını <a href="https://wa.me/905357294333?text=Merhaba%2C%20paket%20fiyatlar%C4%B1n%C4%B1%20%C3%B6%C4%9Frenebilir%20miyim%3F" target="_blank" rel="noopener" data-olay="whatsapp_tik" data-yer="paket-fiyat">WhatsApp'tan sorun</a>.</p>
+          <ul class="paket-liste" role="list">
+            <li>
+              <h4>Saç &amp; sakal kesim + cilt bakımı</h4>
+              <p>Önce koltukta saç ve sakal, ardından bakım odasında cilt bakımı. Yaklaşık 1,5 saat.</p>
+              <a href="#randevu" data-hizmet="Saç &amp; Sakal Kesim + Cilt Bakımı" data-olay="randevu_cta_tik" data-yer="paket-sac-sakal-cilt">Randevu al</a>
+            </li>
+            <li>
+              <h4>Anatomik kesim + cilt bakımı</h4>
+              <p>Kafa yapınıza göre kesim, ardından cilt bakımı. Yaklaşık 1,5 saat.</p>
+              <a href="#randevu" data-hizmet="Anatomik Kesim + Cilt Bakımı" data-olay="randevu_cta_tik" data-yer="paket-anatomik-cilt">Randevu al</a>
+            </li>
+          </ul>
+        </div>
+        </div>
       </div>
     </section>
 
@@ -192,6 +214,32 @@
       </div>
     </section>
 
+    <!-- USTAMIZ — GİZLİ: salondan bilgi gelene kadar yayında görünmez.
+         Doldurma: _proje/usta-bilgi-formu.md (sorular salona sorulur, uydurma bilgi YAZILMAZ).
+         Açmak için: [DOLDURULACAK] alanlarını doldurun, foto ekleyin, section'daki "hidden" özniteliğini silin
+         ve menüye <a href="#usta">Ustamız</a> ekleyin. -->
+    <section class="bolum usta" id="usta" aria-labelledby="usta-baslik" hidden>
+      <div class="kap usta__duzen">
+        <figure class="usta__foto">
+          <img src="img/usta.webp" width="640" height="800" loading="lazy" alt="[DOLDURULACAK: ustanın adı] salonda, altın ışıklı aynanın önünde">
+        </figure>
+        <div class="usta__metin">
+          <p class="usta__ust">Ustamız</p>
+          <h2 id="usta-baslik">[DOLDURULACAK: Ad Soyad]</h2>
+          <dl class="usta__kunye">
+            <div><dt>Meslekte</dt><dd>[DOLDURULACAK: kaç yıl]</dd></div>
+            <div><dt>Barber's Town</dt><dd>[DOLDURULACAK: açılış yılı]</dd></div>
+            <div><dt>Uzmanlık</dt><dd>[DOLDURULACAK: ör. anatomik kesim]</dd></div>
+          </dl>
+          <p>[DOLDURULACAK: 2–3 cümle — mesleğe nasıl başladı, nerede yetişti, anatomik kesimi nereden öğrendi. Ustanın kendi anlatımından.]</p>
+          <!-- Belge/sertifika/haber varsa: fotoğrafı veya bağlantısıyla. Yoksa bu listeyi silin. -->
+          <ul class="usta__belgeler" role="list">
+            <li>[DOLDURULACAK: belge / sertifika / haber — kanıt bağlantısıyla]</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <!-- RANDEVU -->
     <section class="bolum" id="randevu" aria-labelledby="randevu-baslik">
       <div class="kap randevu">
@@ -199,6 +247,7 @@
           <h2 id="randevu-baslik">Randevu</h2>
           <p>Hizmeti ve günü seçin, o günün boş saatleri listelensin. Seçtiğiniz saat size ayrılır, ekranda bir randevu kodu görürsünüz.</p>
           <p>Gelemeyecekseniz kodunuzla birlikte haber verin; o saati başkasına açalım.</p>
+          <p class="randevu__soz"><strong>Sıra kayarsa haber veririz.</strong> Önceki müşteri uzarsa randevu saatinizden önce WhatsApp'tan yazar, ne zaman gelmeniz gerektiğini söyleriz. Salonda beklemezsiniz.</p>
           <p class="randevu__tel">Telefonla: <a href="tel:+905357294333" data-olay="telefon_tik" data-yer="randevu">0535 729 43 33</a></p>
         </div>
 
@@ -213,6 +262,10 @@
               <option>Özel Cilt Bakımı</option>
               <option>Lazer Epilasyon</option>
               <option>VİP Salon</option>
+              <optgroup label="Paketler">
+                <option>Saç &amp; Sakal Kesim + Cilt Bakımı</option>
+                <option>Anatomik Kesim + Cilt Bakımı</option>
+              </optgroup>
             </select>
             <p class="alan-hata" id="h-hizmet" role="alert"></p>
           </div>
@@ -306,6 +359,10 @@
           <details>
             <summary>İstediğim modeli nasıl anlatırım?</summary>
             <p>Randevu formundaki not alanına yazın ya da beğendiğiniz kesimin fotoğrafını WhatsApp'tan gönderin; gelmeden önce konuşalım.</p>
+          </details>
+          <details>
+            <summary>Sıra gecikirse salonda beklemek zorunda kalır mıyım?</summary>
+            <p>Hayır. Önceki müşteri uzar da sıra kayarsa, randevu saatinizden önce WhatsApp'tan yazar, ne zaman gelmeniz gerektiğini söyleriz. Yeni saat size uymazsa aynı mesaja yazın, başka bir saate alalım.</p>
           </details>
           <details>
             <summary>Randevumu nasıl değiştirir veya iptal ederim?</summary>

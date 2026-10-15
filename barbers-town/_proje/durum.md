@@ -1,6 +1,6 @@
 # Barber's Town — Proje Durumu (SELAHATTİN AI v2.1)
 
-Son güncelleme: 2026-10-15 · Revizyon 2 (fotoğraflar + online randevu) — `revizyon-2-randevu-ve-fotograflar.md`
+Son güncelleme: 2026-10-15 · Revizyon 2 (fotoğraflar + online randevu) — `revizyon-2-randevu-ve-fotograflar.md` · Revizyon 3: paketler, gecikme bildirimi, gizli usta bölümü — `revizyon-3-paket-gecikme-usta.md`
 
 | # | Aşama | Modül | Durum | Not |
 |---|---|---|---|---|
@@ -19,10 +19,10 @@ Son güncelleme: 2026-10-15 · Revizyon 2 (fotoğraflar + online randevu) — `r
 | 13 | SEO & Analytics | 2 | ✅ TAMAMLANDI | GA4 kurulmadı (altyapı hazır) |
 | 14 | Visual Intelligence | 2 | ✅ TAMAMLANDI | 5 gerçek fotoğraf (yüzler kırpıldı); cephe & lazer odası dosyası bekleniyor |
 | 15 | Tech Stack & Plan | 3 | ✅ TAMAMLANDI | Bağımlılıksız statik |
-| 16 | Development | 3 | ✅ TAMAMLANDI | + online randevu (Apps Script), uçtan uca test |
+| 16 | Development | 3 | ✅ TAMAMLANDI | + online randevu (Apps Script), uçtan uca test; + iki adımlı paketler, gecikme paneli (Rev. 3) |
 | 17 | Evaluation | 4 | ✅ TAMAMLANDI | |
 | 18 | Audit | 4 | ✅ TAMAMLANDI | 10 bulgu, KRİTİK/YÜKSEK yok |
-| 19 | Revision | 4 | ⚠️ RİSK | Randevu sistemi salonun Google hesabında kurulmalı (KURULUM.md) |
+| 19 | Revision | 4 | ⚠️ RİSK | Randevu sistemi salonun Google hesabında kurulmalı (KURULUM.md); "Ustamız" bölümü salon bilgisi bekliyor (gizli) |
 | 20 | Final QA | 4 | ✅ TAMAMLANDI | |
 | 21 | Handoff | 4 | ✅ TAMAMLANDI | |
 | 22 | Learning / System Update | 4 | ✅ TAMAMLANDI | SKILL.md güncellendi |

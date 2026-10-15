@@ -1,6 +1,6 @@
 # Barber Uğur — Proje Durumu (SELAHATTİN AI v2.1)
 
-Son güncelleme: 2026-10-15 · Revizyon 2: randevu hatırlatması — `revizyon-2-hatirlatma.md` · Revizyon 3: fotoğraflar — `revizyon-3-fotograflar.md`
+Son güncelleme: 2026-10-15 · Revizyon 2: randevu hatırlatması — `revizyon-2-hatirlatma.md` · Revizyon 3: fotoğraflar — `revizyon-3-fotograflar.md` · Revizyon 4: paketler, gecikme bildirimi, gizli usta bölümü — `revizyon-4-paket-gecikme-usta.md`
 
 | # | Aşama | Modül | Durum | Not |
 |---|---|---|---|---|
@@ -19,10 +19,10 @@ Son güncelleme: 2026-10-15 · Revizyon 2: randevu hatırlatması — `revizyon-
 | 13 | SEO & Analytics | 2 | ✅ TAMAMLANDI | GA4 kurulmadı (altyapı hazır) |
 | 14 | Visual Intelligence | 2 | ✅ TAMAMLANDI | Revizyon 3: 4 gerçek fotoğraf (kişiler bulanık/kırpık), OG yenilendi |
 | 15 | Tech Stack & Plan | 3 | ✅ TAMAMLANDI | Statik + Apps Script randevu |
-| 16 | Development | 3 | ✅ TAMAMLANDI | Uçtan uca testler geçti; + 2 saat önce hatırlatma (.ics alarmı + dükkândan WhatsApp) |
+| 16 | Development | 3 | ✅ TAMAMLANDI | Uçtan uca testler geçti; + 2 saat önce hatırlatma (.ics alarmı + dükkândan WhatsApp); + paketler, gecikme paneli (Rev. 4) |
 | 17 | Evaluation | 4 | ✅ TAMAMLANDI | |
 | 18 | Audit | 4 | ✅ TAMAMLANDI | 9 bulgu, KRİTİK yok |
-| 19 | Revision | 4 | ⚠️ RİSK | YÜKSEK 2 bulgu müşteri girdisine bağlı |
+| 19 | Revision | 4 | ⚠️ RİSK | YÜKSEK 2 bulgu müşteri girdisine bağlı; "Ustamız" bölümü dükkân bilgisi bekliyor (gizli) |
 | 20 | Final QA | 4 | ✅ TAMAMLANDI | |
 | 21 | Handoff | 4 | ✅ TAMAMLANDI | |
 | 22 | Learning / System Update | 4 | ✅ TAMAMLANDI | SKILL.md güncellendi |
