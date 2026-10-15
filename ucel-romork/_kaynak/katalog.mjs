@@ -64,7 +64,7 @@ const susler = '<i class="corner-tl" aria-hidden="true"></i><i class="corner-tr"
 
 // ---------- Ürünler ----------
 // sahne: kesit (dekupe) ya da foto. bilinen: Üçel'in teyit ettiği değerler.
-// olcu: modele göre değişen ölçüler (sayfada tek listede; değer gelince bilinen'e taşınır).
+// olcu: modele göre değişen ölçüler; teknik tabloda "Modele göre" yazar (değer gelince bilinen'e taşınır).
 const RENK = { mavi: ['Mavi', '#1F5FA8'], yesil: ['Yeşil', '#1E6A55'], kirmizi: ['Kırmızı', '#C0172F'] };
 const URUNLER = [
   {
@@ -73,10 +73,10 @@ const URUNLER = [
     lead: 'Tarladan eve, depodan tarlaya yük taşımanın temel aleti. Kaynağından boyasına kadar Göksun’daki atölyemizde üretiyoruz.',
     sahne: { kesit: 'k-romork' },
     uses: [['wheat', 'Tarla ürünü'], ['sack', 'Gübre ve yem'], ['logs', 'Odun ve malzeme']], usesH: 'Ne taşır?',
-    bilinen: [['Üretim', 'Üçel · Göksun atölyesi'], ['Kasa rengi', 'İsteğe göre'], ['Kasa yazısı', 'İsim, firma adı, “Maşallah”']],
-    olcu: ['Kapasite (ton)', 'Kasa iç ölçüsü', 'Dingil', 'Damper', 'Lastik ebadı', 'Traktör gücü'],
+    bilinen: [],
+    olcu: ['Taşıma kapasitesi (ton)', 'Kasa iç ölçüsü (mm)', 'Dingil', 'Damper', 'Lastik ebadı', 'Traktör gücü (HP)'],
     renk: ['mavi', 'yesil'], renkNot: 've istediğiniz diğer renkler',
-    sec: ['Standart dışı ölçüde özel imalat'],
+    sec: ['Kasa rengi isteğe göre', 'Kasaya isim, firma adı ya da “Maşallah” yazısı', 'Standart dışı ölçüde özel imalat'],
     saha: [['tarim-romorku-yesil-teslimat', 'Teslim günü: kasada müşterimizin adı yazılı.'], ['tarim-romorku-traktor', 'Mavi römork, teslimat için yükleniyor.']],
   },
   {
@@ -85,8 +85,8 @@ const URUNLER = [
     lead: 'Göksun model yaylı kültivatör. Yaylı ayaklar taşa çarpınca esner; hem aleti hem traktörü korur. Atölyemizde üretiyoruz.',
     sahne: { kesit: 'k-kultivator' },
     uses: [['soil', 'Toprak yüzey işleme'], ['sprout', 'Tohum yatağı'], ['noweed', 'Yabani ot mücadelesi']], usesH: 'Ne işe yarar?',
-    bilinen: [['Ayak tipi', 'Yaylı'], ['Model', 'Göksun'], ['Üretim', 'Üçel · Göksun atölyesi']],
-    olcu: ['Ayak sayısı', 'Çalışma genişliği', 'Çalışma derinliği', 'Traktör gücü'],
+    bilinen: [['Model', 'Göksun'], ['Ayak tipi', 'Yaylı']],
+    olcu: ['Ayak sayısı', 'Çalışma genişliği (cm)', 'Çalışma derinliği (cm)', 'Traktör gücü (HP)'],
     renk: ['kirmizi', 'mavi'],
     sec: ['Farklı ayak sayısı ve ebat seçenekleri'],
     saha: [['yayli-kultivator-kirmizi', 'Kırmızı Göksun kültivatörler.'], ['yayli-kultivator-mavi', 'Mavi renk seçeneği.']],
@@ -97,8 +97,8 @@ const URUNLER = [
     lead: 'Traktörünüzün arkasına takılan hidrolik kepçe. Yem, gübre ve malzemeyi kaldırıp taşır. Kendi atölyemizde imal ediyoruz.',
     sahne: { kesit: 'k-kepce' },
     uses: [['lift', 'Yükleme ve boşaltma'], ['barn', 'Ahır ve çiftlik işleri'], ['box', 'Malzeme taşıma']], usesH: 'Ne işe yarar?',
-    bilinen: [['Çalışma', 'Hidrolik'], ['Montaj', 'Traktörün arkasına'], ['Üretim', 'Üçel · Göksun atölyesi']],
-    olcu: ['Kaldırma kapasitesi', 'Kaldırma yüksekliği', 'Kepçe genişliği', 'Traktör gücü'],
+    bilinen: [['Çalışma', 'Hidrolik'], ['Montaj', 'Traktörün arkasına']],
+    olcu: ['Kaldırma kapasitesi (kg)', 'Kaldırma yüksekliği (cm)', 'Kepçe genişliği (cm)', 'Traktör gücü (HP)'],
     renk: ['kirmizi', 'mavi'],
     sec: ['Traktörünüze montaj uygunluğunu birlikte kontrol ederiz'],
     saha: [['on-yukleyici-kubota', 'Traktöre takılmış kırmızı loader kepçe.'], ['on-yukleyici-atolye', 'Atölyemizin önünde, kepçe yukarıda.']],
@@ -109,8 +109,8 @@ const URUNLER = [
     lead: 'Merada ve yaylada hayvanlara, bahçede fidana, tarla başında ilaçlamaya su taşır. Göksun’daki atölyemizde imal ediyoruz.',
     sahne: { kesit: 'k-tanker' },
     uses: [['drop', 'Tarla sulama'], ['cow', 'Hayvan suyu'], ['truck', 'Genel su taşıma']], usesH: 'Ne işe yarar?',
-    bilinen: [['Çekiş', 'Traktörle, çeki oklu şasi'], ['Üretim', 'Üçel · Göksun atölyesi']],
-    olcu: ['Kapasite (lt)', 'Tank malzemesi', 'Dingil', 'Pompa', 'Traktör gücü'],
+    bilinen: [['Çekiş', 'Traktörle, çeki oklu şasi']],
+    olcu: ['Tank kapasitesi (lt)', 'Tank malzemesi', 'Dingil', 'Pompa', 'Traktör gücü (HP)'],
     sec: ['Farklı kapasite seçenekleri', 'Hayvan sayınıza ve sulama alanınıza göre birlikte seçelim'],
     saha: [['su-tankeri', 'Üçel su tankerleri.']],
   },
@@ -121,7 +121,7 @@ const URUNLER = [
     sahne: { kesit: 'tapan-temsili', uzanti: 'webp', not: 'Temsili görsel' },
     uses: [['flat', 'Tarlayı düzler'], ['hammer', 'Kesek kırar'], ['sprout', 'Ekime hazırlar']], usesH: 'Ne işe yarar?',
     bilinen: [],
-    olcu: ['Çalışma genişliği', 'Katlanır / sabit', 'Ağırlık', 'Traktör gücü'],
+    olcu: ['Çalışma genişliği (cm)', 'Katlanır / sabit', 'Ağırlık (kg)', 'Traktör gücü (HP)'],
     sec: ['Farklı genişlik seçenekleri'],
     akis: 2, akisNot: 'Tapan, pulluk ve kültivatörden sonra, ekimden hemen önce kullanılır.',
   },
@@ -132,7 +132,7 @@ const URUNLER = [
     sahne: { kesit: 'k-pulluk' },
     uses: [['soil', 'Derin toprak işleme'], ['sprout', 'Ekim öncesi hazırlık'], ['plough', 'Anız bozma']], usesH: 'Ne işe yarar?',
     bilinen: [['Tip', 'Kulaklı'], ['Gövde sayısı', '4 (fotoğraftaki model)']],
-    olcu: ['Çalışma genişliği', 'Çalışma derinliği', 'Traktör gücü'],
+    olcu: ['Çalışma genişliği (cm)', 'Çalışma derinliği (cm)', 'Traktör gücü (HP)'],
     sec: ['Farklı gövde sayısı seçenekleri'],
     saha: [['kulakli-pulluk', 'Kulaklı pulluklar.'], ['on-yukleyici-ve-pulluk', 'Mavi pulluk ve kırmızı loader kepçe.']],
   },
@@ -143,7 +143,7 @@ const URUNLER = [
     sahne: { foto: 'romork-ve-gubre-serpme', pos: '55% 40%', not: 'Teslim günü, müşterimizle' },
     uses: [['spread', 'Granül gübre serpme'], ['wheat', 'Dengeli dağıtım'], ['tractor', 'Traktör arkasına takılır']], usesH: 'Ne işe yarar?',
     bilinen: [],
-    olcu: ['Depo hacmi (lt)', 'Serpme genişliği', 'Tip', 'Traktör gücü'],
+    olcu: ['Depo hacmi (lt)', 'Serpme genişliği (m)', 'Tip', 'Traktör gücü (HP)'],
     sec: ['Farklı kapasite seçenekleri'],
     akis: 3, akisNot: 'Taban gübresi için ekimden önce, üst gübre için bitki büyürken kullanılır.',
   },
@@ -215,10 +215,11 @@ const urunSayfa = (u) => {
   <div class="cols">
     <div>
       ${etiket('gear', 'Teknik bilgiler')}
-      ${u.bilinen.length ? `<table class="spec">${u.bilinen.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join('')}</table>` : ''}
-      <p class="olcu-h">Modele göre değişen ölçüler:</p>
-      <ul class="chips">${u.olcu.map((o) => `<li>${o}</li>`).join('')}</ul>
-      <a class="note" href="${WA[u.qr]}">${i('chat')} Ölçü tablosunu WhatsApp’tan isteyin, gönderelim.</a>
+      <table class="spec">
+        ${u.bilinen.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join('')}
+        ${u.olcu.map((k) => `<tr><th>${k}</th><td class="mg">Modele göre</td></tr>`).join('')}
+      </table>
+      <a class="note" href="${WA[u.qr]}">${i('chat')} Ölçüleri WhatsApp’tan isteyin, gönderelim.</a>
     </div>
     <div>
       ${etiket('list', 'Seçenekler')}
