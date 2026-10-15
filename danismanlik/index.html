@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Hedef Kitle Analizi</title>
+<meta name="description" content="Firmalara dijital danışmanlık için sade hedef kitle analizi ve 4A satış görüşmesi aracı.">
+<style>
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#e3ded3;
+  --accent:#b4532a; --accent-soft:#f8e9e1; --ok:#2f7a4f; --ok-soft:#e5f3ea;
+  --warn:#9a6a00; --warn-soft:#fbf1d6; --bad:#a33a3a; --bad-soft:#f9e3e3;
+  --field:#fbfaf7;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181b; --card:#1f2226; --ink:#eceae5; --muted:#a3a8ae; --line:#33373d;
+    --accent:#e48a5f; --accent-soft:#3a2a22; --ok:#6fc296; --ok-soft:#1f3328;
+    --warn:#e0b44f; --warn-soft:#352d1a; --bad:#ec8a8a; --bad-soft:#3a2224; --field:#191b1e;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:1.7rem;margin:0 0 4px}
+h2{font-size:1.25rem;margin:0 0 4px}
+h3{font-size:1.02rem;margin:18px 0 6px}
+p.lead{color:var(--muted);margin:0 0 18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line);margin-bottom:18px}
+.tabs button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 12px;border-radius:999px;cursor:pointer;font:inherit;font-size:.92rem}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+.step{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.8rem;padding:2px 10px;border-radius:999px;margin-bottom:6px}
+label{display:block;font-weight:600;margin:14px 0 2px}
+.hint{display:block;font-weight:400;color:var(--muted);font-size:.88rem;margin-bottom:6px}
+input,textarea{width:100%;border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:10px;padding:10px 12px;font:inherit}
+textarea{min-height:76px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:700px){.grid3,.grid2{grid-template-columns:1fr}}
+.seg{border-radius:12px;padding:14px;border:1px solid var(--line)}
+.seg h3{margin-top:0}
+.seg.g{background:var(--ok-soft)} .seg.y{background:var(--warn-soft)} .seg.r{background:var(--bad-soft)}
+.seg p{margin:0 0 6px;font-size:.9rem;color:var(--muted)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 18px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:10px;cursor:pointer;font:inherit;font-size:.92rem}
+.btn.main{background:var(--accent);color:#fff;border-color:var(--accent)}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:4px 0 2px}
+.progress i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.small{font-size:.85rem;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:.93rem}
+th,td{text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600}
+.script p{margin:0 0 10px}
+.say{background:var(--field);border-left:4px solid var(--accent);padding:10px 12px;border-radius:0 10px 10px 0;margin:6px 0 12px}
+.empty{color:var(--bad);font-style:italic}
+ul{padding-left:20px;margin:6px 0}
+.note{background:var(--warn-soft);border-radius:10px;padding:10px 12px;font-size:.9rem}
+@media print{
+  .tabs,.bar,.noprint{display:none!important}
+  .panel{display:none!important} #p-sonuc{display:block!important}
+  body{background:#fff;color:#000} .card{border:none;padding:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Hedef Kitle Analizi</h1>
+  <p class="lead">35 soruluk anket ve 4A satış scripti tek bir sade akışa indirildi. Formu firmayla birlikte doldurun; son sekmede müşteri kartı ve konuşma metni otomatik hazırlanır.</p>
+
+  <div class="bar noprint">
+    <span class="small" style="align-self:center">Doluluk: <b id="pct">0%</b></span>
+  </div>
+  <div class="progress noprint"><i id="pbar"></i></div>
+
+  <nav class="tabs" id="tabs">
+    <button data-p="p-firma" class="on">1. Firma</button>
+    <button data-p="p-tip">2. Müşteri türleri</button>
+    <button data-p="p-kim">3. Kim?</button>
+    <button data-p="p-ister">4. Ne ister?</button>
+    <button data-p="p-dil">5. Dil ve itirazlar</button>
+    <button data-p="p-satis">6. Satış görüşmesi</button>
+    <button data-p="p-sonuc">7. Sonuç</button>
+    <button data-p="p-analiz">Dosya analizi</button>
+  </nav>
+
+  <!-- 1 FİRMA -->
+  <section class="panel on" id="p-firma">
+    <div class="card">
+      <span class="step">Adım 1</span>
+      <h2>Firma bilgisi</h2>
+      <div class="grid2">
+        <div><label for="firma">Firma adı</label><input id="firma" placeholder="Ör. Kuzayca Mimarlık"></div>
+        <div><label for="yetkili">Görüştüğünüz kişi</label><input id="yetkili" placeholder="Ör. Duran Meşe"></div>
+      </div>
+      <label for="sektor">Ne iş yapıyorlar? <span class="hint">Tek cümle: ne satıyor, kime, nerede.</span></label>
+      <input id="sektor" placeholder="Ör. Konut ve villa projeleri çizen, uygulamasını da takip eden mimarlık ofisi">
+      <div class="bar" style="margin-top:16px">
+        <button class="btn" id="ornek">Örnek doldur (Kuzayca Mimarlık)</button>
+        <button class="btn" id="temizle">Formu temizle</button>
+      </div>
+      <p class="small">Yazdıklarınız sadece bu tarayıcıda otomatik saklanır.</p>
+    </div>
+  </section>
+
+  <!-- 2 MÜŞTERİ TÜRLERİ -->
+  <section class="panel" id="p-tip">
+    <div class="card">
+      <span class="step">Adım 2</span>
+      <h2>Üç müşteri türü</h2>
+      <p class="small">Firmanın müşterilerini emek ve kazanca göre üçe ayırın. Reklamı ve mesajları <b>yeşil kutudaki</b> müşteriye göre yazacağız.</p>
+      <div class="grid3">
+        <div class="seg g"><h3>Altın müşteri</h3><p>Az uğraştırır, çok kazandırır.</p>
+          <textarea id="altin" placeholder="Kim bunlar? Ne alırlar?"></textarea></div>
+        <div class="seg y"><h3>Yorucu ama kârlı</h3><p>Çok uğraştırır ama kazandırır.</p>
+          <textarea id="mecburi" placeholder="Kim bunlar? Neden yoruyorlar?"></textarea></div>
+        <div class="seg r"><h3>Zaman kaybı</h3><p>Çok uğraştırır, az kazandırır.</p>
+          <textarea id="gereksiz" placeholder="Kim bunlar? Nasıl elenir?"></textarea></div>
+      </div>
+      <label for="teklif">Altın müşteriye teklifimiz ne? <span class="hint">Ürün / hizmet paketi ve vaat ettiği sonuç.</span></label>
+      <textarea id="teklif"></textarea>
+    </div>
+  </section>
+
+  <!-- 3 KİM -->
+  <section class="panel" id="p-kim">
+    <div class="card">
+      <span class="step">Adım 3</span>
+      <h2>Altın müşteri kim?</h2>
+      <p class="small">Sadece altın müşteriyi düşünün. Ne kadar net, o kadar iyi.</p>
+      <div class="grid3">
+        <div><label for="yas">Yaş aralığı</label><input id="yas" placeholder="Ör. 35–55"></div>
+        <div><label for="cinsiyet">Ağırlıkta cinsiyet</label><input id="cinsiyet" placeholder="Ör. Çoğunlukla erkek"></div>
+        <div><label for="meslek">Meslekleri</label><input id="meslek" placeholder="Virgülle ayırın"></div>
+      </div>
+      <label for="ortak">Ortak noktaları ve ilgi alanları <span class="hint">Neyle ilgilenirler, nerede vakit geçirirler, kendilerine ne derler?</span></label>
+      <textarea id="ortak"></textarea>
+      <label for="durum">Şu an durumları nasıl? <span class="hint">Maddi ve psikolojik olarak; sektörde neden şikâyet ediyorlar?</span></label>
+      <textarea id="durum"></textarea>
+    </div>
+  </section>
+
+  <!-- 4 NE İSTER -->
+  <section class="panel" id="p-ister">
+    <div class="card">
+      <span class="step">Adım 4</span>
+      <h2>Ne istiyor, ne engelliyor?</h2>
+      <p class="small">Her kutuya en önemliden başlayarak 3 madde yazın (her satıra bir madde).</p>
+      <div class="grid2">
+        <div><label for="istekSonuc">Elde etmek istediği sonuç <span class="hint">Görünen, ölçülen şey. Ör. "Zamanında biten ev"</span></label><textarea id="istekSonuc"></textarea></div>
+        <div><label for="istekDuygu">Hissetmek istediği duygu <span class="hint">İçten gelen. Ör. "Kandırılmamış olmak, gurur"</span></label><textarea id="istekDuygu"></textarea></div>
+        <div><label for="engelIc">Onu durduran kendi korkuları <span class="hint">Ör. "Yanlış karar veririm diye erteliyor"</span></label><textarea id="engelIc"></textarea></div>
+        <div><label for="engelDis">Onu durduran dış engeller <span class="hint">Ör. bütçe, zaman, güvenilir firma bulamamak</span></label><textarea id="engelDis"></textarea></div>
+      </div>
+      <label for="ihtiyac">Bu engelleri aşmak için neye ihtiyacı var?</label>
+      <textarea id="ihtiyac"></textarea>
+    </div>
+  </section>
+
+  <!-- 5 DİL -->
+  <section class="panel" id="p-dil">
+    <div class="card">
+      <span class="step">Adım 5</span>
+      <h2>Hangi dil işe yarıyor?</h2>
+      <label for="klise">Artık inanmadıkları klişeler <span class="hint">Reklamda asla kullanmayacağımız cümleler.</span></label>
+      <textarea id="klise"></textarea>
+      <div class="grid2">
+        <div><label for="etkili">İkna eden cümleleriniz</label><textarea id="etkili"></textarea></div>
+        <div><label for="itiraz">Duyduğunuz itirazlar ve cevabınız <span class="hint">Her satıra: itiraz → cevap</span></label><textarea id="itiraz"></textarea></div>
+      </div>
+      <label for="kayip">Satış neden olmadı? <span class="hint">Kaybedilen adayların ortak özelliği.</span></label>
+      <textarea id="kayip"></textarea>
+      <label for="denenmis">Denenip işe yaramayan 3 yöntem / mesaj</label>
+      <textarea id="denenmis"></textarea>
+      <label for="ornekFirma">Örnek aldığınız firmalar <span class="hint">Türkiye ve dünyadan; hangi kanalda iyiler? Varsa iyi/kötü sonuç veren influencer'lar.</span></label>
+      <textarea id="ornekFirma"></textarea>
+    </div>
+  </section>
+
+  <!-- 6 SATIŞ -->
+  <section class="panel" id="p-satis">
+    <div class="card">
+      <span class="step">Adım 6 · 4A Satış görüşmesi</span>
+      <h2>Görüşme notları</h2>
+      <p class="small">Görüşmede bu soruları kendi cümlelerinizle sorun ve cevapları buraya not edin. Konuşma metni bu notlardan oluşturulur.</p>
+
+      <h3>A1 · Analiz et</h3>
+      <label for="neden">Bu görüşmeye sizi ne getirdi?</label><input id="neden">
+      <div class="grid2">
+        <div><label for="ciroSimdi">Şu an aylık satış / ciro</label><input id="ciroSimdi"></div>
+        <div><label for="ciroHedef">Ulaşmak istediğiniz aylık ciro</label><input id="ciroHedef"></div>
+        <div><label for="kanal">Müşteri en çok nereden geliyor?</label><input id="kanal" placeholder="Ör. tavsiye, Instagram, Google"></div>
+        <div><label for="sure">Bu hedefe ne kadar sürede?</label><input id="sure" placeholder="Ör. 6 ay"></div>
+      </div>
+      <label for="surec">Bir aday nasıl müşteriye dönüyor? <span class="hint">Mesaj → görüşme → teklif → satış… Daha önce ajans / reklam / funnel denediniz mi?</span></label>
+      <textarea id="surec"></textarea>
+
+      <h3>A2 · Adını koy</h3>
+      <div class="grid2">
+        <div><label for="denenen">Ne denemişler?</label><input id="denenen" placeholder="Ör. boost edilen Instagram gönderileri"></div>
+        <div><label for="sonuc">Sonuç ne oldu?</label><input id="sonuc" placeholder="Ör. beğeni geldi, müşteri gelmedi"></div>
+      </div>
+
+      <h3>A3 · Acıyı ortaya çıkar</h3>
+      <div class="grid2">
+        <div><label for="zarar">Bu sorun ayda kaça mal oluyor?</label><input id="zarar"></div>
+        <div><label for="sorumlu">Pazarlamaya şu an kim bakıyor?</label><input id="sorumlu"></div>
+      </div>
+      <label for="cozulurse">Sorun çözülürse ne değişir?</label><input id="cozulurse">
+
+      <h3>A4 · Toparla ve sat</h3>
+      <div class="grid2">
+        <div><label for="istemedigi">Neyi yapmadan ulaşmak istiyor?</label><input id="istemedigi" placeholder="Ör. sosyal medyayla kendisi uğraşmadan"></div>
+        <div><label for="sistem">Önerdiğiniz sistemin adı</label><input id="sistem" placeholder="Ör. Proje Talep Sistemi"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 SONUÇ -->
+  <section class="panel" id="p-sonuc">
+    <div class="bar noprint">
+      <button class="btn main" onclick="window.print()">Yazdır / PDF kaydet</button>
+      <button class="btn" id="kopyala">Konuşma metnini kopyala</button>
+    </div>
+    <div id="cikti"></div>
+  </section>
+
+  <!-- ANALİZ -->
+  <section class="panel" id="p-analiz">
+    <div class="card">
+      <h2>İki dosyanın analizi</h2>
+      <h3>Hedef Kitle Analiz Dosyası (35 soru)</h3>
+      <ul>
+        <li><b>Çok tekrar var:</b> "arzu, engel, ihtiyaç" soruları hem mükemmel hem mecburi müşteri için ayrı ayrı soruluyor (12 soru). Mesajı yalnızca altın müşteriye göre yazacağımız için bunları <b>tek sete (5 kutu)</b> indirdim.</li>
+        <li><b>"İçsel / dışsal" kelimesi kafa karıştırıyor:</b> Firma sahibi farkı anlamıyor. Yerine "elde etmek istediği sonuç" ve "hissetmek istediği duygu" yazdım.</li>
+        <li><b>"Puanlandırın" talimatı belirsiz:</b> Ölçek verilmemiş. Yerine "en önemliden başlayarak 3 madde" dedim.</li>
+        <li><b>Dolu dosyada yalnızca firma adı var</b> (Kuzayca Mimarlık – Duran Meşe). Form uzun olduğu için yarıda bırakılmış olabilir; sade sürüm bunu çözmeyi hedefliyor.</li>
+        <li>Birbirine yakın sorular birleştirildi: şikâyetler + mevcut durum, ortak yönler + ilgi alanları + kendini tanımlama, Türkiye + dünya firmaları + influencer'lar.</li>
+      </ul>
+      <h3>4A Satış Sistemi</h3>
+      <ul>
+        <li><b>Akış güçlü:</b> Analiz et → Adını koy → Acıyı deş → Toparla ve sat. Doğru sırada ilerliyor.</li>
+        <li><b>Soru 7 (CPA / CPL)</b> küçük işletme sahibine yabancı gelir. "Bir müşteri kazanmak size kaça mal oluyor?" diye sorun.</li>
+        <li><b>Soru 3–4–5 aynı anda</b> sorulursa sorgu gibi hissettirir; ciroyu sohbetin ortasında sorun.</li>
+        <li><b>Eksik adım:</b> Fiyat, itirazlar ve kapanış (bir sonraki adım / tarih) yok. Hedef kitle analizindeki itiraz cevapları burada kullanılmalı; sonuç sekmesinde itiraz kartları bu yüzden var.</li>
+        <li><b>İki dosya birbirine bağlı değildi:</b> Analizdeki arzu ve engeller, "Toparla" cümlesindeki boşlukları doldurmak için kullanılmalı. Bu araç bağlantıyı otomatik yapıyor.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var KEY = 'hedefKitleAnalizi.v1';
+  var fields = Array.prototype.slice.call(document.querySelectorAll('input[id], textarea[id]'));
+  var store = {};
+  function load(){ try{ store = JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ store = {}; } }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+  load();
+  fields.forEach(function(f){
+    if (store[f.id]) f.value = store[f.id];
+    f.addEventListener('input', function(){ store[f.id] = f.value; save(); progress(); });
+  });
+
+  function v(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  function esc(s){ return s.replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function lines(id){ return v(id).split(/\n/).map(function(s){ return s.replace(/^[-•*\d.)\s]+/, '').trim(); }).filter(Boolean); }
+  function fill(id, ph){ var x = v(id); return x ? '<b>' + esc(x) + '</b>' : '<span class="empty">' + ph + '</span>'; }
+  function first(id, ph){ var l = lines(id); return l.length ? '<b>' + esc(l[0]) + '</b>' : '<span class="empty">' + ph + '</span>'; }
+  function list(id){ var l = lines(id); return l.length ? '<ul>' + l.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '<span class="empty">Boş</span>'; }
+
+  function progress(){
+    var n = fields.filter(function(f){ return f.value.trim(); }).length;
+    var p = Math.round(n / fields.length * 100);
+    document.getElementById('pct').textContent = p + '%';
+    document.getElementById('pbar').style.width = p + '%';
+  }
+
+  function render(){
+    var kisi = v('yetkili') ? esc(v('yetkili')) + ' Bey/Hanım' : '<span class="empty">[isim]</span>';
+    var itirazlar = lines('itiraz').map(function(l){
+      var p = l.split(/→|->|=>|:/);
+      return '<tr><td>' + esc(p[0].trim()) + '</td><td>' + esc((p.slice(1).join(':') || '—').trim()) + '</td></tr>';
+    }).join('');
+    var html = ''
+    + '<div class="card"><h2>Müşteri kartı: ' + (v('firma') ? esc(v('firma')) : '<span class="empty">Firma adı yok</span>') + '</h2>'
+    + '<p class="small">' + esc(v('sektor')) + '</p>'
+    + '<table>'
+    + '<tr><th style="width:34%">Altın müşteri</th><td>' + fill('altin','Adım 2') + '</td></tr>'
+    + '<tr><th>Profil</th><td>' + [v('yas'), v('cinsiyet'), v('meslek')].filter(Boolean).map(esc).join(' · ') + '</td></tr>'
+    + '<tr><th>Ortak noktalar</th><td>' + esc(v('ortak')) + '</td></tr>'
+    + '<tr><th>Şu anki durum</th><td>' + esc(v('durum')) + '</td></tr>'
+    + '<tr><th>İstediği sonuç</th><td>' + list('istekSonuc') + '</td></tr>'
+    + '<tr><th>İstediği duygu</th><td>' + list('istekDuygu') + '</td></tr>'
+    + '<tr><th>Engeller</th><td>' + list('engelIc') + list('engelDis') + '</td></tr>'
+    + '<tr><th>İhtiyacı</th><td>' + esc(v('ihtiyac')) + '</td></tr>'
+    + '<tr><th>Teklifimiz</th><td>' + fill('teklif','Adım 2') + '</td></tr>'
+    + '<tr><th>Hedeflemeyeceğimiz</th><td>' + esc(v('gereksiz')) + '</td></tr>'
+    + '</table></div>'
+
+    + '<div class="card"><h2>Reklam ve içerik için</h2>'
+    + '<h3>Ana mesaj taslağı</h3>'
+    + '<div class="say">' + first('istekDuygu','[duygu]') + ' isteyen ' + fill('meslek','[meslek]') + ' için: ' + first('istekSonuc','[sonuç]') + ', üstelik ' + first('engelDis','[dış engel]') + ' derdi olmadan.</div>'
+    + '<div class="grid2"><div><h3>Kullan</h3>' + list('etkili') + '</div><div><h3>Asla kullanma</h3>' + list('klise') + list('denenmis') + '</div></div>'
+    + '</div>'
+
+    + '<div class="card script"><h2>Konuşma metni (4A)</h2>'
+    + '<h3>A1 · Analiz et</h3><p>Sizi bu görüşmeye ne getirdi? İşinizi ve müşterilerinizi biraz anlatır mısınız? Şu an aylık ne kadar satıyorsunuz, nereye ulaşmak istiyorsunuz? Müşteri en çok nereden geliyor?</p>'
+    + '<p class="small">Notlar: ciro ' + fill('ciroSimdi','?') + ' → hedef ' + fill('ciroHedef','?') + ', kanal ' + fill('kanal','?') + '</p>'
+    + '<h3>A2 · Adını koy</h3><div class="say">Anladığım kadarıyla ' + fill('denenen','[denedikleri]') + ' denemişsiniz, ' + fill('sonuc','[aldıkları sonuç]') + ' ve bundan memnun değilsiniz, doğru mu?</div>'
+    + '<p class="small">"Evet" demiyorsa problemi yeniden, onun kelimeleriyle adlandırın.</p>'
+    + '<h3>A3 · Acıyı ortaya çıkar</h3><div class="say">Bu durum size ayda yaklaşık ne kadara mal oluyor?' + (v('zarar') ? ' <span class="small">(not: ' + esc(v('zarar')) + ')</span>' : '') + '<br>Bu sorunu ortadan kaldırsak neler değişir?' + (v('cozulurse') ? ' <span class="small">(not: ' + esc(v('cozulurse')) + ')</span>' : '') + '<br>Çoğu girişimci işine odaklanmak ister; pazarlamaya şu an kim bakıyor?' + (v('sorumlu') ? ' <span class="small">(not: ' + esc(v('sorumlu')) + ')</span>' : '') + '</div>'
+    + '<h3>A4 · Toparla ve sat</h3><div class="say">Çok iyi anladım sizi ' + kisi + '. ' + fill('ciroHedef','[hedef]') + ' hedefine ' + fill('sure','[süre]') + ' içinde, ' + fill('istemedigi','[istemediği iş]') + ' ulaşmak istiyorsunuz. Bunu kesinlikle ' + fill('sistem','[sistem adı]') + ' ile yapabiliriz!</div>'
+    + '<div class="say">Çalışma şeklimiz: Mümkün olduğunca otomatik sistemler kuruyoruz. Müşterilerimizle birkaç ay değil, yıllarca çalışmak istiyoruz. Şirket içinde pazarlamayı etkileyen bir aksaklık görürsek açıkça söylüyoruz. Az sayıda firmayla, butik ve performans odaklı çalışıyoruz. Bu size uygun olur mu?</div>'
+    + (itirazlar ? '<h3>İtiraz gelirse</h3><table><tr><th>İtiraz</th><th>Cevap</th></tr>' + itirazlar + '</table>' : '')
+    + (v('kayip') ? '<h3>Dikkat</h3><div class="note">Kaybedilen görüşmelerin ortak noktası: ' + esc(v('kayip')) + '</div>' : '')
+    + '<h3>Kapanış</h3><p>Bir sonraki adımı ve tarihini görüşmede netleştirin (teklif sunumu, ödeme, başlangıç günü).</p>'
+    + '</div>';
+    document.getElementById('cikti').innerHTML = html;
+  }
+
+  document.getElementById('tabs').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#tabs button').forEach(function(x){ x.classList.toggle('on', x === b); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('on', p.id === b.dataset.p); });
+    if (b.dataset.p === 'p-sonuc') render();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+  window.addEventListener('beforeprint', render);
+
+  document.getElementById('kopyala').addEventListener('click', function(){
+    render();
+    var t = document.querySelector('#cikti .script').innerText;
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ alert('Kopyalandı'); }, function(){});
+  });
+
+  document.getElementById('temizle').addEventListener('click', function(){
+    if (!confirm('Tüm form temizlensin mi?')) return;
+    store = {}; save(); fields.forEach(function(f){ f.value = ''; }); progress();
+  });
+
+  // Örnek veri: gerçek görüşme değil, formun nasıl doldurulacağını göstermek içindir.
+  var ORNEK = {
+    firma:'Kuzayca Mimarlık', yetkili:'Duran Meşe',
+    sektor:'Müstakil ev, villa ve apartman projeleri çizen; ruhsat ve uygulama sürecini de takip eden mimarlık ofisi',
+    altin:'Kendi arsasına müstakil ev veya villa yaptıracak, bütçesi hazır, kararlarını hızlı veren aile',
+    mecburi:'Kat karşılığı apartman yapan müteahhitler: sürekli revizyon isterler ama düzenli iş getirirler',
+    gereksiz:'Sadece ucuz ruhsat çizimi isteyen, beş ofisten fiyat toplayan, projeyi hiç yapmayacak kişiler',
+    teklif:'Anahtar teslim proje paketi: 3D tasarım + ruhsat + uygulama takibi, sabit fiyat ve takvimle',
+    yas:'38–55', cinsiyet:'Kararı çoğunlukla çift birlikte veriyor', meslek:'Doktor, esnaf, mühendis, yurt dışında çalışan gurbetçi',
+    ortak:'Evini "hayatının yatırımı" görüyor; Pinterest ve Instagram\'da ev fikirleri biriktiriyor; tavsiyeye çok güveniyor',
+    durum:'İnşaat maliyetleri artınca kararsızlaştılar; daha önce bir yakını kötü bir yapıda mağdur olmuş',
+    istekSonuc:'Zamanında ve bütçesinde biten ev\nHayalindeki tasarımın aynen uygulanması\nRuhsat işleriyle uğraşmamak',
+    istekDuygu:'Kandırılmadığını bilmenin rahatlığı\nEvini gösterirken duyduğu gurur\nAilesini güvende hissetmek',
+    engelIc:'Yanlış firmayı seçme korkusu\nKarar verememe, sürekli erteleme',
+    engelDis:'Maliyetin sürekli değişmesi\nGüvenilir mimar ve usta bulamamak\nZamanının olmaması',
+    ihtiyac:'Baştan net fiyat ve takvim, önceki işleri yerinde görmek, süreci tek kişiden takip edebilmek',
+    klise:'Hayalinizdeki ev\nKaliteli ve uygun fiyatlı\nUzman kadromuzla',
+    etkili:'Fiyatı ve teslim tarihini sözleşmeye yazıyoruz\nBitirdiğimiz evlerin sahipleriyle konuşabilirsiniz',
+    itiraz:'Başka ofis daha ucuz → Çizim ucuz, uygulamadaki hata pahalı; biz uygulamayı da takip ediyoruz\nBiraz düşüneyim → Tabii; neyi netleştirmemiz gerekiyor, şimdi konuşalım mı?',
+    kayip:'Sadece çizim fiyatı soran, henüz arsası veya bütçesi olmayan adaylar',
+    denenmis:'Genel "kaliteli mimarlık" gönderileri\nFiyat indirimli reklam\nTakipçi kasma',
+    ornekFirma:'Türkiye: Instagram\'da süreç videosu paylaşan mimarlık ofisleri. Dünya: Pinterest ve YouTube\'da proje hikâyesi anlatan stüdyolar',
+    neden:'Instagram\'dan gelen mesajlar satışa dönmüyor',
+    ciroSimdi:'Ayda 2 proje', ciroHedef:'Ayda 5 proje', kanal:'Tavsiye ve Instagram', sure:'6 ay',
+    surec:'DM ile soru geliyor, fiyat veriliyor, çoğu dönmüyor. Ajansla çalışılmamış, funnel denenmemiş.',
+    denenen:'Instagram\'da gönderi öne çıkarmayı', sonuc:'beğeni gelmiş ama ciddi müşteri gelmemiş',
+    zarar:'Ayda 2–3 kaçan proje', sorumlu:'Duran Bey akşamları kendisi', cozulurse:'Çizime ve şantiyeye daha çok zaman kalır',
+    istemedigi:'sosyal medyayla kendisi uğraşmadan', sistem:'Proje Talep Sistemimiz'
+  };
+  document.getElementById('ornek').addEventListener('click', function(){
+    if (fields.some(function(f){ return f.value.trim(); }) && !confirm('Mevcut yazılanların üzerine örnek veri yazılsın mı?')) return;
+    fields.forEach(function(f){ f.value = ORNEK[f.id] || ''; store[f.id] = f.value; });
+    save(); progress();
+  });
+
+  progress();
+})();
+</script>
+</body>
+</html>
