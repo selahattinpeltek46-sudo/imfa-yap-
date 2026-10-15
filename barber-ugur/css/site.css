@@ -223,6 +223,7 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--isik); outl
 
 .sonuc:focus { outline: none; }
 .sonuc, .form { scroll-margin-top: 24px; }
+.sonuc .sonuc__baslik { color: var(--murekkep); }
 .sonuc__baslik { font-weight: 800; font-stretch: 112%; font-size: 1.9rem; line-height: 1.1; margin-bottom: 1rem; }
 .sonuc__detay { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; margin: 0 0 1.2rem; border-top: 1px solid #d4d2cc; }
 .sonuc__detay div { padding: .8rem 0; border-bottom: 1px solid #d4d2cc; }
@@ -231,6 +232,8 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--isik); outl
 #s-kod { font-variant-numeric: tabular-nums; letter-spacing: .08em; }
 .sonuc p { color: var(--gri); }
 .sonuc__btn { display: flex; flex-wrap: wrap; gap: .7rem; margin-bottom: 1rem; }
+.hatirlat { margin: 0 0 1.1rem; padding: 1rem; background: var(--duvar); border-left: 4px solid var(--isik); }
+.hatirlat p { margin: .7rem 0 0; font-size: .95rem; color: var(--murekkep); }
 .metin-dugme { background: none; border: 0; padding: .4rem 0; font: inherit; font-weight: 700; color: var(--gul-koyu); text-decoration: underline; cursor: pointer; min-height: 44px; }
 
 /* Sorular */
