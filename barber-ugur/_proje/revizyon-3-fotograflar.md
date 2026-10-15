@@ -26,3 +26,9 @@ Taşma 1366 / 375: 0 / 0 · tek H1 · alt metinsiz `<img>` 0 · JSON-LD geçerli
 
 ## Açık soru (kapandı sayılmadı)
 İki iç mekân görünümü (beyaz tuğla duvarlı bölüm / gri duvarlı altın LED bölüm) aynı dükkânın iki alanı olarak sunuldu; kullanıcı fotoğrafları birlikte bu dükkân için gönderdi [VARSAYIM: aynı dükkân, iki bölüm].
+
+## Revizyon 3b — Açılış görseli değişti (kullanıcı: "hero'daki görsel bulanık")
+- Gece cephe fotoğrafındaki kişi bulanıklaştırması açılışın en görünür yerinde kötü durdu → `cephe-gece.webp` **kaldırıldı**.
+- Açılışa kişisiz, net `ic-altin-aynalar.webp` (cadde tarafı, altın LED aynalar) kondu; schema `image` güncellendi.
+- "İçeride" galerisi: 2 eşit sütun (`ic-genis`, `ic-duvar-resmi`, 16:10), mobilde alt alta.
+- Ders: Kişi gizlemek için bulanıklaştırılan fotoğraf hero'da kullanılmaz; hero'ya yalnız doğal olarak kişisiz kare konur. Gece cephesi kişisiz yeniden çekilirse (kapanıştan sonra) eklenebilir → SHOT LIST #1.

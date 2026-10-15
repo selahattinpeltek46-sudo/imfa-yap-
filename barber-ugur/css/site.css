@@ -164,13 +164,11 @@ p { margin: 0 0 1em; }
 .galeri { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; background: var(--kayit); padding: 10px; }
 .galeri figure { margin: 0; position: relative; background: #000; }
 .galeri img { width: 100%; height: 100%; object-fit: cover; }
-.galeri__genis { grid-column: 1 / -1; }
-.galeri__dik { grid-row: span 1; }
 .galeri figcaption {
   position: absolute; left: 0; bottom: 0; padding: .35rem .7rem; font-size: .85rem; font-weight: 600;
   background: rgba(18,18,18,.82); color: var(--kirik);
 }
-.galeri figure:not(.galeri__genis) { aspect-ratio: 4 / 3; }
+.galeri figure { aspect-ratio: 16 / 10; }
 
 /* Hizmetler */
 .hizmet-duzen { display: grid; grid-template-columns: 1fr 1.35fr; gap: clamp(32px, 6vw, 88px); align-items: start; }
@@ -314,7 +312,6 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--isik); outl
   .isikli-tabela { margin-top: 6px; }
   .harita { min-height: 300px; }
   .galeri { grid-template-columns: 1fr; }
-  .galeri figure:not(.galeri__genis) { aspect-ratio: 3 / 2; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
