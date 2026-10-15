@@ -57,3 +57,25 @@ Sunucu adresi yoksa veya ulaşılamazsa form kendiliğinden WhatsApp moduna geç
 | R5 | FACT | ORTA | Açılış saati, koltuk sayısı, hizmet süreleri | ⚠️ [VARSAYIM] — KURULUM.md §5 |
 | R6 | LEGAL | ORTA | Veriler artık Google'da saklanıyor | ✅ KVKK metni güncellendi (yurt dışı aktarım notu) — hukuki kontrol gerekir |
 | R7 | VISUAL | DÜŞÜK | Kaynak fotoğraflar ~680 px; büyük ekranda yumuşak | ⚠️ orijinal çözünürlük istenmeli |
+
+---
+# REVİZYON 3 — "Yapay zekâ ile yapıldığı anlaşılmasın" tasarım yenilemesi
+
+Kullanıcı isteği: site hazır şablon / yapay zekâ işi gibi görünmesin, emek verilmiş ve araştırılmış görünsün.
+
+**Kaldırılan tipik şablon izleri:** her bölüm başında çizgili küçük üst başlık, ikonlu kart ızgarası, büyük "5,0" puan kutusu, 3 maddelik "neden biz" listesi, "Konuşan biz değil, müşterilerimiz" gibi klişe slogan, berber direği şeridi, sistem yazı tipi, her yerde yuvarlak köşeli kartlar, siyah + altın "lüks" kalıbı.
+
+**Salondan türetilen tasarım dili:**
+| Öğe | Salondaki karşılığı |
+|---|---|
+| Koyu bölümlerdeki dikey çizgi deseni | Bekleme salonu ve koltuk arkasındaki çıtalı duvar panelleri |
+| Açık gri zemin | Salonun gri sıva duvarları |
+| Açılış fotoğrafının altın ışıklı çerçevesi | Berber istasyonlarındaki LED çerçeveli aynalar |
+| Hizmet listesi beyaz ışıklı levhalar | Girişteki ışıklı hizmet tabelası (aynı sıra, aynı yazım) |
+| El yazısı "Günün Sözü" panosu (Mevlânâ alıntısı) | Girişteki beyaz yazı tahtası — fotoğraftaki gerçek söz |
+| Kırmızı ince şerit | Kapıdaki kırmızı halı |
+| Logo | Dış cephedeki oval ışıklı tabela; galeri'de içerideki taçlı logo |
+| Yazı tipleri | Alfa Slab One (tabeladaki kalın slab harfler), Rokkitt (levha yazısı), Barlow / Barlow Condensed (gövde, etiketler), Caveat (pano el yazısı) |
+
+Metinler sadeleştirildi; yalnız fotoğraflarda görülen ya da Haritalar'da doğrulanan şeyler yazıldı. Testler (form, randevu, taşma) tekrarlandı: hepsi geçti.
+Önizleme: claude.ai artifact (özel bağlantı). Gerçek yayın: main'e birleştirildikten sonra GitHub Pages.

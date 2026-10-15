@@ -52,7 +52,7 @@
     function modAyarla(yeni) {
       mod = yeni;
       form.setAttribute('data-mod', mod);
-      gonderYazi.textContent = mod === 'api' ? 'Randevuyu Onayla' : "Randevu Talebini WhatsApp'tan Gönder";
+      gonderYazi.textContent = mod === 'api' ? 'Randevuyu onayla' : "Randevu talebini WhatsApp'tan gönder";
     }
     modAyarla(mod);
 
@@ -248,7 +248,7 @@
         })
         .then(function () {
           gonder.disabled = false;
-          gonderYazi.textContent = 'Randevuyu Onayla';
+          gonderYazi.textContent = 'Randevuyu onayla';
         });
     });
 
