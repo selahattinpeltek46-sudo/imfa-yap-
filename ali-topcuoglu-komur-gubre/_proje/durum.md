@@ -1,6 +1,6 @@
 # Ali Topçuoğlu Kömür Gübre Taşımacılık İnşaat Ticaret — Proje Durumu (SELAHATTİN AI v2.1)
 
-Son güncelleme: 2026-10-15 · Modül 3 tamamlandı
+Son güncelleme: 2026-10-15 · Modül 4 tamamlandı
 
 | # | Aşama | Modül | Durum | Not |
 |---|---|---|---|---|
@@ -20,9 +20,9 @@ Son güncelleme: 2026-10-15 · Modül 3 tamamlandı
 | 14 | Visual Intelligence | 2 | ⚠️ RİSK | Gerçek fotoğraf yok; SHOT LIST hazır |
 | 15 | Tech Stack & Plan | 3 | ✅ TAMAMLANDI | Statik HTML, form/analytics/WhatsApp yok |
 | 16 | Development | 3 | ✅ TAMAMLANDI | 7 sayfa üretildi; telefon/adres hâlâ "teyit bekliyor" — gerçek domain/yayın öncesi teyit şart |
-| 17 | Evaluation | 4 | ⏳ BEKLİYOR | |
-| 18 | Audit | 4 | ⏳ BEKLİYOR | |
-| 19 | Revision | 4 | ⏳ BEKLİYOR | |
-| 20 | Final QA | 4 | ⏳ BEKLİYOR | |
-| 21 | Handoff | 4 | ⏳ BEKLİYOR | |
-| 22 | Learning / System Update | 4 | ⏳ BEKLİYOR | |
+| 17 | Evaluation | 4 | ✅ TAMAMLANDI | Conversion KRİTİK risk: telefon yok |
+| 18 | Audit | 4 | ✅ TAMAMLANDI | 7 bulgu (2 KRİTİK, 1 YÜKSEK, 2 ORTA, 2 DÜŞÜK) |
+| 19 | Revision | 4 | ✅ TAMAMLANDI | Düzeltilebilenler (H1, breadcrumb) düzeltildi |
+| 20 | Final QA | 4 | ⚠️ RİSK | ❌ CTA/WhatsApp/NAP — telefon/adres teyidine bağlı |
+| 21 | Handoff | 4 | ✅ TAMAMLANDI | Müşteriden beklenenler listelendi |
+| 22 | Learning / System Update | 4 | ✅ TAMAMLANDI | SKILL.md güncellendi |
