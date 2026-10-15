@@ -65,3 +65,8 @@ _(Her projenin 22. aşamasında buraya yeni kurallar / hatalar / çözümler ekl
 - [2026-10-10] [goksun-yorem] ÇÖZÜM: `window.open(url,'_blank','noopener')` her zaman `null` döner; `noopener` parametresi yerine `win.opener = null` kullan, `null` ise aynı sekmede aç.
 - [2026-10-10] [goksun-yorem] WORKFLOW: Test ortamında CDN'ler kapalıysa Playwright `route` ile Tailwind'i aynı config'le yerelde derleyip enjekte et; FontAwesome'u npm paketinden sun.
 - [2026-10-10] [goksun-yorem] STANDART: Mutlak konumlu dekoratif kutular (`-right-5` vb.) mobilde yatay taşma yapar; bölüme `overflow-x-clip` ver ve 375 px'te `scrollWidth - innerWidth = 0` testi yap.
+- [2026-10-15] [barbers-town] KURAL: Google Haritalar puanı sitede yalnız tarih + kaynak linkiyle gösterilir; JSON-LD'ye `aggregateRating` olarak eklenmez (Google self-serving review kuralı).
+- [2026-10-15] [barbers-town] KURAL: Haritalar kartındaki "Kapanış saati" yalnız o güne aittir; haftalık saat gibi genellenmez, yanına "açılış/tatil için arayın" yazılır.
+- [2026-10-15] [barbers-town] ÇÖZÜM: Google harita iframe'ini tıklayınca yükle; analytics yoksa çerez banner'ı gerekmez.
+- [2026-10-15] [barbers-town] STANDART: Kullanım hakkı belirsiz Haritalar fotoğrafını sitede kullanma; renk/ışık/tabela dilini CSS/SVG'ye aktar ve SHOT LIST iste.
+- [2026-10-15] [barbers-town] WORKFLOW: Konteynerden google.com açılmaz; kullanıcının Haritalar kartı ekran görüntüsü birincil DOĞRULANMIŞ kaynaktır. Haritalar `cid` = URL'deki `0x…:0x<hex>` ikinci parçasının ondalık değeri.
