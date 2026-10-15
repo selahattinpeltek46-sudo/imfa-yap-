@@ -17,17 +17,22 @@
   :root:not([data-theme="light"]){
     --bg:#16181b; --card:#1f2226; --ink:#eceae5; --muted:#a3a8ae; --line:#33373d;
     --accent:#e48a5f; --accent-soft:#3a2a22; --ok:#6fc296; --ok-soft:#1f3328;
-    --warn:#e0b44f; --warn-soft:#352d1a; --bad:#ec8a8a; --bad-soft:#3a2224; --field:#191b1e;
+    --warn:#e0b44f; --warn-soft:#352d1a; --bad:#ec8a8a; --bad-soft:#3a2224; --field:#191b1e; color-scheme:dark;
   }
+}
+:root[data-theme="dark"]{
+    --bg:#16181b; --card:#1f2226; --ink:#eceae5; --muted:#a3a8ae; --line:#33373d;
+    --accent:#e48a5f; --accent-soft:#3a2a22; --ok:#6fc296; --ok-soft:#1f3328;
+    --warn:#e0b44f; --warn-soft:#352d1a; --bad:#ec8a8a; --bad-soft:#3a2224; --field:#191b1e; color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+.wrap{max-width:860px;margin:0 auto;padding-block:24px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1{font-size:1.7rem;margin:0 0 4px}
 h2{font-size:1.25rem;margin:0 0 4px}
 h3{font-size:1.02rem;margin:18px 0 6px}
 p.lead{color:var(--muted);margin:0 0 18px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line);margin-bottom:18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line);margin-bottom:18px}
 .tabs button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 12px;border-radius:999px;cursor:pointer;font:inherit;font-size:.92rem}
 .tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .panel{display:none}.panel.on{display:block}
@@ -101,7 +106,9 @@ ul{padding-left:20px;margin:6px 0}
       <div class="bar" style="margin-top:16px">
         <button class="btn" id="ornek">Örnek doldur (Kuzayca Mimarlık)</button>
         <button class="btn" id="temizle">Formu temizle</button>
+        <button class="btn" id="temizleOnay" hidden>Evet, hepsini sil</button>
       </div>
+      <p class="note" id="ornekNot" hidden>Şu an <b>örnek veri</b> görüyorsunuz (Kuzayca Mimarlık için uydurulmuş cevaplar). Gerçek görüşme için "Formu temizle" deyin.</p>
       <p class="small">Yazdıklarınız sadece bu tarayıcıda otomatik saklanır.</p>
     </div>
   </section>
@@ -222,8 +229,7 @@ ul{padding-left:20px;margin:6px 0}
   <!-- 7 SONUÇ -->
   <section class="panel" id="p-sonuc">
     <div class="bar noprint">
-      <button class="btn main" onclick="window.print()">Yazdır / PDF kaydet</button>
-      <button class="btn" id="kopyala">Konuşma metnini kopyala</button>
+      <button class="btn main" id="kopyala">Konuşma metnini kopyala</button>
     </div>
     <div id="cikti"></div>
   </section>
@@ -263,6 +269,7 @@ ul{padding-left:20px;margin:6px 0}
   fields.forEach(function(f){
     if (store[f.id]) f.value = store[f.id];
     f.addEventListener('input', function(){ store[f.id] = f.value; save(); progress(); });
+    f.addEventListener('change', function(){ document.getElementById('ornekNot').hidden = true; });
   });
 
   function v(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; }
@@ -329,16 +336,21 @@ ul{padding-left:20px;margin:6px 0}
     if (b.dataset.p === 'p-sonuc') render();
     window.scrollTo({top:0, behavior:'smooth'});
   });
-  window.addEventListener('beforeprint', render);
 
   document.getElementById('kopyala').addEventListener('click', function(){
     render();
     var t = document.querySelector('#cikti .script').innerText;
-    if (navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ alert('Kopyalandı'); }, function(){});
+    var b = this;
+    function ok(){ b.textContent = 'Kopyalandı'; setTimeout(function(){ b.textContent = 'Konuşma metnini kopyala'; }, 2000); }
+    function fb(){ var r = document.createRange(); r.selectNodeContents(document.querySelector('#cikti .script')); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent = 'Metin seçildi, kopyalayın'; }
+    try { navigator.clipboard.writeText(t).then(ok, fb); } catch(e){ fb(); }
   });
 
   document.getElementById('temizle').addEventListener('click', function(){
-    if (!confirm('Tüm form temizlensin mi?')) return;
+    document.getElementById('temizleOnay').hidden = false;
+  });
+  document.getElementById('temizleOnay').addEventListener('click', function(){
+    this.hidden = true; document.getElementById('ornekNot').hidden = true;
     store = {}; save(); fields.forEach(function(f){ f.value = ''; }); progress();
   });
 
@@ -372,11 +384,12 @@ ul{padding-left:20px;margin:6px 0}
     istemedigi:'sosyal medyayla kendisi uğraşmadan', sistem:'Proje Talep Sistemimiz'
   };
   document.getElementById('ornek').addEventListener('click', function(){
-    if (fields.some(function(f){ return f.value.trim(); }) && !confirm('Mevcut yazılanların üzerine örnek veri yazılsın mı?')) return;
+    document.getElementById('ornekNot').hidden = false;
     fields.forEach(function(f){ f.value = ORNEK[f.id] || ''; store[f.id] = f.value; });
     save(); progress();
   });
 
+  if (!Object.keys(store).some(function(k){ return store[k]; })) document.getElementById('ornek').click();
   progress();
 })();
 </script>
