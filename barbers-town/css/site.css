@@ -302,6 +302,8 @@ p { margin: 0 0 1em; }
 }
 .mobil-bar .btn { min-height: 48px; padding: .5rem .8rem; }
 
+.demo-serit { position: relative; background: var(--hali); color: #fff; text-align: center; font-weight: 600; font-size: .92rem; padding: .45rem 16px; }
+
 @media (max-width: 960px) {
   .acilis__ic, .hizmet-duzen, .randevu, .adres, .sss-duzen { grid-template-columns: 1fr; }
   .ayna { justify-self: center; max-width: 400px; }

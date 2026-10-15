@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Randevular | Barber's Town</title>
+  <meta name="theme-color" content="#2a2c30">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='32' rx='30' ry='24' fill='%23121214'/%3E%3Ctext x='32' y='41' font-family='Arial' font-weight='700' font-size='24' fill='%23f3f1ec' text-anchor='middle'%3EBT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+  <style>
+    body { padding-bottom: 40px; }
+    .p-ust { background-color: var(--panel); color: var(--kirik); border-bottom: 4px solid var(--hali); }
+    .p-ust .kap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 64px; }
+    .p-ust h1 { font-size: 1.5rem; margin: 0; }
+    .p-ust button { background: none; border: 1px solid rgba(243, 241, 236, .4); color: var(--kirik); border-radius: 3px; padding: .35rem .8rem; font: inherit; font-size: .9rem; cursor: pointer; }
+    .p-ana { padding-block: 20px; max-width: 720px; margin-inline: auto; }
+    .giris-kart { background: #fbfbf9; border-top: 6px solid var(--hali); border-radius: 4px; padding: 1.5rem; margin-top: 2rem; }
+    .giris-kart input { font-size: 1.6rem; letter-spacing: .4em; text-align: center; font-variant-numeric: tabular-nums; }
+    .gun-sec { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+    .gun-sec button { font-family: var(--f-etiket); font-weight: 600; font-size: 1.05rem; letter-spacing: .03em; min-height: 44px; padding: .3rem 1rem; border-radius: 3px; border: 1px solid #a9aaa5; background: #fff; color: var(--murekkep); cursor: pointer; }
+    .gun-sec button[aria-pressed="true"] { background: var(--panel); border-color: var(--panel); color: var(--kirik); box-shadow: inset 0 -3px 0 var(--led); }
+    .gun-sec input { min-height: 44px; border: 1px solid #a9aaa5; border-radius: 3px; padding: .3rem .6rem; font: inherit; background: #fff; }
+    .ozet { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin: .5rem 0 1rem; }
+    .ozet h2 { font-size: 1.35rem; margin: 0; }
+    .ozet span { color: var(--gri); font-size: .95rem; }
+    .liste { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+    .rv { background: #fbfbf9; border-radius: 4px; padding: 1rem 1.1rem; display: grid; grid-template-columns: 4.6rem 1fr; gap: .2rem 1rem; box-shadow: 0 1px 0 #c9c9c4; }
+    .rv--gecti { opacity: .55; }
+    .rv--kapali { background: var(--duvar-2); }
+    .rv__saat { grid-row: span 3; font-family: var(--f-etiket); font-weight: 600; font-size: 1.5rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .rv__saat small { display: block; font-size: .9rem; color: var(--gri); font-weight: 500; }
+    .rv__ad { font-weight: 700; font-size: 1.1rem; min-width: 0; overflow-wrap: anywhere; }
+    .rv__hizmet { color: var(--gri); font-size: .95rem; }
+    .rv__not { font-size: .92rem; color: var(--murekkep); background: #fff; border-left: 3px solid var(--led); padding: .3rem .6rem; margin-top: .3rem; overflow-wrap: anywhere; }
+    .rv__eylem { grid-column: 2; display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .55rem; }
+    .rv__eylem a, .rv__eylem button { font-family: var(--f-etiket); font-weight: 600; font-size: 1rem; letter-spacing: .03em; min-height: 40px; padding: .3rem .85rem; border-radius: 3px; text-decoration: none; display: inline-flex; align-items: center; border: 1px solid transparent; cursor: pointer; }
+    .e-ara { background: var(--panel); color: var(--kirik); }
+    .e-wa { background: var(--wa); color: #fff; }
+    .e-iptal { background: none; border-color: #b9b9b4 !important; color: var(--hata); }
+    .e-onay { background: var(--hata); color: #fff; }
+    .e-vazgec { background: none; border-color: #b9b9b4 !important; color: var(--murekkep); }
+    .rv__kod { font-variant-numeric: tabular-nums; color: var(--gri); font-size: .85rem; letter-spacing: .05em; }
+    .bos { text-align: center; color: var(--gri); padding: 2.5rem 1rem; background: #fbfbf9; border-radius: 4px; }
+    .durum-cubuk { color: var(--gri); font-size: .85rem; margin-top: 1rem; text-align: center; }
+    .uyari-kutu { background: #fff3d6; border-left: 4px solid var(--led); padding: .8rem 1rem; border-radius: 3px; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <header class="p-ust">
+    <div class="kap">
+      <h1>Randevular</h1>
+      <button type="button" id="cikis" hidden>Çıkış</button>
+    </div>
+  </header>
+
+  <main class="kap p-ana">
+    <div class="uyari-kutu" id="baglanti-yok" hidden>
+      Randevu sistemi henüz bağlanmadı. Kurulumdan sonra <code>js/ayarlar.js</code> dosyasına sistem adresi yazılınca bu sayfa çalışır.
+    </div>
+
+    <form class="giris-kart" id="giris" hidden novalidate>
+      <div class="alan">
+        <label for="pin">Panel şifresi</label>
+        <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="6" required aria-describedby="pin-hata">
+        <p class="alan-hata" id="pin-hata" role="alert"></p>
+      </div>
+      <button class="btn btn--led btn--tam" type="submit">Giriş</button>
+      <p class="form__not">Şifre, kurulum sırasında Google Apps Script'te üretilir. Bu cihazda hatırlanır.</p>
+    </form>
+
+    <section id="pano" hidden>
+      <div class="gun-sec" role="group" aria-label="Gün">
+        <button type="button" data-gun="0" aria-pressed="true">Bugün</button>
+        <button type="button" data-gun="1" aria-pressed="false">Yarın</button>
+        <label class="atla" for="tarih">Tarih seç</label>
+        <input type="date" id="tarih">
+      </div>
+      <div class="ozet">
+        <h2 id="gun-baslik">Bugün</h2>
+        <span id="sayi"></span>
+      </div>
+      <ul class="liste" id="liste" aria-live="polite"></ul>
+      <p class="durum-cubuk" id="durum"></p>
+    </section>
+  </main>
+
+  <script src="../js/ayarlar.js"></script>
+  <script src="../js/panel.js" defer></script>
+</body>
+</html>

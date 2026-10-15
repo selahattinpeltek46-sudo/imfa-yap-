@@ -140,6 +140,28 @@ function dogrula(ayar, v, bugun) {
   };
 }
 
+/** Takvim etkinliğini panelde gösterilecek alanlara ayırır (site randevusu ya da salonun elle eklediği). */
+function etkinlikCoz(baslik, aciklama) {
+  var a = String(aciklama || '');
+  var al = function (etiket) { var m = new RegExp('^' + etiket + ':\\s*(.*)$', 'm').exec(a); return m ? m[1].trim() : ''; };
+  var kod = al('Kod');
+  var parca = String(baslik || '').split(' — ');
+  if (kod && parca.length >= 2) {
+    var not = al('Not');
+    return { hizmet: parca[0], ad: parca.slice(1).join(' — '), telefon: al('Telefon'), not: not === '-' ? '' : not, kod: kod, elle: false };
+  }
+  return { hizmet: '', ad: String(baslik || ''), telefon: '', not: a.trim(), kod: '', elle: true };
+}
+
+/** Panel şifresini karşılaştırır (sabit süreli karşılaştırma). */
+function pinDogru(girilen, kayitli) {
+  girilen = String(girilen || ''); kayitli = String(kayitli || '');
+  if (!kayitli || girilen.length !== kayitli.length) return false;
+  var fark = 0;
+  for (var i = 0; i < kayitli.length; i++) fark |= girilen.charCodeAt(i) ^ kayitli.charCodeAt(i);
+  return fark === 0;
+}
+
 function randevuKodu() {
   var harfler = 'ABCDEFGHJKLMNPRSTUVYZ23456789', k = 'BT-';
   for (var i = 0; i < 5; i++) k += harfler.charAt(Math.floor(Math.random() * harfler.length));
@@ -203,6 +225,7 @@ function doGet(e) {
 function doPost(e) {
   var v;
   try { v = JSON.parse(e.postData.contents); } catch (x) { return json({ ok: false, hata: 'Geçersiz istek' }); }
+  if (v.islem === 'panel') return panel(v);
 
   var d = dogrula(AYAR, v, bugunTarih());
   if (d.hata === 'spam') return json({ ok: true, kod: randevuKodu() }); // botlara sessizce başarı göster
@@ -255,6 +278,54 @@ function doPost(e) {
   return json({ ok: true, kod: kod, tarih: r.tarih, saat: r.saat, hizmet: r.hizmet, sure: AYAR.hizmetler[r.hizmet].sure });
 }
 
+/**
+ * Salon paneli (POST gövdesi {islem:'panel', pin, eylem, ...}).
+ *  eylem 'liste' {tarih}  → o günün randevuları
+ *  eylem 'iptal' {id}     → randevuyu takvimden siler, kayıt tablosunda durumu "İptal" yapar
+ * Şifre (PANEL_PIN) kurulum() ile oluşturulur; 10 dakikada 5 yanlış denemeden sonra kilitlenir.
+ */
+function panel(v) {
+  var onbellek = CacheService.getScriptCache();
+  var yanlis = Number(onbellek.get('pin_yanlis') || 0);
+  if (yanlis >= 5) return json({ ok: false, hata: 'Çok fazla yanlış deneme. 10 dakika sonra tekrar deneyin.' });
+  if (!pinDogru(v.pin, ozellik('PANEL_PIN'))) {
+    onbellek.put('pin_yanlis', String(yanlis + 1), 600);
+    return json({ ok: false, pin: false, hata: 'Şifre yanlış.' });
+  }
+
+  if (v.eylem === 'liste') {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v.tarih || '')) return json({ ok: false, hata: 'Geçersiz tarih' });
+    var bas = gunBaslangici(v.tarih), bit = new Date(bas.getTime() + 864e5);
+    var saat = function (d) { return Utilities.formatDate(d, 'Europe/Istanbul', 'HH:mm'); };
+    var liste = takvim().getEvents(bas, bit).map(function (e) {
+      var c = etkinlikCoz(e.getTitle(), e.getDescription());
+      c.id = e.getId();
+      c.tumGun = e.isAllDayEvent();
+      c.bas = c.tumGun ? '' : saat(e.getStartTime());
+      c.bit = c.tumGun ? '' : saat(e.getEndTime());
+      c.kapali = /KAPALI/i.test(e.getTitle());
+      return c;
+    });
+    return json({ ok: true, tarih: v.tarih, randevular: liste });
+  }
+
+  if (v.eylem === 'iptal') {
+    var e = takvim().getEventById(String(v.id || ''));
+    if (!e) return json({ ok: false, hata: 'Randevu bulunamadı; zaten silinmiş olabilir.' });
+    var kod = etkinlikCoz(e.getTitle(), e.getDescription()).kod;
+    e.deleteEvent();
+    if (kod) {
+      var sayfa = SpreadsheetApp.openById(ozellik('TABLO_ID')).getSheets()[0];
+      var kodlar = sayfa.getRange(1, 2, sayfa.getLastRow(), 1).getValues();
+      for (var i = kodlar.length - 1; i >= 0; i--) {
+        if (kodlar[i][0] === kod) { sayfa.getRange(i + 1, 9).setValue('İptal (panel)'); break; }
+      }
+    }
+    return json({ ok: true });
+  }
+  return json({ ok: false, hata: 'Geçersiz işlem' });
+}
+
 /** Bir kez elle çalıştırın: takvimi ve kayıt tablosunu oluşturur. */
 function kurulum() {
   var p = PropertiesService.getScriptProperties();
@@ -268,12 +339,17 @@ function kurulum() {
     ss.getSheets()[0].setFrozenRows(1);
     p.setProperty('TABLO_ID', ss.getId());
   }
+  if (!p.getProperty('PANEL_PIN')) {
+    p.setProperty('PANEL_PIN', String(Math.floor(100000 + Math.random() * 900000)));
+  }
   Logger.log('Takvim: ' + p.getProperty('TAKVIM_ID'));
+  Logger.log('Salon paneli şifresi: ' + p.getProperty('PANEL_PIN'));
   Logger.log('Tablo: https://docs.google.com/spreadsheets/d/' + p.getProperty('TABLO_ID'));
 }
 
 /* Node testleri için dışa aktarım (Apps Script'te etkisizdir) */
 if (typeof module !== 'undefined') {
   module.exports = { AYAR: AYAR, bosSaatler: bosSaatler, dogrula: dogrula, telefonTemizle: telefonTemizle,
-    kaynakBul: kaynakBul, haftaninGunu: haftaninGunu, cakisanSayisi: cakisanSayisi };
+    kaynakBul: kaynakBul, haftaninGunu: haftaninGunu, cakisanSayisi: cakisanSayisi,
+    etkinlikCoz: etkinlikCoz, pinDogru: pinDogru };
 }

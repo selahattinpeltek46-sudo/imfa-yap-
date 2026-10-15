@@ -7,6 +7,9 @@ window.BT_AYARLAR = {
   // Boşken form, talebi WhatsApp mesajı olarak hazırlar (sistem kurulana kadar yedek mod).
   randevuApi: '',
 
+  // Deneme (demo) sistemi: yalnız adresin sonuna ?demo=1 eklenince kullanılır; müşteriler etkilenmez.
+  demoApi: '',
+
   // Kaç gün ileriye randevu verilir (sunucudaki AYAR.ileriGun ile aynı olmalı)
   ileriGun: 21
 };
