@@ -4,7 +4,14 @@
 
   var A = window.BT_AYARLAR || {};
   var WHATSAPP = A.whatsapp || '905357294333';
-  var API = A.randevuApi || '';
+  var DEMO = /[?&]demo=1(&|$)/.test(location.search);
+  var API = (DEMO ? A.demoApi : A.randevuApi) || '';
+  if (DEMO) {
+    var serit = document.createElement('div');
+    serit.className = 'demo-serit';
+    serit.textContent = API ? 'DEMO — buradan alınan randevular deneme takvimine düşer.' : 'DEMO — deneme sistemi henüz bağlanmadı (ayarlar.js → demoApi).';
+    document.body.insertBefore(serit, document.body.firstChild);
+  }
   var ILERI_GUN = A.ileriGun || 21;
 
   // GA4 eklendiğinde (çerez onayından sonra) window.gtag tanımlı olur; o zamana kadar sessizce geçer.

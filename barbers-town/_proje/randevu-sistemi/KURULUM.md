@@ -22,6 +22,11 @@ Müşteri (site)                      Google (salonun hesabı, ücretsiz)       
 
 ## 2. Salon randevuları nasıl kontrol eder?
 
+**En kolay yol: Salon paneli** → `https://selahattinpeltek46-sudo.github.io/imfa-yap-/barbers-town/panel/`
+Telefonda açılır, 6 haneli şifreyle girilir (şifre bir kez girilince o telefonda hatırlanır). Bugün / yarın / istenen günün randevuları saat sırasıyla listelenir; her randevuda **Ara**, **WhatsApp hatırlatma** (hazır mesaj) ve **İptal et** düğmeleri var. Liste her dakika kendini yeniler. Şifre `kurulum()` çalıştırılınca Yürütme günlüğüne yazılır (Proje Ayarları → Komut dosyası özellikleri → `PANEL_PIN` ile değiştirilebilir). 10 dakikada 5 yanlış denemede panel kilitlenir.
+
+Google Takvim ile de yönetilebilir:
+
 | İş | Nasıl |
 |---|---|
 | Gelen randevuları görmek | Telefondaki **Google Takvim** uygulaması → "Barber's Town Randevular" takvimi. Her randevu: hizmet — müşteri adı; açıklamada telefon, not, randevu kodu. |
@@ -36,7 +41,17 @@ Müşteri (site)                      Google (salonun hesabı, ücretsiz)       
 
 > Dikkat: Bu takvime randevuyla ilgisiz kişisel etkinlik eklemeyin; her etkinlik bir koltuğu meşgul sayar.
 
-## 3. Kurulum (bir kez, ~15 dakika, ücretsiz)
+## 3. Önce DEMO (kendi hesabınızda deneme)
+
+Salona göstermeden önce sistemi **kendi** Gmail hesabınızda kurup deneyin. Canlı site etkilenmez:
+1. Aşağıdaki kurulum adımlarını kendi hesabınızla yapın (proje adı: "Barber's Town DEMO").
+2. Çıkan web uygulaması adresini `js/ayarlar.js` → **`demoApi`** satırına yazın (`randevuApi` boş kalır).
+3. Demo site: `…/barbers-town/?demo=1` (üstte kırmızı "DEMO" şeridi görünür) · Demo panel: `…/barbers-town/panel/?demo=1`
+4. Normal adresteki site WhatsApp modunda kalır; müşteri randevuları sizin deneme takviminize düşmez.
+
+Salon onaylayınca aynı adımlar salonun hesabında yapılır ve adres bu kez **`randevuApi`** satırına yazılır.
+
+## 4. Kurulum (bir kez, ~15 dakika, ücretsiz)
 
 Gerekli: salonun bir Google (Gmail) hesabı.
 
@@ -61,14 +76,14 @@ Gerekli: salonun bir Google (Gmail) hesabı.
 
 **Code.gs'yi sonradan değiştirirseniz:** Dağıt → Dağıtımları yönet → kalem → Sürüm: **Yeni sürüm** → Dağıt (URL aynı kalır).
 
-## 4. Güvenlik ve sınırlar
+## 5. Güvenlik ve sınırlar
 
 - Siteden yalnız "boş saatler" okunabilir; müşteri adları/telefonları dışarı verilmez.
 - Spam: gizli tuzak alanı (botlar doldurur, kayıt yapılmaz), telefon doğrulaması (05xx), aynı numaradan günde en fazla 3 randevu.
 - Google ücretsiz kotaları: günlük ~100 e-posta (tüketici hesabı), takvim etkinliği oluşturma ~5.000/gün — bir salon için fazlasıyla yeterli. E-posta kotası dolarsa randevu yine kaydedilir.
 - KVKK: Veriler salonun Google hesabında tutulur; aydınlatma metni buna göre güncellendi (hukuki kontrol gerekir). Kayıt tablosundaki 1 yılı aşan satırlar silinmeli.
 
-## 5. Teyit edilmesi gereken varsayımlar
+## 6. Teyit edilmesi gereken varsayımlar
 
 | Ayar | Şu anki değer | Durum |
 |---|---|---|
