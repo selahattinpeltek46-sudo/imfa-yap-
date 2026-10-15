@@ -6,11 +6,14 @@
  *  - Gelen randevuyu kilit altında tekrar kontrol eder; saat doluysa reddeder (çift rezervasyon olmaz).
  *  - Randevuyu salonun Google Takvimine etkinlik olarak yazar, Google E-Tablo'ya kaydeder,
  *    salona e-posta bildirimi gönderir.
+ *  - Randevudan 2 saat önce dükkâna "hatırlatma gönder" bildirimi verir (takvim bildirimi + e-posta);
+ *    bildirimdeki bağlantıya dokununca müşteriye hazır WhatsApp hatırlatma mesajı açılır.
  *
  * Salon nasıl yönetir?
  *  - Telefondaki Google Takvim uygulamasında "Barber Uğur Randevular" takvimini görür.
  *  - İptal: etkinliği silmek yeterli → saat sitede yeniden boş görünür.
  *  - Telefonla gelen randevu: takvime elle etkinlik ekleyin → 1 koltuk dolu sayılır.
+ *    Açıklamaya müşterinin cep numarasını yazarsanız (ör. "0532 111 22 33") hatırlatma onun için de gelir.
  *  - Saat/gün kapatma (mola, izin): başlığında "KAPALI" geçen etkinlik ekleyin → o aralık herkese kapanır.
  *
  * Kurulum adımları: KURULUM.md
@@ -50,7 +53,14 @@ var AYAR = {
   },
 
   gunlukTelefonSiniri: 3,  // aynı numaradan bir günde en fazla kaç randevu
-  bildirimEposta: ''       // boşsa betiği kuran Google hesabına gider
+  bildirimEposta: '',      // boşsa betiği kuran Google hesabına gider
+
+  // Hatırlatma: randevudan kaç dakika önce dükkâna "hatırlatma gönder" bildirimi gelsin.
+  // Sitedeki js/ayarlar.js → hatirlatmaDakika ile aynı olmalı (müşterinin takvim alarmı).
+  hatirlatmaDakika: 120,
+  hatirlatmaEposta: true,  // false: yalnız takvim bildirimi (e-posta gönderilmez)
+  dukkanAdi: 'Barber Uğur',
+  dukkanAdres: 'Gazi Muhtar Paşa Blv. Gazi Apt. No:46/E, Şehitkamil'
 };
 
 /* ───────────── Saf hesaplama fonksiyonları (Node ile test edilebilir) ───────────── */
@@ -145,6 +155,52 @@ function randevuKodu() {
   return k;
 }
 
+/* ───────────── Hatırlatma (saf fonksiyonlar) ───────────── */
+
+/** Müşteriye gidecek hatırlatma metni. r: {ad, saat, hizmet, kod} */
+function hatirlatmaMetni(ayar, r) {
+  var ad = String(r.ad || '').trim().split(/\s+/)[0];
+  var satirlar = [
+    'Merhaba' + (ad ? ' ' + ad : '') + ',',
+    'Bugün saat ' + r.saat + (r.hizmet ? ' ' + r.hizmet : '') + ' randevunuzu hatırlatırız.',
+    'Gelemeyecekseniz lütfen bu mesaja yazın; saatinizi başkasına açalım.'
+  ];
+  if (r.kod) satirlar.push('Randevu kodu: ' + r.kod);
+  satirlar.push(ayar.dukkanAdi + ' · ' + ayar.dukkanAdres);
+  return satirlar.join('\n');
+}
+
+/** Dükkânın dokunacağı WhatsApp bağlantısı (müşteriye hazır mesaj). tel: 05xxxxxxxxx */
+function hatirlatmaLinki(ayar, r) {
+  return 'https://wa.me/90' + r.telefon.slice(1) + '?text=' + encodeURIComponent(hatirlatmaMetni(ayar, r));
+}
+
+/** Etkinlik açıklamasından telefonu bulur (site kaydı: "Telefon: 05…"; elle eklenen: herhangi bir cep numarası). */
+function aciklamadanTelefon(aciklama) {
+  var m = String(aciklama || '').match(/(?:\+?90[\s-]?)?0?5\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}/);
+  return m ? telefonTemizle(m[0]) : null;
+}
+
+/**
+ * Şimdi hatırlatılması gereken etkinlikleri seçer.
+ * etkinlikler: [{id, baslik, aciklama, bas (ms), olusturma (ms), hatirlatildi (bool), telefon?, ad?, hizmet?, kod?}]
+ * Kurallar: başlamamış · hatırlatma penceresine girmiş · daha önce hatırlatılmamış · KAPALI değil ·
+ * telefonu belli · hatırlatma süresinden kısa süre önce alınmamış (az önce randevu alana mesaj gitmez).
+ */
+function hatirlatilacaklar(ayar, etkinlikler, simdi) {
+  var pencere = ayar.hatirlatmaDakika * 6e4;
+  return etkinlikler.filter(function (e) {
+    if (e.hatirlatildi || /KAPALI/i.test(e.baslik)) return false;
+    if (e.bas <= simdi || e.bas - simdi > pencere) return false;
+    if (e.olusturma && e.bas - e.olusturma < pencere) return false;
+    return !!(e.telefon || aciklamadanTelefon(e.aciklama));
+  }).map(function (e) {
+    var tel = e.telefon || aciklamadanTelefon(e.aciklama);
+    var ad = e.ad || String(e.baslik || '').split(' — ').pop();
+    return { id: e.id, bas: e.bas, telefon: tel, ad: ad, hizmet: e.hizmet || '', kod: e.kod || '' };
+  });
+}
+
 /* ───────────── Google servisleri ───────────── */
 
 function ozellik(ad) { return PropertiesService.getScriptProperties().getProperty(ad); }
@@ -235,6 +291,15 @@ function doPost(e) {
     );
     etkinlik.setTag('kaynak', hizmet.kaynak);
     etkinlik.setTag('kod', kod);
+    etkinlik.setTag('ad', r.ad);
+    etkinlik.setTag('telefon', r.telefon);
+    etkinlik.setTag('hizmet', r.hizmet);
+    // Dükkânın telefonundaki Google Takvim, randevudan 2 saat önce bildirim verir; açıklamadaki
+    // bağlantıya dokununca müşteriye hazır WhatsApp hatırlatması açılır.
+    etkinlik.removeAllReminders();
+    etkinlik.addPopupReminder(AYAR.hatirlatmaDakika);
+    etkinlik.setDescription(etkinlik.getDescription() + '\n\nHatırlatma gönder (WhatsApp):\n' +
+      hatirlatmaLinki(AYAR, { ad: r.ad, telefon: r.telefon, saat: r.saat, hizmet: r.hizmet, kod: kod }));
 
     SpreadsheetApp.openById(ozellik('TABLO_ID')).getSheets()[0].appendRow([
       new Date(), kod, r.tarih, r.saat, r.hizmet, r.ad, "'" + r.telefon, r.not, 'Alındı'
@@ -254,7 +319,43 @@ function doPost(e) {
   return json({ ok: true, kod: kod, tarih: r.tarih, saat: r.saat, hizmet: r.hizmet, sure: AYAR.hizmetler[r.hizmet].sure });
 }
 
-/** Bir kez elle çalıştırın: takvimi ve kayıt tablosunu oluşturur. */
+/**
+ * Zaman tetikleyicisi (15 dakikada bir, kurulum() oluşturur): hatırlatma vakti gelen randevular için
+ * dükkâna tek e-postada "WhatsApp'tan hatırlat" bağlantıları gönderir ve etkinliği işaretler.
+ * Elle eklenen (telefonla alınan) randevular da açıklamada cep numarası varsa dahildir.
+ */
+function hatirlatmaKontrol() {
+  var simdi = Date.now();
+  var liste = takvim().getEvents(new Date(simdi), new Date(simdi + AYAR.hatirlatmaDakika * 6e4));
+  var etkinlikler = liste.map(function (e) {
+    return {
+      id: e.getId(), ham: e, baslik: e.getTitle(), aciklama: e.getDescription(),
+      bas: e.getStartTime().getTime(), olusturma: e.getDateCreated().getTime(),
+      hatirlatildi: e.getTag('hatirlatma') === 'bildirildi',
+      telefon: e.getTag('telefon'), ad: e.getTag('ad'), hizmet: e.getTag('hizmet'), kod: e.getTag('kod')
+    };
+  });
+  var secilen = hatirlatilacaklar(AYAR, etkinlikler, simdi);
+  if (!secilen.length) return;
+
+  var satirlar = secilen.map(function (r) {
+    r.saat = Utilities.formatDate(new Date(r.bas), 'Europe/Istanbul', 'HH:mm');
+    return r.saat + ' · ' + r.ad + (r.hizmet ? ' · ' + r.hizmet : '') + '\nHatırlat: ' + hatirlatmaLinki(AYAR, r);
+  });
+  if (AYAR.hatirlatmaEposta) {
+    try {
+      MailApp.sendEmail(AYAR.bildirimEposta || Session.getEffectiveUser().getEmail(),
+        'Hatırlatma gönder: ' + secilen.map(function (r) { return r.saat + ' ' + r.ad; }).join(', '),
+        'Yaklaşan randevular. Bağlantıya dokunun, WhatsApp\'ta hazır mesaj açılır, Gönder\'e basın.\n\n' +
+        satirlar.join('\n\n'));
+    } catch (x) { return; } // kota dolduysa işaretleme yapma, sonraki turda tekrar dene
+  }
+  etkinlikler.forEach(function (e) {
+    if (secilen.some(function (r) { return r.id === e.id; })) e.ham.setTag('hatirlatma', 'bildirildi');
+  });
+}
+
+/** Bir kez elle çalıştırın: takvimi, kayıt tablosunu ve hatırlatma tetikleyicisini oluşturur. */
 function kurulum() {
   var p = PropertiesService.getScriptProperties();
   if (!p.getProperty('TAKVIM_ID')) {
@@ -267,6 +368,8 @@ function kurulum() {
     ss.getSheets()[0].setFrozenRows(1);
     p.setProperty('TABLO_ID', ss.getId());
   }
+  var tetikVar = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'hatirlatmaKontrol'; });
+  if (!tetikVar) ScriptApp.newTrigger('hatirlatmaKontrol').timeBased().everyMinutes(15).create();
   Logger.log('Takvim: ' + p.getProperty('TAKVIM_ID'));
   Logger.log('Tablo: https://docs.google.com/spreadsheets/d/' + p.getProperty('TABLO_ID'));
 }
@@ -274,5 +377,7 @@ function kurulum() {
 /* Node testleri için dışa aktarım (Apps Script'te etkisizdir) */
 if (typeof module !== 'undefined') {
   module.exports = { AYAR: AYAR, bosSaatler: bosSaatler, dogrula: dogrula, telefonTemizle: telefonTemizle,
-    kaynakBul: kaynakBul, haftaninGunu: haftaninGunu, cakisanSayisi: cakisanSayisi };
+    kaynakBul: kaynakBul, haftaninGunu: haftaninGunu, cakisanSayisi: cakisanSayisi,
+    hatirlatmaMetni: hatirlatmaMetni, hatirlatmaLinki: hatirlatmaLinki, aciklamadanTelefon: aciklamadanTelefon,
+    hatirlatilacaklar: hatirlatilacaklar, hatirlatmaKontrol: hatirlatmaKontrol };
 }

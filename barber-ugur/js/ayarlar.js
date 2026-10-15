@@ -8,7 +8,10 @@ window.BU_AYARLAR = {
   randevuApi: '',
 
   // Kaç gün ileriye randevu verilir (sunucudaki AYAR.ileriGun ile aynı olmalı)
-  ileriGun: 21
+  ileriGun: 21,
+
+  // "Telefonuma ekle" takvim dosyasındaki alarm: randevudan kaç dakika önce (Code.gs → AYAR.hatirlatmaDakika ile aynı)
+  hatirlatmaDakika: 120
 };
 // Hizmet listesi, süreleri, çalışma saatleri ve kapasite sunucuda (_proje/randevu-sistemi/Code.gs → AYAR) tutulur.
 // Site, hizmet adlarını formdaki <select> listesinden gönderir; adlar Code.gs ile birebir aynı olmalı.
