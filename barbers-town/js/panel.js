@@ -3,7 +3,7 @@
   'use strict';
 
   var A = window.BT_AYARLAR || {};
-  var DEMO = /[?&]demo=1(&|$)/.test(location.search);
+  var DEMO = !!window.BT_DEMO;
   var API = (DEMO ? A.demoApi : A.randevuApi) || '';
   var PIN_ANAHTARI = DEMO ? 'bt_panel_pin_demo' : 'bt_panel_pin';
 

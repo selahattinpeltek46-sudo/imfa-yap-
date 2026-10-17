@@ -4,12 +4,17 @@
 
   var A = window.BT_AYARLAR || {};
   var WHATSAPP = A.whatsapp || '905357294333';
-  var DEMO = /[?&]demo=1(&|$)/.test(location.search);
+  var DEMO = !!window.BT_DEMO;
   var API = (DEMO ? A.demoApi : A.randevuApi) || '';
   if (DEMO) {
     var serit = document.createElement('div');
     serit.className = 'demo-serit';
-    serit.textContent = API ? 'DEMO — buradan alınan randevular deneme takvimine düşer.' : 'DEMO — deneme sistemi henüz bağlanmadı (ayarlar.js → demoApi).';
+    serit.textContent = API ? 'DEMO — buradan alınan randevular deneme takvimine düşer. ' : 'DEMO — deneme sistemi henüz bağlanmadı (ayarlar.js → demoApi). ';
+    var cik = document.createElement('a');
+    cik.href = '?demo=0';
+    cik.textContent = 'Demodan çık';
+    cik.style.color = '#fff';
+    serit.appendChild(cik);
     document.body.insertBefore(serit, document.body.firstChild);
   }
   var ILERI_GUN = A.ileriGun || 21;
