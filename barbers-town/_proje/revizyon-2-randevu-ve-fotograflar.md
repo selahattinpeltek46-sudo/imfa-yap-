@@ -79,3 +79,14 @@ Kullanıcı isteği: site hazır şablon / yapay zekâ işi gibi görünmesin, e
 
 Metinler sadeleştirildi; yalnız fotoğraflarda görülen ya da Haritalar'da doğrulanan şeyler yazıldı. Testler (form, randevu, taşma) tekrarlandı: hepsi geçti.
 Önizleme: claude.ai artifact (özel bağlantı). Gerçek yayın: main'e birleştirildikten sonra GitHub Pages.
+
+---
+# REVİZYON 4 — Salon paneli + canlı demo (2026-10-17)
+
+- **Salon paneli** (`panel/`): şifreli günlük liste; ara, WhatsApp hatırlatma, iptal. Salonun "randevuları nereden takip ederiz?" sorusunun cevabı.
+- **Demo:** Kullanıcının kendi Google hesabında Apps Script kuruldu; `ayarlar.js → demoApi` bağlandı. `?demo=1` ile site + panel deneme sistemine bağlanır; canlı site WhatsApp modunda kalır.
+- **Gerçek uçtan uca test (kullanıcı):** randevu alındı → e-posta bildirimi geldi → panelde 13:00–13:45 göründü → iptal edildi → saat yeniden boşaldı. ✅
+- **Bulunan hata:** logoya tıklayınca `?demo=1` düşüyor, site normal moda dönüyordu → demo bayrağı sessionStorage'da tutuldu, `?demo=0` ile çıkış (PR #18).
+- **Kurulumda takılınan yerler (müşteri kurulumunda dikkat):** kodu `myFunction` içine yapıştırma; appsscript.json'u eski içerikle karıştırma; fonksiyon listesinde `kurulum` yerine ilk fonksiyonun seçili kalması; "doğrulanmamış uygulama" ekranında e-posta bağlantısına tıklayıp "Gelişmiş"i kaçırma; panel şifresini günlükte kaçırma (Proje Ayarları → Komut dosyası özellikleri → PANEL_PIN).
+
+**Sıradaki:** 30 sn ekran kaydı → salona mesaj → salon onaylarsa salonun Gmail'inde aynı kurulum ve adres `randevuApi`'ye. Teyit edilecek: açılış saati, tatil günü, koltuk sayısı, hizmet süreleri. İyileştirme önerisi: e-postada Türkçe tarih ("17 Ekim Cumartesi"), isim baş harf büyütme.
