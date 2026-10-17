@@ -8,7 +8,7 @@ window.BT_AYARLAR = {
   randevuApi: '',
 
   // Deneme (demo) sistemi: yalnız adresin sonuna ?demo=1 eklenince kullanılır; müşteriler etkilenmez.
-  demoApi: '',
+  demoApi: 'https://script.google.com/macros/s/AKfycbyy35dHjZ0PUWOcNhMozWZujN3dgnbhRPRA9Hjh_vMBnxU8JvUwoJMms0c3v2CRMFqL/exec',
 
   // Kaç gün ileriye randevu verilir (sunucudaki AYAR.ileriGun ile aynı olmalı)
   ileriGun: 21
