@@ -15,3 +15,15 @@ window.BT_AYARLAR = {
 };
 // Hizmet listesi, süreleri, çalışma saatleri ve kapasite sunucuda (_proje/randevu-sistemi/Code.gs → AYAR) tutulur.
 // Site, hizmet adlarını formdaki <select> listesinden gönderir; adlar Code.gs ile birebir aynı olmalı.
+
+// Demo modu: ?demo=1 ile açılınca bu sekme kapanana kadar demo kalır (logo, menü vb. tıklansa da).
+// Çıkmak için adresin sonuna ?demo=0 ekleyin.
+(function () {
+  var q = location.search, acik = /[?&]demo=1(&|$)/.test(q);
+  try {
+    if (acik) sessionStorage.setItem('bt_demo', '1');
+    else if (/[?&]demo=0(&|$)/.test(q)) sessionStorage.removeItem('bt_demo');
+    acik = sessionStorage.getItem('bt_demo') === '1';
+  } catch (e) { /* tarayıcı depolamayı engelliyorsa yalnız adrese bakılır */ }
+  window.BT_DEMO = acik;
+})();
