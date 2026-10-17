@@ -1,0 +1,178 @@
+<title>Dijital Otorite Takvimi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style id="css">
+/* Layout: marka renkleri (lacivert + altın). Üstte ay özeti ve sütun dağılımı, altında haftalar; her gönderi bir satır, 1. hafta açılır detaylı. */
+:root{
+  --bg:#F3F4F8; --surface:#FFFFFF; --fg:#0F1A33; --muted:#59627A; --line:#D8DCE6;
+  --gold:#9A6B00; --gold-soft:#F6ECD2; --navy:#14254F;
+  --p1:#C2410C; --p2:#0F766E; --p3:#1D4ED8; --p4:#7C3AED; --p5:#9A6B00; --ok:#15803D; --ok-soft:#DCF2E3;
+  --f-display:"Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1226; --surface:#121C36; --fg:#E9ECF4; --muted:#9AA3B8; --line:#24304F;
+  --gold:#E3B341; --gold-soft:#3A2F12; --navy:#E9ECF4;
+  --p1:#FB8A5B; --p2:#3CC7B5; --p3:#7EA6FF; --p4:#B794FF; --p5:#E3B341; --ok:#5BD08A; --ok-soft:#143322; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1226; --surface:#121C36; --fg:#E9ECF4; --muted:#9AA3B8; --line:#24304F;
+  --gold:#E3B341; --gold-soft:#3A2F12; --navy:#E9ECF4;
+  --p1:#FB8A5B; --p2:#3CC7B5; --p3:#7EA6FF; --p4:#B794FF; --p5:#E3B341; --ok:#5BD08A; --ok-soft:#143322; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f-body)}
+.wrap{max-width:900px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:28px}
+.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+h1{font:800 clamp(36px,7vw,56px)/.95 var(--f-display);text-transform:uppercase;margin:8px 0 10px;color:var(--navy);letter-spacing:.01em;text-wrap:balance}
+.lead{color:var(--muted);max-width:62ch;margin:0}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat b{font:800 30px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--f-mono);padding:5px 9px;border-radius:99px;border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+.chip i{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
+.save{font:500 12px var(--f-mono);color:var(--muted)}
+.save.err{color:var(--p1)}
+h2{font:800 26px/1 var(--f-display);text-transform:uppercase;margin:0 0 10px;letter-spacing:.02em;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 small{font:500 13px var(--f-body);text-transform:none;color:var(--muted);letter-spacing:0}
+.week{display:flex;flex-direction:column}
+.post{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--pc);border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:start;margin-bottom:8px}
+.date{font:800 22px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.date span{display:block;font:500 11px var(--f-mono);color:var(--muted);text-transform:uppercase;margin-top:4px}
+.ptitle{font-weight:600;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;font:500 11px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.meta .pl{color:var(--pc)}
+.hook{color:var(--muted);font-size:14px;margin:2px 0 0}
+.st{font:500 12px var(--f-mono);border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:6px;padding:6px 10px;cursor:pointer;white-space:nowrap}
+.st[data-s="onay"]{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+.st[data-s="pay"]{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.st:focus-visible,summary:focus-visible,.copy:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+details{grid-column:1 / -1;border-top:1px dashed var(--line);padding-top:8px}
+summary{cursor:pointer;font-weight:600;color:var(--gold);font-size:14px}
+.blk{margin-top:12px}
+.blk h4{font:500 11px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 6px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.blk ol,.blk ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.txt{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:14px;max-width:70ch}
+.copy{font:500 11px var(--f-mono);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:5px;padding:3px 8px;cursor:pointer;text-transform:none;letter-spacing:0}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--gold);padding-left:10px}
+.stories{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 18px}
+.stories ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+footer{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.post{grid-template-columns:52px minmax(0,1fr)}.st{grid-column:2;justify-self:start}}
+</style>
+<div id="app" class="wrap"></div>
+<script type="application/json" id="state">{"status":{}}</script>
+<script id="code">
+(function(){
+var PL={amca:["Dükkân Amca","--p1"],rontgen:["Dijital Röntgen","--p2"],once:["Önce / Sonra","--p3"],adam:["Arkasındaki Adam","--p4"],recete:["Reçete","--p5"]};
+var TAGS="#göksun #kahramanmaraş #göksunesnafı #dijitalpazarlama #esnaf #dijitalotorite";
+var POSTS=[
+ {id:1,w:1,d:"19.10",g:"Pzt",p:"amca",f:"Reels · 15–20 sn",t:"Bugün de kimse gelmedi…",h:"Amca tezgâhta bekliyor; müşteri telefonda arıyor ve karşı dükkânı buluyor.",
+  det:{scenes:["0–2 sn · Amca tezgâhta esniyor. Ekran yazısı: \"Bugün de kimse gelmedi…\"","3–8 sn · Bir müşteri telefonda \"Göksun kasap\" arıyor. Haritada karşı dükkân çıkıyor, Amca'nınki çıkmıyor.","9–14 sn · Amca telefona bakıp donup kalıyor. Yazı: \"Müşterin seni değil, Google'ı dinliyor.\"","15–18 sn · Yazı: \"Dükkânın dijitalde var mı? 'RÖNTGEN' yaz.\""],
+  voice:"",
+  caption:"Göksun'da her gün onlarca kişi telefondan esnaf arıyor.\nSen o listede yoksan, o müşteri karşıya gidiyor. 🫠\n\nDükkânının dijitalde nasıl göründüğünü merak ediyor musun?\n👇 Yorumlara ya da DM'e \"RÖNTGEN\" yaz, ücretsiz bakayım.\n\n"+TAGS,
+  note:"Amca karakterinin önceki gönderideki görselini referans al; 3 sahneyi aynı karakterle üret. Müzik: hafif, komik. Konum: Göksun."}},
+ {id:2,w:1,d:"21.10",g:"Çar",p:"rontgen",f:"Reels · ekran kaydı + ses · 30–40 sn",t:"Göksun'da \"kasap\" diye arattım",h:"Arama sonuçlarındaki işletmelere röntgen: kim görünüyor, kim kayboluyor.",
+  det:{scenes:["Telefon ekran kaydı: Google'a \"Göksun kasap\" yaz","Harita sonuçlarını yavaşça kaydır; fotoğrafı, saati, yorumu olan profili göster","Bilgisi eksik profilleri göster (isimleri bulanıklaştır)","Son kare: \"Senin dükkânın bu listede nasıl görünüyor?\""],
+  voice:"Göksun'da telefonu aldım, Google'a \"kasap\" yazdım. Bakın kim çıktı, kim çıkmadı.\n\nHaritada birkaç işletme var. Birinin fotoğrafları var, saatleri yazıyor, yorumları var. Müşteri bunu görünce direkt yol tarifi alıyor.\n\nÖbüründe ne fotoğraf var ne telefon. Belki Göksun'un en iyi eti onda, ama müşteri bunu bilmiyor.\n\nBugün müşteri dükkâna gelmeden önce telefona bakıyor. Telefonda yoksan, o müşteri yoldan dönüyor.\n\nSenin dükkânın bu listede nasıl görünüyor? \"RÖNTGEN\" yaz, ücretsiz bakayım.",
+  caption:"Telefonu aldım, Göksun'da \"kasap\" diye arattım. 📱\nSonuçlar, müşterinin dükkâna gelmeden önce neye baktığını açıkça gösteriyor.\n\n✅ Fotoğraf\n✅ Çalışma saatleri\n✅ Yorumlar\n✅ Tek tıkla arama\n\nBunlardan biri eksikse, müşteri bir sonrakine geçiyor.\n👇 \"RÖNTGEN\" yaz, senin dükkânına da bakayım.\n\n"+TAGS,
+  note:"Aramayı kendin yap ve ekranı kaydet. Eksik profillerin adını mutlaka bulanıklaştır; rakip esnafı teşhir etmek ters teper. Sesi telefonla sessiz bir odada kaydet."}},
+ {id:3,w:1,d:"23.10",g:"Cum",p:"once",f:"Carousel · 7 kare",t:"Göksun Yörem: 2008'den beri kasap, şimdi telefonda da",h:"Yörem Et ve Süt'ün web sitesi öncesi ve sonrası.",
+  det:{scenes:["Kare 1 · \"2008'den beri Göksun'un kasabı. İnternette bir sayfası yoktu.\"","Kare 2 · Sorun: Müşteri \"Göksun kasap\" arıyor, ürünleri ve iletişimi bulamıyor.","Kare 3 · Ne yaptık: Ürünler (dana, kuzu, yayla sütü, tulum peyniri, süzme bal), adres ve WhatsApp hattı tek sitede.","Kare 4 · Sitenin ana sayfası (telefon ekranı)","Kare 5 · Ürünler bölümü (telefon ekranı)","Kare 6 · \"Artık müşteri dükkâna gelmeden ürünü, adresi ve WhatsApp hattını görüyor.\"","Kare 7 · \"Sıradaki dükkân seninki olsun. 'RÖNTGEN' yaz.\""],
+  voice:"",
+  caption:"Göksun Yörem Et ve Süt Ürünleri 2008'den beri Göksun'un kasabı. 🥩🧀\nAma internette bir sayfası bile yoktu.\n\nŞimdi taze et, yayla sütü, tulum peyniri ve süzme bal; adres ve WhatsApp hattıyla birlikte tek bir sitede.\nMüşteri dükkâna gelmeden önce ne alacağını biliyor.\n\nDükkânın böyle bir vitrine hazır mı?\n👇 \"RÖNTGEN\" yaz, birlikte bakalım.\n\n@işletme_hesabını_etiketle\n"+TAGS,
+  note:"Kare 1'deki \"sayfası yoktu\" bilgisini paylaşmadan önce doğrula. Ekran görüntülerini siteden telefon boyutunda al. Göksun Yörem'i \"ortak gönderi\" (collab) olarak davet et; onların takipçilerine de düşer."}},
+ {id:4,w:1,d:"25.10",g:"Paz",p:"adam",f:"Reels · Göksun görüntüleri + ses · 30–45 sn",t:"Neden Göksun esnafıyla çalışıyorum?",h:"Selahattin'in sesiyle hikâye; yüz yok, Göksun çarşısı ve dükkân görüntüleri.",
+  det:{scenes:["Göksun çarşısı, sabah kepenk açılışı","Dükkân vitrinleri, esnafın elleri (yüz göstermeden)","Bilgisayarda bir site tasarımı (ekran)","Göksun manzarası ve logo ile kapanış"],
+  voice:"Ben Selahattin. Yıllardır bu işin içindeyim.\n\nGöksun'da çok emekçi esnaf var. Sabah yedide kepenk açan, akşam en son kapatan.\n\nAma bir şeyi fark ettim. Büyük şehirlerdeki markalar telefonda, bizim esnaf hâlâ sadece kapının önünde.\n\nDijital Otorite'yi bu yüzden kurdum. Göksun'un esnafı da telefonda görünsün, müşteri yoldan dönmesin diye.\n\nBu sayfada her hafta dükkânını büyütecek bir şey paylaşacağım. Takipte kal.",
+  caption:"Ben Selahattin. 👋\nGöksun'un emekçi esnafı, büyük şehirdeki markalar kadar görünür olmayı hak ediyor.\n\nDijital Otorite'yi bu yüzden kurdum: Esnafın dijital doktoru olmak için. 🩺\n\nHer hafta burada:\n📍 Göksun esnafından gerçek örnekler\n🔍 Dijital röntgenler\n💡 Uygulanabilir ipuçları\n\nTakipte kal, bir esnaf arkadaşına da gönder. 🤝\n\n"+TAGS,
+  note:"Görüntüleri hafta içinde çarşıdan telefonla çek (yatay değil dikey). Sesi yavaş ve samimi oku; altyazıyı CapCut'ta otomatik ekle."}},
+ {id:5,w:2,d:"26.10",g:"Pzt",p:"amca",f:"Reels",t:"Amca'nın oğlu \"Instagram aç baba\" dedi",h:"Amca hesap açıyor, 3 gönderi atıp bırakıyor. Neden işe yaramadı?"},
+ {id:6,w:2,d:"28.10",g:"Çar",p:"rontgen",f:"Carousel",t:"Google İşletme profilinde en sık 5 hata",h:"Fotoğrafsız profil, yanlış saat, cevapsız yorum, telefon yok, kategori yanlış."},
+ {id:7,w:2,d:"30.10",g:"Cum",p:"once",f:"Carousel",t:"Söyleroğlu Hafriyat: 2007'den beri sahada",h:"Hizmetler, makine parkı ve teklif butonu artık tek sitede."},
+ {id:8,w:2,d:"01.11",g:"Paz",p:"adam",f:"Reels · ekran kaydı + ses",t:"Bir esnaf sitesi nasıl yapılır? 60 saniyede sahne arkası",h:"Boş sayfadan yayındaki siteye hızlandırılmış ekran kaydı."},
+ {id:9,w:3,d:"02.11",g:"Pzt",p:"amca",f:"Reels",t:"Amca fiyat soranlara cevap vermiyor",h:"DM'e iki gün sonra dönen Amca, müşteriyi karşı dükkâna kaptırıyor."},
+ {id:10,w:3,d:"04.11",g:"Çar",p:"rontgen",f:"Carousel · kaydet",t:"Dükkânına 5 dakikada kendin röntgen çek",h:"Kontrol listesi: Google profili, fotoğraflar, yorumlar, WhatsApp Business, site."},
+ {id:11,w:3,d:"06.11",g:"Cum",p:"once",f:"Carousel",t:"Üçel Tarım Aletleri: Tarlada da yolda da sağlam iş",h:"Römork ve tarım ekipmanları artık telefonda inceleniyor."},
+ {id:12,w:3,d:"08.11",g:"Paz",p:"recete",f:"Reels + gönderi",t:"Bu ay 3 Göksun işletmesine ücretsiz Dijital Röntgen",h:"Net teklif: başvuru, kontenjan, son tarih."},
+ {id:13,w:4,d:"09.11",g:"Pzt",p:"amca",f:"Reels",t:"Amca ve karşı dükkân: yorumlar",h:"Karşı dükkânın 40 yorumu var, Amca'nın 2. Müşteri hangisine gider?"},
+ {id:14,w:4,d:"11.11",g:"Çar",p:"rontgen",f:"Reels · ekran kaydı + ses",t:"İlk Dijital Röntgen sonucu",h:"Başvuran bir işletmenin (izinli) incelemesi ve 3 maddelik reçete."},
+ {id:15,w:4,d:"13.11",g:"Cum",p:"once",f:"Carousel",t:"Göksun'dan Gaziantep'e: iki berber, iki site",h:"Barber Uğur ve Barber's Town sitelerinden kareler."},
+ {id:16,w:4,d:"15.11",g:"Paz",p:"adam",f:"Reels · ses",t:"Bir ayda neler öğrendim?",h:"Hesabın ilk ayı: ne tuttu, ne tutmadı, sırada ne var."},
+ {id:17,w:5,d:"16.11",g:"Pzt",p:"amca",f:"Reels",t:"Amca dijitale geçti",h:"Dükkân dolu, telefon çalıyor. Serinin finali ve \"RÖNTGEN\" çağrısı."}
+];
+var STORIES=["Pzt · Anket: \"Müşterin seni Google'da bulabiliyor mu? Evet / Bilmiyorum\"","Salı · Sahne arkası: o gün üzerinde çalıştığın iş (ekran)","Çar · Soru kutusu: \"Dükkânınla ilgili dijital bir sorun sor\"","Per · Gönderiyi hikâyede paylaş + \"RÖNTGEN\" çıkartması","Cuma · Müşteri sitesinden kısa ekran kaydı","Cmt · Göksun'dan bir kare (esnaf, çarşı, manzara)","Paz · Haftanın özeti ve önümüzdeki haftanın konusu"];
+var WEEKS={1:"19–25 Ekim",2:"26 Ekim – 1 Kasım",3:"2–8 Kasım",4:"9–15 Kasım",5:"16 Kasım"};
+var NEXT={"":"onay",onay:"pay",pay:""}, LABEL={"":"Taslak",onay:"Onaylandı",pay:"Paylaşıldı"};
+
+var stateEl=document.getElementById("state"); var state;
+try{state=JSON.parse(stateEl.textContent)}catch(e){state={status:{}}}
+if(!state.status)state.status={};
+var app=document.getElementById("app"), artifact=null, timer=null, saveMsg="", saveErr=false;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+function render(){
+  var counts={}, on=0, pay=0;
+  POSTS.forEach(function(p){counts[p.p]=(counts[p.p]||0)+1;var s=state.status[p.id];if(s==="onay")on++;if(s==="pay"){pay++;on++}});
+  var h='<header><div class="eyebrow">@dijital.otorite · İçerik planı</div><h1>Dijital Otorite Takvimi</h1>'+
+   '<p class="lead">19 Ekim – 16 Kasım 2026 · haftada 4 gönderi (Pzt, Çar, Cum, Paz) ve her gün hikâye. 1. haftanın senaryo, ses metni ve açıklamaları hazır; "Detay"ı açıp kopyala. Butona basarak durumu Taslak → Onaylandı → Paylaşıldı diye ilerlet.</p></header>'+
+   '<section class="summary" aria-label="Özet"><div class="stat"><b>'+POSTS.length+'</b><span>gönderi</span></div><div class="stat"><b>'+on+'</b><span>onaylandı</span></div><div class="stat"><b>'+pay+'</b><span>paylaşıldı</span></div><div class="stat"><span class="save'+(saveErr?" err":"")+'" id="save">'+esc(saveMsg||"Değişiklikler sayfaya kaydedilir")+'</span></div></section>'+
+   '<div class="legend">';
+  Object.keys(PL).forEach(function(k){h+='<span class="chip" style="color:var('+PL[k][1]+')"><i></i><span style="color:var(--fg)">'+PL[k][0]+' · '+counts[k]+'</span></span>'});
+  h+='</div>';
+  Object.keys(WEEKS).forEach(function(w){
+    h+='<section class="week"><h2>'+(w==="5"?"Final":w+". hafta")+' <small>'+WEEKS[w]+'</small></h2>';
+    POSTS.filter(function(p){return String(p.w)===w}).forEach(function(p){
+      var s=state.status[p.id]||"";
+      h+='<article class="post" style="--pc:var('+PL[p.p][1]+')"><div class="date">'+p.d+'<span>'+p.g+'</span></div><div>'+
+        '<div class="meta"><span class="pl">'+PL[p.p][0]+'</span><span>'+esc(p.f)+'</span></div><p class="ptitle">'+esc(p.t)+'</p><p class="hook">'+esc(p.h)+'</p></div>'+
+        '<button class="st" id="s'+p.id+'" data-id="'+p.id+'" data-s="'+s+'" aria-label="Durum: '+LABEL[s]+'. Değiştirmek için bas">'+LABEL[s]+'</button>';
+      if(p.det){
+        h+='<details id="d'+p.id+'"><summary>Detay: senaryo, ses metni, açıklama</summary>';
+        h+='<div class="blk"><h4>'+(p.f.indexOf("Carousel")>=0?"Kareler":"Sahneler")+'</h4><ol>'+p.det.scenes.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ol></div>';
+        if(p.det.voice)h+='<div class="blk"><h4>Ses metni <button class="copy" data-copy="v'+p.id+'">Kopyala</button></h4><div class="txt" id="v'+p.id+'">'+esc(p.det.voice)+'</div></div>';
+        h+='<div class="blk"><h4>Açıklama ve etiketler <button class="copy" data-copy="c'+p.id+'">Kopyala</button></h4><div class="txt" id="c'+p.id+'">'+esc(p.det.caption)+'</div></div>';
+        h+='<div class="blk note">'+esc(p.det.note)+'</div></details>';
+      }
+      h+='</article>';
+    });
+    h+='</section>';
+  });
+  h+='<section class="stories"><h2>Günlük hikâyeler</h2><ul>'+STORIES.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul></section>';
+  h+='<footer>2–4. haftaların detayları, bir önceki haftanın performansına göre yazılacak. Her pazartesi Instagram istatistiklerinin ekran görüntüsünü at.</footer>';
+  var open=[].slice.call(app.querySelectorAll("details[open]")).map(function(d){return d.id});
+  app.innerHTML=h;
+  open.forEach(function(id){var d=document.getElementById(id);if(d)d.open=true});
+}
+
+function buildDoc(){
+  var reset=(document.head.querySelector("style")||{}).textContent||"";
+  var json=JSON.stringify(state).replace(/</g,"\\u003c");
+  var meta=document.querySelector('meta[name="claude:viewport-fit-sides"]'), font=document.querySelector('link[rel="stylesheet"]');
+  return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>'+reset+'</style></head><body>'+
+    '<title>'+esc(document.title||"Dijital Otorite Takvimi")+'</title>\n'+(meta?meta.outerHTML+'\n':'')+(font?font.outerHTML+'\n':'')+
+    '<style id="css">'+document.getElementById("css").textContent+'</style>\n<div id="app" class="wrap"></div>\n'+
+    '<script type="application/json" id="state">'+json+'<\/script>\n<script id="code">'+document.getElementById("code").textContent+'<\/script>\n</body></html>';
+}
+function setSave(m,err){saveMsg=m;saveErr=!!err;var el=document.getElementById("save");if(el){el.textContent=m;el.className="save"+(err?" err":"")}}
+function scheduleSave(){
+  if(!artifact){setSave("Bu görünümde kaydedilemiyor",true);return}
+  setSave("Kaydedilecek…");clearTimeout(timer);
+  timer=setTimeout(function(){setSave("Kaydediliyor…");artifact.publish(buildDoc()).then(function(){setSave("Kaydedildi")},function(e){
+    var c=e&&e.code;if(c==="conflict")return;
+    setSave(c==="not_granted"||c==="not_writer"?"Salt okunur görünüm, kaydedilmez":"Kaydedilemedi, tekrar dene",true)})},900);
+}
+app.addEventListener("click",function(e){
+  var b=e.target.closest&&e.target.closest("button"); if(!b)return;
+  if(b.dataset.copy){var el=document.getElementById(b.dataset.copy),t=el?el.textContent:"";
+    var done=function(){b.textContent="Kopyalandı";setTimeout(function(){b.textContent="Kopyala"},1500)};
+    var sel=function(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Seçildi, kopyala"};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(x){sel()}return}
+  if(b.dataset.id){var id=b.dataset.id,s=state.status[id]||"",n=NEXT[s];
+    if(n)state.status[id]=n;else delete state.status[id];
+    render();var nb=document.getElementById("s"+id);if(nb)nb.focus();scheduleSave()}
+});
+render();
+if(window.claude&&window.claude.use){window.claude.use("artifact").then(function(a){artifact=a;if(!a)setSave("Bu görünümde kaydedilemiyor",true)})}
+})();
+</script>

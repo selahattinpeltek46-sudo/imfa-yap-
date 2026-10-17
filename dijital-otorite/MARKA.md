@@ -37,14 +37,22 @@ Dijital Otorite | Göksun Dijital Ajans
 - Her gönderide konum: Göksun. Çağrı kelimesi: "RÖNTGEN".
 - Hashtag çekirdeği: #göksun #kahramanmaraş #göksunesnafı #dijitalpazarlama
 
-## Referans müşteriler (repo klasörleri)
-barber-ugur · goksun-yorem · soyleroglu-hafriyat · ucel-romork · barbers-town · danismanlik
-Önce/Sonra içeriğinde kullanmadan önce müşteri izni alınmalı.
+## Referans müşteriler (repo klasörleri) — Önce/Sonra için izin VAR
+- goksun-yorem: Göksun Yörem Et ve Süt Ürünleri, Göksun, 2008'den beri (kasap, şarküteri, yayla ürünleri)
+- soyleroglu-hafriyat: Söyleroğlu Hafriyat, Göksun, 2007'den beri (hafriyat, kiralık kepçe, altyapı)
+- ucel-romork: Üçel Tarım Aletleri, Göksun (römork, tarım ekipmanı)
+- barber-ugur: Barber Uğur, Gaziantep Şehitkamil
+- barbers-town: Barber's Town, Gaziantep Şahinbey
 
 ## Performans notları (Ekim 2026, 8 takipçi)
 Hikâye/mizah/kişisel içerikler 134–198 izlenme; ilan tarzı Göksun afişleri 10–23 izlenme.
 Sonuç: ilan değil hikâye; esnaf kendini görmeli.
 
-## Açık sorular
-- Selahattin kameraya çıkacak mı? (Arkasındaki Adam sütunu)
-- Müşteri izinleri alındı mı? (Önce/Sonra sütunu)
+## Kararlar
+- Kamera: Selahattin kameraya çıkabilir; ilk etapta sadece ses (görüntü: Göksun çarşısı, eller, ekran).
+- Yayın düzeni: haftada 4 gönderi (Pzt Amca, Çar Röntgen, Cum Önce/Sonra, Paz Adam/Reçete) + her gün hikâye.
+- İş bölümü: Claude üretir, Selahattin onaylar ve paylaşır; her pazartesi istatistik ekran görüntüsü.
+
+## İçerik takvimi
+`dijital-otorite/icerik-takvimi.html` (canlı sayfa: https://claude.ai/artifact/91D4beBAVq5Rg1rFqYxQD8)
+19 Ekim – 16 Kasım 2026, 17 gönderi. 1. hafta tam hazır; 2–4. hafta başlık düzeyinde.
