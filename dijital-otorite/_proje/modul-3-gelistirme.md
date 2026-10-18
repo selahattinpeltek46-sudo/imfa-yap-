@@ -3,7 +3,7 @@
 ## 15 — TECH STACK & DEVELOPMENT PLAN
 - **Teknoloji:** Statik HTML + CSS + vanilla JS (repo standardı; GitHub Pages, derlemesiz). Framework gerekçesi yok.
 - **Fontlar:** Google Fonts — Barlow Condensed (başlık, Instagram tasarımlarıyla aynı), IBM Plex Sans (gövde), IBM Plex Mono (etiket).
-- **WhatsApp:** `https://wa.me/905393009565?text=…` (hazır mesajlı). Numara [VARSAYIM] — tek yerde değil, `index.html` (oluşturucu sabiti) + `assets/site.js` (`WA`).
+- **WhatsApp:** `https://wa.me/905393009565?text=…` (hazır mesajlı). Numara kullanıcı onaylı — tek yerde değil, `index.html` (oluşturucu sabiti) + `assets/site.js` (`WA`).
 - **Form:** Sunucu yok → doğrulama + WhatsApp özet mesajı (SYSTEM LEARNING: goksun-yorem). Metin verinin nereye gittiğini açıkça söyler. Aşama 5'te `site.js` içindeki gönderim bir n8n webhook'una (`fetch POST`) bağlanacak; WhatsApp yedek olarak kalacak.
 - **Analytics:** Yok (çerez banner'ı gerekmesin). `data-olay` kancaları + `window.dataLayer` varsa olay itilir.
 - **Dosya yapısı:** `dijital-otorite/index.html`, `kvkk/index.html`, `assets/site.css`, `assets/site.js`, `img/` (webp + og.jpg).

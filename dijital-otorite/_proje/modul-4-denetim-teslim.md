@@ -19,7 +19,8 @@ Doğruluk ✅ (referans açıklamaları repodaki sitelerle birebir) · Context �
 - A1 ✅ Workflow'a iç dosyaları hariç tutan 1 satır eklendi (site için gerekenler `index.html`, `kvkk/`, `assets/`, `img/` yayında kalır).
 - A3 ✅ `img{height:auto}`; yeniden test: yüzler yuvarlak, kırık görsel yok.
 - A4 ✅ `img/og.jpg` (1200×630) + boyut etiketleri.
-- A2, A5–A8 ⏳ Kullanıcı onayı gerekiyor → Handoff.
+- A2 ✅ Kullanıcı numarayı onayladı (2026-10-18).
+- A5–A8 ⏳ Kullanıcı onayı gerekiyor → Handoff.
 
 ## 20 — FINAL QA
 - [x] Desktop görünüm
@@ -40,11 +41,11 @@ Doğruluk ✅ (referans açıklamaları repodaki sitelerle birebir) · Context �
 **Yapılanlar:** Tek sayfa site (hero, teşhis, süreç, 5 gerçek iş, 3 paket, hakkımda, Röntgen formu, SSS) + KVKK sayfası · SEO etiketleri, schema, OG görseli · iç dosyaların yayından hariç tutulması.
 **Yapılmayanlar:** Fiyatlar · logo · Selahattin fotoğrafı · GA4 · Google Business profili · alan adı · n8n bağlantısı (Aşama 5) · yayın (main'e birleştirme PR ile).
 **Doğrulananlar:** Referans sitelerin içerikleri (repo), TÜİK oranı (iki haber kaynağı), IG profili.
-**Varsayımlar:** A2, A6, A7, A8.
+**Varsayımlar:** A6, A7, A8.
 **Kalan riskler:** Numara yanlışsa birincil CTA boşa düşer · canlı linkler.
 **Dosyalar:** `dijital-otorite/index.html`, `kvkk/index.html`, `assets/site.css`, `assets/site.js`, `img/*`, `.github/workflows/deploy-pages.yml` (+1 satır), `_proje/modul-1..4`, `durum.md`.
 **Bakım:** Yeni müşteri sitesi bittikçe `#isler`'e kart ekle (telefon ekran görüntüsü 520×1125 webp) · Google Business profili aç ve NAP'ı aynı yaz · alan adı alınınca canonical/og/schema URL'lerini güncelle.
-**Kullanıcıdan beklenenler:** Numara onayı · İMFA Yapı ve diğer müşterilerin isim/link izni · logo · fiyat kararı · alan adı · yayına almak için PR onayı.
+**Kullanıcıdan beklenenler:** İMFA Yapı ve diğer müşterilerin isim/link izni · logo · fiyat kararı · alan adı · yayına almak için PR onayı.
 
 ## 22 — LEARNING / SYSTEM UPDATE
 SKILL.md SYSTEM LEARNING'e eklendi (3 madde).

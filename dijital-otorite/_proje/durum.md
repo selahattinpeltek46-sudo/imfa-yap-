@@ -6,7 +6,7 @@ Son güncelleme: 2026-10-18 · Modül 4 tamamlandı · Yayın: PR ile main'e bir
 |---|---|---|---|---|
 | 01 | Project Intake | 1 | ✅ TAMAMLANDI | 5 yayındaki müşteri sitesi = portföy |
 | 02 | Context Engine | 1 | ✅ TAMAMLANDI | |
-| 03 | Information Gap | 1 | ⚠️ RİSK | KRİTİK: WhatsApp numarası onayı |
+| 03 | Information Gap | 1 | ✅ TAMAMLANDI | Numara onaylandı |
 | 04 | Deep Research | 1 | ✅ TAMAMLANDI | Google sonuçları doğrulanamadı |
 | 05 | Customer Intelligence | 1 | ✅ TAMAMLANDI | 3 segment |
 | 06 | Market & Competitor | 1 | ✅ TAMAMLANDI | |
@@ -23,6 +23,6 @@ Son güncelleme: 2026-10-18 · Modül 4 tamamlandı · Yayın: PR ile main'e bir
 | 17 | Evaluation | 4 | ✅ TAMAMLANDI | |
 | 18 | Audit | 4 | ✅ TAMAMLANDI | 8 bulgu |
 | 19 | Revision | 4 | ✅ TAMAMLANDI | A2, A5–A8 kullanıcıya bağlı |
-| 20 | Final QA | 4 | ⚠️ RİSK | Numara onayı, dış linkler |
+| 20 | Final QA | 4 | ⚠️ RİSK | Dış linkler doğrulanamadı |
 | 21 | Handoff | 4 | ✅ TAMAMLANDI | |
 | 22 | Learning / System Update | 4 | ✅ TAMAMLANDI | SKILL.md güncellendi |
