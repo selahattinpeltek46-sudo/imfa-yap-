@@ -31,6 +31,7 @@ jobs:
           rm -rf .claude CLAUDE.md
           rm -f ./Ekran\ görüntüsü*.png
           find . -type d -name _proje -prune -exec rm -rf {} +
+          rm -rf dijital-otorite/MARKA.md dijital-otorite/icerik-takvimi.html dijital-otorite/dukkan-amca dijital-otorite/gorseller dijital-otorite/videolar
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

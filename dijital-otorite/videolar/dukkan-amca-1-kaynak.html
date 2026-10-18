@@ -1,0 +1,52 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="fonts/local.css">
+<style>
+:root{--navy:#0D1834;--gold:#E3B341;--white:#F5F6FA;--muted:#A9B2C8;--d:"Barlow Condensed",sans-serif;--b:"IBM Plex Sans",sans-serif}
+*{box-sizing:border-box;margin:0}
+body{width:1080px;height:1920px;overflow:hidden;background:var(--navy);font-family:var(--b);color:var(--white)}
+.sc{position:absolute;inset:0;opacity:0;overflow:hidden}
+.img{position:absolute;left:0;top:0;width:1080px;height:1920px;background-size:cover;background-position:center;transform-origin:50% 40%}
+.cap{position:absolute;left:70px;right:70px;top:230px;background:rgba(13,24,52,.92);border-radius:28px;padding:34px 40px;font:800 78px/1.02 var(--d);text-transform:uppercase;letter-spacing:.01em;box-shadow:0 20px 50px -10px rgba(0,0,0,.5);opacity:0}
+.cap .g{color:var(--gold)}
+#S3 .bgblur{position:absolute;inset:-40px;background:url("/home/user/imfa-yap-/dijital-otorite/dukkan-amca/gorseller/sahne1-esniyor.png") center/cover;filter:blur(18px) brightness(.45)}
+.panel{position:absolute;left:50%;top:620px;width:820px;height:668px;margin-left:-410px;border-radius:40px;background:#F3EEE4 url("amca-sok.png") center/cover;border:10px solid var(--gold);box-shadow:0 40px 90px -10px rgba(0,0,0,.7)}
+.burst{position:absolute;left:50%;top:560px;font:800 160px var(--d);color:var(--gold);margin-left:300px}
+#S4{background:radial-gradient(1200px 900px at 100% 0%,rgba(227,179,65,.14),transparent 60%),var(--navy);display:flex;flex-direction:column;justify-content:center;padding:0 90px 200px;gap:60px}
+#S4 h2{font:800 140px/.92 var(--d);text-transform:uppercase}
+.box{border:5px solid var(--gold);border-radius:34px;padding:50px 56px;display:flex;flex-direction:column;gap:16px}
+.box .s{font-size:42px;color:var(--muted)}
+.box .k{font:800 170px/1 var(--d);color:var(--gold);letter-spacing:.06em}
+.box p{font-size:44px;line-height:1.35}
+.brand{position:absolute;left:90px;bottom:330px;font:800 40px var(--d);letter-spacing:.08em;color:var(--gold)}
+.brand span{color:var(--white)}
+</style></head><body>
+<section class="sc" id="S1"><div class="img" id="i1" style="background-image:url('/home/user/imfa-yap-/dijital-otorite/dukkan-amca/gorseller/sahne1-esniyor.png')"></div>
+ <div class="cap" id="t1">Bugün de<br><span class="g">kimse gelmedi…</span></div></section>
+<section class="sc" id="S2"><div class="img" id="i2" style="background-image:url('/home/user/imfa-yap-/dijital-otorite/dukkan-amca/gorseller/sahne2-musteri.png')"></div>
+ <div class="cap" id="t2a">Müşteri dükkâna gelmeden önce <span class="g">telefona bakıyor.</span></div>
+ <div class="cap" id="t2b">…ve <span class="g">karşıya</span> gidiyor.</div></section>
+<section class="sc" id="S3"><div class="bgblur"></div><div class="panel" id="pn"></div><div class="burst" id="bu">!</div>
+ <div class="cap" id="t3" style="top:1400px">Müşterin seni değil,<br><span class="g">Google'ı dinliyor.</span></div></section>
+<section class="sc" id="S4"><h2 id="h4">Dükkânın<br><span style="color:var(--gold)">dijitalde var mı?</span></h2>
+ <div class="box" id="b4"><div class="s">Yorumlara ya da DM'e yaz:</div><div class="k" id="k4">RÖNTGEN</div><p>Dükkânının dijital durumuna <b>ücretsiz</b> bakayım.</p></div>
+ <div class="brand">DİJİTAL <span>OTORİTE</span></div></section>
+<script>
+const $=id=>document.getElementById(id), cl=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-cl(x),3);
+const io=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+function vis(t,a,b,f=.35){if(t<a||t>b+f)return 0;if(t<a+f)return (t-a)/f;if(t>b)return 1-(t-b)/f;return 1}
+function pop(el,o,dy){el.style.opacity=o;el.style.transform='translateY('+((1-o)*dy)+'px)'}
+window.render=function(t){
+ $('S1').style.opacity=vis(t,0,4.4);$('S2').style.opacity=vis(t,4.4,9.0);$('S3').style.opacity=vis(t,9.0,13.0);$('S4').style.opacity=t>13?cl((t-13)/.4):0;
+ $('i1').style.transform='scale('+(1.0+0.10*cl(t/4.7))+')';
+ pop($('t1'),ease((t-.4)/.5)*(t<4.4?1:0),50);
+ const p2=io((t-4.6)/4.4);$('i2').style.transform='scale(1.18) translateX('+(70-160*p2)+'px)';
+ pop($('t2a'),t<6.9?ease((t-4.9)/.5):Math.max(0,1-(t-6.9)/.3),50);
+ pop($('t2b'),ease((t-7.2)/.5),50);
+ const pp=ease((t-9.2)/.35);let sh=0;if(t>9.4&&t<10.1)sh=Math.sin(t*90)*10*(1-(t-9.4)/.7);
+ $('pn').style.transform='translateX('+sh+'px) scale('+(0.6+0.4*pp)+')';$('pn').style.opacity=pp;
+ $('bu').style.opacity=ease((t-9.6)/.25);$('bu').style.transform='rotate(12deg) scale('+(0.5+0.5*ease((t-9.6)/.25))+')';
+ pop($('t3'),ease((t-10.3)/.5),50);
+ pop($('h4'),ease((t-13.2)/.5),70);pop($('b4'),ease((t-13.8)/.5),70);
+ const pu=t>14.6?1+0.05*Math.sin((t-14.6)*Math.PI*2/1.1)**2:1;$('k4').style.transform='scale('+pu+')';$('k4').style.transformOrigin='left center';
+};
+render(0);
+</script></body></html>

@@ -1,0 +1,184 @@
+<title>Claude Ustalık Yolu</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style id="css">
+/* Layout: tek sütun patika; solda aşama hattı, her aşama bir durak. Üstte genel ilerleme. */
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --fg:#131820; --muted:#5B6573; --line:#D9DEE5;
+  --accent:#0B7A69; --accent-soft:#DDF1EC; --now:#C27A00; --now-soft:#FBEFD6;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1318; --surface:#171C23; --fg:#E8ECF1; --muted:#97A1AE; --line:#2A313B;
+  --accent:#3CC4AC; --accent-soft:#12312C; --now:#F0B04A; --now-soft:#3A2C12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1318; --surface:#171C23; --fg:#E8ECF1; --muted:#97A1AE; --line:#2A313B;
+  --accent:#3CC4AC; --accent-soft:#12312C; --now:#F0B04A; --now-soft:#3A2C12; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f-body)}
+.wrap{max-width:760px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:28px}
+.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:800 clamp(30px,6vw,44px)/1.05 var(--f-display);margin:8px 0 10px;text-wrap:balance;letter-spacing:-.01em}
+.lead{color:var(--muted);max-width:60ch;margin:0}
+.summary{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.sumrow{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;justify-content:space-between}
+.big{font:800 34px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.big small{font:500 14px var(--f-body);color:var(--muted);margin-left:6px}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.nowline{font-size:14px}
+.nowline b{color:var(--now)}
+.save{font:500 12px var(--f-mono);color:var(--muted)}
+.save.err{color:var(--now)}
+.path{display:flex;flex-direction:column;gap:0;position:relative}
+.stage{display:grid;grid-template-columns:40px minmax(0,1fr);gap:14px;position:relative;padding-bottom:22px}
+.stage:not(:last-child)::before{content:"";position:absolute;left:19px;top:40px;bottom:0;width:2px;background:var(--line)}
+.stage.done:not(:last-child)::before{background:var(--accent)}
+.dot{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:800 16px var(--f-display);background:var(--surface);border:2px solid var(--line);color:var(--muted);position:relative;z-index:1}
+.stage.done .dot{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.stage.now .dot{border-color:var(--now);color:var(--now);background:var(--now-soft)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.stage.now .card{border-color:var(--now);box-shadow:0 0 0 3px var(--now-soft)}
+.head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:space-between}
+h2{font:600 20px/1.2 var(--f-display);margin:0;text-wrap:balance}
+.pill{font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:99px;background:var(--line);color:var(--muted);white-space:nowrap}
+.stage.done .pill{background:var(--accent-soft);color:var(--accent)}
+.stage.now .pill{background:var(--now-soft);color:var(--now)}
+.goal{color:var(--muted);margin:6px 0 10px;font-size:14px}
+ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+label{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:10px;align-items:start;padding:7px 6px;border-radius:6px;cursor:pointer}
+label:hover{background:var(--bg)}
+input[type=checkbox]{width:18px;height:18px;margin:3px 0 0;accent-color:var(--accent);cursor:pointer}
+input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.t.ok{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.date{font:500 11px var(--f-mono);color:var(--accent);padding-top:4px;font-variant-numeric:tabular-nums}
+.out{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:14px}
+.out span{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.tag{font:500 10px var(--f-mono);letter-spacing:.05em;color:var(--now);border:1px solid var(--now);border-radius:4px;padding:1px 4px;margin-left:6px;vertical-align:1px}
+footer{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){.bar i{transition:none}}
+</style>
+<div id="app" class="wrap"></div>
+<script type="application/json" id="state">{"done":{}}</script>
+<script id="code">
+(function(){
+var PHASES=[
+ {n:0,title:"Haritayı Tanı",weeks:"1. hafta",goal:"Claude ekosisteminin her parçasını en az bir kez kullan.",out:"Ekosistemi uçtan uca denemiş olmak",tasks:[
+  ["0a","Claude.ai'de \"Dijital Otorite\" adında bir Project oluştur",1],
+  ["0b","Bir Artifact üret ve bağlantısını paylaş"],
+  ["0c","Bir Connector bağla (Gmail, Google Drive veya Takvim)"],
+  ["0d","Claude Code'u web ya da masaüstünde aç, bir repoda küçük bir değişiklik yaptır"],
+  ["0e","Skills ve MCP kavramlarını oku (code.claude.com/docs)"]]},
+ {n:1,title:"Prompt Ustalığı",weeks:"2.–3. hafta",goal:"Claude'a işi net tarif etmeyi öğren: bağlam, örnek, yapı, yineleme.",out:"Kişisel prompt kütüphanesi",tasks:[
+  ["1a","Rol, amaç, hedef kitle ve kısıt kalıbıyla 10 prompt yaz"],
+  ["1b","Örnekli (few-shot) bir prompt dene, çıktıyı örneksiz hâliyle karşılaştır"],
+  ["1c","XML etiketleriyle yapılandırılmış bir prompt yaz"],
+  ["1d","Anthropic Academy'deki prompt mühendisliği kursunu bitir"],
+  ["1e","Prompt kütüphanesini kur: post, caption, Reels senaryosu, blog, e-posta, teklif",1]]},
+ {n:2,title:"Kişisel Asistan Sistemi",weeks:"4.–5. hafta",goal:"Claude'u günlük işlerinde asistan olarak çalıştır.",out:"Her sabah çalışan asistan rutini",tasks:[
+  ["2a","Dijital Otorite Project'ine marka kılavuzu, ton ve hedef kitle dosyalarını yükle",1],
+  ["2b","Gmail'i bağla, gelen kutusu özeti ve cevap taslakları al"],
+  ["2c","Takvimden haftalık plan çıkar"],
+  ["2d","Rakip hesaplar için bir araştırma raporu hazırlat",1],
+  ["2e","Sabah brifingini kur"]]},
+ {n:3,title:"İçerik Üretim Fabrikası",weeks:"6.–8. hafta",goal:"Strateji, takvim, metin, görsel brief ve rapordan oluşan içerik hattını kur.",out:"Bir aylık yayınlanmış içerik paketi (portföy)",tasks:[
+  ["3a","Dijital Otorite marka analizi: kitle, persona, konumlandırma",1],
+  ["3b","4–5 içerik sütunu belirle",1],
+  ["3c","30 günlük içerik takvimi hazırla",1],
+  ["3d","10 carousel, 8 Reels senaryosu, caption ve hashtag setleri",1],
+  ["3e","Görsel ve video brief'lerini yaz, Canva veya video araçlarıyla üret",1],
+  ["3f","İlk ayın performans raporunu çıkar",1]]},
+ {n:4,title:"Claude Code ile Site ve Araç",weeks:"9.–11. hafta",goal:"Kod bilmeden web sitesi ve küçük araçlar üret, yayına al.",out:"Yayında 2–3 site",tasks:[
+  ["4a","CLAUDE.md dosyasını oku ve kendi kurallarını ekle"],
+  ["4b","Selahattin AI ile Dijital Otorite için tanıtım / link-in-bio sayfası yap",1],
+  ["4c","Gerçek bir firmaya Selahattin AI ile site yap"],
+  ["4d","Siteyi yayına al (GitHub Pages veya Vercel)"],
+  ["4e","Bir skill'i iyileştir ya da yeni bir skill yaz"]]},
+ {n:5,title:"Otomasyon ve Ajan",weeks:"12.–14. hafta",goal:"Tekrar eden işleri n8n, Claude API ve zamanlanmış görevlerle otomatiğe bağla.",out:"Çalışan müşteri karşılama otomasyonu",tasks:[
+  ["5a","n8n kur (bulut ya da kendi sunucun)"],
+  ["5b","İlk akış: form → Claude teklif metni → e-posta"],
+  ["5c","Haftalık içerik akışı: Claude üretir → Google Sheets'e onaya düşer",1],
+  ["5d","Claude API anahtarı al, Python ile ilk çağrıyı yap"],
+  ["5e","Tool use ile küçük bir ajan yaz"],
+  ["5f","Claude Code'da zamanlanmış bir görev kur"]]},
+ {n:6,title:"Ajansı Kur ve Ölçekle",weeks:"15. hafta ve sonrası",goal:"Hizmetleri paketle, sistemleştir ve sat.",out:"İlk ödeme yapan müşteri",tasks:[
+  ["6a","Başlangıç, Büyüme ve Premium paketlerini fiyatlandır"],
+  ["6b","Her hizmet için bir skill hazırla"],
+  ["6c","Teklif ve sözleşme şablonlarını oluştur"],
+  ["6d","Dijital Otorite'den ajans hizmetlerini tanıt",1],
+  ["6e","Aylık müşteri raporunu otomatiğe bağla"]]}
+];
+var stateEl=document.getElementById("state");
+var state; try{state=JSON.parse(stateEl.textContent)}catch(e){state={done:{}}}
+if(!state.done)state.done={};
+var app=document.getElementById("app"), artifact=null, canSave=null, timer=null, saveMsg="";
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function fmt(d){var p=d.split("-");return p[2]+"."+p[1]}
+function phaseDone(p){return p.tasks.every(function(t){return state.done[t[0]]})}
+
+function render(){
+  var total=0,done=0,nowIdx=-1;
+  PHASES.forEach(function(p,i){p.tasks.forEach(function(t){total++;if(state.done[t[0]])done++});if(nowIdx<0&&!phaseDone(p))nowIdx=i});
+  var pct=Math.round(done/total*100);
+  var nowTxt=nowIdx<0?"Tüm aşamalar tamam. Artık bir Claude kurdusun.":"Şu an: <b>Aşama "+PHASES[nowIdx].n+" · "+esc(PHASES[nowIdx].title)+"</b>";
+  var h='<header><div class="eyebrow">Selahattin · Kişisel kurs</div><h1>Claude Ustalık Yolu</h1>'+
+    '<p class="lead">Sıfırdan ajans otomasyonuna 7 durak. Uygulama projesi: Instagram\'daki <b>Dijital Otorite</b> hesabı. <span class="tag">DO</span> işaretli görevler doğrudan bu hesap için yapılır.</p></header>'+
+    '<section class="summary" aria-label="Genel ilerleme"><div class="sumrow"><div class="big">%'+pct+'<small>'+done+' / '+total+' görev</small></div><div class="save'+(canSave===false?' err':'')+'" id="save">'+esc(saveMsg)+'</div></div>'+
+    '<div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pct+'%"></i></div><div class="nowline">'+nowTxt+'</div></section><div class="path">';
+  PHASES.forEach(function(p,i){
+    var cls=phaseDone(p)?"done":(i===nowIdx?"now":"");
+    var c=p.tasks.filter(function(t){return state.done[t[0]]}).length;
+    var pill=cls==="done"?"Tamamlandı":(cls==="now"?"Şimdi · "+c+"/"+p.tasks.length:p.weeks);
+    h+='<section class="stage '+cls+'"><div class="dot" aria-hidden="true">'+(cls==="done"?"✓":p.n)+'</div><div class="card">'+
+      '<div class="head"><h2>Aşama '+p.n+' · '+esc(p.title)+'</h2><span class="pill">'+esc(pill)+'</span></div>'+
+      '<p class="goal">'+esc(p.weeks)+' · '+esc(p.goal)+'</p><ul>';
+    p.tasks.forEach(function(t){
+      var d=state.done[t[0]];
+      h+='<li><label for="t'+t[0]+'"><input type="checkbox" id="t'+t[0]+'" data-id="'+t[0]+'"'+(d?" checked":"")+'><span class="t'+(d?" ok":"")+'">'+esc(t[1])+(t[2]?'<span class="tag">DO</span>':'')+'</span><span class="date">'+(d?fmt(d):"")+'</span></label></li>';
+    });
+    h+='</ul><div class="out"><span>Çıktı</span>'+esc(p.out)+'</div></div></section>';
+  });
+  h+='</div><footer>Kutucukları işaretledikçe ilerleme bu sayfaya kaydedilir; telefondan ve bilgisayardan aynı durumu görürsün. Claude da sayfayı okuyup nerede kaldığını bilir.</footer>';
+  app.innerHTML=h;
+}
+
+function buildDoc(){
+  var reset=(document.head.querySelector("style")||{}).textContent||"";
+  var json=JSON.stringify(state).replace(/</g,"\\u003c");
+  var title=document.querySelector("title"), meta=document.querySelector('meta[name="claude:viewport-fit-sides"]'), font=document.querySelector('link[rel="stylesheet"]');
+  return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>'+reset+'</style></head><body>'+
+    '<title>'+esc(title?title.textContent:"Claude Ustalık Yolu")+'</title>\n'+(meta?meta.outerHTML+'\n':'')+(font?font.outerHTML+'\n':'')+
+    '<style id="css">'+document.getElementById("css").textContent+'</style>\n<div id="app" class="wrap"></div>\n'+
+    '<script type="application/json" id="state">'+json+'<\/script>\n<script id="code">'+document.getElementById("code").textContent+'<\/script>\n</body></html>';
+}
+
+function setSave(msg,err){saveMsg=msg;var el=document.getElementById("save");if(el){el.textContent=msg;el.className="save"+(err?" err":"")}}
+
+function scheduleSave(){
+  if(!artifact){setSave("Bu görünümde kaydedilemiyor",true);return}
+  setSave("Kaydedilecek…");
+  clearTimeout(timer);
+  timer=setTimeout(function(){
+    setSave("Kaydediliyor…");
+    artifact.publish(buildDoc()).then(function(){setSave("Kaydedildi")},function(e){
+      var c=e&&e.code;
+      if(c==="conflict")return;
+      if(c==="not_granted"||c==="not_writer"){canSave=false;setSave("Salt okunur görünüm, değişiklik kaydedilmez",true)}
+      else setSave("Kaydedilemedi, tekrar işaretlemeyi dene",true);
+    });
+  },900);
+}
+
+app.addEventListener("change",function(e){
+  var id=e.target&&e.target.dataset&&e.target.dataset.id; if(!id)return;
+  if(e.target.checked){var n=new Date();state.done[id]=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0")}
+  else delete state.done[id];
+  render(); var el=document.getElementById("t"+id); if(el)el.focus(); scheduleSave();
+});
+
+render();
+if(window.claude&&window.claude.use){window.claude.use("artifact").then(function(a){artifact=a;if(!a){canSave=false;setSave("Bu görünümde kaydedilemiyor",true)}})}
+})();
+</script>
