@@ -2,6 +2,20 @@
 (function () {
   'use strict';
 
+  // Randevu sunucusu yanıt vermezse sonsuza kadar beklemesin: süre dolunca istek iptal edilir ve
+  // hata yolu (WhatsApp yedeği) çalışır. Apps Script ilk istekte birkaç saniye "uyanabilir".
+  function sureliFetch(url, secenek, ms) {
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var o = secenek || {};
+    if (ctrl) o.signal = ctrl.signal;
+    return Promise.race([
+      fetch(url, o),
+      new Promise(function (_, red) {
+        setTimeout(function () { if (ctrl) ctrl.abort(); red(new Error('zaman aşımı')); }, ms);
+      })
+    ]);
+  }
+
   var A = window.BT_AYARLAR || {};
   var DEMO = !!window.BT_DEMO;
   var API = (DEMO ? A.demoApi : A.randevuApi) || '';
@@ -31,7 +45,7 @@
   function istek(govde) {
     govde.islem = 'panel';
     govde.pin = pin;
-    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(govde) })
+    return sureliFetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(govde) }, 20000)
       .then(function (r) { return r.json(); });
   }
 

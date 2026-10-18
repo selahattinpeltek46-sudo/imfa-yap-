@@ -2,6 +2,20 @@
 (function () {
   'use strict';
 
+  // Randevu sunucusu yanıt vermezse sonsuza kadar beklemesin: süre dolunca istek iptal edilir ve
+  // hata yolu (WhatsApp yedeği) çalışır. Apps Script ilk istekte birkaç saniye "uyanabilir".
+  function sureliFetch(url, secenek, ms) {
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var o = secenek || {};
+    if (ctrl) o.signal = ctrl.signal;
+    return Promise.race([
+      fetch(url, o),
+      new Promise(function (_, red) {
+        setTimeout(function () { if (ctrl) ctrl.abort(); red(new Error('zaman aşımı')); }, ms);
+      })
+    ]);
+  }
+
   var A = window.BT_AYARLAR || {};
   var WHATSAPP = A.whatsapp || '905357294333';
   var DEMO = !!window.BT_DEMO;
@@ -125,7 +139,7 @@
 
       var no = ++istekNo;
       saatBilgi.textContent = 'Boş saatler yükleniyor…';
-      fetch(API + '?islem=musait&tarih=' + tarih + '&hizmet=' + encodeURIComponent(hizmet))
+      sureliFetch(API + '?islem=musait&tarih=' + tarih + '&hizmet=' + encodeURIComponent(hizmet), null, 12000)
         .then(function (r) { return r.json(); })
         .then(function (v) {
           if (no !== istekNo) return; // daha yeni bir seçim yapıldı
@@ -239,7 +253,7 @@
 
       gonder.disabled = true;
       gonderYazi.textContent = 'Gönderiliyor…';
-      fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(v) })
+      sureliFetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(v) }, 25000)
         .then(function (r) { return r.json(); })
         .then(function (c) {
           if (c.ok) {
@@ -253,7 +267,13 @@
             durum.textContent = c.hata || 'Randevu alınamadı, lütfen tekrar deneyin.';
           }
         })
-        .catch(function () {
+        .catch(function (e) {
+          if (e && e.message === 'zaman aşımı') {
+            durum.innerHTML = 'Sunucu geç yanıt verdi; randevunuz kaydedilmiş olabilir. Tekrar denemeden önce <a href="' +
+              waUrl('Merhaba, ' + uzunTarih(v.tarih) + ' ' + v.saat + ' için ' + v.hizmet + ' randevum oluştu mu? Ad: ' + v.ad) +
+              '" target="_blank" rel="noopener">WhatsApp\'tan sorun</a>.';
+            return;
+          }
           durum.innerHTML = 'Bağlantı hatası oluştu. Tekrar deneyin ya da <a href="' +
             waUrl('Merhaba, ' + uzunTarih(v.tarih) + ' ' + v.saat + ' için ' + v.hizmet + ' randevusu almak istiyorum. Ad: ' + v.ad) +
             '" target="_blank" rel="noopener">WhatsApp\'tan yazın</a>.';
