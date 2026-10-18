@@ -195,6 +195,31 @@
       };
     }
 
+    /* Telefon takvimi için .ics (RFC 5545): 2 saat önce alarm */
+    function icsKacis(t) { return String(t).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n'); }
+    function icsMetni(v, bas, bit) {
+      var z = function (d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); };
+      return [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', "PRODID:-//Barber's Town//Randevu//TR", 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        'UID:' + v.kod + '@barbers-town',
+        'DTSTAMP:' + z(new Date()),
+        'DTSTART:' + z(bas),
+        'DTEND:' + z(bit),
+        'SUMMARY:' + icsKacis("Barber's Town — " + v.hizmet),
+        'LOCATION:' + icsKacis("Barber's Town, 7 Tepe Mah. 85043 Nolu Cad. No:75/A, Şahinbey/Gaziantep"),
+        'DESCRIPTION:' + icsKacis('Randevu kodu: ' + v.kod + '\nDeğişiklik/iptal: 0535 729 43 33 (WhatsApp)'),
+        'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsKacis("Barber's Town randevunuz 2 saat sonra"), 'TRIGGER:-PT120M', 'END:VALARM',
+        'END:VEVENT', 'END:VCALENDAR'
+      ].map(function (satir) {
+        // RFC 5545: 75 bayttan uzun satırlar katlanır (Türkçe harfler 2 bayt olduğu için 60 karakterde bölünür)
+        var parca = [];
+        while (satir.length > 60) { parca.push(satir.slice(0, 60)); satir = ' ' + satir.slice(60); }
+        parca.push(satir);
+        return parca.join('\r\n');
+      }).join('\r\n');
+    }
+
     function sonucGoster(v) {
       var bas = new Date(v.tarih + 'T' + v.saat + ':00+03:00');
       var bit = new Date(bas.getTime() + (v.sure || 45) * 60000);
@@ -208,6 +233,7 @@
         '&dates=' + gcal(bas) + '/' + gcal(bit) +
         '&details=' + encodeURIComponent('Randevu kodu: ' + v.kod + '\nTel: 0535 729 43 33') +
         '&location=' + encodeURIComponent("Barber's Town, 7 Tepe Mah. 85043 Nolu Cad. No:75/A, Şahinbey/Gaziantep");
+      document.getElementById('s-ics').href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsMetni(v, bas, bit));
       document.getElementById('s-wa').href = waUrl('Merhaba, randevu kodum ' + v.kod + ' (' + uzunTarih(v.tarih) + ' ' + v.saat + ', ' + v.hizmet + ').');
       form.hidden = true;
       sonuc.hidden = false;

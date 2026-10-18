@@ -57,6 +57,7 @@
       { "@type": "Question", "name": "Lazer epilasyon ve cilt bakımı için de randevu alabilir miyim?", "acceptedAnswer": { "@type": "Answer", "text": "Evet. Randevu formunda hizmeti seçtiğinizde o hizmetin boş saatleri listelenir. Seans planı ve fiyat için WhatsApp'tan bilgi alabilirsiniz." } },
       { "@type": "Question", "name": "Çalışma saatleriniz nedir?", "acceptedAnswer": { "@type": "Answer", "text": "Akşam 21:00'e kadar açığız. Açılış saati ve tatil günü için gelmeden önce aramanızı öneririz." } },
       { "@type": "Question", "name": "İstediğim modeli nasıl anlatırım?", "acceptedAnswer": { "@type": "Answer", "text": "Randevu formundaki not alanına yazın ya da beğendiğiniz kesimin fotoğrafını WhatsApp'tan gönderin; gelmeden önce birlikte konuşalım." } },
+      { "@type": "Question", "name": "Randevumu bana hatırlatır mısınız?", "acceptedAnswer": { "@type": "Answer", "text": "Randevu aldıktan sonra onay ekranındaki Telefonuma ekle düğmesine dokunun; randevunuz telefon takviminize eklenir ve 2 saat önce hatırlatılır. Salonumuz da randevudan önce WhatsApp'tan hatırlatma gönderebilir." } },
       { "@type": "Question", "name": "Randevumu nasıl değiştirir veya iptal ederim?", "acceptedAnswer": { "@type": "Answer", "text": "Randevu kodunuzla birlikte WhatsApp'tan yazın ya da bizi arayın; saatinizi değiştirir veya iptal ederiz. Gelemeyecekseniz haber vermeniz, o saati başka bir müşterimize açmamızı sağlar." } },
       { "@type": "Question", "name": "Dükkân tam olarak nerede?", "acceptedAnswer": { "@type": "Answer", "text": "7 Tepe Mahallesi, 85043 Nolu Cadde, Maliyeci Ahmet Sitesi A Blok No:75/A, Şahinbey/Gaziantep. Haritada 28MF+QQ kodu ile de bulabilirsiniz." } }
     ]
@@ -271,9 +272,13 @@
             <div><dt>Saat</dt><dd id="s-saat"></dd></div>
             <div><dt>Kod</dt><dd id="s-kod"></dd></div>
           </dl>
+          <div class="hatirlat">
+            <a class="btn btn--led" id="s-ics" href="#" download="barbers-town-randevu.ics" data-olay="takvime_ekle_tik" data-yer="ics">Telefonuma ekle</a>
+            <p>Randevunuz telefon takviminize eklenir ve <strong>2 saat önce</strong> size hatırlatılır.</p>
+          </div>
           <p>Değişiklik ya da iptal için bu kodla WhatsApp'tan yazın veya arayın.</p>
           <div class="sonuc__btn">
-            <a class="btn btn--cizgi-koyu" id="s-takvim" href="#" target="_blank" rel="noopener" data-olay="takvime_ekle_tik">Takvimime ekle</a>
+            <a class="btn btn--cizgi-koyu" id="s-takvim" href="#" target="_blank" rel="noopener" data-olay="takvime_ekle_tik" data-yer="google">Google Takvim</a>
             <a class="btn btn--wa" id="s-wa" href="#" target="_blank" rel="noopener" data-olay="whatsapp_tik" data-yer="sonuc"><svg aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a>
           </div>
           <button class="metin-dugme" type="button" id="yeni-randevu">Yeni randevu al</button>
@@ -306,6 +311,10 @@
           <details>
             <summary>İstediğim modeli nasıl anlatırım?</summary>
             <p>Randevu formundaki not alanına yazın ya da beğendiğiniz kesimin fotoğrafını WhatsApp'tan gönderin; gelmeden önce konuşalım.</p>
+          </details>
+          <details>
+            <summary>Randevumu bana hatırlatır mısınız?</summary>
+            <p>Randevu aldıktan sonra onay ekranındaki "Telefonuma ekle" düğmesine dokunun; randevunuz telefon takviminize eklenir ve 2 saat önce hatırlatılır. Salonumuz da randevudan önce WhatsApp'tan hatırlatma gönderebilir.</p>
           </details>
           <details>
             <summary>Randevumu nasıl değiştirir veya iptal ederim?</summary>

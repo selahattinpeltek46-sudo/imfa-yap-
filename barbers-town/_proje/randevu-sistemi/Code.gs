@@ -13,6 +13,12 @@
  *  - Telefonla gelen randevu: takvime elle etkinlik ekleyin → 1 koltuk dolu sayılır.
  *    Başlık [bakim] veya [vip] ile başlarsa o kaynağı doldurur.
  *  - Saat/gün kapatma (mola, izin): başlığında "KAPALI" geçen etkinlik ekleyin → o aralık herkese kapanır.
+ *  - Salon paneli (barbers-town/panel/): liste, saati değiştir, iptal, saat kapatma; müşteriye hazır WhatsApp mesajı.
+ *
+ * Otomatik görevler (kurulum() oluşturur):
+ *  - hatirlatmaKontrol: 15 dakikada bir; 2 saat içinde başlayacak randevular için salona hatırlatma e-postası.
+ *  - tabloyuEsitle: her gece; takvimde silinen/taşınan randevuları kayıt tablosuna işler.
+ *  - aylikOzet: her ayın 1'i; geçen ayın randevu özetini e-postalar.
  *
  * Kurulum adımları: KURULUM.md
  */
@@ -51,7 +57,13 @@ var AYAR = {
   },
 
   gunlukTelefonSiniri: 3,  // aynı numaradan bir günde en fazla kaç randevu
-  bildirimEposta: ''       // boşsa betiği kuran Google hesabına gider
+  bildirimEposta: '',      // boşsa betiği kuran Google hesabına gider
+  hatirlatmaDakika: 120,   // randevudan kaç dakika önce salona hatırlatma gelir
+  // E-posta bildirimleri. Ücretsiz Gmail'de günlük gönderim sınırı ~100'dür; yoğun salonda
+  // takvim bildirimleri ve panel yeterliyse bunlardan biri kapatılabilir (false).
+  yeniRandevuEposta: true,
+  hatirlatmaEposta: true,
+  dukkanAdi: "Barber's Town"
 };
 
 /* ───────────── Saf hesaplama fonksiyonları (Node ile test edilebilir) ───────────── */
@@ -125,7 +137,7 @@ function telefonTemizle(tel) {
 /** Gelen randevu verisini doğrular; hata mesajı ya da temizlenmiş veri döner. */
 function dogrula(ayar, v, bugun) {
   if (v.tuzak) return { hata: 'spam' };
-  var ad = String(v.ad || '').trim().slice(0, 60);
+  var ad = adDuzelt(String(v.ad || '').slice(0, 60));
   if (ad.length < 2) return { hata: 'Lütfen adınızı yazın.' };
   var tel = telefonTemizle(v.telefon);
   if (!tel) return { hata: 'Lütfen geçerli bir cep telefonu numarası yazın (05xx xxx xx xx).' };
@@ -162,6 +174,91 @@ function pinDogru(girilen, kayitli) {
   return fark === 0;
 }
 
+var GUNLER = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+var AYLAR = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+
+/** "2026-10-17" → "17 Ekim Cumartesi" */
+function turkceTarih(tarih) {
+  var p = String(tarih).split('-');
+  return Number(p[2]) + ' ' + AYLAR[Number(p[1]) - 1] + ' ' + GUNLER[haftaninGunu(tarih)];
+}
+
+/** Her kelimenin ilk harfini Türkçe kurala göre büyütür ("selahattin ışık" → "Selahattin Işık"); kalan harflere dokunmaz. */
+function adDuzelt(ad) {
+  var buyuk = function (h) { return h === 'i' ? 'İ' : h === 'ı' ? 'I' : h.toUpperCase(); };
+  return String(ad || '').trim().split(/\s+/).map(function (k) { return k ? buyuk(k.charAt(0)) + k.slice(1) : k; }).join(' ');
+}
+
+function waLink(telefon, metin) {
+  return 'https://wa.me/90' + String(telefon).replace(/^0/, '') + '?text=' + encodeURIComponent(metin);
+}
+
+/** Müşteriye gidecek hazır mesajlar. tur: 'hatirlat' | 'tasindi' | 'iptal' */
+function mesajMetni(tur, r, dukkan) {
+  var gun = turkceTarih(r.tarih), imza = ' — ' + (dukkan || "Barber's Town");
+  if (tur === 'hatirlat') return 'Merhaba ' + r.ad + ', randevunuzu hatırlatmak istedik: ' + gun + ', saat ' + r.saat + ' (' + r.hizmet + '). Gelemeyecekseniz lütfen haber verin.' + imza;
+  if (tur === 'tasindi') return 'Merhaba ' + r.ad + ', ' + (r.hizmet ? r.hizmet + ' ' : '') + 'randevunuz ' + gun + ', saat ' + r.saat + ' olarak güncellendi. Uygun değilse lütfen bize yazın.' + imza;
+  return 'Merhaba ' + r.ad + ', ' + gun + ' saat ' + r.saat + ' için olan ' + (r.hizmet ? r.hizmet + ' ' : '') + 'randevunuz iptal edildi. Yeni bir saat için bize yazabilir ya da siteden randevu alabilirsiniz.' + imza;
+}
+
+/** Randevuyu yeni aralığa taşımak mümkün mü? (kendisi hariç dolu aralıklar verilmeli) */
+function tasinabilir(ayar, mesguller, kaynak, bas, bit) {
+  if (kaynak === 'KAPALI') return true;
+  return cakisanSayisi(mesguller, kaynak, bas, bit) < (ayar.kaynaklar[kaynak] || 1);
+}
+
+/** Taşınan saat çalışma saatleri dışındaysa uyarı metni döner (salon yine de taşıyabilir). */
+function mesaiUyarisi(ayar, tarih, basDk, bitDk) {
+  var aralik = ayar.calisma[haftaninGunu(tarih)];
+  if (!aralik || ayar.kapaliTarihler.indexOf(tarih) !== -1) return 'Bu gün normalde kapalı.';
+  if (basDk < dakikaya(aralik[0]) || bitDk > dakikaya(aralik[1])) return 'Bu saat çalışma saatleri (' + aralik[0] + '–' + aralik[1] + ') dışında.';
+  return '';
+}
+
+/**
+ * Hatırlatılacak randevular. etkinlikler: [{basMs, olusturmaMs, baslik, aciklama, hatirlatildi}]
+ * Kural: başlamamış, en geç `dakika` sonra başlayacak, telefonu olan, KAPALI olmayan, daha önce hatırlatılmamış
+ * ve son 30 dakikada alınmamış (müşteri zaten yeni aldı) randevular.
+ */
+function hatirlatilacaklar(etkinlikler, simdiMs, dakika) {
+  return etkinlikler.filter(function (e) {
+    if (e.hatirlatildi || /KAPALI/i.test(e.baslik)) return false;
+    if (e.basMs <= simdiMs || e.basMs - simdiMs > dakika * 6e4) return false;
+    if (simdiMs - e.olusturmaMs < 30 * 6e4) return false;
+    return !!etkinlikCoz(e.baslik, e.aciklama).telefon;
+  });
+}
+
+/**
+ * Kayıt tablosu ile takvimi karşılaştırır. satirlar: [{satirNo, kod, tarih, saat, durum}],
+ * harita: {kod: {tarih, saat}} (takvimde [aralikBas, aralikBit] arasında bulunan randevular).
+ * Dönen: [{satirNo, durum, tarih?, saat?}]
+ */
+function tabloFarklari(satirlar, harita, aralikBas, aralikBit) {
+  var degisiklik = [];
+  satirlar.forEach(function (s) {
+    if (!s.kod || /^İptal/.test(s.durum) || s.tarih < aralikBas || s.tarih > aralikBit) return;
+    var t = harita[s.kod];
+    if (!t) degisiklik.push({ satirNo: s.satirNo, durum: 'İptal (takvimden)' });
+    else if (t.tarih !== s.tarih || t.saat !== s.saat) degisiklik.push({ satirNo: s.satirNo, durum: 'Taşındı (takvimden)', tarih: t.tarih, saat: t.saat });
+  });
+  return degisiklik;
+}
+
+/** Geçen ayın özet metni. satirlar: [{tarih, hizmet, durum}], ay: 'YYYY-MM' */
+function ozetMetni(satirlar, ay) {
+  var ayinki = satirlar.filter(function (s) { return String(s.tarih).slice(0, 7) === ay; });
+  var iptal = ayinki.filter(function (s) { return /^İptal/.test(s.durum); }).length;
+  var hizmetler = {};
+  ayinki.forEach(function (s) { if (!/^İptal/.test(s.durum)) hizmetler[s.hizmet] = (hizmetler[s.hizmet] || 0) + 1; });
+  var p = ay.split('-');
+  var satir = Object.keys(hizmetler).sort(function (a, b) { return hizmetler[b] - hizmetler[a]; })
+    .map(function (h) { return '  ' + h + ': ' + hizmetler[h]; }).join('\n');
+  return AYLAR[Number(p[1]) - 1] + ' ' + p[0] + ' — online randevu özeti\n\n' +
+    'Toplam talep: ' + ayinki.length + '\nGerçekleşen/bekleyen: ' + (ayinki.length - iptal) + '\nİptal: ' + iptal +
+    (satir ? '\n\nHizmetlere göre:\n' + satir : '');
+}
+
 function randevuKodu() {
   var harfler = 'ABCDEFGHJKLMNPRSTUVYZ23456789', k = 'BT-';
   for (var i = 0; i < 5; i++) k += harfler.charAt(Math.floor(Math.random() * harfler.length));
@@ -189,6 +286,7 @@ function mesgulAraliklar(tarih) {
   var bit = new Date(bas.getTime() + 864e5);
   return takvim().getEvents(bas, bit).map(function (e) {
     return {
+      id: e.getId(),
       bas: Math.round((e.getStartTime() - bas) / 6e4),
       bit: Math.round((e.getEndTime() - bas) / 6e4),
       kaynak: kaynakBul(e.getTitle(), e.getTag('kaynak'))
@@ -199,6 +297,41 @@ function mesgulAraliklar(tarih) {
 function simdiDakika(tarih) {
   if (tarih !== bugunTarih()) return -Infinity;
   return Math.floor((Date.now() - gunBaslangici(tarih).getTime()) / 6e4);
+}
+
+function tablo() { return SpreadsheetApp.openById(ozellik('TABLO_ID')); }
+
+/** Tablo hücresindeki tarih/saat değerini metne çevirir (Sheets bazen metni tarihe dönüştürür). */
+function hucreMetni(deger, bicim, saatDilimi) {
+  if (Object.prototype.toString.call(deger) === '[object Date]') return Utilities.formatDate(deger, saatDilimi, bicim);
+  return String(deger || '').replace(/^'/, '');
+}
+
+/** Kod ile kayıt tablosundaki satırı bulur ve verilen sütunları yazar. sutunlar: {3: tarih, 4: saat, 9: durum} */
+function tabloSatiriGuncelle(kod, sutunlar) {
+  if (!kod) return;
+  var sayfa = tablo().getSheets()[0];
+  var son = sayfa.getLastRow();
+  if (son < 2) return;
+  var kodlar = sayfa.getRange(1, 2, son, 1).getValues();
+  for (var i = kodlar.length - 1; i >= 1; i--) {
+    if (kodlar[i][0] === kod) {
+      Object.keys(sutunlar).forEach(function (sutun) { sayfa.getRange(i + 1, Number(sutun)).setValue(sutunlar[sutun]); });
+      return;
+    }
+  }
+}
+
+function salonEposta() { return AYAR.bildirimEposta || Session.getEffectiveUser().getEmail(); }
+
+/** Günlük kota bitmek üzereyse (son 5) yalnız önemli e-postaları gönderir; e-posta hatası randevuyu asla bozmaz. */
+function epostaGonder(konu, govde, onemli) {
+  try {
+    var kalan = MailApp.getRemainingDailyQuota();
+    if (kalan <= 0 || (!onemli && kalan <= 5)) return false;
+    MailApp.sendEmail(salonEposta(), konu, govde);
+    return true;
+  } catch (x) { return false; }
 }
 
 function json(nesne) {
@@ -255,25 +388,27 @@ function doPost(e) {
     var etkinlik = takvim().createEvent(
       r.hizmet + ' — ' + r.ad,
       bas, bit,
-      { description: 'Kod: ' + kod + '\nTelefon: ' + r.telefon + '\nNot: ' + (r.not || '-') + '\nKaynak: site formu' }
+      { description: 'Kod: ' + kod + '\nTelefon: ' + r.telefon + '\nNot: ' + (r.not || '-') + '\nKaynak: site formu' +
+        '\n\nHatırlatma mesajı: ' + waLink(r.telefon, mesajMetni('hatirlat', r, AYAR.dukkanAdi)) }
     );
     etkinlik.setTag('kaynak', hizmet.kaynak);
     etkinlik.setTag('kod', kod);
+    try { etkinlik.removeAllReminders(); etkinlik.addPopupReminder(AYAR.hatirlatmaDakika); } catch (x) { /* hatırlatıcı eklenemese de randevu geçerli */ }
 
     SpreadsheetApp.openById(ozellik('TABLO_ID')).getSheets()[0].appendRow([
-      new Date(), kod, r.tarih, r.saat, r.hizmet, r.ad, "'" + r.telefon, r.not, 'Alındı'
+      new Date(), kod, "'" + r.tarih, "'" + r.saat, r.hizmet, r.ad, "'" + r.telefon, r.not, 'Alındı'
     ]);
     onbellek.put(sayacAnahtari, String(sayac + 1), 21600);
   } finally {
     kilit.releaseLock();
   }
 
-  try {
-    MailApp.sendEmail(AYAR.bildirimEposta || Session.getEffectiveUser().getEmail(),
-      'Yeni randevu: ' + r.tarih + ' ' + r.saat + ' — ' + r.hizmet,
-      r.ad + ' (' + r.telefon + ')\n' + r.hizmet + '\n' + r.tarih + ' ' + r.saat + '\nNot: ' + (r.not || '-') +
-      '\nKod: ' + kod + '\n\nİptal için etkinliği Google Takvim\'den silin.\nMüşteriye yaz: https://wa.me/90' + r.telefon.slice(1));
-  } catch (x) { /* e-posta kotası dolsa da randevu kaydı geçerli */ }
+  if (AYAR.yeniRandevuEposta) {
+    epostaGonder(
+      'Yeni randevu: ' + turkceTarih(r.tarih) + ', ' + r.saat + ' — ' + r.hizmet,
+      r.ad + ' (' + r.telefon + ')\n' + r.hizmet + '\n' + turkceTarih(r.tarih) + ', saat ' + r.saat + '\nNot: ' + (r.not || '-') +
+      '\nKod: ' + kod + '\n\nYönetmek için salon panelini açın (saati değiştir / iptal).\nMüşteriye yaz: https://wa.me/90' + r.telefon.slice(1), false);
+  }
 
   return json({ ok: true, kod: kod, tarih: r.tarih, saat: r.saat, hizmet: r.hizmet, sure: AYAR.hizmetler[r.hizmet].sure });
 }
@@ -282,6 +417,8 @@ function doPost(e) {
  * Salon paneli (POST gövdesi {islem:'panel', pin, eylem, ...}).
  *  eylem 'liste' {tarih}  → o günün randevuları
  *  eylem 'iptal' {id}     → randevuyu takvimden siler, kayıt tablosunda durumu "İptal" yapar
+ *  eylem 'tasi'  {id, tarih, saat} → randevuyu yeni saate taşır (kapasite kontrolüyle)
+ *  eylem 'kapat' {tarih, tumGun, bas, bit, not} → KAPALI etkinliği ekler
  * Şifre (PANEL_PIN) kurulum() ile oluşturulur; 10 dakikada 5 yanlış denemeden sonra kilitlenir.
  */
 function panel(v) {
@@ -304,26 +441,150 @@ function panel(v) {
       c.bas = c.tumGun ? '' : saat(e.getStartTime());
       c.bit = c.tumGun ? '' : saat(e.getEndTime());
       c.kapali = /KAPALI/i.test(e.getTitle());
+      c.wa = c.telefon && !c.kapali ? waLink(c.telefon, mesajMetni('hatirlat', { ad: c.ad, hizmet: c.hizmet || 'randevu', tarih: v.tarih, saat: c.bas }, AYAR.dukkanAdi)) : '';
       return c;
     });
     return json({ ok: true, tarih: v.tarih, randevular: liste });
   }
 
+  var saatYaz = function (d) { return Utilities.formatDate(d, 'Europe/Istanbul', 'HH:mm'); };
+  var tarihYaz = function (d) { return Utilities.formatDate(d, 'Europe/Istanbul', 'yyyy-MM-dd'); };
+
   if (v.eylem === 'iptal') {
     var e = takvim().getEventById(String(v.id || ''));
     if (!e) return json({ ok: false, hata: 'Randevu bulunamadı; zaten silinmiş olabilir.' });
-    var kod = etkinlikCoz(e.getTitle(), e.getDescription()).kod;
+    var c = etkinlikCoz(e.getTitle(), e.getDescription());
+    var bilgi = { ad: c.ad, telefon: c.telefon, hizmet: c.hizmet, tarih: tarihYaz(e.getStartTime()), saat: saatYaz(e.getStartTime()) };
     e.deleteEvent();
-    if (kod) {
-      var sayfa = SpreadsheetApp.openById(ozellik('TABLO_ID')).getSheets()[0];
-      var kodlar = sayfa.getRange(1, 2, sayfa.getLastRow(), 1).getValues();
-      for (var i = kodlar.length - 1; i >= 0; i--) {
-        if (kodlar[i][0] === kod) { sayfa.getRange(i + 1, 9).setValue('İptal (panel)'); break; }
-      }
+    tabloSatiriGuncelle(c.kod, { 9: 'İptal (panel)' });
+    return json({ ok: true, randevu: bilgi, wa: c.telefon ? waLink(c.telefon, mesajMetni('iptal', bilgi, AYAR.dukkanAdi)) : '' });
+  }
+
+  if (v.eylem === 'tasi') {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v.tarih || '') || !/^\d{2}:\d{2}$/.test(v.saat || '')) return json({ ok: false, hata: 'Geçersiz tarih veya saat.' });
+    var kilit = LockService.getScriptLock();
+    if (!kilit.tryLock(15000)) return json({ ok: false, hata: 'Yoğunluk var, tekrar deneyin.' });
+    try {
+      var et = takvim().getEventById(String(v.id || ''));
+      if (!et) return json({ ok: false, hata: 'Randevu bulunamadı; silinmiş olabilir.' });
+      if (et.isAllDayEvent()) return json({ ok: false, hata: 'Tüm gün etkinlikleri taşınamaz.' });
+      var sure = et.getEndTime() - et.getStartTime();
+      var yeniBas = new Date(v.tarih + 'T' + v.saat + ':00' + AYAR.saatDilimiOfseti);
+      var yeniBit = new Date(yeniBas.getTime() + sure);
+      if (yeniBas.getTime() < Date.now()) return json({ ok: false, hata: 'Geçmiş bir saate taşınamaz.' });
+      var basDk = dakikaya(v.saat), bitDk = basDk + Math.round(sure / 6e4);
+      if (bitDk > 24 * 60) return json({ ok: false, hata: 'Randevu gece yarısını geçemez.' });
+      var kaynak = kaynakBul(et.getTitle(), et.getTag('kaynak'));
+      var kendisi = et.getId();
+      var digerleri = mesgulAraliklar(v.tarih).filter(function (m) { return m.id !== kendisi; });
+      if (!tasinabilir(AYAR, digerleri, kaynak, basDk, bitDk)) return json({ ok: false, dolu: true, hata: 'Bu saat dolu (ya da kapalı). Başka bir saat seçin.' });
+      et.setTime(yeniBas, yeniBit);
+      try { et.deleteTag('hatirlatildi'); } catch (x) { /* etiket yoksa sorun değil */ }
+      var ct = etkinlikCoz(et.getTitle(), et.getDescription());
+      tabloSatiriGuncelle(ct.kod, { 3: "'" + v.tarih, 4: "'" + v.saat, 9: 'Taşındı (panel)' });
+      var yeni = { ad: ct.ad, telefon: ct.telefon, hizmet: ct.hizmet, tarih: v.tarih, saat: v.saat };
+      return json({ ok: true, uyari: mesaiUyarisi(AYAR, v.tarih, basDk, bitDk), randevu: yeni,
+        wa: ct.telefon ? waLink(ct.telefon, mesajMetni('tasindi', yeni, AYAR.dukkanAdi)) : '' });
+    } finally {
+      kilit.releaseLock();
     }
-    return json({ ok: true });
+  }
+
+  if (v.eylem === 'kapat') {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v.tarih || '')) return json({ ok: false, hata: 'Geçersiz tarih.' });
+    var aciklama = String(v.not || '').trim().slice(0, 60);
+    var baslik = 'KAPALI' + (aciklama ? ' — ' + aciklama : '');
+    var gunBas = gunBaslangici(v.tarih), kb, kbit, k;
+    if (v.tumGun) {
+      kb = gunBas; kbit = new Date(gunBas.getTime() + 864e5);
+      k = takvim().createAllDayEvent(baslik, gunBas);
+    } else {
+      if (!/^\d{2}:\d{2}$/.test(v.bas || '') || !/^\d{2}:\d{2}$/.test(v.bit || '') || v.bit <= v.bas) return json({ ok: false, hata: 'Bitiş saati başlangıçtan sonra olmalı.' });
+      kb = new Date(v.tarih + 'T' + v.bas + ':00' + AYAR.saatDilimiOfseti);
+      kbit = new Date(v.tarih + 'T' + v.bit + ':00' + AYAR.saatDilimiOfseti);
+      k = takvim().createEvent(baslik, kb, kbit);
+    }
+    k.setTag('kaynak', 'KAPALI');
+    var etkilenen = takvim().getEvents(kb, kbit).filter(function (x) { return x.getId() !== k.getId() && !/KAPALI/i.test(x.getTitle()); }).length;
+    return json({ ok: true, cakisan: etkilenen });
   }
   return json({ ok: false, hata: 'Geçersiz işlem' });
+}
+
+/** 15 dakikada bir çalışır: yakında başlayacak randevular için salona tek e-posta (WhatsApp bağlantılarıyla). */
+function hatirlatmaKontrol() {
+  var kilit = LockService.getScriptLock();
+  if (!kilit.tryLock(5000)) return;
+  try {
+    var simdi = Date.now();
+    var olaylar = takvim().getEvents(new Date(simdi), new Date(simdi + (AYAR.hatirlatmaDakika + 15) * 6e4));
+    var aday = olaylar.map(function (e) {
+      return { olay: e, basMs: e.getStartTime().getTime(), olusturmaMs: e.getDateCreated().getTime(),
+        baslik: e.getTitle(), aciklama: e.getDescription(), hatirlatildi: !!e.getTag('hatirlatildi') };
+    });
+    var liste = hatirlatilacaklar(aday, simdi, AYAR.hatirlatmaDakika);
+    if (!liste.length || !AYAR.hatirlatmaEposta) return;
+    var satirlar = liste.map(function (x) {
+      var c = etkinlikCoz(x.baslik, x.aciklama);
+      var r = { ad: c.ad, hizmet: c.hizmet || 'randevu', tarih: Utilities.formatDate(new Date(x.basMs), 'Europe/Istanbul', 'yyyy-MM-dd'),
+        saat: Utilities.formatDate(new Date(x.basMs), 'Europe/Istanbul', 'HH:mm') };
+      return r.saat + ' · ' + r.hizmet + ' · ' + r.ad + ' (' + c.telefon + ')\nHatırlatma gönder: ' + waLink(c.telefon, mesajMetni('hatirlat', r, AYAR.dukkanAdi));
+    });
+    var gitti = epostaGonder('Hatırlatma: ' + liste.length + ' randevu yaklaşıyor',
+      'Aşağıdaki randevular ' + AYAR.hatirlatmaDakika / 60 + ' saat içinde başlıyor. Bağlantıya dokununca müşteriye hazır hatırlatma mesajı açılır.\n\n' + satirlar.join('\n\n'), true);
+    // Gönderilemezse etiketlenmez; sonraki turda (kota açılınca) yeniden denenir.
+    if (gitti) liste.forEach(function (x) { x.olay.setTag('hatirlatildi', '1'); });
+  } finally {
+    kilit.releaseLock();
+  }
+}
+
+/** Her gece çalışır: takvimde silinen veya taşınan randevuları kayıt tablosuna işler (son 30 gün + ileri tarihler). */
+function tabloyuEsitle() {
+  var ss = tablo(), sayfa = ss.getSheets()[0], tz = ss.getSpreadsheetTimeZone();
+  var son = sayfa.getLastRow();
+  if (son < 2) return;
+  var degerler = sayfa.getRange(2, 1, son - 1, 9).getValues();
+  var satirlar = degerler.map(function (d, i) {
+    return { satirNo: i + 2, kod: String(d[1]), tarih: hucreMetni(d[2], 'yyyy-MM-dd', tz), saat: hucreMetni(d[3], 'HH:mm', tz), durum: String(d[8]) };
+  });
+  var bugun = bugunTarih();
+  var aralikBas = Utilities.formatDate(new Date(gunBaslangici(bugun).getTime() - 30 * 864e5), 'Europe/Istanbul', 'yyyy-MM-dd');
+  // İleri tarafı geniş tutulur: salon panelden randevuyu 21 günden ileriye taşırsa yanlışlıkla "iptal" sayılmasın.
+  var aralikBit = Utilities.formatDate(new Date(gunBaslangici(bugun).getTime() + 365 * 864e5), 'Europe/Istanbul', 'yyyy-MM-dd');
+  var harita = {};
+  takvim().getEvents(gunBaslangici(aralikBas), new Date(gunBaslangici(aralikBit).getTime() + 864e5)).forEach(function (e) {
+    var kod = e.getTag('kod') || etkinlikCoz(e.getTitle(), e.getDescription()).kod;
+    if (kod) harita[kod] = { tarih: Utilities.formatDate(e.getStartTime(), 'Europe/Istanbul', 'yyyy-MM-dd'), saat: Utilities.formatDate(e.getStartTime(), 'Europe/Istanbul', 'HH:mm') };
+  });
+  tabloFarklari(satirlar, harita, aralikBas, aralikBit).forEach(function (f) {
+    sayfa.getRange(f.satirNo, 9).setValue(f.durum);
+    if (f.tarih) { sayfa.getRange(f.satirNo, 3).setValue("'" + f.tarih); sayfa.getRange(f.satirNo, 4).setValue("'" + f.saat); }
+  });
+}
+
+/** Her ayın 1'inde çalışır: geçen ayın özetini salona e-postalar. */
+function aylikOzet() {
+  var ss = tablo(), sayfa = ss.getSheets()[0], tz = ss.getSpreadsheetTimeZone();
+  var son = sayfa.getLastRow();
+  if (son < 2) return;
+  var bugun = gunBaslangici(bugunTarih());
+  var gecenAy = Utilities.formatDate(new Date(bugun.getTime() - 15 * 864e5 - (Number(Utilities.formatDate(bugun, 'Europe/Istanbul', 'd')) - 1) * 864e5), 'Europe/Istanbul', 'yyyy-MM');
+  var satirlar = sayfa.getRange(2, 1, son - 1, 9).getValues().map(function (d) {
+    return { tarih: hucreMetni(d[2], 'yyyy-MM-dd', tz), hizmet: String(d[4]), durum: String(d[8]) };
+  });
+  epostaGonder(AYAR.dukkanAdi + ' — aylık randevu özeti', ozetMetni(satirlar, gecenAy), true);
+}
+
+/** Otomatik görevleri (yeniden) kurar; aynı görev iki kez oluşmaz. */
+function tetikleyicileriKur() {
+  var adlar = ['hatirlatmaKontrol', 'tabloyuEsitle', 'aylikOzet'];
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (adlar.indexOf(t.getHandlerFunction()) !== -1) ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('hatirlatmaKontrol').timeBased().everyMinutes(15).create();
+  ScriptApp.newTrigger('tabloyuEsitle').timeBased().everyDays(1).atHour(3).create();
+  ScriptApp.newTrigger('aylikOzet').timeBased().onMonthDay(1).atHour(9).create();
 }
 
 /** Bir kez elle çalıştırın: takvimi ve kayıt tablosunu oluşturur. */
@@ -342,6 +603,8 @@ function kurulum() {
   if (!p.getProperty('PANEL_PIN')) {
     p.setProperty('PANEL_PIN', String(Math.floor(100000 + Math.random() * 900000)));
   }
+  tetikleyicileriKur();
+  Logger.log('Otomatik görevler kuruldu: hatırlatma (15 dk), tablo eşitleme (gece 03:00), aylık özet (ayın 1i).');
   Logger.log('Takvim: ' + p.getProperty('TAKVIM_ID'));
   Logger.log('Salon paneli şifresi: ' + p.getProperty('PANEL_PIN'));
   Logger.log('Tablo: https://docs.google.com/spreadsheets/d/' + p.getProperty('TABLO_ID'));
@@ -351,5 +614,7 @@ function kurulum() {
 if (typeof module !== 'undefined') {
   module.exports = { AYAR: AYAR, bosSaatler: bosSaatler, dogrula: dogrula, telefonTemizle: telefonTemizle,
     kaynakBul: kaynakBul, haftaninGunu: haftaninGunu, cakisanSayisi: cakisanSayisi,
-    etkinlikCoz: etkinlikCoz, pinDogru: pinDogru };
+    etkinlikCoz: etkinlikCoz, pinDogru: pinDogru, turkceTarih: turkceTarih, adDuzelt: adDuzelt, mesajMetni: mesajMetni,
+    tasinabilir: tasinabilir, mesaiUyarisi: mesaiUyarisi, hatirlatilacaklar: hatirlatilacaklar, tabloFarklari: tabloFarklari,
+    ozetMetni: ozetMetni, waLink: waLink };
 }
