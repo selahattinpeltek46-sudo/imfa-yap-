@@ -11,6 +11,7 @@
   var giris = $('giris'), pano = $('pano'), liste = $('liste'), durum = $('durum');
   var secilenTarih = '';
   var bildirim = '';
+  var duzenleniyor = false; // açık bir form varken otomatik yenileme formu silmesin
 
   if (DEMO) document.title = 'DEMO · ' + document.title;
   if (!API) { $('baglanti-yok').hidden = false; return; }
@@ -32,7 +33,11 @@
     govde.islem = 'panel';
     govde.pin = pin;
     return fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(govde) })
-      .then(function (r) { return r.json(); });
+      .then(function (r) { return r.json(); })
+      .then(function (c) {
+        if (!c.ok && c.hata === 'Geçersiz işlem') c.hata = 'Bu özellik için Google Apps Script kodunun (Code.gs) güncellenmesi gerekiyor. Kurulum kılavuzundaki "Güncelleme" adımlarını uygulayın.';
+        return c;
+      });
   }
 
   function girisGoster(hata) {
@@ -77,38 +82,95 @@
       var ara = el('a', 'e-ara', 'Ara');
       ara.href = 'tel:' + r.telefon;
       eylem.appendChild(ara);
+    }
+    // Eski sunucu kodu (Code.gs güncellenmeden önce) hazır bağlantı göndermez; o durumda burada kurulur.
+    var waHref = r.wa || (r.telefon && !r.kapali ? 'https://wa.me/90' + r.telefon.replace(/^0/, '') + '?text=' + encodeURIComponent(
+      'Merhaba ' + r.ad + ', randevunuzu hatırlatmak istedik: ' + gunAdi(tarih).replace(/^(Bugün|Yarın) · /, '') + ', saat ' + r.bas + ' (' + (r.hizmet || 'randevu') + "). Gelemeyecekseniz lütfen haber verin. — Barber's Town") : '');
+    if (waHref) {
       var wa = el('a', 'e-wa', 'WhatsApp hatırlatma');
-      var gun = tarih === isoTarih(new Date()) ? 'bugün' : new Date(tarih + 'T12:00:00').toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', weekday: 'long' });
-      wa.href = 'https://wa.me/90' + r.telefon.replace(/^0/, '') + '?text=' + encodeURIComponent(
-        'Merhaba ' + r.ad + ', randevunuzu hatırlatmak istedik: ' + gun + ', saat ' + r.bas + ' (' + r.hizmet + "). Görüşmek üzere! — Barber's Town");
+      wa.href = waHref;
       wa.target = '_blank';
       wa.rel = 'noopener';
       eylem.appendChild(wa);
     }
-    if (!r.kapali) {
-      var iptal = el('button', 'e-iptal', 'İptal et');
-      iptal.type = 'button';
-      iptal.addEventListener('click', function () { iptalSor(eylem, r); });
-      eylem.appendChild(iptal);
+    if (!r.kapali && !r.tumGun) {
+      var tasi = el('button', 'e-vazgec', 'Saati değiştir');
+      tasi.type = 'button';
+      tasi.addEventListener('click', function () { tasiForm(eylem, r, tarih); });
+      eylem.appendChild(tasi);
     }
-    if (eylem.childNodes.length) li.appendChild(eylem);
+    var sil = el('button', 'e-iptal', r.kapali ? 'Kaldır' : 'İptal et');
+    sil.type = 'button';
+    sil.addEventListener('click', function () { iptalSor(eylem, r); });
+    eylem.appendChild(sil);
+    li.appendChild(eylem);
     return li;
   }
 
-  function iptalSor(kutu, r) {
+  /* Üstteki bildirim kutusu: işlem sonucu + müşteriye hazır WhatsApp mesajı */
+  function bildirimGoster(metin, wa, uyari) {
+    var kutu = $('bildirim-kutu');
     kutu.innerHTML = '';
-    kutu.appendChild(el('span', null, 'Bu randevu silinsin mi?'));
-    var evet = el('button', 'e-onay', 'Evet, iptal et');
+    kutu.appendChild(el('p', 'bk__metin', metin));
+    if (uyari) kutu.appendChild(el('p', 'bk__uyari', uyari));
+    var satir = el('div', 'rv__eylem');
+    if (wa) {
+      var a = el('a', 'e-wa', 'Müşteriye WhatsApp\'tan bildir');
+      a.href = wa; a.target = '_blank'; a.rel = 'noopener';
+      satir.appendChild(a);
+    }
+    var kapat = el('button', 'e-vazgec', 'Tamam');
+    kapat.type = 'button';
+    kapat.addEventListener('click', function () { kutu.hidden = true; });
+    satir.appendChild(kapat);
+    kutu.appendChild(satir);
+    kutu.hidden = false;
+    kutu.scrollIntoView({ block: 'nearest' });
+  }
+
+  function tasiForm(kutu, r, tarih) {
+    duzenleniyor = true;
+    kutu.innerHTML = '';
+    var gun = el('input'); gun.type = 'date'; gun.value = tarih; gun.setAttribute('aria-label', 'Yeni gün');
+    var saat = el('input'); saat.type = 'time'; saat.step = 900; saat.value = r.bas; saat.setAttribute('aria-label', 'Yeni saat');
+    var kaydet = el('button', 'e-onay e-onay--koyu', 'Taşı');
+    var vazgec = el('button', 'e-vazgec', 'Vazgeç');
+    kaydet.type = vazgec.type = 'button';
+    var hata = el('p', 'alan-hata');
+    vazgec.addEventListener('click', function () { duzenleniyor = false; yukle(); });
+    kaydet.addEventListener('click', function () {
+      if (!gun.value || !saat.value) { hata.textContent = 'Gün ve saat seçin.'; return; }
+      kaydet.disabled = true; kaydet.textContent = 'Taşınıyor…';
+      istek({ eylem: 'tasi', id: r.id, tarih: gun.value, saat: saat.value.slice(0, 5) }).then(function (c) {
+        if (!c.ok) { hata.textContent = c.hata || 'Taşınamadı.'; kaydet.disabled = false; kaydet.textContent = 'Taşı'; return; }
+        duzenleniyor = false;
+        bildirimGoster(c.randevu.ad + ' — randevu ' + gunAdi(c.randevu.tarih) + ', saat ' + c.randevu.saat + ' olarak taşındı.', c.wa, c.uyari);
+        yukle();
+      }).catch(function () { hata.textContent = 'Bağlantı hatası, tekrar deneyin.'; kaydet.disabled = false; kaydet.textContent = 'Taşı'; });
+    });
+    [gun, saat, kaydet, vazgec].forEach(function (x) { kutu.appendChild(x); });
+    kutu.appendChild(hata);
+    saat.focus();
+  }
+
+  function iptalSor(kutu, r) {
+    duzenleniyor = true;
+    kutu.innerHTML = '';
+    kutu.appendChild(el('span', null, r.kapali ? 'Kapalı saat kaldırılsın mı?' : 'Bu randevu silinsin mi?'));
+    var evet = el('button', 'e-onay', r.kapali ? 'Evet, kaldır' : 'Evet, iptal et');
     var hayir = el('button', 'e-vazgec', 'Vazgeç');
     evet.type = hayir.type = 'button';
-    hayir.addEventListener('click', yukle);
+    hayir.addEventListener('click', function () { duzenleniyor = false; yukle(); });
     evet.addEventListener('click', function () {
       evet.disabled = true;
       evet.textContent = 'Siliniyor…';
       istek({ eylem: 'iptal', id: r.id }).then(function (c) {
-        bildirim = c.ok ? 'Randevu iptal edildi, saat sitede yeniden boş.' : (c.hata || 'İptal edilemedi.');
+        duzenleniyor = false;
+        if (!c.ok) bildirim = c.hata || 'İptal edilemedi.';
+        else if (r.kapali) bildirim = 'Kapalı saat kaldırıldı.';
+        else bildirimGoster(((c.randevu && c.randevu.ad) || 'Randevu') + ' — randevu iptal edildi; saat sitede yeniden boş.', c.wa || '');
         yukle();
-      }).catch(function () { durum.textContent = 'Bağlantı hatası, tekrar deneyin.'; yukle(); });
+      }).catch(function () { duzenleniyor = false; durum.textContent = 'Bağlantı hatası, tekrar deneyin.'; yukle(); });
     });
     kutu.appendChild(evet);
     kutu.appendChild(hayir);
@@ -136,6 +198,7 @@
   }
 
   function gunSec(iso, dugme) {
+    duzenleniyor = !kapatForm.hidden;
     secilenTarih = iso;
     $('tarih').value = iso;
     document.querySelectorAll('.gun-sec button').forEach(function (b) { b.setAttribute('aria-pressed', b === dugme ? 'true' : 'false'); });
@@ -146,6 +209,39 @@
     b.addEventListener('click', function () { gunSec(isoTarih(new Date(Date.now() + Number(b.dataset.gun) * 864e5)), b); });
   });
   $('tarih').addEventListener('change', function () { if (this.value) gunSec(this.value, null); });
+
+  /* Saat / gün kapatma */
+  var kapatForm = $('kapat-form');
+  $('kapat-ac').addEventListener('click', function () {
+    duzenleniyor = true;
+    kapatForm.hidden = false;
+    $('k-tarih').value = secilenTarih;
+    $('k-hata').textContent = '';
+    $('k-bas').focus();
+  });
+  $('k-vazgec').addEventListener('click', function () { duzenleniyor = false; kapatForm.hidden = true; });
+  $('k-tumgun').addEventListener('change', function () {
+    $('k-saatler').hidden = this.checked;
+  });
+  kapatForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var g = { eylem: 'kapat', tarih: $('k-tarih').value, tumGun: $('k-tumgun').checked, bas: $('k-bas').value.slice(0, 5), bit: $('k-bit').value.slice(0, 5), not: $('k-not').value };
+    if (!g.tarih) { $('k-hata').textContent = 'Gün seçin.'; return; }
+    if (!g.tumGun && (!g.bas || !g.bit || g.bit <= g.bas)) { $('k-hata').textContent = 'Bitiş saati başlangıçtan sonra olmalı.'; return; }
+    var dugme = $('k-kaydet');
+    dugme.disabled = true;
+    istek(g).then(function (c) {
+      dugme.disabled = false;
+      if (!c.ok) { $('k-hata').textContent = c.hata || 'Kapatılamadı.'; return; }
+      duzenleniyor = false;
+      kapatForm.hidden = true;
+      kapatForm.reset();
+      $('k-saatler').hidden = false;
+      bildirimGoster(gunAdi(g.tarih) + (g.tumGun ? ' tüm gün' : ', ' + g.bas + '–' + g.bit) + ' kapatıldı; sitede bu saatlere randevu alınamaz.', '',
+        c.cakisan ? 'Bu aralıkta zaten ' + c.cakisan + ' randevu var. Onları ayrıca taşıyın ya da iptal edin.' : '');
+      gunSec(g.tarih, null);
+    }).catch(function () { dugme.disabled = false; $('k-hata').textContent = 'Bağlantı hatası, tekrar deneyin.'; });
+  });
 
   giris.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -159,7 +255,7 @@
 
   $('cikis').addEventListener('click', function () { pin = ''; sakla(''); girisGoster(); });
 
-  setInterval(function () { if (pin && !document.hidden && !pano.hidden) yukle(); }, 60000);
+  setInterval(function () { if (pin && !document.hidden && !pano.hidden && !duzenleniyor) yukle(); }, 60000);
 
   secilenTarih = isoTarih(new Date());
   $('tarih').value = secilenTarih;
