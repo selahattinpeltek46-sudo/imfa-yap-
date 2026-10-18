@@ -61,3 +61,5 @@ Sonuç: ilan değil hikâye; esnaf kendini görmeli.
 - Carousel (1080x1350): `gorseller/*/kaynak.html` — lacivert/altın, Barlow Condensed + IBM Plex Sans; müşteri sitesinin telefon ekran görüntüsü ile.
 - Reels (1080x1920, 16 sn): `videolar/*-kaynak.html` — açılış fotoğrafı → telefonda kayan site → RÖNTGEN çağrısı. Sessiz; müzik Instagram'da eklenir.
 - Seedance (AI video) bakiyesi bitti (Ekim 2026); Dükkân Amca videoları için bakiye gerekiyor.
+- Dükkân Amca karakter referansı: `dukkan-amca/gorseller/karakter-karti.png` (kel, beyaz yan saç, beyaz pala bıyık, açık mavi gömlek, kahverengi önlük). Her yeni sahnede bu görsel referans yüklenir. `sahne4-deneme.png` ve `kapak-deneme.png` karaktere uymuyor (yeşil yelek, gri saç) — kullanma.
+- Video şablonlarında `<html lang="tr">` şart; yoksa büyük harfte İ → I olur.
