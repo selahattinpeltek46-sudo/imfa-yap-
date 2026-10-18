@@ -38,8 +38,8 @@ Dijital Otorite | Göksun Dijital Ajans
 - Hashtag çekirdeği: #göksun #kahramanmaraş #göksunesnafı #dijitalpazarlama
 
 ## Referans müşteriler (repo klasörleri) — Önce/Sonra için izin VAR
-- goksun-yorem: Göksun Yörem Et ve Süt Ürünleri, Göksun, 2008'den beri (kasap, şarküteri, yayla ürünleri)
-- soyleroglu-hafriyat: Söyleroğlu Hafriyat, Göksun, 2007'den beri (hafriyat, kiralık kepçe, altyapı)
+- goksun-yorem: Göksun Yörem Et ve Süt Ürünleri, Göksun, 2008'den beri (kasap, şarküteri, yayla ürünleri). SİTE HENÜZ YAYINDA DEĞİL: yayına girmeden içerikte kullanma.
+- soyleroglu-hafriyat: Söyleroğlu Hafriyat, Göksun, 2007'den beri (hafriyat, kiralık kepçe, altyapı). Yayında: soylerogluhafriyat.com · IG @soylerogluhafriyat46 · 20+ saha ekibi, TOKİ deneyimi, 12 hizmet sayfası
 - ucel-romork: Üçel Tarım Aletleri, Göksun (römork, tarım ekipmanı)
 - barber-ugur: Barber Uğur, Gaziantep Şehitkamil
 - barbers-town: Barber's Town, Gaziantep Şahinbey
@@ -56,3 +56,8 @@ Sonuç: ilan değil hikâye; esnaf kendini görmeli.
 ## İçerik takvimi
 `dijital-otorite/icerik-takvimi.html` (canlı sayfa: https://claude.ai/artifact/91D4beBAVq5Rg1rFqYxQD8)
 19 Ekim – 16 Kasım 2026, 17 gönderi. 1. hafta tam hazır; 2–4. hafta başlık düzeyinde.
+
+## Üretim şablonları
+- Carousel (1080x1350): `gorseller/*/kaynak.html` — lacivert/altın, Barlow Condensed + IBM Plex Sans; müşteri sitesinin telefon ekran görüntüsü ile.
+- Reels (1080x1920, 16 sn): `videolar/*-kaynak.html` — açılış fotoğrafı → telefonda kayan site → RÖNTGEN çağrısı. Sessiz; müzik Instagram'da eklenir.
+- Seedance (AI video) bakiyesi bitti (Ekim 2026); Dükkân Amca videoları için bakiye gerekiyor.

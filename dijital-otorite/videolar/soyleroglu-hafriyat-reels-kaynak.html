@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="fonts/local.css">
+<style>
+:root{--navy:#0D1834;--gold:#E3B341;--white:#F5F6FA;--muted:#A9B2C8;--d:"Barlow Condensed",sans-serif;--b:"IBM Plex Sans",sans-serif}
+*{box-sizing:border-box;margin:0}
+body{width:1080px;height:1920px;overflow:hidden;background:var(--navy);font-family:var(--b);color:var(--white)}
+.sc{position:absolute;inset:0;opacity:0}
+h1,h2,.k{font-family:var(--d);font-weight:800;text-transform:uppercase;line-height:.92}
+.gold{color:var(--gold)}
+#A .bg{position:absolute;inset:-40px;background:url("/home/user/imfa-yap-/soyleroglu-hafriyat/assets/saha-dag-yolu-acma.jpg") center/cover}
+#A .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,24,52,.2),rgba(13,24,52,.7) 45%,rgba(13,24,52,.97) 70%)}
+#A .t{position:absolute;left:90px;right:90px;bottom:520px;display:flex;flex-direction:column;gap:40px}
+.ey{font:600 40px var(--d);letter-spacing:.14em;color:var(--gold);display:flex;gap:20px;align-items:center}
+.ey::before{content:"";width:70px;height:5px;background:var(--gold)}
+#A h1{font-size:150px}#A h2{font-size:132px}
+#B{background:radial-gradient(1200px 900px at 100% 0%,rgba(227,179,65,.14),transparent 60%),var(--navy)}
+#B .head{position:absolute;left:90px;right:90px;top:200px}
+#B h2{font-size:128px}
+#B .cap{margin-top:26px;font-size:46px;color:var(--muted);height:60px;position:relative}
+#B .cap span{position:absolute;left:0;top:0;white-space:nowrap}
+.phone{position:absolute;left:50%;top:560px;width:600px;height:1240px;margin-left:-300px;border-radius:76px;background:#05070D;padding:16px;box-shadow:0 50px 120px -20px rgba(0,0,0,.75),0 0 0 4px #2A3558}
+.scr{width:100%;height:100%;border-radius:60px;overflow:hidden;position:relative;background:#fff}
+.scr img{position:absolute;left:0;top:0;width:568px}
+#C{background:var(--navy);display:flex;flex-direction:column;justify-content:center;padding:0 90px 200px;gap:60px}
+#C h2{font-size:140px}
+.box{border:5px solid var(--gold);border-radius:34px;padding:50px 56px;display:flex;flex-direction:column;gap:16px}
+.box .s{font-size:42px;color:var(--muted)}
+.box .k{font-size:170px;color:var(--gold);letter-spacing:.06em}
+.box p{font-size:44px;line-height:1.35}
+.brand{position:absolute;left:90px;bottom:330px;font:800 40px var(--d);letter-spacing:.08em;color:var(--gold);z-index:5}
+.brand span{color:var(--white)}
+</style></head><body>
+<section class="sc" id="A"><div class="bg"></div><div class="sh"></div>
+ <div class="t"><div class="ey" id="a0">ÖNCE / SONRA · GÖKSUN</div><h1 id="a1">2007'den beri<br>Göksun'da sahada.</h1><h2 class="gold" id="a2">Ama internette<br>sessizdi.</h2></div></section>
+<section class="sc" id="B"><div class="head"><h2 id="b1">Ofisi saha,<br><span class="gold">vitrini cepte.</span></h2>
+ <div class="cap"><span id="c1">Hizmetler, makine parkı, teklif butonu.</span><span id="c2">Kepçe arayan, işi önce ekranda görüyor.</span></div></div>
+ <div class="phone" id="ph"><div class="scr"><img id="site" src="sh-full.png" alt=""></div></div></section>
+<section class="sc" id="C"><h2 id="d1">Sıradaki işletme<br><span class="gold">seninki olsun.</span></h2>
+ <div class="box" id="d2"><div class="s">Yorumlara ya da DM'e yaz:</div><div class="k" id="d3">RÖNTGEN</div><p>İşletmenin dijital durumuna <b>ücretsiz</b> bakayım.</p></div></section>
+<div class="brand">DİJİTAL <span>OTORİTE</span></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x)=>Math.max(0,Math.min(1,x));
+const ease=x=>1-Math.pow(1-cl(x),3);
+const io=(x)=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+function pop(el,t,start,dur=.45,dy=60){const p=ease((t-start)/dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`}
+function sceneOp(t,a,b,f=.4){if(t<a-f||t>b+f)return 0;if(t<a)return 1-(a-t)/f;if(t>b)return 1-(t-b)/f;return 1}
+window.render=function(t){
+  $('A').style.opacity=t<4.2?(t>3.8?1-(t-3.8)/.4:1):0;
+  $('B').style.opacity=sceneOp(t,4.2,11.8);
+  $('C').style.opacity=t>=11.8?Math.min(1,(t-11.8)/.4):0;
+  document.querySelector('.brand').style.opacity=1-sceneOp(t,4.2,11.8);
+  // A
+  document.querySelector('#A .bg').style.transform=`scale(${1+0.12*cl(t/4.2)})`;
+  pop($('a0'),t,.1);pop($('a1'),t,.35,.5,80);pop($('a2'),t,1.7,.5,80);
+  // B
+  pop($('b1'),t,4.3,.5,70);
+  const ph=$('ph');const pp=ease((t-4.4)/.7);ph.style.transform=`translateY(${(1-pp)*900}px)`;
+  const sc=io((t-5.2)/6.2);$('site').style.transform=`translateY(${-3100*sc}px)`;
+  const c1=$('c1'),c2=$('c2');
+  c1.style.opacity=t<7.9?ease((t-4.8)/.4):Math.max(0,1-(t-7.9)/.3);
+  c2.style.opacity=ease((t-8.2)/.4);c2.style.transform=`translateY(${(1-ease((t-8.2)/.4))*30}px)`;
+  // C
+  pop($('d1'),t,12.0,.5,70);pop($('d2'),t,12.6,.5,70);
+  const pu=t>13.4?1+0.05*Math.sin((t-13.4)*Math.PI*2/1.1)**2:1;$('d3').style.transform=`scale(${pu})`;$('d3').style.transformOrigin='left center';
+};
+render(0);
+</script></body></html>
