@@ -25,6 +25,17 @@ Müşteri (site)                      Google (salonun hesabı, ücretsiz)       
 **En kolay yol: Salon paneli** → `https://selahattinpeltek46-sudo.github.io/imfa-yap-/barbers-town/panel/`
 Telefonda açılır, 6 haneli şifreyle girilir (şifre bir kez girilince o telefonda hatırlanır). Bugün / yarın / istenen günün randevuları saat sırasıyla listelenir; her randevuda **Ara**, **WhatsApp hatırlatma** (hazır mesaj) ve **İptal et** düğmeleri var. Liste her dakika kendini yeniler. Şifre `kurulum()` çalıştırılınca Yürütme günlüğüne yazılır (Proje Ayarları → Komut dosyası özellikleri → `PANEL_PIN` ile değiştirilebilir). 10 dakikada 5 yanlış denemede panel kilitlenir.
 
+**Tek dokunuşla ekleme (panelin üstündeki 4 büyük düğme):**
+
+| Düğme | Ne yapar | Kaç dokunuş |
+|---|---|---|
+| **＋ Kapıdan geldi** | Koltuğa oturan müşteriyi şu andan itibaren hizmet süresi kadar ekler (yalnız bugün). Koltuklar doluysa "yine de ekle?" diye sorar. | 2 (düğme → hizmet) |
+| **＋ Telefon randevusu** | Seçili güne: hizmet → boş saat → ad/telefon (isteğe bağlı) → Kaydet. Telefon yazılırsa listede Ara ve WhatsApp hatırlatma düğmeleri çıkar. | 4 |
+| **Mola ver** | Şu andan itibaren 15/30/45/60 dk siteden randevu alınamaz (yalnız bugün). | 2 |
+| **Kapat** | "Şimdi kapat" (bugün kapanışa kadar) ya da "Tüm günü kapat" (izin, tatil; ileri bir gün de seçilebilir). Var olan randevular silinmez, sayısı bildirilir. | 3 |
+
+Eklenen her şey listede görünür; yanlışsa **İptal et / Kaldır** ile geri alınır. Kapıdan ve telefonla eklenen müşteriler kayıt tablosuna "Panel: kapıdan / Panel: telefon" durumuyla yazılır.
+
 Google Takvim ile de yönetilebilir:
 
 | İş | Nasıl |
@@ -75,6 +86,8 @@ Gerekli: salonun bir Google (Gmail) hesabı.
 **Test:** URL'nin sonuna `?islem=musait&tarih=2026-10-20&hizmet=VİP%20Salon` ekleyip tarayıcıda açın → `{"ok":true,…,"saatler":[…]}` görmelisiniz. Sonra sitede kendinize bir randevu alın, takvimde göründüğünü kontrol edip silin.
 
 **Code.gs'yi sonradan değiştirirseniz:** Dağıt → Dağıtımları yönet → kalem → Sürüm: **Yeni sürüm** → Dağıt (URL aynı kalır).
+
+> **2026-10-19 güncellemesi (tek dokunuşla ekleme):** Panel düğmeleri çalışsın diye `Code.gs` yenilendi. Demo ve canlı kurulumlarda kodu bu klasördeki son sürümle değiştirip yukarıdaki gibi **Yeni sürüm** dağıtın; yapılmazsa panel listeyi gösterir ama düğmeler "Geçersiz işlem" der.
 
 ## 5. Güvenlik ve sınırlar
 

@@ -13,6 +13,7 @@
  *  - Telefonla gelen randevu: takvime elle etkinlik ekleyin → 1 koltuk dolu sayılır.
  *    Başlık [bakim] veya [vip] ile başlarsa o kaynağı doldurur.
  *  - Saat/gün kapatma (mola, izin): başlığında "KAPALI" geçen etkinlik ekleyin → o aralık herkese kapanır.
+ *  - Ya da hepsini salon panelinden tek dokunuşla: Kapıdan geldi · Telefon randevusu · Mola · Kapat.
  *
  * Kurulum adımları: KURULUM.md
  */
@@ -148,9 +149,12 @@ function etkinlikCoz(baslik, aciklama) {
   var parca = String(baslik || '').split(' — ');
   if (kod && parca.length >= 2) {
     var not = al('Not');
-    return { hizmet: parca[0], ad: parca.slice(1).join(' — '), telefon: al('Telefon'), not: not === '-' ? '' : not, kod: kod, elle: false };
+    var tel = al('Telefon');
+    return { hizmet: parca[0], ad: parca.slice(1).join(' — '), telefon: tel === '-' ? '' : tel, not: not === '-' ? '' : not, kod: kod, elle: false,
+      kaynakNot: al('Kaynak') };
   }
-  return { hizmet: '', ad: String(baslik || ''), telefon: '', not: a.trim(), kod: '', elle: true };
+  var temizNot = a.replace(/^Kaynak:.*$/m, '').trim();
+  return { hizmet: '', ad: String(baslik || ''), telefon: '', not: temizNot, kod: '', elle: true };
 }
 
 /** Panel şifresini karşılaştırır (sabit süreli karşılaştırma). */
@@ -166,6 +170,86 @@ function randevuKodu() {
   var harfler = 'ABCDEFGHJKLMNPRSTUVYZ23456789', k = 'BT-';
   for (var i = 0; i < 5; i++) k += harfler.charAt(Math.floor(Math.random() * harfler.length));
   return k;
+}
+
+/**
+ * Panelden hızlı ekleme planı (saf fonksiyon). v.tur:
+ *  'kapi'    → kapıdan gelen müşteri: bugün, şu andan itibaren hizmet süresi kadar
+ *  'telefon' → telefonla alınan randevu: seçilen gün ve saat
+ *  'mola'    → bugün şu andan itibaren v.sure dakika KAPALI
+ *  'kapat'   → v.tumGun ise seçilen gün tamamen, değilse bugün şu andan kapanışa kadar KAPALI
+ * simdiDk: bugünse günün dakikası, değilse -Infinity. bugun: 'yyyy-MM-dd'.
+ * Dönüş: {hata} ya da {tur, tarih, basDk, bitDk, tumGun, kaynak, baslik, randevu, ad, telefon, hizmet}
+ */
+function hizliPlan(ayar, v, bugun, simdiDk) {
+  var tur = v.tur, tarih = String(v.tarih || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(tarih)) return { hata: 'Geçersiz tarih' };
+  if (tarih < bugun) return { hata: 'Geçmiş bir güne ekleme yapılamaz.' };
+  var simdi5 = Math.floor(simdiDk / 5) * 5;
+  var aralik = ayar.calisma[haftaninGunu(tarih)];
+
+  if (tur === 'kapi' || tur === 'telefon') {
+    var hizmet = ayar.hizmetler[v.hizmet];
+    if (!hizmet) return { hata: 'Hizmet seçin.' };
+    var ad = String(v.ad || '').trim().slice(0, 60);
+    var tel = '';
+    if (String(v.telefon || '').trim()) {
+      tel = telefonTemizle(v.telefon);
+      if (!tel) return { hata: 'Telefon numarası geçersiz (05xx xxx xx xx).' };
+    }
+    var bas;
+    if (tur === 'kapi') {
+      if (tarih !== bugun) return { hata: '"Kapıdan geldi" yalnız bugün için.' };
+      bas = simdi5;
+      ad = ad || 'Kapıdan müşteri';
+    } else {
+      if (!/^\d{2}:\d{2}$/.test(v.saat || '')) return { hata: 'Saat seçin.' };
+      bas = dakikaya(v.saat);
+      if (tarih === bugun && bas + hizmet.sure <= simdiDk) return { hata: 'Bu saat geçti.' };
+      if (!aralik) return { hata: 'Bu gün kapalı.' };
+      if (bas < dakikaya(aralik[0]) || bas + hizmet.sure > dakikaya(aralik[1])) {
+        return { hata: 'Çalışma saatleri dışında (' + aralik[0] + '–' + aralik[1] + ').' };
+      }
+      ad = ad || 'Telefon randevusu';
+    }
+    return { tur: tur, tarih: tarih, basDk: bas, bitDk: bas + hizmet.sure, tumGun: false, kaynak: hizmet.kaynak,
+      baslik: v.hizmet + ' — ' + ad, randevu: true, ad: ad, telefon: tel, hizmet: v.hizmet };
+  }
+
+  if (tur === 'mola') {
+    if (tarih !== bugun) return { hata: 'Mola yalnız bugün için.' };
+    var sure = Number(v.sure);
+    if ([15, 30, 45, 60, 90, 120].indexOf(sure) === -1) return { hata: 'Mola süresi seçin.' };
+    return { tur: tur, tarih: tarih, basDk: simdi5, bitDk: simdi5 + sure, tumGun: false, kaynak: 'KAPALI',
+      baslik: 'KAPALI — Mola (' + sure + ' dk)', randevu: false };
+  }
+
+  if (tur === 'kapat') {
+    if (v.tumGun) {
+      return { tur: tur, tarih: tarih, basDk: 0, bitDk: 1440, tumGun: true, kaynak: 'KAPALI',
+        baslik: 'KAPALI — Gün kapalı', randevu: false };
+    }
+    if (tarih !== bugun) return { hata: '"Şimdi kapat" yalnız bugün için; başka gün için tüm günü kapatın.' };
+    var kapanis = aralik ? dakikaya(aralik[1]) : 1440;
+    if (simdi5 >= kapanis) return { hata: 'Bugünün çalışma saati zaten bitti.' };
+    return { tur: tur, tarih: tarih, basDk: simdi5, bitDk: kapanis, tumGun: false, kaynak: 'KAPALI',
+      baslik: 'KAPALI — Erken kapanış', randevu: false };
+  }
+  return { hata: 'Geçersiz işlem' };
+}
+
+/** Planın çakışma durumu: randevuysa kapasite doluluğu, kapatmaysa etkilenen randevu sayısı. */
+function hizliCakisma(ayar, plan, mesguller) {
+  if (plan.randevu) {
+    var kapasite = ayar.kaynaklar[plan.kaynak] || 1;
+    return { dolu: cakisanSayisi(mesguller, plan.kaynak, plan.basDk, plan.bitDk) >= kapasite, etkilenen: 0 };
+  }
+  var n = 0;
+  for (var i = 0; i < mesguller.length; i++) {
+    var m = mesguller[i];
+    if (m.kaynak !== 'KAPALI' && m.bas < plan.bitDk && plan.basDk < m.bit) n++;
+  }
+  return { dolu: false, etkilenen: n };
 }
 
 /* ───────────── Google servisleri ───────────── */
@@ -281,7 +365,9 @@ function doPost(e) {
 /**
  * Salon paneli (POST gövdesi {islem:'panel', pin, eylem, ...}).
  *  eylem 'liste' {tarih}  → o günün randevuları
- *  eylem 'iptal' {id}     → randevuyu takvimden siler, kayıt tablosunda durumu "İptal" yapar
+ *  eylem 'iptal' {id}     → randevuyu (ya da KAPALI kaydını) takvimden siler, tabloda durumu "İptal" yapar
+ *  eylem 'bos' {tarih, hizmet} → telefon randevusu için boş saatler (1 saat sınırı olmadan)
+ *  eylem 'ekle' {tur, tarih, hizmet, saat, sure, tumGun, ad, telefon, zorla} → hızlı ekleme (bkz. hizliPlan)
  * Şifre (PANEL_PIN) kurulum() ile oluşturulur; 10 dakikada 5 yanlış denemeden sonra kilitlenir.
  */
 function panel(v) {
@@ -306,7 +392,9 @@ function panel(v) {
       c.kapali = /KAPALI/i.test(e.getTitle());
       return c;
     });
-    return json({ ok: true, tarih: v.tarih, randevular: liste });
+    var hizmetler = Object.keys(AYAR.hizmetler).map(function (ad) { return { ad: ad, sure: AYAR.hizmetler[ad].sure }; });
+    return json({ ok: true, tarih: v.tarih, bugun: bugunTarih(), calisma: AYAR.calisma[haftaninGunu(v.tarih)] || null,
+      hizmetler: hizmetler, randevular: liste });
   }
 
   if (v.eylem === 'iptal') {
@@ -322,6 +410,53 @@ function panel(v) {
       }
     }
     return json({ ok: true });
+  }
+  if (v.eylem === 'bos') {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v.tarih || '')) return json({ ok: false, hata: 'Geçersiz tarih' });
+    var panelAyar = {};
+    for (var k in AYAR) panelAyar[k] = AYAR[k];
+    panelAyar.enAzOnceDakika = 0; // salon kendi eklerken "1 saat sonrası" sınırı yok
+    var b = bosSaatler(panelAyar, v.tarih, v.hizmet, mesgulAraliklar(v.tarih), simdiDakika(v.tarih));
+    if (b.hata) return json({ ok: false, hata: b.hata });
+    return json({ ok: true, kapali: b.kapali, saatler: b.saatler });
+  }
+
+  if (v.eylem === 'ekle') {
+    var plan = hizliPlan(AYAR, v, bugunTarih(), simdiDakika(String(v.tarih || '')));
+    if (plan.hata) return json({ ok: false, hata: plan.hata });
+    var kilit = LockService.getScriptLock();
+    if (!kilit.tryLock(15000)) return json({ ok: false, hata: 'Yoğunluk var, tekrar deneyin.' });
+    try {
+      var cak = hizliCakisma(AYAR, plan, mesgulAraliklar(plan.tarih));
+      if (cak.dolu && !v.zorla) {
+        return json({ ok: false, dolu: true, hata: 'Bu saatte ' + (plan.kaynak === 'koltuk' ? 'koltuklar' : 'yer') + ' dolu görünüyor.' });
+      }
+      var gun0 = gunBaslangici(plan.tarih);
+      var etkinlik, kod = '';
+      if (plan.tumGun) {
+        etkinlik = takvim().createAllDayEvent(plan.baslik, gun0, { description: 'Kaynak: panel' });
+      } else {
+        var bas = new Date(gun0.getTime() + plan.basDk * 6e4), bit = new Date(gun0.getTime() + plan.bitDk * 6e4);
+        var aciklama = 'Kaynak: panel';
+        if (plan.randevu) {
+          kod = randevuKodu();
+          aciklama = 'Kod: ' + kod + '\nTelefon: ' + (plan.telefon || '-') + '\nNot: -\nKaynak: panel (' +
+            (plan.tur === 'kapi' ? 'kapıdan' : 'telefon') + ')';
+        }
+        etkinlik = takvim().createEvent(plan.baslik, bas, bit, { description: aciklama });
+      }
+      etkinlik.setTag('kaynak', plan.kaynak);
+      if (kod) {
+        etkinlik.setTag('kod', kod);
+        SpreadsheetApp.openById(ozellik('TABLO_ID')).getSheets()[0].appendRow([
+          new Date(), kod, plan.tarih, saate(plan.basDk), plan.hizmet, plan.ad, plan.telefon ? "'" + plan.telefon : '', '',
+          plan.tur === 'kapi' ? 'Panel: kapıdan' : 'Panel: telefon'
+        ]);
+      }
+      return json({ ok: true, kod: kod, etkilenen: cak.etkilenen, bas: plan.tumGun ? '' : saate(plan.basDk), bit: plan.tumGun ? '' : saate(plan.bitDk) });
+    } finally {
+      kilit.releaseLock();
+    }
   }
   return json({ ok: false, hata: 'Geçersiz işlem' });
 }
@@ -351,5 +486,5 @@ function kurulum() {
 if (typeof module !== 'undefined') {
   module.exports = { AYAR: AYAR, bosSaatler: bosSaatler, dogrula: dogrula, telefonTemizle: telefonTemizle,
     kaynakBul: kaynakBul, haftaninGunu: haftaninGunu, cakisanSayisi: cakisanSayisi,
-    etkinlikCoz: etkinlikCoz, pinDogru: pinDogru };
+    etkinlikCoz: etkinlikCoz, pinDogru: pinDogru, hizliPlan: hizliPlan, hizliCakisma: hizliCakisma, saate: saate };
 }
