@@ -36,6 +36,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* "hidden" özniteliği, display tanımlı bileşenlerde de her zaman gizlesin */
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; scroll-padding-top: 84px; }
 body {
   margin: 0;
@@ -251,6 +253,8 @@ p { margin: 0 0 1em; }
 .sonuc__detay dd { margin: .1rem 0 0; font-weight: 700; font-size: 1.1rem; }
 #s-kod { font-variant-numeric: tabular-nums; letter-spacing: .08em; }
 .sonuc p { color: var(--gri); }
+.hatirlat { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; padding: 1rem; margin: 0 0 1rem; background: var(--duvar); border-radius: 4px; }
+.hatirlat p { margin: 0; flex: 1 1 14rem; color: var(--murekkep) !important; font-size: .95rem; }
 .sonuc__btn { display: flex; flex-wrap: wrap; gap: .7rem; margin-bottom: 1rem; }
 .metin-dugme { background: none; border: 0; padding: 0; color: var(--bakir); font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
 

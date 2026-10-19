@@ -90,3 +90,42 @@ Metinler sadeleştirildi; yalnız fotoğraflarda görülen ya da Haritalar'da do
 - **Kurulumda takılınan yerler (müşteri kurulumunda dikkat):** kodu `myFunction` içine yapıştırma; appsscript.json'u eski içerikle karıştırma; fonksiyon listesinde `kurulum` yerine ilk fonksiyonun seçili kalması; "doğrulanmamış uygulama" ekranında e-posta bağlantısına tıklayıp "Gelişmiş"i kaçırma; panel şifresini günlükte kaçırma (Proje Ayarları → Komut dosyası özellikleri → PANEL_PIN).
 
 **Sıradaki:** 30 sn ekran kaydı → salona mesaj → salon onaylarsa salonun Gmail'inde aynı kurulum ve adres `randevuApi`'ye. Teyit edilecek: açılış saati, tatil günü, koltuk sayısı, hizmet süreleri. İyileştirme önerisi: e-postada Türkçe tarih ("17 Ekim Cumartesi"), isim baş harf büyütme.
+
+---
+# REVİZYON 5 — Saati değiştir, saat kapat, hatırlatma, tablo eşitleme, aylık özet (2026-10-18)
+
+Kullanıcı isteği: "hepsini yap ve analiz et — doğru mu, yanlışlık/aksi durum var mı?"
+
+## Yapılanlar
+| # | Özellik | Nerede |
+|---|---|---|
+| 1 | Panel **Saati değiştir** (kapasite kontrolü, mesai dışı uyarısı, geçmiş/gece yarısı engeli) + müşteriye "güncellendi" WhatsApp | Code.gs `panel/tasi`, panel.js |
+| 2 | Panel **Saat / gün kapat** + çakışan randevu sayısı uyarısı; kapalı satırda **Kaldır** | Code.gs `panel/kapat`, panel.js, panel/index.html |
+| 3 | İptal sonrası müşteriye "iptal edildi" WhatsApp | Code.gs `panel/iptal`, panel.js |
+| 4 | Hatırlatma: müşteri **Telefonuma ekle** (.ics, 2 saat önce alarm) + salon telefonuna 2 saat önce takvim bildirimi + 15 dk'lık görevle salona WhatsApp bağlantılı e-posta | site.js, index.html, Code.gs `hatirlatmaKontrol` |
+| 5 | Gece **tablo eşitleme** (takvimden silinen/taşınan) | Code.gs `tabloyuEsitle` |
+| 6 | **Aylık özet** e-postası | Code.gs `aylikOzet` |
+| 7 | E-postada Türkçe tarih ("19 Ekim Pazartesi"), isim baş harfleri (Türkçe i/İ, ı/I) | Code.gs `turkceTarih`, `adDuzelt` |
+
+## Doğrulama
+- **Sahte Google ortamı** (`testler/sahte-google.js`): gerçek Code.gs; Takvim, E-Tablo, Gmail, kilit, önbellek, tetikleyiciler taklit edildi. `testler/entegrasyon.test.js` → **77/77 geçti** (13 bölüm: saf fonksiyonlar, kurulum, site randevusu, kapasite, panel liste/taşı/kapat/iptal, güvenlik, hatırlatma, tablo eşitleme, aylık özet, kota ve uzak taşıma).
+- **Tarayıcı uçtan uca** (Playwright → gerçek Code.gs): **23/23** (ics içeriği/saat/satır uzunluğu, form akışları, otomatik yenileme koruması karşıt kontrolle, 375 px).
+- **Eski sunucu uyumluluğu:** yeni panel + eski Code.gs → liste, hatırlatma, iptal çalışıyor; yeni düğmeler anlaşılır "Code.gs güncellenmeli" uyarısı veriyor.
+
+## Bulunan ve düzeltilen hatalar (denetim sırasında)
+| # | Önem | Bulgu | Düzeltme |
+|---|---|---|---|
+| D1 | YÜKSEK | `display:grid/flex` tanımlı bileşenlerde `hidden` çalışmıyordu → "Saat kapat" formu hep açık, "Tüm gün" saatleri gizlemiyordu | site.css `[hidden]{display:none!important}` |
+| D2 | ORTA | Kart düğme satırının `grid-column:2` kuralı kapatma formunu iki sütuna bölüyordu | `.rv > .rv__eylem` ile sınırlandı |
+| D3 | ORTA | 21 günden ileriye taşınan randevu gece görevinde "iptal" sayılırdı | eşitleme aralığı +365 gün |
+| D4 | ORTA | Yoğun günde Gmail kotası (~100/gün) dolabilir; hatırlatma kaybolurdu | `epostaGonder` kota kontrolü; önemsizler kotanın son 5'inde atlanır; hatırlatma gönderilemezse etiketlenmez → sonraki turda tekrar |
+| D5 | ORTA | Açık form varken dakikalık yenileme formu siliyordu | `duzenleniyor` bayrağı (karşıt kontrollü test) |
+| D6 | DÜŞÜK | Eski sunucuda iptal sonrası yanlış "Bağlantı hatası" | `c.randevu` korumalı |
+| D7 | DÜŞÜK | .ics satırları 75 bayt sınırını aşıyordu (Türkçe harfler) | RFC 5545 satır katlama |
+
+## Bilinen sınırlar (bilinçli)
+- Panel kilidi (5 yanlış/10 dk) herkese uygulanır — kötü niyetli biri salonu 10 dk dışarıda bırakabilir.
+- Müşteriye mesajlar **yarı otomatik** (salon tek dokunuşla gönderir); tam otomatik SMS/WhatsApp ücretli API gerektirir.
+- Takvime elle eklenen telefonsuz randevulara otomatik hatırlatma yok.
+- iOS'ta bazı uygulama içi tarayıcılar (.ics data bağlantısı) indirmeyi engelleyebilir → "Google Takvim" yedek düğmesi duruyor.
+- Canlı Google ortamında henüz denenmedi: kullanıcı Code.gs + appsscript.json'u güncelleyip `kurulum` + yeni sürüm dağıtımı yapmalı (KURULUM.md §4b).

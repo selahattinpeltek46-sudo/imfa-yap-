@@ -36,7 +36,8 @@
     .rv__ad { font-weight: 700; font-size: 1.1rem; min-width: 0; overflow-wrap: anywhere; }
     .rv__hizmet { color: var(--gri); font-size: .95rem; }
     .rv__not { font-size: .92rem; color: var(--murekkep); background: #fff; border-left: 3px solid var(--led); padding: .3rem .6rem; margin-top: .3rem; overflow-wrap: anywhere; }
-    .rv__eylem { grid-column: 2; display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .55rem; }
+    .rv__eylem { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .55rem; }
+    .rv > .rv__eylem { grid-column: 2; }
     .rv__eylem a, .rv__eylem button { font-family: var(--f-etiket); font-weight: 600; font-size: 1rem; letter-spacing: .03em; min-height: 40px; padding: .3rem .85rem; border-radius: 3px; text-decoration: none; display: inline-flex; align-items: center; border: 1px solid transparent; cursor: pointer; }
     .e-ara { background: var(--panel); color: var(--kirik); }
     .e-wa { background: var(--wa); color: #fff; }
@@ -46,11 +47,27 @@
     .rv__kod { font-variant-numeric: tabular-nums; color: var(--gri); font-size: .85rem; letter-spacing: .05em; }
     .bos { text-align: center; color: var(--gri); padding: 2.5rem 1rem; background: #fbfbf9; border-radius: 4px; }
     .durum-cubuk { color: var(--gri); font-size: .85rem; margin-top: 1rem; text-align: center; }
+    .e-onay--koyu { background: var(--panel); }
+    .rv__eylem input { min-height: 40px; border: 1px solid #a9aaa5; border-radius: 3px; padding: .25rem .5rem; font: inherit; background: #fff; }
+    .rv__eylem .alan-hata { flex-basis: 100%; }
+    .bildirim-kutu { background: #fbfbf9; border-left: 4px solid var(--wa); border-radius: 4px; padding: .9rem 1rem; margin-bottom: 1rem; box-shadow: 0 1px 0 #c9c9c4; }
+    .bk__metin { font-weight: 600; margin: 0; }
+    .bk__uyari { margin: .4rem 0 0; color: var(--hata); font-weight: 600; }
+    .kapat-ac { font-family: var(--f-etiket); font-weight: 600; font-size: 1rem; letter-spacing: .03em; min-height: 40px; padding: .3rem .9rem; border-radius: 3px; border: 1px dashed #8d8e8a; background: transparent; color: var(--murekkep); cursor: pointer; margin-bottom: 1rem; }
+    .kapat-form { background: #fbfbf9; border-top: 4px solid var(--hali); border-radius: 4px; padding: 1rem 1.1rem; margin-bottom: 1rem; display: grid; gap: .7rem; }
+    .kf__baslik { font-weight: 700; margin: 0; }
+    .kf__aciklama { margin: -.4rem 0 0; color: var(--gri); font-size: .92rem; }
+    .kf__satir { display: flex; flex-wrap: wrap; gap: .8rem; align-items: end; }
+    .kapat-form label { display: grid; gap: .25rem; font-family: var(--f-etiket); font-weight: 600; letter-spacing: .03em; }
+    .kapat-form .kf__onay { display: flex; align-items: center; gap: .4rem; min-height: 40px; }
+    .kapat-form input[type="date"], .kapat-form input[type="time"], .kapat-form input[type="text"] { min-height: 40px; border: 1px solid #a9aaa5; border-radius: 3px; padding: .25rem .5rem; font: inherit; font-family: var(--f-govde); font-weight: 400; background: #fff; }
+    .kf__not input { width: 100%; }
     .uyari-kutu { background: #fff3d6; border-left: 4px solid var(--led); padding: .8rem 1rem; border-radius: 3px; margin-bottom: 1rem; }
-    /* Hızlı ekleme: eller meşgulken başparmakla basılacak büyük düğmeler */
-    .hizli { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin-bottom: 1rem; }
+    /* Tek dokunuşla müşteri ekleme: eller meşgulken başparmakla basılacak büyük düğmeler */
+    .hizli { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin-bottom: .8rem; }
     .hizli button { min-height: 64px; border-radius: 4px; border: 0; font-family: var(--f-etiket); font-weight: 600; font-size: 1.15rem; letter-spacing: .03em; cursor: pointer; background: var(--panel); color: var(--kirik); box-shadow: inset 0 -3px 0 var(--led); padding: .4rem .6rem; }
     .hizli button[data-tur="kapi"] { background: var(--led); color: var(--panel); box-shadow: inset 0 -3px 0 rgba(0,0,0,.25); }
+    .hizli button[data-tur="mola"] { grid-column: 1 / -1; min-height: 48px; background: transparent; color: var(--murekkep); border: 1px solid #8d8e8a; box-shadow: none; font-size: 1.05rem; }
     .hizli button:disabled { opacity: .35; cursor: not-allowed; }
     .hizli button small { display: block; font-size: .8rem; font-weight: 500; opacity: .8; }
     .hizli-kutu { background: #fbfbf9; border-radius: 4px; border-top: 5px solid var(--led); padding: 1rem 1.1rem 1.1rem; margin-bottom: 1rem; box-shadow: 0 1px 0 #c9c9c4; }
@@ -58,7 +75,6 @@
     .secimler { display: flex; flex-wrap: wrap; gap: .5rem; }
     .secimler button { min-height: 52px; padding: .3rem 1rem; border-radius: 3px; border: 1px solid #a9aaa5; background: #fff; color: var(--murekkep); font-family: var(--f-etiket); font-weight: 600; font-size: 1.1rem; cursor: pointer; font-variant-numeric: tabular-nums; }
     .secimler button small { display: block; font-size: .8rem; color: var(--gri); font-weight: 500; }
-    .secimler button.tehlike { border-color: var(--hata); color: var(--hata); }
     .hizli-kutu .alan { margin-top: .8rem; }
     .hizli-alt { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .9rem; }
     .hizli-alt button { min-height: 48px; padding: .3rem 1.1rem; border-radius: 3px; font-family: var(--f-etiket); font-weight: 600; font-size: 1.05rem; cursor: pointer; border: 1px solid #b9b9b4; background: none; color: var(--murekkep); }
@@ -66,7 +82,6 @@
     .hizli-alt button.tehlike { background: var(--hata); border-color: var(--hata); color: #fff; }
     .hizli-mesaj { margin: .7rem 0 0; font-weight: 600; }
     .hizli-mesaj.hata { color: var(--hata); }
-    .tamam-serit { background: #e3f3e6; border-left: 4px solid #2f8a46; padding: .7rem 1rem; border-radius: 3px; margin-bottom: 1rem; font-weight: 600; }
     .rv__etiket { display: inline-block; font-size: .78rem; font-weight: 600; background: var(--duvar-2); border-radius: 3px; padding: .05rem .4rem; margin-left: .3rem; color: var(--murekkep); }
   </style>
 </head>
@@ -100,18 +115,39 @@
         <label class="atla" for="tarih">Tarih seç</label>
         <input type="date" id="tarih">
       </div>
+      <div class="bildirim-kutu" id="bildirim-kutu" role="status" hidden></div>
+
+      <div class="hizli" role="group" aria-label="Hızlı ekle">
+        <button type="button" data-tur="kapi">＋ Kapıdan geldi<small>şu an koltukta</small></button>
+        <button type="button" data-tur="telefon">＋ Telefon randevusu<small>gün ve saat seç</small></button>
+        <button type="button" data-tur="mola">Mola ver · şu andan itibaren</button>
+      </div>
+      <div class="hizli-kutu" id="hizli-kutu" hidden></div>
+
+      <button class="kapat-ac" type="button" id="kapat-ac">Saat / gün kapat</button>
+      <form class="kapat-form" id="kapat-form" hidden novalidate>
+        <p class="kf__baslik">Kapalı saat ekle</p>
+        <p class="kf__aciklama">Mola, izin ya da erken kapanış. Bu saatlere sitede randevu alınamaz.</p>
+        <div class="kf__satir">
+          <label>Gün <input type="date" id="k-tarih" required></label>
+          <label class="kf__onay"><input type="checkbox" id="k-tumgun"> Tüm gün</label>
+        </div>
+        <div class="kf__satir" id="k-saatler">
+          <label>Başlangıç <input type="time" id="k-bas" step="900"></label>
+          <label>Bitiş <input type="time" id="k-bit" step="900"></label>
+        </div>
+        <label class="kf__not"><span>Açıklama <span class="ince">(isteğe bağlı)</span></span><input type="text" id="k-not" maxlength="60" placeholder="Ör. öğle arası, Mehmet izinli"></label>
+        <p class="alan-hata" id="k-hata" role="alert"></p>
+        <div class="rv__eylem">
+          <button class="e-onay e-onay--koyu" type="submit" id="k-kaydet">Kapat</button>
+          <button class="e-vazgec" type="button" id="k-vazgec">Vazgeç</button>
+        </div>
+      </form>
+
       <div class="ozet">
         <h2 id="gun-baslik">Bugün</h2>
         <span id="sayi"></span>
       </div>
-      <p class="tamam-serit" id="tamam" role="status" hidden></p>
-      <div class="hizli" role="group" aria-label="Hızlı ekle">
-        <button type="button" data-tur="kapi">＋ Kapıdan geldi<small>şu an koltukta</small></button>
-        <button type="button" data-tur="telefon">＋ Telefon randevusu<small>gün ve saat seç</small></button>
-        <button type="button" data-tur="mola">Mola ver<small>şu andan itibaren</small></button>
-        <button type="button" data-tur="kapat">Kapat<small>erken kapanış / izin</small></button>
-      </div>
-      <div class="hizli-kutu" id="hizli-kutu" hidden></div>
       <ul class="liste" id="liste" aria-live="polite"></ul>
       <p class="durum-cubuk" id="durum"></p>
     </section>
