@@ -44,6 +44,9 @@ Google Takvim ile de yönetilebilir:
 ### Paneldeki düğmeler
 | Düğme | Ne yapar |
 |---|---|
+| **＋ Kapıdan geldi** | (Yalnız bugün) hizmete dokunun → müşteri şu andan itibaren hizmet süresi kadar eklenir; o koltuk sitede dolu görünür. Koltuklar doluysa "yine de ekle?" diye sorar. Toplam 2 dokunuş. |
+| **＋ Telefon randevusu** | Hizmet → boş saat → ad/telefon (isteğe bağlı) → Kaydet. Telefon yazıldıysa "Müşteriye WhatsApp'tan bildir" ile hazır onay mesajı; takvim hatırlatıcısı ve otomatik hatırlatma da çalışır. |
+| **Mola ver** | (Yalnız bugün) 15/30/45/60 dk; şu andan itibaren o süre sitede randevu alınamaz. Uzun kapatmalar için "Saat / gün kapat". |
 | **Saati değiştir** | Gün/saat seçilir → takvimde taşınır (dolu saate taşımaz, mesai dışıysa uyarır) → "Müşteriye WhatsApp'tan bildir" ile hazır "randevunuz … olarak güncellendi" mesajı |
 | **İptal et** | Takvimden siler, tabloda "İptal (panel)" → hazır "randevunuz iptal edildi" mesajı |
 | **WhatsApp hatırlatma** | Müşteriye hazır hatırlatma mesajı |

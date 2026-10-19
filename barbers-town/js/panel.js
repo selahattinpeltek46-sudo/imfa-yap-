@@ -1,4 +1,5 @@
-/* Barber's Town — salon paneli: günün randevuları, arama, WhatsApp hatırlatma, iptal */
+/* Barber's Town — salon paneli: günün randevuları, arama, WhatsApp hatırlatma, iptal, taşıma, kapatma,
+   tek dokunuşla müşteri ekleme (kapıdan geldi, telefon randevusu) ve hızlı mola */
 (function () {
   'use strict';
 
@@ -12,6 +13,8 @@
   var secilenTarih = '';
   var bildirim = '';
   var duzenleniyor = false; // açık bir form varken otomatik yenileme formu silmesin
+  var hizmetler = [];       // sunucudan: [{ad, sure}] (Code.gs güncel değilse boş kalır)
+  var sunucuBugun = '';     // sunucunun "bugün"ü
 
   if (DEMO) document.title = 'DEMO · ' + document.title;
   if (!API) { $('baglanti-yok').hidden = false; return; }
@@ -29,10 +32,23 @@
     return iso === bugun ? 'Bugün · ' + uzun : iso === yarin ? 'Yarın · ' + uzun : uzun;
   }
 
+  // Sunucu yanıt vermezse sonsuza kadar beklemesin: süre dolunca istek iptal edilir, hata yolu çalışır.
+  function sureliFetch(url, secenek, ms) {
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var o = secenek || {};
+    if (ctrl) o.signal = ctrl.signal;
+    return Promise.race([
+      fetch(url, o),
+      new Promise(function (_, red) {
+        setTimeout(function () { if (ctrl) ctrl.abort(); red(new Error('zaman aşımı')); }, ms);
+      })
+    ]);
+  }
+
   function istek(govde) {
     govde.islem = 'panel';
     govde.pin = pin;
-    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(govde) })
+    return sureliFetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(govde) }, 20000)
       .then(function (r) { return r.json(); })
       .then(function (c) {
         if (!c.ok && c.hata === 'Geçersiz işlem') c.hata = 'Bu özellik için Google Apps Script kodunun (Code.gs) güncellenmesi gerekiyor. Kurulum kılavuzundaki "Güncelleme" adımlarını uygulayın.';
@@ -75,6 +91,8 @@
     var alt = r.kapali ? 'Kapalı saat' : r.elle ? 'Takvime elle eklendi' : r.hizmet;
     li.appendChild(el('div', 'rv__hizmet', alt + (r.kod ? ' · ' : '')));
     if (r.kod) li.lastChild.appendChild(el('span', 'rv__kod', r.kod));
+    if (/kapıdan/.test(r.kaynakNot || '')) li.lastChild.appendChild(el('span', 'rv__etiket', 'Kapıdan'));
+    else if (/telefon/.test(r.kaynakNot || '')) li.lastChild.appendChild(el('span', 'rv__etiket', 'Telefon'));
     if (r.not) li.appendChild(el('div', 'rv__not', r.not));
 
     var eylem = el('div', 'rv__eylem');
@@ -184,6 +202,9 @@
       if (c.pin === false) { pin = ''; sakla(''); girisGoster(c.hata); return; }
       if (!c.ok) { durum.textContent = c.hata || 'Liste alınamadı.'; return; }
       if (tarih !== secilenTarih) return;
+      if (c.hizmetler) hizmetler = c.hizmetler;
+      if (c.bugun) sunucuBugun = c.bugun;
+      hizliDurum();
       panoGoster();
       var rv = c.randevular.slice().sort(function (a, b) { return (a.bas || '00:00').localeCompare(b.bas || '00:00'); });
       var sayi = rv.filter(function (r) { return !r.kapali; }).length;
@@ -198,6 +219,7 @@
   }
 
   function gunSec(iso, dugme) {
+    hizliKapat();
     duzenleniyor = !kapatForm.hidden;
     secilenTarih = iso;
     $('tarih').value = iso;
@@ -241,6 +263,158 @@
         c.cakisan ? 'Bu aralıkta zaten ' + c.cakisan + ' randevu var. Onları ayrıca taşıyın ya da iptal edin.' : '');
       gunSec(g.tarih, null);
     }).catch(function () { dugme.disabled = false; $('k-hata').textContent = 'Bağlantı hatası, tekrar deneyin.'; });
+  });
+
+  /* ───────── Tek dokunuşla ekleme: kapıdan geldi · telefon randevusu · mola ───────── */
+  var hKutu = $('hizli-kutu');
+
+  function bugunMu() { return secilenTarih === (sunucuBugun || isoTarih(new Date())); }
+
+  function hizliDurum() {
+    var bugun = bugunMu();
+    document.querySelectorAll('.hizli button').forEach(function (b) {
+      var t = b.dataset.tur;
+      b.disabled = (t === 'kapi' || t === 'mola') && !bugun;
+      b.title = b.disabled ? 'Yalnız bugün için' : '';
+    });
+  }
+
+  function hizliKapat() { hKutu.hidden = true; hKutu.innerHTML = ''; duzenleniyor = !kapatForm.hidden; }
+
+  function kutuAc(baslik) {
+    duzenleniyor = true;
+    hKutu.innerHTML = '';
+    hKutu.hidden = false;
+    hKutu.appendChild(el('h3', null, baslik));
+  }
+
+  function altDugmeler(dugmeler) {
+    var alt = el('div', 'hizli-alt');
+    dugmeler.forEach(function (d) {
+      var b = el('button', d.sinif || '', d.metin);
+      b.type = 'button';
+      b.addEventListener('click', d.tik);
+      alt.appendChild(b);
+    });
+    hKutu.appendChild(alt);
+  }
+
+  function mesaj(metin, hata) {
+    var m = hKutu.querySelector('.hizli-mesaj') || hKutu.appendChild(el('p', 'hizli-mesaj'));
+    m.className = 'hizli-mesaj' + (hata ? ' hata' : '');
+    m.textContent = metin;
+  }
+
+  function secimler(liste, tik) {
+    var kap = el('div', 'secimler');
+    liste.forEach(function (x) {
+      var b = el('button', '', x.metin);
+      b.type = 'button';
+      if (x.alt) b.appendChild(el('small', null, x.alt));
+      b.addEventListener('click', function () { tik(x); });
+      kap.appendChild(b);
+    });
+    hKutu.appendChild(kap);
+  }
+
+  function dugmelerKilit(kilit) { hKutu.querySelectorAll('button').forEach(function (b) { b.disabled = kilit; }); }
+
+  // Ekleme isteği. Koltuk doluysa "yine de ekle?" sorar: müşteri zaten koltuktaysa gerçek budur.
+  function ekle(govde, basari) {
+    govde.eylem = 'ekle';
+    govde.tarih = secilenTarih;
+    dugmelerKilit(true);
+    mesaj('Kaydediliyor…');
+    istek(govde).then(function (c) {
+      if (c.pin === false) { pin = ''; sakla(''); girisGoster(c.hata); return; }
+      if (c.ok) { hizliKapat(); bildirimGoster(basari(c), c.wa || ''); yukle(); return; }
+      dugmelerKilit(false);
+      if (c.dolu) {
+        mesaj(c.hata + ' Yine de eklensin mi?', true);
+        var eski = hKutu.querySelector('.hizli-alt');
+        if (eski) eski.remove();
+        altDugmeler([
+          { metin: 'Evet, yine de ekle', sinif: 'tehlike', tik: function () { govde.zorla = true; ekle(govde, basari); } },
+          { metin: 'Vazgeç', tik: hizliKapat }
+        ]);
+        return;
+      }
+      mesaj(c.hata || 'Eklenemedi.', true);
+    }).catch(function () { dugmelerKilit(false); mesaj('Bağlantı hatası. Tekrar deneyin.', true); });
+  }
+
+  function hizmetSecimleri(tik) {
+    if (!hizmetler.length) { mesaj('Bu özellik için Code.gs güncellenmeli (kurulum kılavuzu → Güncelleme).', true); return; }
+    secimler(hizmetler.map(function (h) { return { metin: h.ad, alt: h.sure + ' dk', deger: h.ad }; }), tik);
+  }
+
+  var akislar = {
+    kapi: function () {
+      kutuAc('Kapıdan geldi · hangi hizmet?');
+      hizmetSecimleri(function (x) {
+        ekle({ tur: 'kapi', hizmet: x.deger }, function (c) { return 'Eklendi: ' + c.bas + '–' + c.bit + ' · ' + x.deger + '. Bu sürede o koltuk sitede dolu görünür.'; });
+      });
+      altDugmeler([{ metin: 'Vazgeç', tik: hizliKapat }]);
+    },
+
+    telefon: function () {
+      kutuAc('Telefon randevusu · ' + gunAdi(secilenTarih));
+      hizmetSecimleri(function (h) {
+        kutuAc('Telefon randevusu · ' + h.deger);
+        mesaj('Boş saatler yükleniyor…');
+        istek({ eylem: 'bos', tarih: secilenTarih, hizmet: h.deger }).then(function (c) {
+          if (!c.ok) { mesaj(c.hata || 'Saatler alınamadı.', true); altDugmeler([{ metin: 'Kapat', tik: hizliKapat }]); return; }
+          hKutu.querySelector('.hizli-mesaj').remove();
+          if (!c.saatler.length) { mesaj(c.kapali ? 'Bu gün kapalı.' : 'Bu gün için boş saat kalmadı.', true); altDugmeler([{ metin: 'Kapat', tik: hizliKapat }]); return; }
+          secimler(c.saatler.map(function (s) { return { metin: s, deger: s }; }), function (s) {
+            kutuAc('Telefon randevusu · ' + h.deger + ' · ' + gunAdi(secilenTarih).replace(/^(Bugün|Yarın) · .*/, '$1') + ' ' + s.deger);
+            var ad = el('div', 'alan');
+            ad.innerHTML = '<label for="h-ad">Müşterinin adı <small>(isteğe bağlı)</small></label><input id="h-ad" autocomplete="off">';
+            var tel = el('div', 'alan');
+            tel.innerHTML = '<label for="h-tel">Telefonu <small>(isteğe bağlı; onay ve hatırlatma için)</small></label><input id="h-tel" type="tel" inputmode="tel" placeholder="05xx xxx xx xx" autocomplete="off">';
+            hKutu.appendChild(ad);
+            hKutu.appendChild(tel);
+            altDugmeler([
+              { metin: 'Kaydet', sinif: 'ana', tik: function () {
+                ekle({ tur: 'telefon', hizmet: h.deger, saat: s.deger, ad: $('h-ad').value, telefon: $('h-tel').value },
+                  function (c) { return 'Telefon randevusu eklendi: ' + gunAdi(secilenTarih) + ', ' + c.bas + ' · ' + h.deger + '.'; });
+              } },
+              { metin: 'Vazgeç', tik: hizliKapat }
+            ]);
+            $('h-ad').focus();
+          });
+          altDugmeler([{ metin: 'Vazgeç', tik: hizliKapat }]);
+        }).catch(function () { mesaj('Bağlantı hatası.', true); });
+      });
+      altDugmeler([{ metin: 'Vazgeç', tik: hizliKapat }]);
+    },
+
+    // Mola: var olan "kapat" işlemini şu andan itibaren seçilen süre için kullanır.
+    mola: function () {
+      kutuAc('Mola · şu andan itibaren ne kadar?');
+      secimler([15, 30, 45, 60].map(function (d) { return { metin: d + ' dk', deger: d }; }), function (x) {
+        var simdi = new Date();
+        var bas = Math.floor((simdi.getHours() * 60 + simdi.getMinutes()) / 5) * 5, bit = Math.min(bas + x.deger, 24 * 60 - 1);
+        var hhmm = function (dk) { return iki(Math.floor(dk / 60)) + ':' + iki(dk % 60); };
+        dugmelerKilit(true);
+        mesaj('Kaydediliyor…');
+        istek({ eylem: 'kapat', tarih: secilenTarih, tumGun: false, bas: hhmm(bas), bit: hhmm(bit), not: 'Mola' }).then(function (c) {
+          if (!c.ok) { dugmelerKilit(false); mesaj(c.hata || 'Eklenemedi.', true); return; }
+          hizliKapat();
+          bildirimGoster('Mola: ' + hhmm(bas) + '–' + hhmm(bit) + '. Bu sürede sitede randevu alınamaz.', '',
+            c.cakisan ? 'Bu aralıkta zaten ' + c.cakisan + ' randevu var.' : '');
+          yukle();
+        }).catch(function () { dugmelerKilit(false); mesaj('Bağlantı hatası. Tekrar deneyin.', true); });
+      });
+      altDugmeler([{ metin: 'Vazgeç', tik: hizliKapat }]);
+    }
+  };
+
+  document.querySelectorAll('.hizli button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      akislar[b.dataset.tur]();
+      hKutu.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
   });
 
   giris.addEventListener('submit', function (e) {
