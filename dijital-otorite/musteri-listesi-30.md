@@ -56,6 +56,18 @@ Durum kodları: ⬜ bakılmadı · 🔍 kontrol edildi · 🚶 ziyaret edildi ·
 | 29 | Foto Varol | Fotoğraf stüdyosu | Portföy sitesi + Instagram | ⬜ |
 | 30 | Foto Serdar | Fotoğraf stüdyosu | Portföy sitesi + Instagram (ya da ortak: senin müşterilerinin fotoğrafını çeker) | ⬜ |
 
+## Düğün salonları — ayrı takip (en yüksek iş başı kazanç)
+Röntgen formu: `dijital-otorite/rontgen/` (sektör: Düğün salonu). Rakip tablosuna diğer salonları yaz; salon sahibi rakibini görünce harekete geçer.
+
+| # | Salon | Bilinen | Durum |
+|---|---|---|---|
+| D1 | 3K Kır Düğün Salonu (Cumhuriyet Mah., Prof. Mehmet Sağlam Blv. No:90) | Açık hava, çim alan, ~1000 kişi | ⬜ |
+| D2 | Göksun Park Düğün Salonu (Yeni Mah., hayvan borsası arkası) | dugun.com'da kayıtlı | ⬜ |
+| D3 | Furkan Düğün Salonu (Harbiye Mah., Elbistan yolu) | Instagram + Facebook var | ⬜ |
+| D4 | Masal Park (?) | TikTok'ta geçiyor, Göksun Park ile aynı olabilir: kontrol et | ⬜ |
+| D5 | Garipoğlu Düğün Salonu (Harbiye Mah.) | Rehberde "kapanmak üzere": önce teyit et | ⬜ |
+| D6+ | _Selahattin'in bildiği diğer büyük/konseptli salonlar_ | | ⬜ |
+
 ## Günlük düzen
 1. Sabah: 5 işletmeyi Haritalar'da kontrol et, G/W/I sonucunu buraya yaz (Claude'a yapıştır, o işlesin).
 2. Sıcak adaylar için Claude'dan 1 sayfalık "Dijital Röntgen" iste.

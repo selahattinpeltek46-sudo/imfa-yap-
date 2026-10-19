@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Dijital Röntgen | Dijital Otorite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Tek sayfa röntgen formu: telefonda doldurulur, A4 olarak yazdırılır / PDF'e kaydedilir. */
+:root{--navy:#0D1834;--gold:#E3B341;--bg:#F4F2EC;--paper:#fff;--fg:#14182A;--muted:#5D6375;--line:#DDD8CC;
+  --ok:#1E7A4F;--ok-soft:#DFF2E7;--mid:#A86A00;--mid-soft:#FBEFD3;--bad:#B3261E;--bad-soft:#F9E0DE}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 "IBM Plex Sans",system-ui,sans-serif}
+.bar{position:sticky;top:0;z-index:5;background:var(--navy);color:#fff;padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bar b{font:800 18px "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gold);margin-right:auto}
+.bar select,.bar button{font:600 14px inherit;font-family:inherit;border:0;border-radius:8px;padding:8px 12px}
+.bar button{background:var(--gold);color:var(--navy);cursor:pointer}
+.page{max-width:794px;margin:16px auto 48px;background:var(--paper);padding:28px 32px;box-shadow:0 2px 14px rgba(13,24,52,.08)}
+header.top{display:flex;justify-content:space-between;gap:16px;border-bottom:4px solid var(--navy);padding-bottom:12px}
+h1{font:800 40px/1 "Barlow Condensed",sans-serif;margin:0;color:var(--navy);letter-spacing:.02em}
+h1 span{color:var(--gold)}
+.brand{text-align:right;font-size:12px;color:var(--muted)}
+.brand strong{display:block;font:800 18px "Barlow Condensed",sans-serif;color:var(--navy)}
+.patient{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin:14px 0 4px;font-size:14px}
+.patient label{color:var(--muted);font-size:12px;display:block}
+[contenteditable]{border-bottom:1px dashed var(--line);min-height:1.5em;outline:none;padding:1px 2px}
+[contenteditable]:empty::before{content:attr(data-ph);color:#B4B0A6}
+[contenteditable]:focus{background:#FFF8E4}
+h2{font:800 20px "Barlow Condensed",sans-serif;color:var(--navy);margin:22px 0 8px;letter-spacing:.03em;text-transform:uppercase}
+h2 small{font:500 12px "IBM Plex Sans";text-transform:none;color:var(--muted);letter-spacing:0;margin-left:6px}
+.score{display:flex;align-items:center;gap:16px;background:var(--navy);color:#fff;border-radius:10px;padding:14px 18px;margin-top:14px}
+.score .num{font:800 54px/1 "Barlow Condensed",sans-serif;color:var(--gold);min-width:110px}
+.score .num small{font-size:22px;color:#fff;opacity:.7}
+.score p{margin:0;font-size:14px}
+.score p b{font-size:17px;display:block}
+.organ{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden;break-inside:avoid}
+.organ h3{margin:0;padding:8px 12px;background:#F7F5F0;font-size:15px;display:flex;justify-content:space-between}
+.organ h3 em{font-style:normal;font-weight:500;color:var(--muted);font-size:13px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 78px;gap:10px;padding:6px 12px;border-top:1px solid #EEEAE0;align-items:center;font-size:14px}
+.chip{border:0;border-radius:99px;font:700 12px inherit;font-family:inherit;padding:5px 0;cursor:pointer;background:#EEE;color:#888;width:78px}
+.chip[data-s="2"]{background:var(--ok-soft);color:var(--ok)}
+.chip[data-s="1"]{background:var(--mid-soft);color:var(--mid)}
+.chip[data-s="0"]{background:var(--bad-soft);color:var(--bad)}
+.note{padding:6px 12px 10px;font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+th{background:var(--navy);color:#fff;font-weight:600}
+td.me{background:#FFF8E4;font-weight:600}
+.loss{background:var(--bad-soft);border-left:5px solid var(--bad);padding:10px 14px;border-radius:6px;font-size:14px}
+.rx{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.rx li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;break-inside:avoid}
+.rx .n{width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--navy);font:800 16px/28px "Barlow Condensed";text-align:center}
+.rx b{display:block}
+.rx .p{font-weight:700;color:var(--navy);white-space:nowrap}
+.cta{margin-top:18px;background:var(--navy);color:#fff;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.cta b{color:var(--gold);font:800 22px "Barlow Condensed",sans-serif}
+.foot{font-size:11px;color:var(--muted);margin-top:10px}
+@media (max-width:600px){.page{padding:18px 16px;margin:0}.patient{grid-template-columns:1fr}h1{font-size:32px}header.top{flex-direction:column}.brand{text-align:left}
+  .score{flex-direction:column;align-items:flex-start;gap:6px}.rx li{grid-template-columns:28px minmax(0,1fr)}.rx .p{grid-column:2}}
+@media print{@page{size:A4;margin:10mm}body{background:#fff;font-size:12.5px}.bar{display:none}.page{box-shadow:none;margin:0;max-width:none;padding:0}
+  [contenteditable]{border:0}[contenteditable]:empty::before{content:""}h2{margin:12px 0 6px}.score .num{font-size:44px}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>DİJİTAL RÖNTGEN</b>
+  <select id="sector" aria-label="Sektör">
+    <option value="dugun">Düğün salonu</option>
+    <option value="genel">Genel esnaf</option>
+  </select>
+  <button type="button" id="reset">Temizle</button>
+  <button type="button" onclick="print()">PDF / Yazdır</button>
+</div>
+
+<main class="page">
+  <header class="top">
+    <div>
+      <h1>DİJİTAL <span>RÖNTGEN</span></h1>
+      <div style="color:var(--muted);font-size:13px">Ücretsiz ön inceleme · Teşhis → Reçete</div>
+    </div>
+    <div class="brand"><strong>Dijital Otorite</strong>Göksun esnafının dijital doktoru<br>@dijital.otorite</div>
+  </header>
+
+  <section class="patient">
+    <div><label>İşletme (hasta)</label><div contenteditable data-k="ad" data-ph="Örn. Furkan Düğün Salonu"></div></div>
+    <div><label>Tarih</label><div contenteditable data-k="tarih" data-ph="gg.aa.yyyy"></div></div>
+    <div><label>Yetkili</label><div contenteditable data-k="yetkili" data-ph="Ad Soyad"></div></div>
+    <div><label>Şikâyet (işletmenin söylediği)</label><div contenteditable data-k="sikayet" data-ph="Örn. Hafta içi boş, rezervasyon az"></div></div>
+  </section>
+
+  <div class="score">
+    <div class="num"><span id="pct">–</span><small>/100</small></div>
+    <p><b id="verdict">Kontroller işaretlenince puan hesaplanır</b>Dijital sağlık puanı · Göksun'da sizi arayan müşteri ne görüyor?</p>
+  </div>
+
+  <h2>1 · Teşhis <small>her satıra dokun: Var → Zayıf → Yok</small></h2>
+  <div id="organs"></div>
+
+  <h2>2 · Rakip karşılaştırması <small>Google'da "Göksun <span class="kw">düğün salonu</span>" yazınca</small></h2>
+  <table>
+    <thead><tr><th>Ölçüt</th><th>Siz</th><th contenteditable data-k="r1" data-ph="Rakip 1"></th><th contenteditable data-k="r2" data-ph="Rakip 2"></th></tr></thead>
+    <tbody id="rivals"></tbody>
+  </table>
+
+  <h2>3 · Kaybedilen müşteri</h2>
+  <div class="loss" contenteditable data-k="kayip" data-ph="Örn. Çiftler salonu önce Instagram'da ve Google'da arıyor. Fotoğrafınız ve fiyat aralığınız görünmediği için ilk mesajı rakibe atıyorlar. Ayda 1 düğün bile kaçsa yıllık kayıp ___ TL."></div>
+
+  <h2>4 · Reçete</h2>
+  <ul class="rx" id="rx"></ul>
+
+  <div class="cta">
+    <div>İlk adım ücretsiz: Google profilinizi birlikte düzeltelim.<br><span style="opacity:.8;font-size:13px">Reçeteyi uygulamazsanız bu rapor sizde kalır.</span></div>
+    <b contenteditable data-k="tel" data-ph="Telefon"></b>
+  </div>
+  <p class="foot">Bu rapor herkese açık bilgilere (Google, Instagram, web) bakılarak hazırlanmıştır. Dijital Otorite · Göksun / Kahramanmaraş</p>
+</main>
+
+<script>
+const SECTORS = {
+  dugun: {
+    kw: "düğün salonu",
+    organs: [
+      ["Google İşletme Profili", "Çiftlerin ilk baktığı yer", [
+        "Profil var ve kategorisi \"Düğün salonu\"",
+        "En az 20 güncel fotoğraf (salon, masa düzeni, gece ışığı, dış cephe)",
+        "Puan 4.5+ ve en az 30 yorum",
+        "Yorumlara işletme cevap veriyor",
+        "Telefon, adres, çalışma saati doğru"]],
+      ["Web sitesi", "Fiyat ve paket sorusu burada biter", [
+        "Kendi web sitesi var",
+        "Kapasite, paketler ve fiyat aralığı yazıyor",
+        "Galeri / video var",
+        "\"Tarih sor\" WhatsApp butonu var",
+        "Telefonda hızlı ve düzgün açılıyor"]],
+      ["Instagram", "Gelin adaylarının vitrin turu", [
+        "Son 7 gün içinde paylaşım var",
+        "Reels (düğün anı, salon hazırlığı) düzenli",
+        "Öne çıkanlarda paketler, menü, iletişim",
+        "Gelin-damat etiketleri ve yorumları paylaşılıyor"]],
+      ["Ulaşılabilirlik", "Mesaj atan çift cevap alıyor mu?", [
+        "WhatsApp Business (otomatik karşılama) var",
+        "Mesajlara aynı gün dönülüyor",
+        "dugun.com gibi platformlarda kayıtlı"]]
+    ],
+    rivals: ["Google puanı / yorum sayısı","Fotoğraf sayısı","Web sitesi","Instagram (son paylaşım)","Kapasite / konsept görünüyor mu"],
+    rx: [
+      ["Google Profili tedavisi", "Kategori, 30+ profesyonel fotoğraf, yorum toplama kartı (masa QR), haftalık gönderi", "2.500–4.000 ₺"],
+      ["Düğün salonu web sitesi", "Paketler, kapasite, galeri, boş tarih sorgulama + WhatsApp, Google'da \"Göksun düğün salonu\" için optimize", "8.000–15.000 ₺"],
+      ["Aylık vitrin bakımı", "Ayda 12 gönderi + 8 reels (her düğünden kısa video), aylık rapor", "3.000–6.000 ₺/ay"]
+    ]
+  },
+  genel: {
+    kw: "işletme türünüz",
+    organs: [
+      ["Google İşletme Profili", "Müşteri sizi haritada buluyor mu?", [
+        "Profil var, kategori doğru",
+        "En az 10 güncel fotoğraf",
+        "Puan 4.5+ ve en az 20 yorum",
+        "Telefon, adres, çalışma saati doğru"]],
+      ["Web sitesi", "Güven ve bilgi", [
+        "Kendi web sitesi var",
+        "Hizmetler / ürünler ve fiyat bilgisi var",
+        "WhatsApp / ara butonu var"]],
+      ["Instagram", "Vitrin", [
+        "Son 7 gün içinde paylaşım var",
+        "Ürün / hizmet fotoğrafları kaliteli",
+        "Bio'da konum ve iletişim var"]]
+    ],
+    rivals: ["Google puanı / yorum sayısı","Fotoğraf sayısı","Web sitesi","Instagram (son paylaşım)"],
+    rx: [
+      ["Google Profili tedavisi", "Kategori, fotoğraf, yorum toplama kartı, doğru bilgiler", "2.500–4.000 ₺"],
+      ["Web sitesi", "Hizmetler, galeri, WhatsApp butonu, Google'da Göksun aramaları için optimize", "8.000–15.000 ₺"],
+      ["Aylık sosyal medya", "Ayda 12 gönderi, aylık rapor", "3.000–6.000 ₺/ay"]
+    ]
+  }
+};
+
+const LABEL = {2:"Var", 1:"Zayıf", 0:"Yok"};
+const KEY = "rontgen-taslak";
+let state = load();
+
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+function render(){
+  const s = SECTORS[state.sector || "dugun"];
+  document.getElementById("sector").value = state.sector || "dugun";
+  document.querySelectorAll(".kw").forEach(el => el.textContent = s.kw);
+  state.marks = state.marks || {};
+
+  document.getElementById("organs").innerHTML = s.organs.map(([name, why, items], oi) => `
+    <div class="organ"><h3>${name} <em>${why}</em></h3>
+    ${items.map((t, ii) => { const id = oi+"-"+ii, v = state.marks[id];
+      return `<div class="row"><span>${t}</span><button type="button" class="chip" data-id="${id}" data-s="${v ?? ""}">${v === undefined ? "?" : LABEL[v]}</button></div>`; }).join("")}
+    <div class="note" contenteditable data-k="not-${oi}" data-ph="Gözlem notu (ör. son paylaşım Mart 2025)"></div></div>`).join("");
+
+  document.getElementById("rivals").innerHTML = s.rivals.map((r, i) =>
+    `<tr><td>${r}</td>${["me","a","b"].map(c => `<td class="${c === "me" ? "me" : ""}" contenteditable data-k="rv-${i}-${c}"></td>`).join("")}</tr>`).join("");
+
+  document.getElementById("rx").innerHTML = s.rx.map(([t, d, p], i) =>
+    `<li><span class="n">${i+1}</span><div><b>${t}</b>${d}</div><span class="p" contenteditable data-k="fiyat-${i}">${state.text?.["fiyat-"+i] ?? p}</span></li>`).join("");
+
+  state.text = state.text || {};
+  document.querySelectorAll("[data-k]").forEach(el => { const v = state.text[el.dataset.k]; if (v !== undefined) el.textContent = v; });
+  score();
+}
+
+function score(){
+  const vals = Object.entries(state.marks).filter(([id]) => document.querySelector(`.chip[data-id="${id}"]`)).map(([, v]) => v);
+  const pct = document.getElementById("pct"), verdict = document.getElementById("verdict");
+  if (!vals.length){ pct.textContent = "–"; verdict.textContent = "Kontroller işaretlenince puan hesaplanır"; return; }
+  const p = Math.round(vals.reduce((a, b) => a + b, 0) / (vals.length * 2) * 100);
+  pct.textContent = p;
+  verdict.textContent = p >= 75 ? "Sağlıklı: küçük bakım yeterli" : p >= 45 ? "Ayakta tedavi: müşteri kaçırıyorsunuz" : "Acil müdahale: müşteri sizi bulamıyor";
+}
+
+document.addEventListener("click", e => {
+  const c = e.target.closest(".chip"); if (!c) return;
+  const cur = state.marks[c.dataset.id];
+  const next = cur === undefined ? 2 : cur === 0 ? undefined : cur - 1;
+  if (next === undefined) delete state.marks[c.dataset.id]; else state.marks[c.dataset.id] = next;
+  c.dataset.s = next ?? ""; c.textContent = next === undefined ? "?" : LABEL[next];
+  save(); score();
+});
+document.addEventListener("input", e => {
+  const k = e.target.dataset?.k; if (!k) return;
+  state.text = state.text || {}; state.text[k] = e.target.textContent; save();
+});
+document.getElementById("sector").addEventListener("change", e => { state.sector = e.target.value; state.marks = {}; save(); render(); });
+document.getElementById("reset").addEventListener("click", () => { if (confirm("Form temizlensin mi?")){ state = {sector: state.sector}; save(); render(); } });
+render();
+</script>
+</body>
+</html>
