@@ -1,0 +1,72 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="btfont/local.css">
+<style>
+:root{--panel:#2a2c30;--panel2:#34363b;--duvar:#e3e3df;--duvar2:#d6d6d1;--kirik:#f3f1ec;--sis:#b4b5b3;--led:#f2b84b;--hali:#a3161f;--wa:#1c9e53;--murekkep:#1d1e21;--gri:#55585e;
+--b:"Alfa Slab One",Georgia,serif;--g:"Barlow",Arial,sans-serif;--e:"Barlow Condensed","Arial Narrow",sans-serif}
+*{box-sizing:border-box;margin:0}
+body{width:1080px;background:var(--duvar);font:500 30px/1.4 var(--g);color:var(--murekkep)}
+header{background:var(--panel);color:var(--kirik);padding:64px 64px 52px;border-bottom:10px solid var(--hali)}
+header .k{font:600 28px var(--e);letter-spacing:.14em;text-transform:uppercase;color:var(--led)}
+header h1{font:400 92px/1 var(--b);margin:14px 0 18px}
+header p{font-size:31px;color:var(--sis);max-width:900px}
+main{padding:48px 64px 20px;display:flex;flex-direction:column;gap:34px}
+.adim{background:#fbfbf9;border-radius:14px;padding:38px 40px;display:grid;grid-template-columns:84px minmax(0,1fr);gap:8px 28px;box-shadow:0 2px 0 #c9c9c4}
+.no{grid-row:span 3;width:84px;height:84px;border-radius:50%;background:var(--panel);color:var(--led);display:grid;place-items:center;font:400 46px var(--b)}
+.adim h2{font:700 46px/1.1 var(--e);letter-spacing:.01em}
+.adim p{color:var(--gri)}
+.adim p b{color:var(--murekkep)}
+.res{grid-column:2;display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;align-items:flex-start}
+.res img{width:420px;border-radius:10px;border:3px solid var(--duvar2);display:block}
+.res img.genis{width:100%;max-width:640px}
+.yol{font:600 30px var(--e);background:var(--panel);color:var(--kirik);padding:10px 18px;border-radius:8px;display:inline-block;margin-top:10px;letter-spacing:.02em}
+.etiket{display:inline-block;font:700 28px var(--e);padding:2px 14px;border-radius:6px;background:var(--led);color:var(--panel)}
+.etiket.k{background:var(--panel);color:var(--kirik)}
+.kural{background:var(--hali);color:#fff;border-radius:14px;padding:40px 44px}
+.kural .k{font:600 28px var(--e);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.kural h2{font:400 54px/1.1 var(--b);margin:10px 0 14px}
+.kural p{font-size:31px}
+footer{padding:30px 64px 60px;color:var(--gri);font-size:27px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer b{color:var(--murekkep)}
+</style></head><body>
+<header>
+  <div class="k">Barber's Town · Randevu paneli</div>
+  <h1>Nasıl kullanılır?</h1>
+  <p>Telefonunuzdan açılan panel: günün randevuları, kapıdan gelen müşteri, telefonla arayan, mola. Her şey birkaç dokunuşta.</p>
+</header>
+<main>
+  <section class="adim"><div class="no">1</div>
+    <h2>Paneli açın, ana ekrana ekleyin</h2>
+    <p>Size WhatsApp'tan gelen bağlantıyı açın, <b>6 haneli şifreyi</b> bir kez girin; telefon hatırlar. Chrome'da <b>⋮ → Ana ekrana ekle</b> deyin, uygulama gibi açılır.</p>
+    <div class="res"><span class="yol">⋮ → Ana ekrana ekle</span></div>
+  </section>
+
+  <section class="adim"><div class="no">2</div>
+    <h2>Kapıdan müşteri geldi</h2>
+    <p><span class="etiket">＋ Kapıdan geldi</span> → hizmete dokunun. Bitti. Müşteri şu andan itibaren eklenir, o koltuk sitede <b>dolu</b> görünür.</p>
+    <div class="res"><img src="kk-dugmeler.png" alt=""><img src="kk-hizmet.png" alt=""></div>
+  </section>
+
+  <section class="adim"><div class="no">3</div>
+    <h2>Telefonla randevu istendi</h2>
+    <p>Önce günü seçin (Bugün / Yarın / tarih). <span class="etiket k">＋ Telefon randevusu</span> → hizmet → saat → ad ve telefon → <b>Kaydet</b>. Sonra <b>“Müşteriye WhatsApp'tan bildir”</b>e basın, onay mesajı hazır açılır.</p>
+    <div class="res"><img src="kk-form.png" alt=""><img src="kk-onay.png" alt=""></div>
+  </section>
+
+  <section class="adim"><div class="no">4</div>
+    <h2>Mola, izin, erken kapanış</h2>
+    <p><b>Mola ver</b> → 15 / 30 / 45 / 60 dk. Daha uzun aralık, izin ya da tatil için <b>Saat / gün kapat</b>. Kapattığınız saatlere siteden randevu alınamaz; yanlışsa satırdaki <b>Kaldır</b> ile geri açılır.</p>
+  </section>
+
+  <section class="adim"><div class="no">5</div>
+    <h2>Değişiklik ve iptal</h2>
+    <p>Her randevunun altında: <b>Ara</b>, <b>WhatsApp hatırlatma</b>, <b>Saati değiştir</b>, <b>İptal et</b>. Saat değişince ya da iptal olunca müşteriye gidecek mesaj hazır gelir.</p>
+    <div class="res"><img class="genis" src="kk-kart.png" alt=""></div>
+  </section>
+
+  <section class="kural">
+    <div class="k">Tek kural</div>
+    <h2>Her müşteri panele girsin.</h2>
+    <p>Kapıdan gelen ya da telefonla arayan müşteriyi eklemezseniz sistem o saati boş sanır ve siteden aynı saate başka biri randevu alabilir.</p>
+  </section>
+</main>
+<footer><span>Takıldığınız an: <b>Selahattin · Dijital Otorite</b></span><span><b>0539 300 95 65</b> (WhatsApp)</span></footer>
+</body></html>
