@@ -129,3 +129,12 @@ Kullanıcı isteği: "hepsini yap ve analiz et — doğru mu, yanlışlık/aksi 
 - Takvime elle eklenen telefonsuz randevulara otomatik hatırlatma yok.
 - iOS'ta bazı uygulama içi tarayıcılar (.ics data bağlantısı) indirmeyi engelleyebilir → "Google Takvim" yedek düğmesi duruyor.
 - Canlı Google ortamında henüz denenmedi: kullanıcı Code.gs + appsscript.json'u güncelleyip `kurulum` + yeni sürüm dağıtımı yapmalı (KURULUM.md §4b).
+
+---
+# REVİZYON 5 — Panelde tek dokunuşla müşteri ekleme (2026-10-19)
+
+- Panel: **＋ Kapıdan geldi** (2 dokunuş, yalnız bugün), **＋ Telefon randevusu** (hizmet → boş saat → ad/telefon → onay WhatsApp'ı), **Mola ver** (15/30/45/60 dk). Koltuk doluysa "yine de ekle?".
+- Code.gs: `bos`, `ekle` panel eylemleri, `hizliPlan`; 24 yeni entegrasyon testi (toplam 101/101).
+- Site ve panel isteklerine zaman aşımı (12/25/20 sn) → sunucu yanıt vermezse WhatsApp yedeği.
+- **Gerçek demo testi (kullanıcı, kendi Google hesabı):** Code.gs + appsscript.json güncellendi, kurulum çalıştırıldı, 3. sürüm dağıtıldı → yeni düğmeler çalıştı. ✅
+- Takılınan yer: appsscript.json'da `script.scriptapp` izni eksikti; ilk "Yeni sürüm" kaydedilmemiş kodla alındığı için panel "Code.gs güncellenmeli" dedi → kaydedip 3. sürüm alınınca düzeldi.
