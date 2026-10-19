@@ -63,3 +63,6 @@ Sonuç: ilan değil hikâye; esnaf kendini görmeli.
 - Seedance (AI video) bakiyesi bitti (Ekim 2026); Dükkân Amca videoları için bakiye gerekiyor.
 - Dükkân Amca karakter referansı: `dukkan-amca/gorseller/karakter-karti.png` (kel, beyaz yan saç, beyaz pala bıyık, açık mavi gömlek, kahverengi önlük). Her yeni sahnede bu görsel referans yüklenir. `sahne4-deneme.png` ve `kapak-deneme.png` karaktere uymuyor (yeşil yelek, gri saç) — kullanma.
 - Video şablonlarında `<html lang="tr">` şart; yoksa büyük harfte İ → I olur.
+
+## Müşteri avı
+`dijital-otorite/musteri-listesi-30.md`: Göksun'da ilk 30 hedef işletme (A: düğün/otel/mobilya/et lokantası/oto; B: kafe-pastane; C: sanayi/hizmet). Hedef: 2 haftada 30 ziyaret → 3–5 müşteri. Durumları bu dosyada güncelle.
