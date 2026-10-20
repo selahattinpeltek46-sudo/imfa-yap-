@@ -20,9 +20,9 @@ Son güncelleme: 2026-10-20
 | 14 | Visual Intelligence | 2 | ⚠️ RİSK | 41 gerçek kare ama 349 px (ekran kaydı); orijinaller istendi |
 | 15 | Tech Stack & Plan | 3 | ✅ TAMAMLANDI | Statik + uret.py; WhatsApp/IG DM tek ayardan |
 | 16 | Development | 3 | ✅ TAMAMLANDI | 7 sayfa; 11 kabul ölçütü testle geçti |
-| 17 | Evaluation | 4 | ⏳ BEKLİYOR | |
-| 18 | Audit | 4 | ⏳ BEKLİYOR | |
-| 19 | Revision | 4 | ⏳ BEKLİYOR | |
-| 20 | Final QA | 4 | ⏳ BEKLİYOR | |
-| 21 | Handoff | 4 | ⏳ BEKLİYOR | |
-| 22 | Learning / System Update | 4 | ⏳ BEKLİYOR | |
+| 17 | Evaluation | 4 | ✅ TAMAMLANDI |  |
+| 18 | Audit | 4 | ✅ TAMAMLANDI | 11 bulgu; KRİTİK 1 (numara) |
+| 19 | Revision | 4 | ⚠️ RİSK | Numara ve orijinal fotoğraf müşteri girdisine bağlı |
+| 20 | Final QA | 4 | ⚠️ RİSK | WhatsApp gerçek numarayla test edilemedi (mekanizma ✔) |
+| 21 | Handoff | 4 | ✅ TAMAMLANDI | Müşteriden 6 madde bekleniyor |
+| 22 | Learning / System Update | 4 | ✅ TAMAMLANDI | SKILL.md güncellendi |

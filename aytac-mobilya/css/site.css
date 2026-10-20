@@ -196,7 +196,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .mesaj__sol>p{max-width:58ch;color:#c9ccd2}
 .hazirlayici fieldset{border:0;margin:0 0 18px;padding:0}
 .hazirlayici legend,.alan>span{display:block;font:500 .78rem var(--mono);letter-spacing:.03em;color:#a9adb6;margin-bottom:8px}
-.alan small{color:#7f838c}
+.alan small{color:#a2a6ae}
 .cipler{display:flex;flex-wrap:wrap;gap:8px}
 .cip{position:relative;cursor:pointer}
 .cip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}

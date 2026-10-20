@@ -235,7 +235,7 @@ def mesaj_bolumu(k, secili=None, baslik="Ne yaptırmak istiyorsunuz?"):
         30 Ağustos Mah., 2071. Sk. No:14A<br>06794 Etimesgut / Ankara
       </address>
       <p class="konum__kod"><span>Plus code</span> WMV2+23 Etimesgut</p>
-      <p class="konum__saat">Bugünkü açılış ve kapanış saatini Google Haritalar'da görebilirsiniz. Gelmeden önce yazmanızı öneririz; ölçü ve montaj için dışarıda olabiliyoruz.</p>
+      <p class="konum__saat">Bugünkü açılış ve kapanış saatini Google Haritalar'da görebilirsiniz. Gelmeden önce yazmanızı öneririz.</p>
       <ul class="konum__linkler">
         <li data-tel-satiri hidden><a data-tel data-olay="telefon_tikla" href="#">Telefon</a></li>
         <li><a href="{YOL}" target="_blank" rel="noopener" data-olay="yol_tarifi_tikla">Yol tarifi al</a></li>
@@ -374,7 +374,7 @@ def ana_sayfa():
     {isaretli("mutfak-tavan-bandi-led", k, sinif="yakin__foto")}
     <div class="yakin__metin">
       <h2 id="yakin-baslik" class="led">Bir mutfakta nelere bakmalı</h2>
-      <p>Bu mutfak bir müşterimizin evinden. Fotoğrafta görebildikleriniz:</p>
+      <p>Bu mutfak Instagram'da paylaştığımız işlerden biri. Fotoğrafta görebildikleriniz:</p>
       <ol class="detay">
         <li>Tavan bandına gizlenmiş şerit ışık</li>
         <li>Üst dolapta cam kapaklı, içi ışıklı vitrin</li>
@@ -561,7 +561,7 @@ def isler_sayfasi():
 <section class="kap hizmet-giris hizmet-giris--tek">
   <div class="hizmet-giris__metin">
     <h1>Yaptığımız işler</h1>
-    <p class="giris__alt">Hepsi müşteri evlerinden ve Instagram hesabımızdan. Bazı karelerde koruma naylonu ya da matkap göreceksiniz; fotoğrafları düzenlemeden paylaşıyoruz.</p>
+    <p class="giris__alt">Hepsi Instagram hesabımızda paylaştığımız işler. Bazı karelerde koruma naylonu ya da matkap göreceksiniz; fotoğrafları düzenlemeden paylaşıyoruz.</p>
   </div>
 </section>
 <section class="kap bolum galeri" aria-label="Fotoğraflar">

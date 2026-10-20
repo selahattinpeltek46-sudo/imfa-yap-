@@ -80,7 +80,7 @@ H1 + kaynak açıklaması → tür süzgeci (Tümü / Mutfak / Gardırop / Banyo
   - Vestiyer ve antre — oturma nişi, ayakkabılık, kiler rafı, petek örtüsü
   - TV ünitesi ve kitaplık — ışıklı niş, tavana kadar raf
 - **H2 Yakından bakın:** Bir mutfakta nelere bakmalı
-  - Gövde: "Bu mutfak bir müşterimizin evinden. Fotoğrafta görebildikleriniz:"
+  - Gövde: "Bu mutfak Instagram'da paylaştığımız işlerden biri. Fotoğrafta görebildikleriniz:" *(18. aşamada düzeltildi: "müşterimizin evinden" çıkarımdı)*
   - Liste: Tavan bandına gizlenmiş şerit ışık · Üst dolapta cam kapaklı, içi aydınlatmalı vitrin · Tezgâh boyunca uzanan alt dolap, ankastre fırın yeri · Duvara kadar giden üst dolap sırası, boşluk bırakmadan · Kulpsuz görünen kapaklar
   - Not: "Kendi mutfağınız için hangilerinin olacağını ölçü günü birlikte konuşuruz." → **[düzeltme 19]** "birlikte konuşuruz" süreç vaadi; bio "Ölçü, Proje" ile tutarlı, kalır.
 - **H2 Nasıl ilerliyor** (id `surec`):
@@ -104,7 +104,7 @@ H1 + kaynak açıklaması → tür süzgeci (Tümü / Mutfak / Gardırop / Banyo
   - Önizleme mesajı: "Merhaba Aytaç Mobilya, [iş türleri] için bilgi almak istiyorum. Semt: [semt]. [not] Odanın fotoğraflarını bu mesajın ardından gönderiyorum."
   - Düğme: WhatsApp'tan gönder / (numara yokken) Mesajı kopyala ve Instagram'ı aç
   - Gizlilik satırı: Bu kutuya yazdıklarınız bize iletilmez; yalnız mesaj metni hazırlanır.
-- **Konum:** 30 Ağustos, 2071. Sk. 14A, 06794 Etimesgut/Ankara · Plus code WMV2+23 · "Bugünkü açılış-kapanış saatini Google Haritalar'da görün; gelmeden önce yazmanızı öneririz." · Yol tarifi · Instagram
+- **Konum:** 30 Ağustos, 2071. Sk. 14A, 06794 Etimesgut/Ankara · Plus code WMV2+23 · "Bugünkü açılış ve kapanış saatini Google Haritalar'da görebilirsiniz. Gelmeden önce yazmanızı öneririz." · Yol tarifi · Instagram
 - **Alt bilgi:** NAP · sayfalar · "Fotoğraflar: @aytac_mobilya Instagram paylaşımları." · gizlilik notu.
 
 ### /mutfak-dolabi/
@@ -153,8 +153,8 @@ H1 + kaynak açıklaması → tür süzgeci (Tümü / Mutfak / Gardırop / Banyo
 - **Title:** Yaptığımız İşler, Gerçek Ev Fotoğrafları | Aytaç Mobilya (55)
 - **Meta:** Aytaç Mobilya'nın kurduğu mutfak, gardırop, banyo, vestiyer, TV ünitesi ve mağaza işlerinden 41 fotoğraf. Stok görsel yok; hepsi Instagram paylaşımlarımızdan.
 - **H1:** Yaptığımız işler
-- **Giriş:** Hepsi müşteri evlerinden ve Instagram hesabımızdan. Bazı karelerde koruma naylonu, matkap ya da montaj artığı göreceksiniz — teslim günü çekildiler.
-  - **[Düzeltme]** "teslim günü çekildiler" çıkarımdır → "Bazı karelerde koruma naylonu, matkap ya da montaj artığı göreceksiniz; işin bittiği gün çekilmiş halleri." da çıkarım → nihai: "Bazı karelerde koruma naylonu ya da matkap göreceksiniz; fotoğrafları düzenlemeden paylaşıyoruz." (rötuşsuz paylaşım görülebilir bir gerçek.)
+- **Giriş (nihai):** Hepsi Instagram hesabımızda paylaştığımız işler. Bazı karelerde koruma naylonu ya da matkap göreceksiniz; fotoğrafları düzenlemeden paylaşıyoruz.
+  - *Düzeltme notu:* ilk taslaktaki "hepsi müşteri evlerinden" ve "teslim günü çekildiler" çıkarımdı (galeride mağaza/ofis ve olası showroom kareleri var) → 18. aşamada çıkarıldı.
 
 **Kanıtsız iddia taraması:** "kendimiz üretip" (bio "İmalat" + kategori ✅) · "Ölçü, proje, montaj bizde" (bio ✅) · "131 / 5,0" (kart, tarihli ✅) · "41 iş" (sitedeki kare sayısı ✅) · "hepsi bizim kurduğumuz" (kendi hesaplarında paylaştıkları iş; ✅ makul, müşteri teyidi istenir) · garanti, süre, fiyat, malzeme, yıl: **yok** ✅.
 
