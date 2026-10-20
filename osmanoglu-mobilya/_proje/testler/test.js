@@ -6,7 +6,7 @@ const yollar = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'karavan-mobilyas
   'projeler/aynali-citali-antre/', 'nasil-calisiyoruz/', 'bilgi-merkezi/', 'bilgi-merkezi/mutfak-dolabi-yaptirmadan-once/',
   'bilgi-merkezi/kaba-olcu-nasil-alinir/', 'iletisim/'];
 // fotoğraflı tam boy hero'su olan sayfalar
-const fotolu = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'projeler/pencere-onu-l-mutfak/', 'projeler/aynali-citali-antre/'];
+const fotolu = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'karavan-mobilyasi/', 'projeler/pencere-onu-l-mutfak/', 'projeler/aynali-citali-antre/'];
 (async () => {
   const b = await chromium.launch();
   let hata = 0, test = 0;
@@ -107,6 +107,22 @@ const fotolu = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'projeler/pencere
   const pr = await (await b.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' })).newPage();
   await pr.goto(B, { waitUntil: 'networkidle' });
   ok(await pr.evaluate(() => document.querySelector('[data-mozaik]').classList.contains('durdu')), 'reduced-motion: mozaik duruk');
+  // Instagram galerisi: büyütme yok, süzgeç çalışıyor
+  for (const vp of [{ width: 1440, height: 900 }, { width: 375, height: 760 }]) {
+    const g = await (await b.newContext({ viewport: vp })).newPage();
+    await g.goto(B + 'projeler/', { waitUntil: 'networkidle' });
+    await g.evaluate(async () => { for (let i = 0; i < document.body.scrollHeight; i += 500) { scrollTo(0, i); await new Promise(r => setTimeout(r, 30)); } });
+    const buyuk = await g.evaluate(() => [...document.querySelectorAll('.ig-kare img')].filter(i => i.getBoundingClientRect().width > i.naturalWidth + 1).length);
+    ok(buyuk === 0, `${vp.width} galeride büyütülen kare ${buyuk}`);
+    if (vp.width === 1440) {
+      const say = () => g.evaluate(() => [...document.querySelectorAll('#galeri .ig-kare')].filter(f => !f.hidden).length);
+      const hepsi = await say();
+      await g.click('#galeri [data-suz="karavan"]');
+      ok(await say() === 4 && hepsi > 20, `süzgeç karavan 4 / hepsi ${hepsi}: ${await say()}`);
+      await g.click('#galeri [data-suz="hepsi"]');
+      ok(await say() === hepsi, 'süzgeç hepsi geri geliyor');
+    }
+  }
   // mesaj hazırlayıcı
   await p.goto(B + 'mutfak-dolabi/', { waitUntil: 'networkidle' });
   ok(await p.locator('input[name=tur]:checked').inputValue() === 'Mutfak dolabı', 'mutfak sayfasında tür ön seçili');

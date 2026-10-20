@@ -430,3 +430,16 @@ legend { font: 600 .72rem/1.3 var(--sans); letter-spacing: .2em; text-transform:
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
 }
+
+/* Instagram galerisi: 351 px kareler büyütülmeden (sütun en fazla ~300 px) */
+.ig-izgara { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 12px; max-width: 1280px; margin: 0 auto; }
+.ig-izgara:has(.ig-kare:nth-child(-n+4):last-child) { grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 300px)); justify-content: center; }
+.ig-kare { position: relative; margin: 0; overflow: hidden; background: var(--tas); }
+.ig-kare img { width: 100%; aspect-ratio: 351 / 430; object-fit: cover; transition: transform 1.2s var(--egri); }
+.ig-kare:hover img { transform: scale(1.04); }
+.ig-kare figcaption { position: absolute; left: 8px; bottom: 8px; background: var(--krem); font: 600 .72rem/1.2 var(--sans); letter-spacing: .03em; padding: 6px 9px; max-width: calc(100% - 16px); }
+.ig-kare[hidden] { display: none !important; }
+.suzgec { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: -16px auto 32px; }
+.suzgec button { font: 600 .82rem/1 var(--sans); padding: 11px 16px; border: 1px solid var(--cizgi); background: transparent; cursor: pointer; }
+.suzgec button.aktif { background: var(--murekkep); color: var(--krem); border-color: var(--murekkep); }
+@media (max-width: 640px) { .ig-izgara, .ig-izgara:has(.ig-kare:nth-child(-n+4):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
