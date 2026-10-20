@@ -1,6 +1,6 @@
 # Aytaç Mobilya — Proje Durumu (SELAHATTİN AI v2.1)
 
-Son güncelleme: 2026-10-20 · Revizyon 1: tasarım inceliği — `revizyon-1-tasarim.md`
+Son güncelleme: 2026-10-20 · Revizyon 1: tasarım inceliği — `revizyon-1-tasarim.md` · Revizyon 2: profesyonel tasarım (Babacan düzeni) — `revizyon-2-profesyonel.md`
 
 | # | Aşama | Modül | Durum | Not |
 |---|---|---|---|---|

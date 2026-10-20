@@ -48,7 +48,7 @@ const B = 'http://localhost:8765/aytac-mobilya/';
   await p.locator('.izgara--galeri li:visible button').first().click();
   ok(await p.locator('[data-buyuk]').isVisible(), 'büyük görünüm açıldı');
   await p.click('[data-benzeri]');
-  const not = await p.inputValue('textarea[name=not]');
+  const not = await p.inputValue('[name=not]');
   ok(not.includes('banyo-oval-led-ayna'), 'not dolduruldu: ' + not.slice(0, 50));
   const href = await p.getAttribute('[data-gonder]', 'href');
   ok(href.startsWith('https://wa.me/905321234567?text=') && decodeURIComponent(href.split('text=')[1]).includes('banyo-oval-led-ayna'), 'wa.me linki notla');
