@@ -17,9 +17,9 @@ Son güncelleme: 2026-10-20
 | 11 | Website Blueprint & Legal | 2 | ✅ TAMAMLANDI | Veri / çerez yok → KVKK ve banner gerekmez |
 | 12 | Copywriting Engine | 2 | ✅ TAMAMLANDI | Tek kaynak `icerik.py` |
 | 13 | SEO & Analytics | 2 | ✅ TAMAMLANDI | GA4 yok; olaylar dataLayer'da |
-| 14 | Visual Intelligence | 2 | ⚠️ RİSK | 5 gerçek kare, ~800 px; orijinaller istendi |
+| 14 | Visual Intelligence | 2 | ✅ TAMAMLANDI | v3: hero mozaiği (5 kare + 9 detay, büyütmesiz); orijinaller yine istenir |
 | 15 | Tech Stack & Plan | 3 | ✅ TAMAMLANDI | Statik + uret.py |
-| 16 | Development | 3 | ✅ TAMAMLANDI | v2 editoryal tasarım; 12 sayfa; 719/719 test |
+| 16 | Development | 3 | ✅ TAMAMLANDI | v3 mozaik hero; 12 sayfa; 717/717 test |
 | 17 | Evaluation | 4 | ✅ TAMAMLANDI | |
 | 18 | Audit | 4 | ✅ TAMAMLANDI | 18 bulgu (v2 dahil) |
 | 19 | Revision | 4 | ✅ TAMAMLANDI | Açık kalanlar müşteri girdisine bağlı |

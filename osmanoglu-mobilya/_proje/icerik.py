@@ -10,7 +10,7 @@ PUAN, YORUM_SAYISI = "4,9", 26
 
 # ---------------------------------------------------------------- fotoğraflar
 # Kaynak: kullanıcının gönderdiği "Film 1 — 30 Haziran 2021" slayt gösterisi kaydı (802×842 / 804×812).
-# dosya: (alt metin, genişlik, yükseklik)  — hepsinin 1,8× "-buyuk" sürümü var
+# dosya: (alt metin, genişlik, yükseklik)  — bu beşinin 1,8× "-buyuk" sürümü var (BUYUK)
 FOTO = {
     "mutfak-pencere-l-tezgah": ("Pencere önünden dönen L mutfak: tahta kaplama kulpsuz çekmeceler, koyu tezgâh, siyah damarlı tezgâh arası ve siyah, yansıtan üst dolaplar", 796, 836),
     "mutfak-eviye-cekmeceler": ("Yakın plan: alttan montajlı inox eviye, bakır damarlı koyu tezgâh ve aynı hizada sıralanan tahta kaplama çekmeceler", 798, 806),
@@ -19,28 +19,52 @@ FOTO = {
     "mutfak-gun-isigi": ("Aynı L mutfak öğle ışığında: pencere yanındaki çekmece kolonu ve üst dolapların yansıması", 796, 836),
 }
 
-# Hero slaytları: (dosya, kısa başlık, [(x%, y%, yön, etiket)])  yön: "sag" = etiket noktanın sağında
-HERO = [
-    ("mutfak-pencere-l-tezgah", "L mutfak, pencere önü", [
-        (66, 36, "sol", "Siyah, yansıtan üst kapaklar"),
-        (62, 56, "sol", "Siyah damarlı tezgâh arası"),
-        (86, 80, "sol", "Kulpsuz çekmece, yatay tutamak kanalı"),
-        (10, 67, "sag", "Pencere önünden dönen tezgâh"),
-    ]),
-    ("mutfak-eviye-cekmeceler", "Eviye hattı ve çekmeceler", [
-        (18, 30, "sag", "Alttan montajlı inox eviye"),
-        (55, 34, "sag", "Bakır damarlı koyu tezgâh"),
-        (70, 52, "sol", "Kapak araları aynı hizada"),
-    ]),
-    ("antre-aynali-citali-vestiyer", "Antre: ayna ve çıtalı vestiyer", [
-        (40, 20, "sag", "Tavana kadar üst dolap"),
-        (52, 45, "sag", "Boy ayna"),
-        (85, 42, "sol", "Çıtalı panel, dört askı"),
-    ]),
-]
+# Detay kırpımları: aynı karelerden, kendi çözünürlüğünde (büyütülmeden) kesildi. "-buyuk" sürümleri yok.
+FOTO.update({
+    "detay-kulpsuz-cekmece": ("Yakın plan: tahta kaplama çekmeceler ve aralarındaki siyah yatay tutamak kanalları", 440, 322),
+    "detay-eviye-batarya": ("Siyah tezgâh arası önünde inox eviye ve batarya", 372, 340),
+    "detay-ust-dolap-yansima": ("Siyah, yansıtan üst dolap kapakları ve yanda tahta kaplama dolap", 442, 360),
+    "detay-pencere-kose": ("Pencere önünden dönen koyu tezgâh ve pencere yanındaki üst dolap", 460, 580),
+    "detay-damarli-tezgah": ("Bakır renkli damarlı koyu tezgâhın köşesi ve kalın kenarı", 520, 532),
+    "detay-cekmece-sirasi": ("Aynı hizada sıralanan tahta kaplama çekmeceler ve üstte koyu tezgâh", 424, 460),
+    "detay-alttan-eviye": ("Tezgâhın altından montajlı inox eviye", 460, 360),
+    "detay-cita-aski": ("Dikey ahşap çıtalı panel ve üzerindeki dört askı", 332, 440),
+    "detay-antre-ust-dolap": ("Antrede tavana kadar ahşap üst dolaplar ve altında çıtalı panel", 542, 380),
+})
+BUYUK = {"mutfak-pencere-l-tezgah", "mutfak-eviye-cekmeceler", "antre-aynali-citali-vestiyer", "mutfak-tezgah-kose", "mutfak-gun-isigi"}
 
-# Geniş ekranda kırpılınca fotoğrafın dikey odağı (object-position y, %): mutfakta çekmeceler görünsün
-ODAK = {"mutfak-pencere-l-tezgah": 74, "mutfak-eviye-cekmeceler": 62, "antre-aynali-citali-vestiyer": 30}
+# Hero mozaiği: gerçek kareler kendi boyutlarında, yavaşça kayan 3 sütun. (dosya, kısa etiket)
+KARO = {
+    "mutfak-pencere-l-tezgah": "Pencere önü L mutfak",
+    "mutfak-eviye-cekmeceler": "Eviye hattı",
+    "mutfak-tezgah-kose": "Tezgâhın köşe dönüşü",
+    "mutfak-gun-isigi": "Öğle ışığında",
+    "antre-aynali-citali-vestiyer": "Aynalı, çıtalı antre",
+    "detay-kulpsuz-cekmece": "Kulpsuz çekmece",
+    "detay-eviye-batarya": "Siyah tezgâh arası",
+    "detay-ust-dolap-yansima": "Yansıtan üst kapaklar",
+    "detay-pencere-kose": "Pencere önü dönüş",
+    "detay-damarli-tezgah": "Bakır damarlı tezgâh",
+    "detay-cekmece-sirasi": "Aynı hizada kapaklar",
+    "detay-alttan-eviye": "Alttan montajlı eviye",
+    "detay-cita-aski": "Çıtalı panel, dört askı",
+    "detay-antre-ust-dolap": "Tavana kadar üst dolap",
+}
+_MUTFAK = [["mutfak-pencere-l-tezgah", "detay-damarli-tezgah", "detay-kulpsuz-cekmece", "mutfak-gun-isigi"],
+           ["detay-eviye-batarya", "mutfak-eviye-cekmeceler", "detay-pencere-kose", "detay-ust-dolap-yansima"],
+           ["detay-cekmece-sirasi", "mutfak-tezgah-kose", "detay-alttan-eviye", "detay-kulpsuz-cekmece"]]
+_ANTRE = [["antre-aynali-citali-vestiyer", "detay-kulpsuz-cekmece", "mutfak-gun-isigi"],
+          ["detay-cita-aski", "detay-damarli-tezgah", "detay-antre-ust-dolap"],
+          ["detay-antre-ust-dolap", "mutfak-pencere-l-tezgah", "detay-cita-aski"]]
+MOZAIK = {
+    "": [["mutfak-pencere-l-tezgah", "detay-cita-aski", "mutfak-tezgah-kose", "detay-kulpsuz-cekmece"],
+         ["detay-eviye-batarya", "antre-aynali-citali-vestiyer", "detay-damarli-tezgah", "mutfak-gun-isigi"],
+         ["detay-cekmece-sirasi", "detay-ust-dolap-yansima", "mutfak-eviye-cekmeceler", "detay-antre-ust-dolap"]],
+    "mutfak-dolabi/": _MUTFAK,
+    "projeler/pencere-onu-l-mutfak/": _MUTFAK,
+    "vestiyer-gomme-dolap/": _ANTRE,
+    "projeler/aynali-citali-antre/": _ANTRE,
+}
 
 # ---------------------------------------------------------------- yorumlar
 # Google Haritalar, kullanıcının ekran görüntüsünden. Kelimeler aynen; yalnız noktalama eklendi ve iki yazım

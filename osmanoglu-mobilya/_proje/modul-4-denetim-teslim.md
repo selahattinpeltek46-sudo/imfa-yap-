@@ -50,7 +50,12 @@
 | 15 | UX | YÜKSEK | hero, masa | Etiketler krem kartın altında kalıyordu (hepsi gizlenmişti) → JS çakışma kontrolü + yeni noktalar; test: ≥ 2 görünür, 0 örtülen |
 | 16 | UX | ORTA | hero, masa | Sayaç plakası kayan WhatsApp düğmesiyle çakışıyordu → plaka sağ üste |
 | 17 | EVIDENCE | ORTA | ilkeler | "Üretimi ve montajı usta takip eder" doğrulanmamış süreç iddiasıydı → "Sorularınızı baştan sorun" |
-| 18 | EVIDENCE | YÜKSEK (açık) | hero | Kenardan kenara hero ~800 px karelerle 1,8× büyütülüyor; büyük ekranda yumuşak → orijinal fotoğraflar 1 numaralı görsel ihtiyaç |
+| 18 | EVIDENCE | YÜKSEK → v3'te çözüldü | hero | Kenardan kenara hero ~800 px karelerle 1,8× büyütülüyordu → v3 mozaik (aşağıda) |
+
+### v3 — hero görseli (kullanıcı: "hero'daki görsel çok zayıf")
+| # | Sınıf | Önem | Konum | Bulgu → çözüm |
+|---|---|---|---|---|
+| 19 | UX / VISUAL | KRİTİK | hero (5 sayfa) | ~800 px kare kenardan kenara 1,8× büyütülünce yumuşak görünüyordu → kullanıcı seçimiyle **gerçek kare mozaiği**: 5 tam kare + aynı karelerden kendi çözünürlüğünde kesilmiş 9 detay, 3 sütunda yavaşça kayar; hiçbir kare büyütülmez (test: gösterilen genişlik ≤ doğal genişlik). Slayt + detay etiketi sistemi kaldırıldı; her karede kısa etiket. Durdur düğmesi, hover'da duraklama, reduced-motion'da duruk. 717/717 test. |
 
 ## 20 — FINAL QA
 

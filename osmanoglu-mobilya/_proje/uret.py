@@ -16,7 +16,7 @@ from urllib.parse import quote
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from icerik import (ADIMLAR, COZUM_EK, COZUMLER, DETAY_ALT, DETAY_BASLIK, DETAY_KARELER, DETAY_TABLO,  # noqa: E402
-                    FOTO, GUVEN, HAZIRLIK, HERO, ODAK, IHTIYAC, ILETISIM_TABLO, ILKELER, ILKELER_ALT, ILKELER_BASLIK,
+                    BUYUK, FOTO, GUVEN, HAZIRLIK, IHTIYAC, KARO, MOZAIK, ILETISIM_TABLO, ILKELER, ILKELER_ALT, ILKELER_BASLIK,
                     KARAVAN, MAKALELER, MESAJ_TURLERI, MUTFAK, PROJELER, PUAN, SAYFA, SAYFA_SIRASI, SSS, TARIH,
                     TARIH_OKUNUR, VESTIYER, YORUM_SAYISI, YORUMLAR)
 
@@ -62,7 +62,8 @@ def wa(metin):
 def img(dosya, k, yukle="lazy", boyut="(min-width: 900px) 50vw, 100vw", oncelik=False, sinif=""):
     alt, w, h = FOTO[dosya]
     src = f"{k}img/{dosya}.webp"
-    return (f'<img src="{src}" srcset="{src} {w}w, {k}img/{dosya}-buyuk.webp {round(w * 1.8)}w" sizes="{boyut}" '
+    srcset = f' srcset="{src} {w}w, {k}img/{dosya}-buyuk.webp {round(w * 1.8)}w" sizes="{boyut}"' if dosya in BUYUK else ""
+    return (f'<img src="{src}"{srcset} '
             f'width="{w}" height="{h}" alt="{e(alt)}" loading="{yukle}" decoding="async"'
             + (' fetchpriority="high"' if oncelik else "") + (f' class="{sinif}"' if sinif else "") + ">")
 
@@ -207,12 +208,6 @@ def sayfa(yol, govde, ek_head=""):
 
 
 # ------------------------------------------------------------------- hero
-def etiketler(liste):
-    return "".join(
-        f'<span class="etiket etiket--{yon}" data-x="{x}" data-y="{y}" style="--x:{x}%;--y:{y}%;--s:{i}"><i></i><b>{e(ad)}</b></span>'
-        for i, (x, y, yon, ad) in enumerate(liste))
-
-
 def kirinti(yol, k):
     if not yol:
         return ""
@@ -232,28 +227,21 @@ def hero_kart(yol, s, k, cta=True):
   </div>"""
 
 
-def hero(yol, s, k, slaytlar):
-    """Tam boy hero: kenardan kenara gerçek fotoğraf; karartma / gradyan / bulanıklık yok.
-    Metin fotoğrafın üstünde değil, köşedeki düz krem kartta."""
-    kareler = "".join(
-        f'<figure class="slayt{" aktif" if i == 0 else ""}" data-slayt="{i}" data-baslik="{e(bas)}" data-oy="{ODAK.get(d, 50)}" style="--oy:{ODAK.get(d, 50)}%"{"" if i == 0 else " aria-hidden=true"}>'
-        f'<div class="kare">{img(d, k, "eager" if i == 0 else "lazy", boyut="100vw", oncelik=i == 0)}'
-        f'<div class="etiketler" aria-hidden="true">{etiketler(et)}</div></div>'
-        f'<figcaption class="gizli">{e(bas)}: ' + ", ".join(e(t[3]) for t in et) + "</figcaption></figure>"
-        for i, (d, bas, et) in enumerate(slaytlar))
-    coklu = len(slaytlar) > 1
-    kontrol = ""
-    if coklu:
-        nokta = "".join(
-            f'<button type="button" class="cizgi-dugme{" aktif" if i == 0 else ""}" data-git="{i}" aria-label="{i + 1}. fotoğraf: {e(bas)}"><span></span></button>'
-            for i, (_, bas, _e) in enumerate(slaytlar))
-        kontrol = (f'<div class="hero__kontrol"><p class="hero__sayac"><span data-no>01</span> / {len(slaytlar):02d}</p>'
-                   f'<p class="hero__ad" data-ad aria-live="polite">{e(slaytlar[0][1])}</p>'
-                   f'<div class="cizgiler">{nokta}</div><button type="button" class="hero__dur" data-dur aria-pressed="false">Durdur</button></div>')
+def hero(yol, s, k):
+    """Tam boy hero: solda düz krem panelde metin, sağda gerçek karelerden yavaşça kayan 3 sütunlu mozaik.
+    Kareler büyütülmez (kendi çözünürlüğünde ya da küçültülerek gösterilir); karartma / gradyan / bulanıklık yok."""
+    sutunlar = ""
+    for i, sutun in enumerate(MOZAIK[yol]):
+        def karo(d, kopya):
+            return (f'<figure class="karo"{" aria-hidden=true" if kopya else ""}>{img(d, k, "eager" if (i < 2 and not kopya) else "lazy", boyut="(min-width: 900px) 20vw, 50vw", oncelik=(i == 0 and d == sutun[0] and not kopya))}'
+                    f'<figcaption>{e(KARO[d])}</figcaption></figure>')
+        # kesintisiz döngü için sütun iki kez yazılır; ikinci kopya ekran okuyucudan gizli
+        sutunlar += (f'<div class="mozaik__sutun mozaik__sutun--{i + 1}"><div class="mozaik__serit">'
+                     + "".join(karo(d, False) for d in sutun) + "".join(karo(d, True) for d in sutun) + "</div></div>")
     return f"""<section class="hero{" hero--alt" if yol else ""}">
-  <div class="sahne" {"data-sahne data-oto" if coklu else "data-sahne-tek"} aria-roledescription="slayt gösterisi" aria-label="Yaptığımız işlerden kareler">{kareler}</div>
   {hero_kart(yol, s, k)}
-  {kontrol}
+  <div class="mozaik" data-mozaik aria-label="Yaptığımız işlerden kareler">{sutunlar}
+    <button type="button" class="mozaik__dur" data-dur aria-pressed="false">Durdur</button></div>
 </section>"""
 
 
@@ -473,7 +461,7 @@ def numarali(ust, bas, liste, idm):
 # ------------------------------------------------------------------- sayfalar
 def ana():
     k, s = "", SAYFA[""]
-    govde = "\n".join([hero("", s, k, HERO), guven_seridi(), ihtiyac(), ilkeler(), cozumler(k), foto_cta(), surec(k),
+    govde = "\n".join([hero("", s, k), guven_seridi(), ihtiyac(), ilkeler(), cozumler(k), foto_cta(), surec(k),
                        iscilik(k), projeler_bolumu(k), yorumlar(), iletisim_blok(), sss(""), cta_bandi(k)])
     return sayfa("", govde)
 
@@ -485,7 +473,7 @@ def mutfak():
     galeri = "".join(f'<figure class="r">{img(d, k, boyut="(min-width: 900px) 25vw, 50vw")}</figure>'
                      for d in ("mutfak-pencere-l-tezgah", "mutfak-eviye-cekmeceler", "mutfak-tezgah-kose", "mutfak-gun-isigi"))
     govde = "\n".join([
-        hero(yol, s, k, HERO[:2]), guven_seridi(),
+        hero(yol, s, k), guven_seridi(),
         metin_blok("Neden özel ölçü?", m["giris_baslik"], m["giris_metin"]),
         f'<section class="bolum bant bant--tas" aria-labelledby="gal-bas"><div class="bas bas--orta">{ust_baslik("Proje")}<h2 id="gal-bas">Pencere önü <em>L mutfak.</em></h2>'
         f'<p>Aynı işin dört karesi: genel görünüm, eviye hattı, köşe dönüşü, öğle ışığı.</p></div><div class="galeri">{galeri}</div>'
@@ -507,7 +495,7 @@ def vestiyer():
     detay = "".join(f'<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>' for a, b in v["detay"])
     diger = "".join(f"<li>{e(x)}</li>" for x in v["diger"])
     govde = "\n".join([
-        hero(yol, s, k, [HERO[2]]), guven_seridi(),
+        hero(yol, s, k), guven_seridi(),
         metin_blok("Antre ve koridor", v["giris_baslik"], v["giris_metin"]),
         f'<section class="bolum bant bant--tas" aria-labelledby="ant-bas"><div class="iscilik"><figure class="iscilik__foto r">{img("antre-aynali-citali-vestiyer", k)}</figure>'
         f'<div class="iscilik__metin r">{ust_baslik("Proje")}<h2 id="ant-bas">Bu antrede <em>ne var?</em></h2><dl class="ozellik">{detay}</dl>'
@@ -555,11 +543,10 @@ def proje(yol):
     s, p = SAYFA[yol], PROJELER[yol]
     tablo = "".join(f'<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>' for a, b in p["tablo"])
     galeri = "".join(f'<figure class="r">{img(d, k, boyut="(min-width: 900px) 25vw, 50vw")}</figure>' for d in p["kareler"][1:])
-    slaytlar = [h for h in HERO if h[0] == p["kapak"]]
     diger = next(y for y in PROJELER if y != yol)
     hizmet = "mutfak-dolabi/" if "mutfak" in yol else "vestiyer-gomme-dolap/"
     govde = "\n".join([
-        hero(yol, s, k, slaytlar),
+        hero(yol, s, k),
         f'<section class="bolum ikili"><div class="ikili__sol r">{ust_baslik("Fotoğraftan okunanlar")}<h2>Projenin <em>detayları.</em></h2>'
         f'<dl class="ozellik">{tablo}</dl><p class="kucuk">Konum: {e(p["konum"])}. Malzeme markası ve kalınlıkları fotoğraftan okunmaz; her işte ayrıca konuşulur.</p></div>'
         f'<div class="metin r">{"".join(f"<p>{e(x)}</p>" for x in p["metin"])}</div></section>',
