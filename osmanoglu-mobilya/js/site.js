@@ -30,30 +30,41 @@
     });
   }
 
-  // etiketler fotoğraftaki noktaya bağlı: object-fit: cover kırpmasını hesaba kat
+  // etiketler fotoğraftaki noktaya bağlı: object-fit: cover kırpmasını hesaba kat;
+  // hero kartının ya da kontrol plakasının altında kalan etiket gösterilmez
+  function cakisir(a, b) { return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top; }
   function etiketYerlestir() {
     document.querySelectorAll(".slayt").forEach(function (sl) {
       var im = sl.querySelector("img"), W = sl.clientWidth, H = sl.clientHeight;
       var iw = +im.getAttribute("width"), ih = +im.getAttribute("height");
       if (!W || !H) return;
-      var o = Math.max(W / iw, H / ih), ox = (W - iw * o) / 2, oy = (H - ih * o) / 2;
+      var hero = sl.closest(".hero"), sr = sl.getBoundingClientRect();
+      var engeller = hero ? [].slice.call(hero.querySelectorAll(".hero__kart, .hero__kontrol")).map(function (x) { return x.getBoundingClientRect(); })
+        .filter(function (r) { return cakisir(r, sr); }) : [];
+      var o = Math.max(W / iw, H / ih), ox = (W - iw * o) / 2, oy = (H - ih * o) * (+(sl.getAttribute("data-oy") || 50) / 100);
       sl.querySelectorAll(".etiket").forEach(function (et) {
         var x = ox + et.getAttribute("data-x") / 100 * iw * o, y = oy + et.getAttribute("data-y") / 100 * ih * o;
         et.style.left = x + "px"; et.style.top = y + "px";
-        et.classList.toggle("disarida", x < 12 || x > W - 12 || y < 40 || y > H - 96);
+        et.classList.remove("disarida");
+        var r = et.getBoundingClientRect(), pay = 10;
+        var gizle = r.left < sr.left + pay || r.right > sr.right - pay || r.top < sr.top + pay || r.bottom > sr.bottom - pay ||
+          engeller.some(function (g) { return cakisir({ left: r.left - pay, right: r.right + pay, top: r.top - pay, bottom: r.bottom + pay }, g); });
+        et.classList.toggle("disarida", gizle);
       });
     });
   }
   etiketYerlestir();
   window.addEventListener("resize", etiketYerlestir);
+  window.addEventListener("load", function () { setTimeout(etiketYerlestir, 1700); }); // kart giriş animasyonu bitince
 
   // hero sahnesi: fotoğraf çekmece gibi açılır, etiketler sırayla gelir; karartma / bulanıklık yok
   document.querySelectorAll("[data-sahne]").forEach(function (sahne) {
+    var kok = sahne.closest(".hero") || sahne;
     var slaytlar = [].slice.call(sahne.querySelectorAll(".slayt"));
-    var dugmeler = [].slice.call(sahne.querySelectorAll("[data-git]"));
-    var dur = sahne.querySelector("[data-dur]"), ad = sahne.querySelector("[data-ad]");
+    var dugmeler = [].slice.call(kok.querySelectorAll("[data-git]"));
+    var dur = kok.querySelector("[data-dur]"), ad = kok.querySelector("[data-ad]"), no = kok.querySelector("[data-no]");
     var SURE = 7000, simdi = 0, zaman = null, durdu = azHareket || !sahne.hasAttribute("data-oto");
-    sahne.style.setProperty("--sure", SURE + "ms");
+    kok.style.setProperty("--sure", SURE + "ms");
 
     function goster(i) {
       if (i === simdi) return;
@@ -65,6 +76,7 @@
       setTimeout(function () { eski.classList.remove("onceki"); }, 1300);
       dugmeler.forEach(function (d, j) { d.classList.toggle("aktif", j === i); });
       ad.textContent = yeni.getAttribute("data-baslik");
+      if (no) no.textContent = (i < 9 ? "0" : "") + (i + 1);
       simdi = i;
       kur();
     }
@@ -84,10 +96,10 @@
       durdu = !durdu;
       dur.setAttribute("aria-pressed", durdu ? "true" : "false");
       dur.textContent = durdu ? "Oynat" : "Durdur";
-      sahne.classList.toggle("durdu", durdu);
+      kok.classList.toggle("durdu", durdu);
       kur();
     });
-    if (durdu) { dur.setAttribute("aria-pressed", "true"); dur.textContent = "Oynat"; sahne.classList.add("durdu"); }
+    if (durdu) { dur.setAttribute("aria-pressed", "true"); dur.textContent = "Oynat"; kok.classList.add("durdu"); }
     // sekme görünmezken zamanlayıcı boşa dönmesin
     document.addEventListener("visibilitychange", function () { if (document.hidden) clearTimeout(zaman); else kur(); });
     kur();
@@ -95,10 +107,12 @@
 
   // ekrana girince beliren bölümler
   var gozcu = "IntersectionObserver" in window && !azHareket ? new IntersectionObserver(function (girdiler) {
-    girdiler.forEach(function (g) { if (g.isIntersecting) { g.target.classList.add("gorundu"); gozcu.unobserve(g.target); } });
+    girdiler.forEach(function (g) { if (g.isIntersecting) { g.target.classList.add("gorundu"); g.target.classList.remove("beklet"); gozcu.unobserve(g.target); } });
   }, { rootMargin: "0px 0px -12% 0px" }) : null;
-  document.querySelectorAll(".is, .detay, .yorum, .adim-liste li, .karavan").forEach(function (el) {
-    if (gozcu) { el.classList.add("beklet"); gozcu.observe(el); }
+  document.querySelectorAll(".r, .karavan").forEach(function (el) {
+    if (!gozcu) return;
+    if (!el.classList.contains("karavan")) el.classList.add("beklet");
+    gozcu.observe(el);
   });
 
   // mesaj hazırlayıcı: veri toplanmaz, yalnız WhatsApp metni oluşturulur

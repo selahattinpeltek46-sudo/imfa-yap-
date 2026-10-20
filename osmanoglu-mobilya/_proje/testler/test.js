@@ -2,7 +2,11 @@
 const { chromium } = require('playwright');
 const B = 'http://localhost:8766/osmanoglu-mobilya/';
 const CANLI = 'https://selahattinpeltek46-sudo.github.io/imfa-yap-/osmanoglu-mobilya/';
-const yollar = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'karavan-mobilyasi/'];
+const yollar = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'karavan-mobilyasi/', 'projeler/', 'projeler/pencere-onu-l-mutfak/',
+  'projeler/aynali-citali-antre/', 'nasil-calisiyoruz/', 'bilgi-merkezi/', 'bilgi-merkezi/mutfak-dolabi-yaptirmadan-once/',
+  'bilgi-merkezi/kaba-olcu-nasil-alinir/', 'iletisim/'];
+// fotoğraflı tam boy hero'su olan sayfalar
+const fotolu = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'projeler/pencere-onu-l-mutfak/', 'projeler/aynali-citali-antre/'];
 (async () => {
   const b = await chromium.launch();
   let hata = 0, test = 0;
@@ -31,13 +35,20 @@ const yollar = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'karavan-mobilyas
         const gorunurEtiket = [...document.querySelectorAll('.slayt.aktif .etiket')].filter(e => !e.classList.contains('disarida') && getComputedStyle(e).opacity > .9);
         const sr = s && s.getBoundingClientRect();
         const etiketTasma = sr ? gorunurEtiket.filter(e => { const r = e.querySelector('b').getBoundingClientRect(); return r.left < sr.left - 1 || r.right > sr.right + 1; }).length : 0;
-        return { yuk: h.getBoundingClientRect().height, ekran: innerHeight - document.querySelector('.ust').offsetHeight,
-          katman, filtre: st ? st.filter : 'none', etiket: gorunurEtiket.length, etiketTasma };
+        const kesis = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+        const engel = [...document.querySelectorAll('.hero__kart, .hero__kontrol')].map(x => x.getBoundingClientRect());
+        const ortulen = gorunurEtiket.filter(e => engel.some(g => kesis(e.getBoundingClientRect(), g))).length;
+        return { var: !!(h && s), yuk: h ? h.getBoundingClientRect().height : 0, ekran: innerHeight - document.querySelector('.ust').offsetHeight,
+          katman, filtre: st ? st.filter : 'none', etiket: gorunurEtiket.length, etiketTasma, ortulen };
       });
-      ok(hero.yuk >= hero.ekran - 1, `${ad} ${y} hero tam boy değil: ${hero.yuk} < ${hero.ekran}`);
-      ok(hero.katman.length === 0 && hero.filtre === 'none', `${ad} ${y} hero üstünde karartma/bulanıklık: ${hero.katman}`);
-      if (y !== 'karavan-mobilyasi/') ok(hero.etiket >= 2, `${ad} ${y} görünür detay etiketi ${hero.etiket}`);
-      ok(hero.etiketTasma === 0, `${ad} ${y} etiket sahneden taşıyor (${hero.etiketTasma})`);
+      if (fotolu.includes(y)) {
+        ok(hero.var, `${y} fotoğraflı hero yok`);
+        ok(hero.yuk >= hero.ekran - 1, `${ad} ${y} hero tam boy değil: ${hero.yuk} < ${hero.ekran}`);
+        ok(hero.katman.length === 0 && hero.filtre === 'none', `${ad} ${y} hero üstünde karartma/bulanıklık: ${hero.katman}`);
+        ok(hero.etiket >= 2, `${ad} ${y} görünür detay etiketi ${hero.etiket}`);
+        ok(hero.etiketTasma === 0, `${ad} ${y} etiket sahneden taşıyor (${hero.etiketTasma})`);
+        ok(hero.ortulen === 0, `${ad} ${y} etiket kartın / kontrolün altında (${hero.ortulen})`);
+      }
       await p.evaluate(async () => { for (let i = 0; i < document.body.scrollHeight; i += 600) { scrollTo(0, i); await new Promise(r => setTimeout(r, 25)); } scrollTo(0, 0); });
       await p.waitForTimeout(300);
       const r = await p.evaluate(() => ({
@@ -112,14 +123,15 @@ const yollar = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'karavan-mobilyas
   ok(decodeURIComponent((await p.locator('[data-wa]').getAttribute('href')).split('text=')[1]).startsWith('Merhaba, karavan için'), 'tür değişince metin değişiyor');
   // menü
   ok(!(await p.locator('#menu').isVisible()), 'mobil menü başta kapalı');
-  await p.click('.menu-dugme'); ok(await p.locator('#menu').isVisible(), 'menü açılıyor');
-  await p.keyboard.press('Escape'); ok(!(await p.locator('#menu').isVisible()), 'Esc menüyü kapatıyor');
-  // harita tıkla-yükle
+  await p.click('.menu-dugme'); await p.waitForTimeout(400); ok(await p.locator('#menu').isVisible(), 'menü açılıyor');
+  await p.keyboard.press('Escape'); await p.waitForTimeout(400); ok(!(await p.locator('#menu').isVisible()), 'Esc menüyü kapatıyor');
+  // harita tıkla-yükle (iletişim sayfası)
+  await p.goto(B + 'iletisim/', { waitUntil: 'networkidle' });
   ok(await p.locator('.harita iframe').count() === 0, 'harita başta yüklenmemiş');
   await p.route('https://maps.google.com/**', r => r.fulfill({ body: 'harita' }));
   await p.click('.harita button'); ok(await p.locator('.harita iframe').count() === 1, 'harita tıklayınca yükleniyor');
   // dataLayer
-  await p.click('.konum a[href^="tel:"]', { noWaitAfter: true }).catch(() => {});
+  await p.click('#iletisim a[href^="tel:"]', { noWaitAfter: true }).catch(() => {});
   ok(await p.evaluate(() => dataLayer.some(o => o.event === 'telefon_tikla') && dataLayer.some(o => o.event === 'harita_yukle')), 'dataLayer olayları');
   console.log(`${test - hata}/${test} test geçti`);
   await b.close();
