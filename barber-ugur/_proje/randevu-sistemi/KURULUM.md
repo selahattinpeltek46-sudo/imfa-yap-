@@ -1,5 +1,7 @@
 # Barber Uğur — Online Randevu Sistemi
 
+> Kod Barber's Town ile aynıdır; yalnız `Code.gs` → `AYAR` bölümü bu dükkâna göredir. Testler: `node barber-ugur/_proje/randevu-sistemi/testler/entegrasyon.test.js` (dükkâna özel) ve `barbers-town/…/testler/entegrasyon.test.js` (ortak kodun tamamı).
+
 ## 1. Nasıl çalışır? (tek bakışta)
 
 ```
@@ -17,39 +19,15 @@ Müşteri (site)                      Google (salonun hesabı, ücretsiz)       
 ```
 
 - **Çift rezervasyon olmaz:** Saat, kayıt anında kilit altında yeniden kontrol edilir. Aynı saat için iki kişi aynı anda onaylarsa kapasite dolduğunda ikinciye "bu saat az önce doldu" denir ve güncel liste gösterilir.
-- **Kapasite:** `koltuk: 2` — aynı saatte en fazla 2 online randevu. Dükkânda daha fazla koltuk var; geri kalanlar randevusuz gelenlere kalır. Daha fazla ya da az online randevu istenirse bu sayı değiştirilir.
+- **Kapasite:** `koltuk: 2` — online randevuya 2 koltuk ayrıldı; diğer koltuklar randevusuz gelenlere kalır [VARSAYIM — dükkân teyit etmeli]. Kapıdan gelen müşteri panelden **＋ Kapıdan geldi** ile eklenirse o koltuk sitede dolu görünür.
 - **Sistem kurulmadan / çökerse:** Form otomatik olarak **WhatsApp moduna** geçer; müşteri talebi hazır WhatsApp mesajı olarak gönderir. Site hiçbir zaman "kırık" görünmez.
 
-## 1b. Randevu hatırlatması (2 saat önce, ücretsiz)
-
-İki katmanlı:
-
-| Katman | Kim | Nasıl çalışır |
-|---|---|---|
-| **Müşterinin telefonu** | Otomatik | Randevu ekranındaki **"Telefonuma ekle"** bir takvim dosyası (.ics) indirir; içinde 2 saat önce çalan alarm var. iPhone Takvim, Android'de Google/Samsung Takvim açar. "Google Takvim" düğmesi yedek olarak durur (o, kişinin kendi varsayılan bildirim süresini kullanır). |
-| **Dükkândan WhatsApp** | Tek dokunuş | Randevudan 2 saat önce dükkânın telefonuna **iki bildirim** gelir: (1) Google Takvim bildirimi — etkinliği açınca açıklamada "Hatırlatma gönder (WhatsApp)" bağlantısı; (2) Gmail'e "Hatırlatma gönder: 16:00 Ahmet" e-postası — içinde aynı bağlantı. Bağlantıya dokununca **müşterinin** WhatsApp sohbeti hazır mesajla açılır → **Gönder**. |
-
-Hazır mesaj:
-```
-Merhaba Ahmet,
-Bugün saat 16:00 Saç Kesimi randevunuzu hatırlatırız.
-Gelemeyecekseniz lütfen bu mesaja yazın; saatinizi başkasına açalım.
-Randevu kodu: BU-XXXXX
-Barber Uğur · Gazi Muhtar Paşa Blv. Gazi Apt. No:46/E, Şehitkamil
-```
-
-Kurallar (`hatirlatilacaklar` fonksiyonu):
-- Her randevu için **bir kez** bildirilir (etkinliğe "bildirildi" etiketi yazılır).
-- Randevuya 2 saatten az kala alınan randevular için bildirim gelmez (müşteri az önce almış).
-- Telefonla alınıp takvime **elle** eklenen randevular: açıklamaya müşterinin cep numarasını yazarsanız (ör. `0532 111 22 33`) e-posta bildirimi onlar için de gelir.
-- KAPALI etkinlikleri ve telefonu olmayan etkinlikler atlanır.
-- Süre: `Code.gs → AYAR.hatirlatmaDakika` (varsayılan 120) **ve** sitede `js/ayarlar.js → hatirlatmaDakika` — ikisi aynı olmalı. Yalnız takvim bildirimi istenirse `hatirlatmaEposta: false`.
-
-Kontrol (dükkân telefonunda bir kez): Google Takvim → Ayarlar → "Barber Uğur Randevular" → bildirimler açık · Gmail uygulamasında bildirimler açık.
-
-> Tam otomatik (dükkân dokunmadan) gönderim için ileride SMS firması (Netgsm, İleti Merkezi vb.) bağlanabilir: `hatirlatmaKontrol` içinde e-posta yerine SMS API çağrısı. Ücretli; SMS başlığı gerekir.
-
 ## 2. Salon randevuları nasıl kontrol eder?
+
+**En kolay yol: Salon paneli** → `https://selahattinpeltek46-sudo.github.io/imfa-yap-/barber-ugur/panel/`
+Telefonda açılır, 6 haneli şifreyle girilir (şifre bir kez girilince o telefonda hatırlanır). Bugün / yarın / istenen günün randevuları saat sırasıyla listelenir; her randevuda **Ara**, **WhatsApp hatırlatma** (hazır mesaj) ve **İptal et** düğmeleri var. Liste her dakika kendini yeniler. Şifre `kurulum()` çalıştırılınca Yürütme günlüğüne yazılır (Proje Ayarları → Komut dosyası özellikleri → `PANEL_PIN` ile değiştirilebilir). 10 dakikada 5 yanlış denemede panel kilitlenir.
+
+Google Takvim ile de yönetilebilir:
 
 | İş | Nasıl |
 |---|---|
@@ -57,16 +35,47 @@ Kontrol (dükkân telefonunda bir kez): Google Takvim → Ayarlar → "Barber U�
 | Yeni randevu bildirimi | Takvim bildirimi + Gmail'e "Yeni randevu" e-postası (içinde müşteriye WhatsApp linki). |
 | **İptal etmek** | Takvimde etkinliği **silin** → o saat sitede hemen yeniden boş görünür. |
 | Saati değiştirmek | Etkinliği takvimde sürükleyin / saatini düzenleyin. Müşteriye WhatsApp'tan haber verin. |
-| Telefonla gelen randevu | Takvime elle etkinlik ekleyin (ör. "Ahmet saç"). 1 koltuk dolu sayılır. Açıklamaya cep numarasını yazarsanız 2 saat önce hatırlatma bildirimi gelir. |
-| Hatırlatma göndermek | 2 saat önce gelen takvim bildirimi ya da "Hatırlatma gönder" e-postasındaki bağlantıya dokunun → WhatsApp'ta **Gönder**. |
+| Telefonla gelen randevu | En kolayı panelden **＋ Telefon randevusu**. Takvimden de olur: elle etkinlik ekleyin (ör. "Ahmet saç"), 1 koltuk dolu sayılır. |
 | Mola, izin, erken kapanış | Takvime başlığında **KAPALI** geçen etkinlik ekleyin (ör. "KAPALI öğle arası" 13:00–14:00). O aralık tüm hizmetlere kapanır. Tüm gün etkinliği = tüm gün kapalı. |
-| Usta izinli → kapasite 1 | O gün için "Usta izinli" adlı tüm gün etkinliği ekleyin → bir koltuk tüm gün dolu sayılır. |
+| Usta izinli → kapasite 1 | O gün için "Mehmet izinli" adlı tüm gün etkinliği ekleyin → bir koltuk tüm gün dolu sayılır. |
 | Geçmiş kayıtlar, rapor | "Barber Uğur Randevu Kayıtları" E-Tablosu: kayıt zamanı, kod, tarih, saat, hizmet, ad, telefon, not, durum. |
 | Müşteri iptal/değişiklik isterse | Müşteri randevu koduyla WhatsApp'tan yazar → takvimde kodu arayın (Takvim aramasında açıklama da aranır). |
 
 > Dikkat: Bu takvime randevuyla ilgisiz kişisel etkinlik eklemeyin; her etkinlik bir koltuğu meşgul sayar.
 
-## 3. Kurulum (bir kez, ~15 dakika, ücretsiz)
+### Paneldeki düğmeler
+| Düğme | Ne yapar |
+|---|---|
+| **＋ Kapıdan geldi** | (Yalnız bugün) hizmete dokunun → müşteri şu andan itibaren hizmet süresi kadar eklenir; o koltuk sitede dolu görünür. Koltuklar doluysa "yine de ekle?" diye sorar. Toplam 2 dokunuş. |
+| **＋ Telefon randevusu** | Hizmet → boş saat → ad/telefon (isteğe bağlı) → Kaydet. Telefon yazıldıysa "Müşteriye WhatsApp'tan bildir" ile hazır onay mesajı; takvim hatırlatıcısı ve otomatik hatırlatma da çalışır. |
+| **Mola ver** | (Yalnız bugün) 15/30/45/60 dk; şu andan itibaren o süre sitede randevu alınamaz. Uzun kapatmalar için "Saat / gün kapat". |
+| **Saati değiştir** | Gün/saat seçilir → takvimde taşınır (dolu saate taşımaz, mesai dışıysa uyarır) → "Müşteriye WhatsApp'tan bildir" ile hazır "randevunuz … olarak güncellendi" mesajı |
+| **İptal et** | Takvimden siler, tabloda "İptal (panel)" → hazır "randevunuz iptal edildi" mesajı |
+| **WhatsApp hatırlatma** | Müşteriye hazır hatırlatma mesajı |
+| **Saat / gün kapat** | Mola, izin, erken kapanış; o aralıkta zaten randevu varsa sayısını söyler (onları ayrıca taşıyın/iptal edin) |
+| **Kaldır** (kapalı satırda) | Kapalı saati kaldırır, saatler yeniden açılır |
+
+### Otomatik görevler (kurulum() kurar)
+| Görev | Ne zaman | Ne yapar |
+|---|---|---|
+| Hatırlatma | 15 dakikada bir | 2 saat içinde başlayacak randevular için salona tek e-posta; her randevunun yanında müşteriye hazır WhatsApp hatırlatma bağlantısı. Aynı randevu iki kez hatırlatılmaz; taşınırsa yeniden hatırlatılır. Telefonsuz (elle eklenen) randevular ve son 30 dakikada alınanlar hariç. |
+| Telefon bildirimi | Randevudan 2 saat önce | Her site randevusuna takvim bildirimi eklenir; salonun telefonunda Google Takvim bildirimi çıkar. |
+| Tablo eşitleme | Her gece 03:00 | Takvim uygulamasından silinen randevu → "İptal (takvimden)", sürüklenen randevu → yeni tarih/saat + "Taşındı (takvimden)". |
+| Aylık özet | Her ayın 1'i, 09:00 | Geçen ayın toplam talep, iptal ve hizmet dökümü e-postası. |
+
+**Müşteri tarafında:** Onay ekranındaki **Telefonuma ekle** randevuyu müşterinin telefon takvimine ekler ve 2 saat önce alarm kurar (kendi kopyasıdır; salon saati değiştirirse paneldeki WhatsApp bildirimiyle haber verin).
+
+## 3. Önce DEMO (kendi hesabınızda deneme)
+
+Salona göstermeden önce sistemi **kendi** Gmail hesabınızda kurup deneyin. Canlı site etkilenmez:
+1. Aşağıdaki kurulum adımlarını kendi hesabınızla yapın (proje adı: "Barber Uğur DEMO").
+2. Çıkan web uygulaması adresini `js/ayarlar.js` → **`demoApi`** satırına yazın (`randevuApi` boş kalır).
+3. Demo site: `…/barber-ugur/?demo=1` (üstte kırmızı "DEMO" şeridi görünür) · Demo panel: `…/barber-ugur/panel/?demo=1`
+4. Normal adresteki site WhatsApp modunda kalır; müşteri randevuları sizin deneme takviminize düşmez.
+
+Salon onaylayınca aynı adımlar salonun hesabında yapılır ve adres bu kez **`randevuApi`** satırına yazılır.
+
+## 4. Kurulum (bir kez, ~15 dakika, ücretsiz)
 
 Gerekli: salonun bir Google (Gmail) hesabı.
 
@@ -75,11 +84,11 @@ Gerekli: salonun bir Google (Gmail) hesabı.
 3. `Code.gs` içeriğini silin, bu klasördeki **`Code.gs`** dosyasının tamamını yapıştırın. `appsscript.json` içeriğini bu klasördeki **`appsscript.json`** ile değiştirin. Kaydedin.
 4. `Code.gs` başındaki **AYAR** bölümünü salonla birlikte kontrol edin:
    - `calisma`: her günün açılış–kapanış saati (`null` = kapalı gün)
-   - `kaynaklar`: aynı anda kaç online randevu koltuğu ayrılıyor
+   - `kaynaklar`: online randevuya ayrılan koltuk sayısı
    - `hizmetler`: süreler (dakika). **Hizmet adlarını değiştirirseniz** sitedeki formdaki adlarla (index.html → `f-hizmet`) birebir aynı olmalı.
    - `bildirimEposta`: bildirim gidecek adres (boş = bu Google hesabı)
 5. Üstteki fonksiyon listesinden **`kurulum`** seçin → **Çalıştır**. İzin ekranında hesabı seçin → "Gelişmiş" → "Barber Uğur Randevu'ya git (güvenli değil)" → **İzin ver**. (Uyarı, betiğin Google tarafından incelenmemiş kişisel betik olmasındandır.)
-   Bu adım takvimi, kayıt tablosunu ve **15 dakikada bir çalışan hatırlatma tetikleyicisini** oluşturur; Yürütme günlüğünde tablo linki görünür. (Sol menü **Tetikleyiciler**'de `hatirlatmaKontrol` görünmeli.)
+   Bu adım takvimi ve kayıt tablosunu oluşturur; Yürütme günlüğünde tablo linki görünür.
 6. **Dağıt → Yeni dağıtım → Tür: Web uygulaması**
    - Yürütme yetkisi: **Ben**
    - Erişimi olanlar: **Herkes**
@@ -91,20 +100,29 @@ Gerekli: salonun bir Google (Gmail) hesabı.
 
 **Code.gs'yi sonradan değiştirirseniz:** Dağıt → Dağıtımları yönet → kalem → Sürüm: **Yeni sürüm** → Dağıt (URL aynı kalır).
 
-## 4. Güvenlik ve sınırlar
+## 4b. Güncelleme (Code.gs değiştiğinde — mevcut demo/salon kurulumu için)
+1. Apps Script'te **Kod.gs** → Ctrl+A → Delete → yeni `Code.gs`'yi yapıştırın (ham bağlantı: `https://raw.githubusercontent.com/selahattinpeltek46-sudo/imfa-yap-/main/barber-ugur/_proje/randevu-sistemi/Code.gs`). 1. satır `/**` olmalı.
+2. **appsscript.json** → aynı şekilde yenisini yapıştırın. Kaydedin (💾).
+3. Listeden **kurulum** → **Çalıştır**. Yeni izin (otomatik görevler) isterse yine İzinleri incele → Gelişmiş → … sayfasına git → İzin ver. Günlükte "Otomatik görevler kuruldu" satırı görünmeli. (Takvim, tablo ve panel şifresi değişmez.)
+4. **Dağıt → Dağıtımları yönet** → kalem ✏️ → Sürüm: **Yeni sürüm** → **Dağıt**. Adres aynı kalır; siteye dokunmak gerekmez.
+
+> 4. adım unutulursa site eski kodla çalışmaya devam eder: panelde "Saati değiştir / Saat kapat" düğmeleri "Code.gs güncellenmeli" uyarısı verir, diğer her şey çalışır.
+
+## 5. Güvenlik ve sınırlar
 
 - Siteden yalnız "boş saatler" okunabilir; müşteri adları/telefonları dışarı verilmez.
 - Spam: gizli tuzak alanı (botlar doldurur, kayıt yapılmaz), telefon doğrulaması (05xx), aynı numaradan günde en fazla 3 randevu.
-- Google ücretsiz kotaları: günlük ~100 e-posta (tüketici hesabı), takvim etkinliği oluşturma ~5.000/gün — bir salon için fazlasıyla yeterli. E-posta kotası dolarsa randevu yine kaydedilir.
+- Google ücretsiz kotaları: günlük ~100 e-posta (tüketici hesabı), takvim etkinliği oluşturma ~5.000/gün. Kota bitmek üzereyken (son 5) "yeni randevu" e-postaları atlanır, hatırlatma ve özet gönderilir; kota bittiğinde hatırlatma sonraki turda yeniden denenir. Randevu kaydı e-postadan bağımsızdır. Günde 40+ randevu alan yoğun salonda `AYAR.yeniRandevuEposta: false` yapılabilir (panel + takvim bildirimi yeter).
+- Panel şifresi 10 dakikada 5 yanlış denemede **herkese** kilitlenir (kaba kuvvet koruması). Biri bilerek yanlış girerse salon 10 dakika bekler; gerekirse şifre Proje Ayarları → PANEL_PIN'den değiştirilir.
 - KVKK: Veriler salonun Google hesabında tutulur; aydınlatma metni buna göre güncellendi (hukuki kontrol gerekir). Kayıt tablosundaki 1 yılı aşan satırlar silinmeli.
 
-## 5. Teyit edilmesi gereken varsayımlar
+## 6. Teyit edilmesi gereken varsayımlar
 
 | Ayar | Şu anki değer | Durum |
 |---|---|---|
-| Açılış saati | 09:00 | [VARSAYIM] — yalnız kapanış 20:00 doğrulandı (Haritalar, bir gün için) |
-| Tatil günü | Pazar | [VARSAYIM] — Pazar açıksa `calisma[0]` = `['10:00', '20:00']` gibi yazılır |
-| Online randevuya ayrılan koltuk | 2 | [VARSAYIM] — fotoğraflarda 4'ten fazla istasyon görülüyor |
+| Açılış saati | 09:00 | [VARSAYIM] — yalnız kapanış 20:00 doğrulandı |
+| Tatil günü | Pazar | [VARSAYIM] |
+| Online randevuya ayrılan koltuk | 2 | [VARSAYIM] — fotoğraflarda 4+ koltuk; kalanı randevusuz gelenlere |
 | Hizmet süreleri | Saç 30 · Sakal 20 · Saç & Sakal 45 · Çocuk 30 dk | [VARSAYIM] |
 | En erken randevu | 60 dk sonrası | öneri |
 | İleri tarih | 21 gün | öneri |
