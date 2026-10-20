@@ -30,6 +30,14 @@
 10. Mobil menü açılır / Esc ile kapanır; tüm iç bağlantılar ve çapalar 200.
 11. Kaydırınca beliren bölümlerin hepsi görünür hâle geliyor.
 
+### v2 revizyonu (2026-10-20, kullanıcı: "basit duruyor, Babacan Mobilya seviyesinde olsun")
+- Referans: `selahattinpeltek46-sudo/babacan-mobilya` (salt okunur klon) masaüstünde bölüm bölüm incelendi.
+- **12 sayfa** (`uret.py` bileşenleri: hero, hero_duz, güven şeridi, ihtiyaç, ilkeler, çözümler, foto CTA, süreç, işçilik, projeler, yorumlar, iletişim, SSS, CTA bandı, mesaj hazırlayıcı, numaralı liste, makale).
+- **Yazı tipleri:** Bodoni Moda (normal + italik) + Albert Sans, woff2 gömülü; eski Bricolage / Figtree kaldırıldı.
+- **Hero:** kenardan kenara fotoğraf + krem kart; geniş ekran kırpması için `ODAK` (object-position y) ve etiketlerin bu odakla hesaplanması; kartın / kontrolün altında kalan etiket gizlenir.
+- **Mobil:** tam ekran menü, alt sabit WhatsApp / Ara çubuğu; masaüstünde kayan WhatsApp düğmesi.
+- **Ek kabul kriterleri:** 12 sayfa × 3 genişlik; fotoğraflı 5 hero'da ≥ 2 görünür etiket ve hiçbiri kart / kontrol altında değil. Sonuç: **719/719**.
+
 ## 16 — DEVELOPMENT
 
 INSPECT → UNDERSTAND → PLAN → PATCH → TEST → REGRESSION → DEPLOY
@@ -46,7 +54,7 @@ INSPECT → UNDERSTAND → PLAN → PATCH → TEST → REGRESSION → DEPLOY
 - [x] 15 ve 16 başlıkları dosyada var
 - [x] Teknoloji kararı gerekçeli; form / WhatsApp / analytics çözümü belirli
 - [x] Acceptance criteria yazılı ve her biri test edildi
-- [x] Modül 2'deki tüm sayfalar üretildi (4/4)
+- [x] Modül 2'deki tüm sayfalar üretildi (v2: 12/12)
 - [x] Desktop + mobil ekran görüntüsü kontrolü yapıldı
 - [x] Kapsam dışı dosyalarda değişiklik yok
 - [x] Commit + push yapıldı

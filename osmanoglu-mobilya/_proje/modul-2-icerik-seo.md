@@ -4,37 +4,33 @@ Dayanak: `modul-1-strateji.md`. Nihai metinlerin tek kaynağı `icerik.py`; 12. 
 
 ## 10 — INFORMATION ARCHITECTURE
 
-4 sayfa. Her biri bir arama niyetine ya da karar adımına karşılık geliyor.
+**v2 (kullanıcı geri bildirimi: "basit duruyor, Babacan Mobilya seviyesinde olsun"):** 4 sayfadan 12 sayfaya çıkıldı. Babacan Mobilya'daki karar yolculuğu (çözümler → projeler → süreç → bilgi merkezi → iletişim) Osmanoğlu'nun doğrulanmış içeriğiyle kuruldu. Hakkımızda sayfası yine açılmadı (kuruluş yılı, ekip, usta biyografisi BİLİNMİYOR).
 
 | Sayfa | Amaç | Hedef kullanıcı | Temel soru | Verilen cevap | Güven unsuru | SEO amacı | CTA | Next step |
 |---|---|---|---|---|---|---|---|---|
-| `/` Ana sayfa | Marka + 3 iş alanı + iletişim | Marka / "sincan mobilyacı" arayan, Haritalar'dan gelen | "Kimler, ne yapıyorlar, güvenilir mi?" | Ölçüye yapılan mobilya; gerçek mutfak, yorumlar, adres | Hero'daki gerçek kareler, 4,9/26 (tarihli), 3 yorum, atölye adresi | "sincan mobilya", "sincan mobilyacı", marka | WhatsApp | Hizmet sayfası / mesaj hazırlayıcı |
-| `/mutfak-dolabi/` | En güçlü kanıtlı hizmet | Segment A | "Mutfağımı ölçüye yaptırabilir miyim, neye bakmalıyım?" | 3 karelik mutfak, birlikte seçilenler, süreç | Aynı işin 3 karesi, iki yorum | "mutfak dolabı ankara / sincan / eryaman" | WhatsApp (tür ön seçili) | Mesaj hazırlayıcı |
-| `/vestiyer-gomme-dolap/` | Antre, gardırop, gömme dolap, TV ünitesi | Segment B | "Küçük antreme / koridoruma dolap yapılır mı?" | Antre karesi + detay, müşteri paylaşımı işler (Haritalar) | Antre karesi, yorumlar | "vestiyer ankara", "gömme dolap ankara", "gardırop sincan" | WhatsApp | Mesaj hazırlayıcı |
-| `/karavan-mobilyasi/` | Niş: ahşap karavan | Segment C | "Ahşap karavan yaptırabileceğim bir usta var mı?" | Tek gerçek örnek (yorum), bildiklerimiz, ne getirmeli | Kamil C. yorumu, Haritalar fotoğraf bağlantısı | "karavan mobilyası ankara", "ahşap karavan yaptırma" | WhatsApp ("fikrim var") | Mesaj hazırlayıcı |
-
-**Açılmayan sayfalar ve gerekçesi:** Hakkımızda (kuruluş yılı, ekip BİLİNMİYOR → boş sayfa olurdu), ayrı İletişim (her sayfanın sonunda konum bölümü var; menüde `#iletisim`), Galeri (yalnız 5 gerçek kare → hizmet sayfalarında), TV ünitesi ayrı sayfa (kendi fotoğrafı yok; vestiyer sayfasında), KVKK / Çerez (aşağıda).
+| `/` | Marka + yolculuğun özeti | Haritalar'dan / marka aramasından gelen | Kimler, ne yapıyorlar, güvenilir mi? | Ölçüye yapılır; 3 çözüm; süreç; işçilik; projeler | Gerçek kareler, 4,9/26 (tarihli), 3 yorum, adres | sincan mobilya / mobilyacı | WhatsApp | Çözüm sayfası |
+| `/mutfak-dolabi/` | En güçlü kanıtlı hizmet | Segment A | Mutfağım ölçüye yapılır mı, neye bakmalıyım? | Neden özel ölçü, 4 kare, 6 seçim, işçilik, ilçeler | Proje kareleri, 2 yorum | mutfak dolabı ankara / sincan / eryaman | WhatsApp (tür seçili) | Mesaj hazırlayıcı |
+| `/vestiyer-gomme-dolap/` | Antre, gardırop, gömme dolap, TV ünitesi | Segment B | Küçük antreme / koridoruma dolap yapılır mı? | Antre detayı, 4 iş türü, Haritalar'daki işler | Antre karesi, yorumlar | vestiyer / gömme dolap ankara | WhatsApp | Mesaj hazırlayıcı |
+| `/karavan-mobilyasi/` | Niş | Segment C | Ahşap karavan yapan usta var mı? | Tek gerçek örnek, bildiklerimiz, hazırlık | Kamil C. yorumu | ahşap karavan yaptırma, karavan mobilyası ankara | WhatsApp | Mesaj hazırlayıcı |
+| `/projeler/` | Kanıt merkezi | Karşılaştıran | Daha önce ne yaptılar? | 2 proje + karavan yorumu | Gerçek kareler | osmanoğlu mobilya projeler | Projeyi incele | Proje sayfası |
+| `/projeler/pencere-onu-l-mutfak/` | Tek iş, detaylı | Segment A | Bu mutfakta ne var? | Fotoğraftan okunan 6 detay + 3 paragraf | 4 kare | l mutfak, kulpsuz mutfak | WhatsApp ("benzerini") | Mutfak sayfası |
+| `/projeler/aynali-citali-antre/` | Tek iş, detaylı | Segment B | Bu antrede ne var? | 4 detay + 3 paragraf | Antre karesi | aynalı vestiyer, çıtalı antre | WhatsApp | Vestiyer sayfası |
+| `/nasil-calisiyoruz/` | Süreç belirsizliğini gidermek | Kararsız | Sipariş verirsem ne olacak? | 5 adım (kim ne yapar), hazırlık | Açık süreç | mobilya yaptırma süreci | Mesaj hazırlayıcı | WhatsApp |
+| `/bilgi-merkezi/` | Rehber listesi | Araştıran | — | 2 rehber | — | — | Okuyun | Makale |
+| `/bilgi-merkezi/mutfak-dolabi-yaptirmadan-once/` | Bilgi niyeti → güven | Teklif karşılaştıran | Neyi sormalıyım? | 8 soru | Dürüst, satış dışı bilgi | mutfak dolabı yaptırırken dikkat edilmesi gerekenler | WhatsApp | Mutfak sayfası |
+| `/bilgi-merkezi/kaba-olcu-nasil-alinir/` | WhatsApp akışını kolaylaştırmak | İlk temas öncesi | Ölçüyü nasıl alırım? | 5 adım + fotoğraf önerisi | Uygulanabilir rehber | mutfak ölçüsü nasıl alınır | WhatsApp ("ölçüleri gönderiyorum") | WhatsApp |
+| `/iletisim/` | NAP + ulaşım | Gelmek isteyen | Nerede, nasıl ulaşırım? | Tablo, harita, mesaj hazırlayıcı | Adres | osmanoğlu mobilya sincan iletişim | Ara / WhatsApp / Yol tarifi | — |
 
 ## 11 — WEBSITE BLUEPRINT & LEGAL
 
-**Ana sayfa:** Hero (sol: H1 + giriş + WhatsApp/Ara + puan satırı; sağ: tam boy 3 slaytlı sahne, detay etiketli) → Ne yapıyoruz (3 sıra: mutfak, vestiyer, karavan) → Bir mutfağa yakından bakınca (köşe karesi + 4 kontrol noktası) → Yorumlar (3) → Nasıl başlarız (4 adım) → Mesaj hazırlayıcı → SSS (4) → Konum / iletişim → Alt bilgi.
-**Mutfak dolabı:** Hero (2 slayt) → Fotoğraftaki mutfak (3 kare) → Birlikte karar verdiğimiz şeyler (5) → Yorumlar (2) → Nasıl başlarız → Ankara'nın neresindeyiz → Mesaj hazırlayıcı (Mutfak dolabı seçili) → SSS (4) → Konum.
-**Vestiyer ve gömme dolap:** Hero (antre, tek kare) → Bu antrede ne var (3) → Müşterilerin Haritalar'da paylaştığı işler (4 madde + bağlantı) → Yorumlar → Nasıl başlarız → Mesaj hazırlayıcı (Vestiyer seçili) → SSS (3) → Konum.
-**Karavan:** Hero (temsili çizim, çizgi animasyonu) → Yorum alıntısı (büyük) → Bildiklerimiz + Konuşmaya gelirken → Mesaj hazırlayıcı (Karavan seçili) → SSS (3, ruhsat konusunda söz verilmez) → Konum.
+**Ana sayfa (v2):** Tam boy hero (kenardan kenara 3 slayt, krem kartta H1 + 2 CTA, sağ üstte "01 / 03" sayaçlı kontrol) → Güven şeridi (4) → Siz hangi ihtiyaçtasınız? (4 sütun) → Ölçü önce, mobilya sonra (ilkeler) → Çözümlerimiz (3 kart) → Mekânınızı bize gösterin → Nasıl çalışıyoruz (koyu, 5 adım) → İşçilik detayda belli olur (özellik tablosu + 3 kare) → Yaptığımız işler (3 kart) → Yorumlar (adaçayı bant) → Sincan Sanayi Sitesi (iletişim tablosu + harita) → S.S.S. → CTA bandı (ceviz) → 4 sütunlu alt bilgi; kayan WhatsApp, mobilde alt çubuk (WhatsApp / Ara).
+**Hizmet / proje sayfaları:** tam boy fotoğraflı hero + kırıntı; düz sayfalar (karavan, projeler, süreç, bilgi merkezi, makaleler, iletişim) adaçayı zeminli büyük başlık.
 
-**Hero kararı (kullanıcı isteği):** Tam boy (`100svh − üst çubuk`), animasyonlu: fotoğraflar çekmece gibi soldan açılır (clip-path), yavaş yakınlaşır, detay etiketleri sırayla gelir, ilerleme göstergesi mutfaktaki tutamak kanalı biçiminde. **Fotoğraf üstünde karartma katmanı, gradyan, filtre, bulanıklık yok** — metin fotoğrafın üstüne değil yanındaki düz panele yazılır. Durdur düğmesi (WCAG 2.2.2) ve `prefers-reduced-motion` desteği.
+**Hero kararı:** Tam boy (`100svh − üst çubuk`), fotoğraf kenardan kenara; çekmece gibi açılan geçiş, yavaş yakınlaşma, sırayla gelen detay etiketleri. **Karartma / gradyan / filtre / bulanıklık yok**: metin fotoğrafın üstüne değil, düz krem karta yazılır. Kartın ya da kontrolün altında kalacak etiket gösterilmez (JS çakışma kontrolü). Geniş ekranda dikey odak çekmecelere kaydırıldı (`ODAK`).
 
-**Internal linking**
-| Nereden | Nereye | Bağlantı metni |
-|---|---|---|
-| Ana sayfa "Ne yapıyoruz" | 3 hizmet sayfası | "Mutfak dolabı sayfası", "Vestiyer ve dolap sayfası", "Karavan sayfası" |
-| Ana sayfa detay bölümü | /mutfak-dolabi/ | "Mutfak dolabında birlikte seçtiklerimiz" |
-| /mutfak-dolabi/ | /vestiyer-gomme-dolap/ | "Antre, gardırop ve gömme dolap işlerimiz" |
-| /vestiyer-gomme-dolap/ | /mutfak-dolabi/ | "Mutfak dolabı işlerimize bakın" |
-| /karavan-mobilyasi/ | mutfak + vestiyer | "Asıl işimiz: mutfak dolabı", "Vestiyer ve gömme dolap" |
-| Tüm sayfalar | Haritalar | "26 yorumun hepsini Google Haritalar'da okuyun", "Yol tarifi" |
+**Internal linking:** Üst menü 7 bağlantı; alt bilgi Çözümler / Kurumsal / İletişim; hizmet sayfalarının sonunda "İlgili" (rehberler + diğer hizmet); proje sayfaları → diğer proje + hizmet + tüm projeler; rehberler → diğer rehber + mutfak + süreç; ana sayfa ilkeler → süreç, işçilik → mutfak, projeler → proje sayfaları.
 
-**Yasal:** Form veri toplamıyor (yalnız WhatsApp metni üretir), analytics / pixel yok, site kendi çerezini kullanmıyor, harita tıklayınca yükleniyor → KVKK aydınlatma metni ve çerez banner'ı **gerekmez**. Alt bilgide durum açıkça yazılı. GA4 eklenirse çerez onayı + KVKK metni (şablon, hukuki kontrol gerekir) eklenmeli.
+**Yasal:** Değişmedi — veri ve çerez yok, harita tıkla-yükle → KVKK metni / çerez banner'ı gerekmez.
 
 ## 12 — COPYWRITING ENGINE
 
@@ -53,17 +49,12 @@ Ton: kısa cümle, somut gözlem, usta ağzı ("konuşalım", "yazın"). Kanıts
 | Niş, bilgi + ticari | ahşap karavan yaptırma, karavan mobilyası ankara, ayous karavan | /karavan-mobilyasi/ | Karavanınız da bir mobilya işidir | Bildiklerimiz, getirilecekler | Yorum | WhatsApp |
 | Marka | osmanoğlu mobilya | / | — | NAP | Haritalar | Ara |
 
-| Slug | Title (≤60) | Meta (≤155) | H1 |
-|---|---|---|---|
-| `/` | Osmanoğlu Mobilya \| Sincan, Ankara Özel Ölçü Mobilya (52) | bkz. §12 (152) | Ölçüye yapılır, yerine oturur. |
-| `/mutfak-dolabi/` | Mutfak Dolabı Sincan, Ankara \| Osmanoğlu Mobilya (48) | bkz. §12 | Mutfak, duvarın ölçüsüyle başlar. |
-| `/vestiyer-gomme-dolap/` | Vestiyer ve Gömme Dolap Ankara \| Osmanoğlu Mobilya (50) | bkz. §12 | Kapıdan girince ilk gördüğünüz yer. |
-| `/karavan-mobilyasi/` | Ahşap Karavan ve Karavan Mobilyası \| Osmanoğlu (46) | bkz. §12 | Karavanınız da bir mobilya işidir. |
+Her sayfanın title / meta / H1 değeri §12'de (karakter sayılarıyla); hepsi title ≤ 60, meta 70–155 (otomatik test).
 
-(H1'in üstündeki küçük satır — "Sincan / Ankara · özel ölçü mobilya" vb. — H1'in içinde, anahtar kelimeyi taşır.)
+(H1'in üstündeki küçük satır — "Sincan · Ankara — Özel ölçü mobilya" vb. — anahtar kelimeyi taşır.)
 
 **Local SEO:** NAP her sayfada aynı (Osmanoğlu Mobilya · Ahi Evran Mahallesi, Sincan Sanayi Sitesi, 06000 Sincan / Ankara · 0532 177 06 19). Haritalar profili: web sitesi alanına site adresi eklensin (1 numaralı aksiyon); işletme adı "OSMANOĞLU MOBİLYA Mutfak Dekorasyon Sincan" anahtar kelime eki içeriyor — Google yönergelerine göre askıya alma riski var; tabela adıyla eşitlemek **öneridir, karar müşterinin**. Yorum stratejisi: teslimden sonra WhatsApp'tan Haritalar yorum bağlantısı + "fotoğraf ekler misiniz" ricası (fotoğraflı yorumlar zaten en güçlü kanıt). Haftalık saatler profile girilsin.
-**Schema:** `HomeAndConstructionBusiness` (ad, adres, geo, telefon, hasMap, areaServed Ankara) her sayfada; alt sayfalarda `Service` + `BreadcrumbList`; her sayfada `FAQPage`. **`aggregateRating` yok** (self-serving review kuralı), **`openingHours` yok** (yalnız tek günün kapanışı biliniyor).
+**Schema:** `HomeAndConstructionBusiness` her sayfada; alt sayfalarda `BreadcrumbList`; hizmetlerde `Service`; rehberlerde `Article`; SSS olan sayfalarda `FAQPage`. **`aggregateRating` yok** (self-serving review kuralı), **`openingHours` yok** (yalnız tek günün kapanışı biliniyor).
 **Ölçüm planı:** GA4 kurulmadı (çerezsiz kalmak için). Olaylar `dataLayer`'a yazılıyor; GA4/GTM eklenince doğrudan kullanılabilir: `whatsapp_tikla`, `whatsapp_form`, `telefon_tikla`, `yol_tarifi`, `haritalar_tikla`, `harita_yukle`, `mesaj_kopyala` (+ `sayfa`). GA4 eklenirse onaydan önce yüklenmemeli.
 
 ## 14 — VISUAL INTELLIGENCE
@@ -74,12 +65,12 @@ Ton: kısa cümle, somut gözlem, usta ağzı ("konuşalım", "yazın"). Kanıts
 | mutfak-eviye-cekmeceler | Video 2, kare 38 | PRODUCT · PROOF | Hero 2. slayt, mutfak galerisi |
 | antre-aynali-citali-vestiyer | Video 1, kare 37 (alttaki çöp poşeti ve ayakkabılar kırpıldı) | ATTENTION · PROOF | Hero 3. slayt, vestiyer hero + detay, ana sayfa iş satırı |
 | mutfak-tezgah-kose | Video 2, kare 25 | PRODUCT | Ana sayfa detay bölümü, mutfak galerisi |
-| mutfak-gun-isigi | Video 1, kare 14 | EMOTION | Ana sayfa mutfak satırı |
+| mutfak-gun-isigi | Video 1, kare 14 | EMOTION | Mutfak çözüm kartı, işçilik kareleri, galeriler |
 | karavan çizimi (SVG) | Temsili | BRAND | Karavan hero + ana sayfa satırı — "Temsili çizim" yazılı |
 
 **Kullanılmayanlar:** Haritalar kapak fotoğrafı (showroom/ürün olabilir), yemek masası karesi (ürün mü müşteri eşyası mı belirsiz), yorumlardaki müşteri fotoğrafları (kullanım hakkı müşteride; yerine Haritalar bağlantısı). Videodaki "Film 1 / 30 Haziran 2021" yazılı ve fare imleçli kareler atlandı.
-**Çözünürlük riski:** Kareler ~800 px. Hero'da 1,6× Lanczos + hafif keskinleştirme sürümü (`-buyuk.webp`) `srcset` ile verildi; bulanıklık filtresi yok, ama gerçek keskinlik için orijinaller gerekli.
-**Tasarım dili:** fotoğraflardan türetildi — antre duvarının adaçayı yeşili (hero paneli), tahta kaplama (vurgu), siyah parlak kapak (metin, düğme), bakır damarlı tezgâh (koyu alt bilgi). İmza öğe: çekmecelerdeki yatay tutamak kanalı (`.kanal`: bölüm çizgileri, slayt göstergesi, liste işaretleri, SSS işareti).
+**Çözünürlük riski:** Kareler ~800 px. Hero kenardan kenara olduğu için 1,8× Lanczos + hafif keskinleştirme sürümü (`-buyuk.webp`) `srcset` ile verildi; bulanıklık filtresi yok, ama gerçek keskinlik için orijinaller gerekli.
+**Tasarım dili (v2, editoryal):** Bodoni Moda (başlık, ikinci satır italik bronz) + Albert Sans (metin). Palet fotoğraflardan: krem duvar (zemin), taş (bantlar), antrenin adaçayı yeşili (yorum bandı, düz sayfa başları), tahta kaplama → bronz (üst başlıklar, numaralar), siyah parlak kapak → gece (süreç bölümü, alt bilgi), bakır damarlı tezgâh → ceviz (CTA bandı). Babacan Mobilya'nın bölüm kurgusu referans alındı; yazı tipi ve renkler Osmanoğlu'na özgü.
 
 **SHOT LIST (müşteriden)**
 | # | Konu | Açı / ışık | Sayfa |

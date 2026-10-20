@@ -261,7 +261,7 @@ p { margin: 0; }
 .yorum-izgara { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 44px); }
 .yorum-izgara--iki { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 980px; margin: 0 auto; }
 .yorum { margin: 0; display: grid; gap: 22px; align-content: space-between; padding: 34px 0 0; border-top: 1px solid var(--murekkep); position: relative; }
-.yorum::before { content: "“"; position: absolute; top: -6px; left: 0; transform: translateY(-50%); font: 400 4rem/1 var(--serif); color: var(--bronz); background: inherit; padding-right: 10px; }
+.yorum::before { content: "“"; position: absolute; top: -6px; left: 0; transform: translateY(-50%); font: 400 4.4rem/1 Georgia, serif; color: var(--bronz); background: inherit; padding-right: 10px; }
 .bant--adacayi .yorum::before { background: var(--adacayi); }
 .yorum p { font: 400 1.12rem/1.6 var(--serif); }
 .yorum footer { display: grid; gap: 2px; font-size: .84rem; color: var(--gri); }
