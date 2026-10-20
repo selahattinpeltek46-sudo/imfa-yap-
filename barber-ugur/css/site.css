@@ -317,3 +317,6 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--isik); outl
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+
+/* Deneme modu şeridi (?demo=1) */
+.demo-serit { position: relative; background: var(--gul-koyu); color: #fff; text-align: center; font-weight: 600; font-size: .92rem; padding: .45rem 16px; }

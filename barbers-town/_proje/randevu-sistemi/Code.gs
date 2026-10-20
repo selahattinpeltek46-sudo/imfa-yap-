@@ -197,7 +197,7 @@ function waLink(telefon, metin) {
 
 /** Müşteriye gidecek hazır mesajlar. tur: 'onay' | 'hatirlat' | 'tasindi' | 'iptal' */
 function mesajMetni(tur, r, dukkan) {
-  var gun = turkceTarih(r.tarih), imza = ' — ' + (dukkan || "Barber's Town");
+  var gun = turkceTarih(r.tarih), imza = ' — ' + (dukkan || AYAR.dukkanAdi);
   if (tur === 'onay') return 'Merhaba ' + r.ad + ', ' + gun + ', saat ' + r.saat + ' için ' + (r.hizmet ? r.hizmet + ' ' : '') + 'randevunuz alındı. Gelemeyecekseniz lütfen haber verin.' + imza;
   if (tur === 'hatirlat') return 'Merhaba ' + r.ad + ', randevunuzu hatırlatmak istedik: ' + gun + ', saat ' + r.saat + ' (' + r.hizmet + '). Gelemeyecekseniz lütfen haber verin.' + imza;
   if (tur === 'tasindi') return 'Merhaba ' + r.ad + ', ' + (r.hizmet ? r.hizmet + ' ' : '') + 'randevunuz ' + gun + ', saat ' + r.saat + ' olarak güncellendi. Uygun değilse lütfen bize yazın.' + imza;
@@ -351,7 +351,7 @@ function doGet(e) {
       if (s.hata) return json({ ok: false, hata: s.hata });
       return json({ ok: true, tarih: p.tarih, kapali: s.kapali, saatler: s.saatler });
     }
-    return json({ ok: true, servis: "Barber's Town randevu" });
+    return json({ ok: true, servis: AYAR.dukkanAdi + ' randevu' });
   } catch (hata) {
     return json({ ok: false, hata: 'Sunucu hatası' });
   }
