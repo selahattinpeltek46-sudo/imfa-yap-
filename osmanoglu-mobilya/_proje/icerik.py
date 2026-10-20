@@ -87,23 +87,39 @@ IG = {
     "ig-koridor-duvar-paneli": ("Koridorda çerçeveli duvar panelleri ve mor ışık", "ahsap", "Duvar paneli"),
     "ig-duvar-paneli-ayna-led": ("Aynalı duvar paneli ve tavanda gizli ışık", "ahsap", "Aynalı duvar paneli"),
     "ig-sedir-pencere-onu": ("Pencere önünde kırmızı minderli ahşap sedir", "ahsap", "Pencere önü sedir"),
+    # Kullanıcının yüklediği yüksek çözünürlüklü kareler (kaynak/yeni/), yeni olanlar:
+    "ig-giyinme-klasik": ("Klasik çerçeveli, varaklı kapaklarla giyinme odası ve aynı stilde oda kapısı", "dolap", "Klasik giyinme odası"),
+    "ig-konsol-klasik-ayna": ("Klasik ayaklı konsol ve oymalı çerçeveli ayna", "tv", "Klasik konsol ve ayna"),
+    "ig-banyo-lacivert-altin": ("Lacivert klasik kapaklı banyo dolabı, altın kulplar, tezgâh üstü lavabo ve boy dolap", "banyo", "Lacivert-altın banyo"),
+    "ig-tv-unitesi-mermer-led": ("Çıtalı panel önünde mermer desenli çerçeveli, ışıklı TV ünitesi ve alt modül", "tv", "Mermer çerçeveli TV ünitesi"),
+    "ig-kapi-ayakkabilik": ("Gri iç kapılar ve antrasit şeritli ayakkabılık", "dolap", "Kapı ve ayakkabılık"),
+    "ig-mutfak-cicekli-isik": ("Beyaz kapaklar arasında ışıklı, çiçek desenli tezgâh arası", "mutfak", "Işıklı tezgâh arası, yakın"),
+}
+# Yüksek çözünürlüklü sürümle değiştirilen / eklenen karelerin boyutları (diğerleri Instagram kesiti: 351 × 430)
+IG_BOYUT = {
+    "ig-mutfak-klasik-ankastre": (809, 810), "ig-giyinme-klasik": (718, 820), "ig-konsol-klasik-ayna": (691, 771),
+    "ig-mutfak-bej-uzun": (478, 789), "ig-banyo-dolabi-yesil": (470, 809), "ig-banyo-lacivert-altin": (465, 793),
+    "ig-tv-unitesi-mermer-led": (468, 712), "ig-karavan-iki": (812, 640), "ig-kapi-ayakkabilik": (829, 835),
+    "ig-mutfak-beyaz-kucuk": (814, 808), "ig-sedir-pencere-onu": (803, 834), "ig-tv-unitesi-klasik": (802, 820),
+    "ig-mutfak-cicekli-tezgah-arasi": (624, 826), "ig-mutfak-cicekli-isik": (606, 804), "ig-mutfak-beyaz-klasik": (841, 800),
+    "ig-merdiven-ahsap-ayna": (852, 680), "ig-banyo-altin-ayna": (815, 823),
 }
 IG_KATEGORI = [("mutfak", "Mutfak"), ("dolap", "Gardırop & dolap"), ("tv", "TV ünitesi & konsol"), ("banyo", "Banyo"),
                ("karavan", "Karavan"), ("ahsap", "Merdiven, panel & ahşap yapılar")]
 for _d, (_alt, _kat, _et) in IG.items():
-    FOTO[_d] = (_alt, 351, 348 if _d == "ig-karavan-iki" else 430)
+    FOTO[_d] = (_alt, *IG_BOYUT.get(_d, (351, 430)))
     KARO[_d] = _et
 
 _MUTFAK = [["ig-mutfak-bej-uzun", "mutfak-pencere-l-tezgah", "ig-mutfak-beyaz-parlak", "detay-kulpsuz-cekmece"],
-           ["ig-mutfak-cicekli-tezgah-arasi", "detay-damarli-tezgah", "ig-mutfak-klasik-ankastre", "ig-mutfak-beyaz-kucuk"],
+           ["ig-mutfak-cicekli-tezgah-arasi", "detay-damarli-tezgah", "ig-mutfak-klasik-ankastre", "ig-mutfak-cicekli-isik"],
            ["ig-mutfak-beyaz-klasik", "mutfak-eviye-cekmeceler", "ig-mutfak-camli-ust-dolap", "ig-ust-dolap-camli-gri"]]
 _ANTRE = [["antre-aynali-citali-vestiyer", "ig-gardirop-klasik-beyaz", "ig-tv-unitesi-led", "ig-konsol-dalga-kapak"],
           ["ig-vestiyer-beyaz-gomme", "detay-cita-aski", "ig-vitrin-tv-unitesi", "ig-sifonyer-ceviz-beyaz"],
-          ["ig-gardirop-siyah-beyaz", "ig-tv-unitesi-klasik", "ig-dolap-kapak-desenli", "ig-makyaj-sifonyer"]]
+          ["ig-giyinme-klasik", "ig-tv-unitesi-mermer-led", "ig-konsol-klasik-ayna", "ig-tv-unitesi-klasik"]]
 MOZAIK = {
     "": [["ig-mutfak-bej-uzun", "ig-karavan-turuncu", "mutfak-pencere-l-tezgah", "ig-banyo-altin-ayna", "ig-gardirop-klasik-beyaz"],
-         ["ig-tv-unitesi-led", "detay-cita-aski", "ig-mutfak-cicekli-tezgah-arasi", "ig-kamelya-ahsap", "ig-karavan-ic-ahsap"],
-         ["ig-mutfak-beyaz-klasik", "ig-tv-unitesi-klasik", "detay-damarli-tezgah", "ig-vestiyer-beyaz-gomme", "ig-banyo-dolabi-yesil"]],
+         ["ig-tv-unitesi-mermer-led", "detay-cita-aski", "ig-mutfak-cicekli-tezgah-arasi", "ig-kamelya-ahsap", "ig-karavan-ic-ahsap"],
+         ["ig-mutfak-beyaz-klasik", "ig-tv-unitesi-klasik", "ig-banyo-altin-ayna", "ig-sedir-pencere-onu", "ig-giyinme-klasik"]],
     "mutfak-dolabi/": _MUTFAK,
     "projeler/pencere-onu-l-mutfak/": _MUTFAK,
     "vestiyer-gomme-dolap/": _ANTRE,
