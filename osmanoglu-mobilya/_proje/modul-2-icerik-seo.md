@@ -72,6 +72,8 @@ Her sayfanın title / meta / H1 değeri §12'de (karakter sayılarıyla); hepsi 
 **Çözünürlük riski:** Kareler ~800 px. Hero kenardan kenara olduğu için 1,8× Lanczos + hafif keskinleştirme sürümü (`-buyuk.webp`) `srcset` ile verildi; bulanıklık filtresi yok, ama gerçek keskinlik için orijinaller gerekli.
 **Tasarım dili (v2, editoryal):** Bodoni Moda (başlık, ikinci satır italik bronz) + Albert Sans (metin). Palet fotoğraflardan: krem duvar (zemin), taş (bantlar), antrenin adaçayı yeşili (yorum bandı, düz sayfa başları), tahta kaplama → bronz (üst başlıklar, numaralar), siyah parlak kapak → gece (süreç bölümü, alt bilgi), bakır damarlı tezgâh → ceviz (CTA bandı). Babacan Mobilya'nın bölüm kurgusu referans alındı; yazı tipi ve renkler Osmanoğlu'na özgü.
 
+**v5 — kullanıcının yüklediği 19 kare (`kaynak/yeni/`):** 11'i Instagram kesitlerinin yerine yüksek çözünürlüklü sürüm olarak, 6'sı yeni iş olarak eklendi (klasik giyinme odası, klasik konsol, lacivert-altın banyo, mermer çerçeveli TV ünitesi, kapı ve ayakkabılık, ışıklı tezgâh arası). Alınmayanlar: 07 (dört TV ünitesinden kolaj; yapay zekâ / katalog görseli izlenimi) ve 08 (ahşap çıtalı beyaz TV ünitesi; firmanın işi olduğu teyit edilmedi). 09'daki "osmanoğlu mobilya sincan" yazısı kırpıldı; 06'da aynadaki çekim yapan kişi yumuşak maskeyle gizlendi ve bu kare hero'da kullanılmıyor.
+
 **SHOT LIST (müşteriden)**
 | # | Konu | Açı / ışık | Sayfa |
 |---|---|---|---|

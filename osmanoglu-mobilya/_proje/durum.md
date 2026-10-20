@@ -17,7 +17,7 @@ Son güncelleme: 2026-10-20
 | 11 | Website Blueprint & Legal | 2 | ✅ TAMAMLANDI | Veri / çerez yok → KVKK ve banner gerekmez |
 | 12 | Copywriting Engine | 2 | ✅ TAMAMLANDI | Tek kaynak `icerik.py` |
 | 13 | SEO & Analytics | 2 | ✅ TAMAMLANDI | GA4 yok; olaylar dataLayer'da |
-| 14 | Visual Intelligence | 2 | ✅ TAMAMLANDI | v4: +32 Instagram karesi (mozaik + galeriler); sohbetteki yüksek çözünürlüklü fotoğraflar diske düşmedi, yükleme istendi |
+| 14 | Visual Intelligence | 2 | ✅ TAMAMLANDI | v5: kullanıcının yüklediği 19 kareden 17'si (11 değiştirme + 6 yeni); 38 Instagram işi |
 | 15 | Tech Stack & Plan | 3 | ✅ TAMAMLANDI | Statik + uret.py |
 | 16 | Development | 3 | ✅ TAMAMLANDI | v4 Instagram galerileri; 12 sayfa; 739/739 test |
 | 17 | Evaluation | 4 | ✅ TAMAMLANDI | |
