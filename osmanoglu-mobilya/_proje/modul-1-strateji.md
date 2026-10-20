@@ -31,6 +31,8 @@ Kullanıcı brifi (aynen): "Hero bölümü büyük, tam boy ve animasyon gibi ol
 - Ekran kayıtları: (1) L tipi mutfak, pencere önü; tahta kaplama kulpsuz çekmeceler, siyah yansıtan üst dolaplar, koyu tezgâh, siyah damarlı tezgâh arası; (2) aynı tip çekmecelerin yakın planı, bakır damarlı koyu tezgâh, alttan montajlı inox eviye; (3) antre: tavana kadar ahşap üst dolaplar, boy ayna, çıtalı panel üzerinde 4 askı; (4) gri tablalı yemek masası (ürün mü, müşterinin eşyası mı belirsiz — kullanılmadı).
 - Yorum fotoğrafları (küçük, kullanım hakkı belirsiz → sitede görsel olarak kullanılmadı, yalnız metin ve "Haritalar'da görün" bağlantısı): beyaz koridor gömme dolap, ahşap karavan, fileli/çıtalı ön yüzlü konsol, köşe gardırop, beyaz boy dolaplar, beyaz TV ünitesi.
 
+**Ek kaynak (v4, 20.10.2026): Instagram profil ekran kaydı.** Profil: "OSMANOĞLU MOBİLYA" logolu, 41 gönderi. Bio (MÜŞTERİ BİLGİSİ — firmanın kendi beyanı): "Tasarım ve Moda", +90 532 177 06 19, +90 537 769 44 66, "Siz hayal edin, biz yapalım. Kalite asla tesadüf değildir. 30 yıllık tecrübe…", "223. Sok 5/4 Sincan Sanayi sitesi, Sincan, Ankara". Kullanıcı adı kayıtta görünmüyor (BİLİNMİYOR → sitede Instagram bağlantısı yok). 41 paylaşımdan 32'si siteye alındı; düğün davetiyesi (kişisel veri), yazı bindirilmiş kolajlar, yemek takımı (ürün mü imalat mı belirsiz) ve belirsiz kareler alınmadı. Bir kare 3D tasarım görseli → "3D tasarım" etiketiyle, hero'da kullanılmadı. Sitede kullanılan beyanlar: "30 yıllık tecrübe" (güven şeridi), "Siz hayal edin, biz yapalım." (CTA bandı). İkinci numara ve sokak/kapı no yayınlanmadı (rolü teyit edilmedi; NAP Haritalar ile aynı tutuldu).
+
 ## 02 — CONTEXT ENGINE (Master Context)
 
 | Sınıf | İçerik |

@@ -50,20 +50,67 @@ KARO = {
     "detay-cita-aski": "Çıtalı panel, dört askı",
     "detay-antre-ust-dolap": "Tavana kadar üst dolap",
 }
-_MUTFAK = [["mutfak-pencere-l-tezgah", "detay-damarli-tezgah", "detay-kulpsuz-cekmece", "mutfak-gun-isigi"],
-           ["detay-eviye-batarya", "mutfak-eviye-cekmeceler", "detay-pencere-kose", "detay-ust-dolap-yansima"],
-           ["detay-cekmece-sirasi", "mutfak-tezgah-kose", "detay-alttan-eviye", "detay-kulpsuz-cekmece"]]
-_ANTRE = [["antre-aynali-citali-vestiyer", "detay-kulpsuz-cekmece", "mutfak-gun-isigi"],
-          ["detay-cita-aski", "detay-damarli-tezgah", "detay-antre-ust-dolap"],
-          ["detay-antre-ust-dolap", "mutfak-pencere-l-tezgah", "detay-cita-aski"]]
+
+# Instagram profil ekran kaydından (20.10.2026) kesilen paylaşımlar: 351 px genişlik, büyütülmeden kullanılır.
+# Hariç tutulanlar: düğün davetiyesi (kişisel), yazı bindirilmiş kolajlar, yemek takımı ve belirsiz kareler.
+IG = {
+    # dosya: (alt metin, kategori, kısa etiket)
+    "ig-mutfak-bej-uzun": ("Uzun duvar boyunca bej parlak kapaklı mutfak, tavana kadar üst dolaplar ve davlumbaz", "mutfak", "Bej parlak mutfak"),
+    "ig-mutfak-beyaz-kucuk": ("Küçük beyaz mutfak, siyah tezgâh ve tavana kadar boy dolap", "mutfak", "Küçük beyaz mutfak"),
+    "ig-mutfak-cicekli-tezgah-arasi": ("Beyaz kapaklı köşe mutfak, siyah tezgâh ve ışıklı desenli tezgâh arası", "mutfak", "Işıklı tezgâh arası"),
+    "ig-mutfak-beyaz-klasik": ("Beyaz çerçeveli kapaklar, siyah kulplar ve açık renk tezgâhlı mutfak", "mutfak", "Beyaz klasik mutfak"),
+    "ig-mutfak-camli-ust-dolap": ("Camlı üst dolaplı beyaz mutfak", "mutfak", "Camlı üst dolaplar"),
+    "ig-mutfak-beyaz-parlak": ("Beyaz parlak mutfak, ankastre fırın ve manzara desenli tezgâh arası", "mutfak", "Beyaz parlak mutfak"),
+    "ig-mutfak-boy-dolap": ("Beyaz kapaklı boy dolaplar ve ankastre beyaz eşya yerleri", "mutfak", "Boy dolaplar"),
+    "ig-mutfak-klasik-ankastre": ("Krem klasik boy dolap ve içine yerleştirilmiş iki ankastre fırın", "mutfak", "Klasik ankastre dolap"),
+    "ig-ust-dolap-camli-gri": ("Gri çerçeveli, buzlu camlı üst dolap ve siyah kulplar", "mutfak", "Gri camlı üst dolap"),
+    "ig-vestiyer-beyaz-gomme": ("Koridor boyunca beyaz gömme dolaplar ve askılı vestiyer bölmesi", "dolap", "Beyaz gömme dolap"),
+    "ig-gardirop-klasik-beyaz": ("Beyaz klasik çerçeveli kapaklı gardırop", "dolap", "Klasik gardırop"),
+    "ig-gardirop-siyah-beyaz": ("Siyah ve beyaz parlak kapaklı dolap ve yanında açık raflı niş", "dolap", "Siyah-beyaz dolap"),
+    "ig-dolap-kapak-desenli": ("Oval desen oyma beyaz kapaklar", "dolap", "Desenli kapaklar"),
+    "ig-tv-unitesi-led": ("Çıtalı panel önünde ışıklı TV ünitesi ve alçak konsol", "tv", "Işıklı TV ünitesi"),
+    "ig-tv-unitesi-klasik": ("Krem klasik TV ünitesi, iki yanda camlı vitrin dolaplar", "tv", "Klasik TV ünitesi"),
+    "ig-vitrin-tv-unitesi": ("Beyaz alt dolaplı, raflı vitrin ve TV duvarı", "tv", "Vitrin ve raflar"),
+    "ig-konsol-dalga-kapak": ("Dalga desenli beyaz kapaklı, halka kulplu konsol ve oval ayna", "tv", "Dalga kapaklı konsol"),
+    "ig-sifonyer-ceviz-beyaz": ("Ceviz ve beyaz çekmeceli şifonyer", "tv", "Ceviz-beyaz şifonyer"),
+    "ig-makyaj-sifonyer": ("Yuvarlak aynalı, ahşap çekmeceli şifonyer", "tv", "Aynalı şifonyer"),
+    "ig-banyo-dolabi-yesil": ("Yeşil kapaklı banyo dolabı, beyaz tezgâh ve desenli fayans", "banyo", "Yeşil banyo dolabı"),
+    "ig-banyo-altin-ayna": ("Altın çerçeveli yuvarlak aynalar ve tezgâh üstü lavabolu banyo", "banyo", "Altın aynalı banyo"),
+    "ig-karavan-iki": ("Römork üzerinde iki ahşap kaplamalı küçük ev / karavan", "karavan", "İki karavan"),
+    "ig-karavan-ic-led": ("Karavan içi: mavi ışıklı tavan, oturma köşesi ve dolaplar", "karavan", "Karavan içi, ışıklı"),
+    "ig-karavan-ic-ahsap": ("Karavan içi: ahşap kaplama duvarlar, asma kata çıkan merdiven ve masa", "karavan", "Karavan içi, ahşap"),
+    "ig-karavan-turuncu": ("Turuncu yatay ahşap kaplamalı, siyah çerçeveli pencereli karavan", "karavan", "Turuncu karavan"),
+    "ig-kamelya-ahsap": ("Ahşap kamelya: korkuluklu, çatılı bahçe yapısı", "ahsap", "Ahşap kamelya"),
+    "ig-veranda-pergola": ("Ev önünde ahşap direkli veranda / pergola", "ahsap", "Ahşap veranda"),
+    "ig-merdiven-beyaz": ("Beyaz korkuluklu, ahşap basamaklı iç merdiven", "ahsap", "İç merdiven"),
+    "ig-merdiven-ahsap-ayna": ("3D tasarım görseli: ahşap döner merdiven ve aynalı duvar paneli", "ahsap", "3D tasarım: merdiven"),
+    "ig-koridor-duvar-paneli": ("Koridorda çerçeveli duvar panelleri ve mor ışık", "ahsap", "Duvar paneli"),
+    "ig-duvar-paneli-ayna-led": ("Aynalı duvar paneli ve tavanda gizli ışık", "ahsap", "Aynalı duvar paneli"),
+    "ig-sedir-pencere-onu": ("Pencere önünde kırmızı minderli ahşap sedir", "ahsap", "Pencere önü sedir"),
+}
+IG_KATEGORI = [("mutfak", "Mutfak"), ("dolap", "Gardırop & dolap"), ("tv", "TV ünitesi & konsol"), ("banyo", "Banyo"),
+               ("karavan", "Karavan"), ("ahsap", "Merdiven, panel & ahşap yapılar")]
+for _d, (_alt, _kat, _et) in IG.items():
+    FOTO[_d] = (_alt, 351, 348 if _d == "ig-karavan-iki" else 430)
+    KARO[_d] = _et
+
+_MUTFAK = [["ig-mutfak-bej-uzun", "mutfak-pencere-l-tezgah", "ig-mutfak-beyaz-parlak", "detay-kulpsuz-cekmece"],
+           ["ig-mutfak-cicekli-tezgah-arasi", "detay-damarli-tezgah", "ig-mutfak-klasik-ankastre", "ig-mutfak-beyaz-kucuk"],
+           ["ig-mutfak-beyaz-klasik", "mutfak-eviye-cekmeceler", "ig-mutfak-camli-ust-dolap", "ig-ust-dolap-camli-gri"]]
+_ANTRE = [["antre-aynali-citali-vestiyer", "ig-gardirop-klasik-beyaz", "ig-tv-unitesi-led", "ig-konsol-dalga-kapak"],
+          ["ig-vestiyer-beyaz-gomme", "detay-cita-aski", "ig-vitrin-tv-unitesi", "ig-sifonyer-ceviz-beyaz"],
+          ["ig-gardirop-siyah-beyaz", "ig-tv-unitesi-klasik", "ig-dolap-kapak-desenli", "ig-makyaj-sifonyer"]]
 MOZAIK = {
-    "": [["mutfak-pencere-l-tezgah", "detay-cita-aski", "mutfak-tezgah-kose", "detay-kulpsuz-cekmece"],
-         ["detay-eviye-batarya", "antre-aynali-citali-vestiyer", "detay-damarli-tezgah", "mutfak-gun-isigi"],
-         ["detay-cekmece-sirasi", "detay-ust-dolap-yansima", "mutfak-eviye-cekmeceler", "detay-antre-ust-dolap"]],
+    "": [["ig-mutfak-bej-uzun", "ig-karavan-turuncu", "mutfak-pencere-l-tezgah", "ig-banyo-altin-ayna", "ig-gardirop-klasik-beyaz"],
+         ["ig-tv-unitesi-led", "detay-cita-aski", "ig-mutfak-cicekli-tezgah-arasi", "ig-kamelya-ahsap", "ig-karavan-ic-ahsap"],
+         ["ig-mutfak-beyaz-klasik", "ig-tv-unitesi-klasik", "detay-damarli-tezgah", "ig-vestiyer-beyaz-gomme", "ig-banyo-dolabi-yesil"]],
     "mutfak-dolabi/": _MUTFAK,
     "projeler/pencere-onu-l-mutfak/": _MUTFAK,
     "vestiyer-gomme-dolap/": _ANTRE,
     "projeler/aynali-citali-antre/": _ANTRE,
+    "karavan-mobilyasi/": [["ig-karavan-turuncu", "ig-kamelya-ahsap", "ig-karavan-ic-led"],
+                           ["ig-karavan-ic-ahsap", "ig-karavan-iki", "ig-veranda-pergola"],
+                           ["ig-karavan-iki", "ig-karavan-ic-led", "ig-sedir-pencere-onu"]],
 }
 
 # ---------------------------------------------------------------- yorumlar
@@ -207,7 +254,7 @@ SAYFA = {
 # ---------------------------------------------------------------- ana sayfa
 GUVEN = [
     ("atolye", "Sincan Sanayi Sitesi", "Atölyemiz Ahi Evran Mahallesi'nde; gelip görebilirsiniz."),
-    ("olcu", "Duvarınızın ölçüsüyle", "Hazır modül değil; alan ölçülür, iş ona göre çizilir."),
+    ("olcu", "30 yıllık tecrübe", "Kendi sözümüzle: kalite asla tesadüf değildir."),
     ("usta", "Ustayla doğrudan", "Aradığınızda işi yapacak kişiyle konuşursunuz."),
     ("yildiz", f"Google'da {PUAN} · {YORUM_SAYISI} yorum", f"{TARIH_OKUNUR} itibarıyla Haritalar'daki puan."),
 ]
@@ -233,10 +280,10 @@ COZUMLER = [
      "metin": "Pencere önü, kolon, kombi köşesi: mutfağın en zor yerleri ölçüyle çözülür.", "cta": "Mutfağım için konuşalım"},
     {"sayfa": "vestiyer-gomme-dolap/", "foto": "antre-aynali-citali-vestiyer", "no": "02", "baslik": "Vestiyer & Gömme Dolap",
      "metin": "Antrede ayna ve askı, koridorda tavana kadar dolap, yatak odasında gardırop.", "cta": "Alanım için konuşalım"},
-    {"sayfa": "karavan-mobilyasi/", "foto": None, "no": "03", "baslik": "Karavan & Özel İşler",
-     "metin": "Ayous ağacından bir karavan yaptık; iki yıl sonra müşterimiz yorumunu yazdı.", "cta": "Fikrimi anlatayım"},
+    {"sayfa": "karavan-mobilyasi/", "foto": "ig-karavan-turuncu", "no": "03", "baslik": "Karavan & Ahşap İşler",
+     "metin": "Ahşap kaplamalı karavan, içi ve dışıyla; kamelya ve veranda gibi ahşap yapılar.", "cta": "Fikrimi anlatayım"},
 ]
-COZUM_EK = "Gardırop, TV ünitesi, konsol ve koridor dolabı da yaptığımız işler arasında; müşterilerimizin paylaştığı fotoğraflar Google Haritalar'da."
+COZUM_EK = "Gardırop, TV ünitesi, konsol, banyo dolabı, merdiven, duvar paneli, sedir ve ahşap kamelya da yaptığımız işler arasında."
 
 DETAY_BASLIK = ("İşçilik", "detayda belli olur.")
 DETAY_ALT = "\"Kaliteliyiz\" demek yerine fotoğrafta görüleni yazıyoruz."
@@ -283,7 +330,7 @@ SSS = {
         ("TV ünitesi de yapıyor musunuz?", "Evet. Müşterilerimizin Haritalar'da paylaştığı işler arasında TV ünitesi ve konsol da var."),
     ],
     "karavan-mobilyasi/": [
-        ("Karavanın tamamını mı yapıyorsunuz, yalnız iç mobilyayı mı?", "Kamil Bey'in karavanında ahşap gövde ve iç düzen birlikte yapıldı. Sizin aracınızda ne yapılabileceğini fikrinizi ve ölçüleri görünce konuşalım."),
+        ("Karavanın tamamını mı yapıyorsunuz, yalnız iç mobilyayı mı?", "Instagram'da paylaştığımız karavanlarda dış ahşap kaplama ve iç düzen birlikte yapıldı. Sizin aracınızda ne yapılabileceğini fikrinizi ve ölçüleri görünce konuşalım."),
         ("Ayous ağacı neden?", "Ayous (obeche) düşük yoğunluklu, hafif bir Afrika ağacıdır; karavanda her kilo önemlidir. Malzemeyi işinize göre birlikte seçeriz."),
         ("Ruhsat ve muayene işini siz mi yapıyorsunuz?", "Hayır, bu konuda söz vermiyoruz. Karavanın trafiğe çıkışı için gereken belge ve onayları yaptırmadan önce ayrıca araştırmanızı öneririz."),
     ],
@@ -361,7 +408,8 @@ KARAVAN = {
         "İçeride olmazsa olmazlar: yatak, mutfak köşesi, dolap",
         "Beğendiğiniz karavan fotoğrafları",
     ],
-    "cizim_notu": "Temsili çizim. Kamil Bey'in karavanının fotoğrafları Google Haritalar yorumunda.",
+    "ig_baslik": ("Instagram'da paylaştığımız", "karavanlar."),
+    "ig_metin": "Römork üzerinde, dışı yatay ahşap kaplamalı, siyah çerçeveli pencereli karavanlar. İçeride ahşap kaplama duvarlar, asma kata çıkan merdiven, ışıklı oturma köşesi ve dolaplar.",
 }
 
 # ---------------------------------------------------------------- projeler

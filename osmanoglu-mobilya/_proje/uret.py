@@ -15,7 +15,7 @@ from html import escape
 from urllib.parse import quote
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from icerik import (ADIMLAR, COZUM_EK, COZUMLER, DETAY_ALT, DETAY_BASLIK, DETAY_KARELER, DETAY_TABLO,  # noqa: E402
+from icerik import (IG, IG_KATEGORI, ADIMLAR, COZUM_EK, COZUMLER, DETAY_ALT, DETAY_BASLIK, DETAY_KARELER, DETAY_TABLO,  # noqa: E402
                     BUYUK, FOTO, GUVEN, HAZIRLIK, IHTIYAC, KARO, MOZAIK, ILETISIM_TABLO, ILKELER, ILKELER_ALT, ILKELER_BASLIK,
                     KARAVAN, MAKALELER, MESAJ_TURLERI, MUTFAK, PROJELER, PUAN, SAYFA, SAYFA_SIRASI, SSS, TARIH,
                     TARIH_OKUNUR, VESTIYER, YORUM_SAYISI, YORUMLAR)
@@ -351,8 +351,8 @@ def proje_kartlari(k=""):
                  f'<div class="proje__metin"><p class="ust-baslik">{e(p["kategori"])} · {e(p["konum"])}</p>'
                  f'<h3><a href="{k}{y}">{e(SAYFA[y]["menu"])}</a></h3><p>{e(p["ozet"])}</p>{bag(k + y, "Projeyi inceleyin")}</div></article>')
     kamil = next(x for x in YORUMLAR if x["kisi"] == "Kamil C.")
-    kart += (f'<article class="proje proje--yorum r"><a href="{k}karavan-mobilyasi/" class="proje__foto cizim-kutu" tabindex="-1" aria-hidden="true">{karavan_svg()}<span>Temsili çizim</span></a>'
-             f'<div class="proje__metin"><p class="ust-baslik">Karavan · Müşteri yorumu</p><h3><a href="{k}karavan-mobilyasi/">Ayous ağacından karavan</a></h3>'
+    kart += (f'<article class="proje proje--yorum r"><a href="{k}karavan-mobilyasi/" class="proje__foto" tabindex="-1" aria-hidden="true">{img("ig-karavan-turuncu", k, boyut="(min-width: 900px) 33vw, 100vw")}</a>'
+             f'<div class="proje__metin"><p class="ust-baslik">Karavan · Instagram ve müşteri yorumu</p><h3><a href="{k}karavan-mobilyasi/">Ahşap karavan</a></h3>'
              f'<p>"{e(kamil["metin"][:118].rsplit(" ", 1)[0])}…" — {e(kamil["kisi"])}</p>{bag(k + "karavan-mobilyasi/", "Karavan sayfası")}</div></article>')
     return kart
 
@@ -411,9 +411,25 @@ def sss(yol, k=""):
 </section>"""
 
 
+def ig_galeri(k, kategoriler=None, ust="Instagram'dan", bas=("Paylaştığımız", "işler."), aciklama="", filtre=False, sinir=None, idm="galeri"):
+    """Firmanın Instagram paylaşımlarından kesilmiş gerçek kareler (351 px, büyütülmeden)."""
+    liste = [(d, v) for d, v in IG.items() if kategoriler is None or v[1] in kategoriler][:sinir]
+    kare = "".join(f'<figure class="ig-kare r" data-kat="{v[1]}">{img(d, k, boyut="(min-width: 900px) 23vw, 50vw")}<figcaption>{e(v[2])}</figcaption></figure>'
+                   for d, v in liste)
+    suz = ""
+    if filtre:
+        katlar = [(a, b) for a, b in IG_KATEGORI if any(v[1] == a for _, v in liste)]
+        suz = ('<div class="suzgec" role="group" aria-label="Kategori"><button type="button" class="aktif" data-suz="hepsi" aria-pressed="true">Hepsi</button>'
+               + "".join(f'<button type="button" data-suz="{a}" aria-pressed="false">{e(b)}</button>' for a, b in katlar) + "</div>")
+    return f"""<section class="bolum" id="{idm}" aria-labelledby="{idm}-bas">
+  <div class="bas bas--orta">{ust_baslik(ust)}{baslik(bas, idm=idm + "-bas")}{f"<p>{e(aciklama)}</p>" if aciklama else ""}</div>
+  {suz}<div class="ig-izgara" data-galeri>{kare}</div>
+</section>"""
+
+
 def cta_bandi(k=""):
     return f"""<section class="cta-bant" aria-labelledby="cta-bas">
-  <div class="cta-bant__ic r">{ust_baslik("Osmanoğlu Mobilya")}<h2 id="cta-bas">Mekânınızı birlikte <em>değerlendirelim.</em></h2>
+  <div class="cta-bant__ic r">{ust_baslik("Siz hayal edin, biz yapalım.")}<h2 id="cta-bas">Mekânınızı birlikte <em>değerlendirelim.</em></h2>
     <p class="italik">Aklınızdaki mobilyayı, alanınızı ve ihtiyacınızı konuşalım. Fotoğraflarınızı WhatsApp'tan gönderin.</p>
     <div class="cta cta--orta">{dugme(wa("Merhaba, projemi konuşmak istiyorum."), "WhatsApp'tan projenizi gönderin", "acik", "whatsapp_tikla", "wa")}
       {dugme(f"tel:{TEL}", "Telefonla ulaşın", "cizgi-acik", "telefon_tikla", "tel")}</div>
@@ -462,7 +478,10 @@ def numarali(ust, bas, liste, idm):
 def ana():
     k, s = "", SAYFA[""]
     govde = "\n".join([hero("", s, k), guven_seridi(), ihtiyac(), ilkeler(), cozumler(k), foto_cta(), surec(k),
-                       iscilik(k), projeler_bolumu(k), yorumlar(), iletisim_blok(), sss(""), cta_bandi(k)])
+                       iscilik(k), projeler_bolumu(k),
+                       ig_galeri(k, ["mutfak", "dolap", "tv", "banyo", "karavan", "ahsap"], bas=("Instagram'da", "paylaştığımız işler."),
+                                 aciklama="Mutfaktan banyoya, karavandan kamelyaya: atölyeden çıkan işlerden bir seçki.", filtre=True, idm="instagram"),
+                       yorumlar(), iletisim_blok(), sss(""), cta_bandi(k)])
     return sayfa("", govde)
 
 
@@ -478,6 +497,7 @@ def mutfak():
         f'<section class="bolum bant bant--tas" aria-labelledby="gal-bas"><div class="bas bas--orta">{ust_baslik("Proje")}<h2 id="gal-bas">Pencere önü <em>L mutfak.</em></h2>'
         f'<p>Aynı işin dört karesi: genel görünüm, eviye hattı, köşe dönüşü, öğle ışığı.</p></div><div class="galeri">{galeri}</div>'
         f'<p class="orta">{bag(k + "projeler/pencere-onu-l-mutfak/", "Projenin ayrıntıları")}</p></section>',
+        ig_galeri(k, ["mutfak"], bas=("Diğer", "mutfaklarımız."), aciklama="Instagram'da paylaştığımız mutfaklar: parlak, klasik, kulpsuz, camlı üst dolaplı.", idm="mutfaklar"),
         numarali("Seçimler", m["secim_baslik"], m["secimler"], "secim-bas"),
         iscilik(k), surec(k, foto=False), yorumlar(["Murat T.", "Emre K."]),
         f'<section class="bolum ikili ikili--orta"><div class="ikili__sol r">{ust_baslik("Hizmet bölgesi")}{baslik(m["ilce_baslik"])}<p>{e(m["ilceler"])}</p></div>'
@@ -501,6 +521,7 @@ def vestiyer():
         f'<div class="iscilik__metin r">{ust_baslik("Proje")}<h2 id="ant-bas">Bu antrede <em>ne var?</em></h2><dl class="ozellik">{detay}</dl>'
         f'{bag(k + "projeler/aynali-citali-antre/", "Projenin ayrıntıları")}</div></div></section>',
         numarali("Yaptığımız işler", ("Antreden", "yatak odasına."), v["turler"], "tur-bas"),
+        ig_galeri(k, ["dolap", "tv", "banyo"], bas=("Dolap, TV ünitesi,", "banyo."), aciklama="Instagram'da paylaştığımız gardırop, gömme dolap, TV ünitesi, konsol ve banyo dolapları.", filtre=True, idm="dolaplar"),
         f'<section class="bolum ikili ikili--orta"><div class="ikili__sol r">{ust_baslik("Google Haritalar")}{baslik(v["diger_baslik"])}<p>{e(v["diger_giris"])}</p>'
         f'{bag(HARITA, "Fotoğrafları Haritalar\'da görün", dis=True, olay="haritalar_tikla")}</div><ul class="cizgili r">{diger}</ul></section>',
         yorumlar(["Emre K.", "Murat T."]), surec(k, foto=False), hazirlayici(s["tur"]), sss(yol, k),
@@ -516,14 +537,15 @@ def karavan():
     kamil = next(y for y in YORUMLAR if y["kisi"] == "Kamil C.")
     bilinen = "".join(f'<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>' for a, b in kv["bilinen"])
     getir = "".join(f"<li>{e(x)}</li>" for x in kv["getir"])
-    sag = f'<figure class="karavan-kutu">{karavan_svg()}<figcaption>{e(kv["cizim_notu"])}</figcaption></figure>'
     govde = "\n".join([
-        hero_duz(yol, s, k, sag),
+        hero(yol, s, k),
+        ig_galeri(k, ["karavan"], ust="Instagram'dan", bas=kv["ig_baslik"], aciklama=kv["ig_metin"], idm="karavanlar"),
         f'<section class="bolum alinti" aria-labelledby="alinti-bas"><div class="bas bas--orta">{ust_baslik("Müşteri yorumu")}{baslik(kv["yorum_baslik"], idm="alinti-bas")}</div>'
         f'<blockquote class="yorum yorum--buyuk r"><p>{e(kamil["metin"])}</p><footer><strong>{e(kamil["kisi"])}</strong><span>{e(kamil["konu"])} · {e(kamil["zaman"])}, Google</span></footer></blockquote>'
         f'<p class="orta">{bag(HARITA, "Karavanın fotoğrafları Haritalar yorumunda", dis=True, olay="haritalar_tikla")}</p></section>',
         f'<section class="bolum bant bant--tas ikili"><div class="ikili__sol r">{ust_baslik("Bildiklerimiz")}{baslik(kv["bilinen_baslik"])}<dl class="ozellik">{bilinen}</dl></div>'
         f'<div class="r">{ust_baslik("Hazırlık")}{baslik(kv["getir_baslik"])}<ul class="cizgili">{getir}</ul></div></section>',
+        ig_galeri(k, ["ahsap"], ust="Ahşap işler", bas=("Kamelya, veranda,", "merdiven."), idm="ahsap"),
         hazirlayici(s["tur"]), sss(yol, k),
         f'<section class="bolum ilgili"><p class="ust-baslik">Asıl işimiz</p><div class="ilgili__liste">{bag(k + "mutfak-dolabi/", "Mutfak dolabı")}{bag(k + "vestiyer-gomme-dolap/", "Vestiyer ve gömme dolap")}</div></section>',
         cta_bandi(k)])
@@ -534,6 +556,7 @@ def projeler():
     yol, k = "projeler/", "../"
     govde = "\n".join([hero_duz(yol, SAYFA[yol], k),
                        f'<section class="bolum"><div class="proje-izgara">{proje_kartlari(k)}</div></section>',
+                       ig_galeri(k, bas=("Instagram'da", "paylaştığımız işler."), aciklama="Firmamızın Instagram hesabındaki paylaşımlardan. Kategoriye göre süzebilirsiniz.", filtre=True),
                        yorumlar(), foto_cta(), cta_bandi(k)])
     return sayfa(yol, govde)
 

@@ -51,6 +51,36 @@
     if (!el.classList.contains("karavan")) el.classList.add("beklet");
     gozcu.observe(el);
   });
+  // hızlı kaydırmada gözcünün atladığı (ekranın üstünden geçen) bölümleri de göster
+  if (gozcu) {
+    var bekliyor = false;
+    window.addEventListener("scroll", function () {
+      if (bekliyor) return;
+      bekliyor = true;
+      requestAnimationFrame(function () {
+        bekliyor = false;
+        document.querySelectorAll(".beklet").forEach(function (el) {
+          if (el.getBoundingClientRect().top < innerHeight) { el.classList.remove("beklet"); el.classList.add("gorundu"); gozcu.unobserve(el); }
+        });
+      });
+    }, { passive: true });
+  }
+
+  // Instagram galerisi süzgeci
+  document.querySelectorAll(".suzgec").forEach(function (sz) {
+    var izgara = sz.parentNode.querySelector("[data-galeri]");
+    sz.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-suz]");
+      if (!b) return;
+      var k = b.getAttribute("data-suz");
+      sz.querySelectorAll("[data-suz]").forEach(function (x) { x.classList.toggle("aktif", x === b); x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      izgara.querySelectorAll("[data-kat]").forEach(function (f) {
+        f.hidden = !(k === "hepsi" || f.getAttribute("data-kat") === k);
+        if (!f.hidden) { f.classList.remove("beklet"); f.classList.add("gorundu"); }
+      });
+      olay("galeri_suz", { tur: k });
+    });
+  });
 
   // mesaj hazırlayıcı: veri toplanmaz, yalnız WhatsApp metni oluşturulur
   document.querySelectorAll("[data-hazirla]").forEach(function (form) {
