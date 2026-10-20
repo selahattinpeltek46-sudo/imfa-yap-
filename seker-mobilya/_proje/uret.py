@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Şeker Mobilya sitesini üretir: 8 sayfa + sitemap.xml.
+"""Şeker Mobilya sitesini üretir: 8 sayfa + sitemap.xml (Revizyon 1: Babacan Mobilya düzeni).
 
 Metinler ve fotoğraf envanteri icerik.py'de (tek kaynak). Ortak parçalar
-(üst çubuk, mesaj hazırlayıcı, konum, alt bilgi, schema) burada.
+(üst çubuk, kapanış + mesaj hazırlayıcı, alt bilgi, schema) burada.
 Çalıştır:  python3 seker-mobilya/_proje/uret.py          → siteyi yazar
            python3 seker-mobilya/_proje/uret.py --metin  → modul-2'nin 12. bölümünü yeniler
 """
@@ -10,9 +10,10 @@ import json
 import os
 import sys
 from html import escape
+from urllib.parse import quote
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from icerik import (ANA, DETAY, FOTO, H, ISLER, MESAJ_TURLERI, PUAN, SAYFA, SAYFA_SIRASI,  # noqa: E402
+from icerik import (ANA, FOTO, H, ISLER, MESAJ_TURLERI, PUAN, SAYFA, SAYFA_SIRASI,  # noqa: E402
                     TARIH, TARIH_OKUNUR, TURLER, W, YORUM)
 
 KOK = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +29,14 @@ LAT, LNG = 41.0028125, 28.8389375
 HARITA = "https://www.google.com/maps/search/?api=1&query=%C5%9Eeker+mobilya+Ahmet+Yesevi+Cd.+No%3A120+Bah%C3%A7elievler"
 YOL = f"https://www.google.com/maps/dir/?api=1&destination={LAT}%2C{LNG}"
 HARITA_GOMME = f"https://maps.google.com/maps?q={LAT},{LNG}&z=16&output=embed"
-MENU = [(s, SAYFA[s]["menu"]) for s in SAYFA_SIRASI] + [("isler", "İşler")]
+MENU = [(s, SAYFA[s]["menu"]) for s in SAYFA_SIRASI] + [("isler", "İşlerimiz")]
+OK = '<svg class="ok-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>'
+SIMGE = {
+    "olcu": '<path d="M3 17 17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
+    "ekip": '<path d="M12 3 3 8l9 5 9-5z"/><path d="m3 13 9 5 9-5"/>',
+    "konum": '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+    "yildiz": '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+}
 
 
 def e(s):
@@ -36,39 +44,36 @@ def e(s):
 
 
 def wa(metin):
-    from urllib.parse import quote
     return f"https://wa.me/{WA}?text={quote(metin)}"
 
 
-def img(dosya, k, yukle="lazy", sinif=""):
-    alt = FOTO[dosya][0]
-    return (f'<img src="{k}img/{dosya}.webp" width="{W}" height="{H}" alt="{e(alt)}" loading="{yukle}" '
-            f'decoding="async"' + (f' class="{sinif}"' if sinif else "") + ">")
+def simge(ad):
+    return f'<svg class="simge" viewBox="0 0 24 24" aria-hidden="true">{SIMGE[ad]}</svg>'
 
 
-def detayli(dosya, k, yukle="lazy"):
-    """Fotoğraf + numaralı detay noktaları (görülen detay, sıfat değil). Adları detay_liste() verir."""
-    noktalar = "".join(f'<span class="nokta" style="--x:{x}%;--y:{y}%">{i + 1}</span>' for i, (x, y, _) in enumerate(DETAY.get(dosya, [])))
-    return (f'<figure class="detayli">{img(dosya, k, yukle)}'
-            f'<div class="noktalar" aria-hidden="true">{noktalar}</div></figure>')
+def img(dosya, k, yukle="lazy"):
+    return (f'<img src="{k}img/{dosya}.webp" width="{W}" height="{H}" alt="{e(FOTO[dosya][0])}" '
+            f'loading="{yukle}" decoding="async">')
 
 
-def detay_liste(dosya):
-    return '<ol class="detay-liste">' + "".join(f"<li><span>{i + 1}</span>{e(ad)}</li>" for i, (_, _, ad) in enumerate(DETAY.get(dosya, []))) + "</ol>"
+def tur_fotolari(tur):
+    return [f for f, v in FOTO.items() if v[1] == tur]
 
 
-def kolaj(dosyalar, k, ilk_yukle="lazy"):
-    a, b, c = dosyalar
-    return (f'<div class="kolaj"><figure class="kolaj__buyuk">{img(a, k, ilk_yukle)}</figure>'
-            f'<figure class="kolaj__k1">{img(b, k, ilk_yukle)}</figure>'
-            f'<figure class="kolaj__k2">{img(c, k)}</figure><span class="kolaj__panel" aria-hidden="true"></span></div>')
+def sayfa_fotolari(slug):
+    p = SAYFA[slug]
+    return p.get("fotolar") or tur_fotolari(p["tur"])
 
 
-def kare(dosya, k, etiket=True):
-    alt, tur, yazili, oncesi = FOTO[dosya]
-    not_ = "İşe başladığımız gün" if oncesi else ("Reels kapağı" if yazili else "")
-    return (f'<figure class="kare" data-tur="{tur}">{img(dosya, k)}'
-            + (f'<figcaption>{e(not_)}</figcaption>' if (not_ and etiket) else "") + "</figure>")
+def kucuk(s):
+    """Cümle içi küçük harf: 'Banyo' → 'banyo', 'TV ünitesi' olduğu gibi kalır."""
+    if s[:2].isupper():
+        return s
+    return {"İ": "i", "I": "ı"}.get(s[0], s[0].lower()) + s[1:]
+
+
+def ust_baslik(metin, sinif=""):
+    return f'<p class="ust-baslik{(" " + sinif) if sinif else ""}">{e(metin)}</p>'
 
 
 # ------------------------------------------------------------------- schema
@@ -90,6 +95,7 @@ def isletme():
         "hasMap": HARITA,
         "areaServed": [{"@type": "AdministrativeArea", "name": "Bahçelievler"}, {"@type": "AdministrativeArea", "name": "Küçükçekmece"},
                        {"@type": "City", "name": "İstanbul"}],
+        "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": SAYFA[s]["ad"], "url": URL + s + "/"}} for s in SAYFA_SIRASI],
         "sameAs": [INSTAGRAM, YOUTUBE],
     }
 
@@ -117,7 +123,7 @@ def hizmet_ld(slug):
 
 
 # ------------------------------------------------------------- ortak parçalar
-def bas(k, yol, title, meta, schema):
+def bas(k, yol, title, meta, schema, seffaf=False):
     can = URL + (yol + "/" if yol else "")
     menu = "".join(f'<li><a href="{k}{y}/"{" aria-current=page" if y == yol else ""}>{e(a)}</a></li>' for y, a in MENU)
     return f"""<!doctype html>
@@ -128,8 +134,11 @@ def bas(k, yol, title, meta, schema):
   <title>{e(title)}</title>
   <meta name="description" content="{e(meta)}">
   <link rel="canonical" href="{can}">
-  <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#f4f1eb">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="geo.region" content="TR-34">
+  <meta name="geo.placename" content="Bahçelievler, İstanbul">
+  <meta name="geo.position" content="{LAT};{LNG}">
+  <meta name="theme-color" content="#1c1713">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="tr_TR">
   <meta property="og:site_name" content="{FIRMA}">
@@ -149,16 +158,16 @@ def bas(k, yol, title, meta, schema):
 </head>
 <body>
 <a class="atla" href="#icerik">İçeriğe geç</a>
-<header class="ust">
+<header class="ust{" ust--seffaf" if seffaf else ""}">
   <div class="ust__ic">
     <a class="marka" href="{k}" aria-label="Şeker Mobilya ana sayfa">
-      <img src="{k}img/logo.png" width="46" height="46" alt="">
-      <span><b>Şeker Mobilya</b><small>Bahçelievler · Yenibosna</small></span>
+      <img src="{k}img/logo.png" width="44" height="44" alt="">
+      <span><b>Şeker Mobilya</b><small>Yenibosna · Bahçelievler</small></span>
     </a>
-    <button class="menu-dugme" type="button" aria-expanded="false" aria-controls="menu"><span></span>Menü</button>
+    <button class="menu-dugme" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü"><span></span><span></span></button>
     <nav id="menu" class="menu" aria-label="Ana menü">
       <ul>{menu}</ul>
-      <a class="dugme dugme--kucuk" href="#mesaj" data-olay="mesaja_git">Fotoğraf gönder</a>
+      <a class="menu__eylem" href="#mesaj" data-olay="mesaja_git">Projenizi konuşalım</a>
     </nav>
   </div>
 </header>
@@ -168,21 +177,27 @@ def bas(k, yol, title, meta, schema):
 
 def kirinti(k, adlar):
     parca = [f'<a href="{k}">Ana sayfa</a>'] + [e(a) for a in adlar]
-    return f'<nav class="kirinti" aria-label="Sayfa yolu">{" <span>/</span> ".join(parca)}</nav>'
+    return f'<nav class="kirinti" aria-label="Sayfa yolu">{" / ".join(parca)}</nav>'
 
 
-def mesaj_bolumu(k, secili):
+def kapanis(k, secili):
     turler = "".join(
         f'<label class="secim"><input type="radio" name="tur" value="{e(t)}"{" checked" if t == secili else ""}><span>{e(t)}</span></label>'
         for t in MESAJ_TURLERI)
-    ilk = f"Merhaba, {secili.lower()} için bilgi almak istiyorum." if secili else "Merhaba, bilgi almak istiyorum."
+    ilk = f"Merhaba Şeker Mobilya, {kucuk(secili)} için bilgi almak istiyorum." if secili else "Merhaba Şeker Mobilya, bilgi almak istiyorum."
+    ilk += "\nFotoğrafları bu mesajın ardından gönderiyorum."
     return f"""
-<section class="mesaj" id="mesaj" aria-labelledby="mesaj-baslik">
-  <div class="kap mesaj__ic">
-    <div class="mesaj__metin">
-      <h2 id="mesaj-baslik">Odanın fotoğrafını gönderin</h2>
-      <p>Birkaç seçimle WhatsApp mesajınızı hazırlayın; fotoğrafları WhatsApp'ta ekleyin. Bu sayfa hiçbir bilgiyi kaydetmez ya da bir yere göndermez — mesajı siz gönderirsiniz.</p>
-      <p class="mesaj__tel">WhatsApp kullanmıyorsanız arayın: <a href="tel:{TEL}" data-olay="telefon">{TEL_GORUNEN}</a></p>
+<section class="kapanis" id="mesaj" aria-labelledby="mesaj-baslik">
+  <div class="kap kapanis__ic">
+    <div class="kapanis__metin">
+      {ust_baslik(ANA["kapanis_ust"], "ust-baslik--acik")}
+      <h2 id="mesaj-baslik">{e(ANA["kapanis_h2"])}</h2>
+      <p class="kapanis__alt">{e(ANA["kapanis_p"])}</p>
+      <ul class="kapanis__bilgi">
+        <li>{simge("konum")}<span>Ahmet Yesevi Cd. No:120<br>34192 Yenibosna / Bahçelievler</span></li>
+        <li>{simge("yildiz")}<span><a href="{HARITA}" target="_blank" rel="noopener" data-olay="yorumlar">Google'da {PUAN} · {YORUM} değerlendirme</a><small>{TARIH_OKUNUR}</small></span></li>
+      </ul>
+      <p class="kapanis__baglanti"><a href="tel:{TEL}" data-olay="telefon">{TEL_GORUNEN}</a><a href="{YOL}" target="_blank" rel="noopener" data-olay="yol_tarifi">Yol tarifi al</a><a href="{INSTAGRAM}" target="_blank" rel="noopener" data-olay="instagram">Instagram · @sekermobilya</a></p>
     </div>
     <form class="hazirla" data-hazirla novalidate>
       <fieldset>
@@ -198,69 +213,52 @@ def mesaj_bolumu(k, secili):
         </div>
       </fieldset>
       <div class="alanlar">
-        <label>Semt / ilçe <input type="text" name="ilce" autocomplete="address-level2" maxlength="60" placeholder="ör. Yenibosna"></label>
-        <label>Kaba ölçü (isteğe bağlı) <input type="text" name="olcu" maxlength="80" placeholder="ör. duvar 3,20 m"></label>
+        <label><span>Semt</span><input type="text" name="ilce" autocomplete="address-level2" maxlength="60" placeholder="ör. Yenibosna, Şirinevler"></label>
+        <label><span>Not <small>(isteğe bağlı)</small></span><input type="text" name="olcu" maxlength="80" placeholder="ör. duvar 3,20 m, makine yeri"></label>
       </div>
       <label class="onay"><input type="checkbox" name="foto" checked> Fotoğraf da göndereceğim</label>
-      <p class="onizleme" aria-live="polite" data-onizleme>{e(ilk)}</p>
+      <div class="onizleme"><span>Gidecek mesaj</span><p aria-live="polite" data-onizleme>{e(ilk)}</p></div>
       <div class="hazirla__dugmeler">
-        <a class="dugme" href="{e(wa(ilk))}" data-wa data-olay="whatsapp" target="_blank" rel="noopener">WhatsApp'ta gönder</a>
-        <button class="dugme dugme--cizgi" type="button" data-kopyala>Mesajı kopyala</button>
+        <a class="dugme dugme--acik" href="{e(wa(ilk))}" data-wa data-olay="whatsapp" target="_blank" rel="noopener">WhatsApp'ta gönder {OK}</a>
+        <button class="dugme dugme--seffaf" type="button" data-kopyala>Mesajı kopyala</button>
       </div>
+      <p class="hazirla__not">Bu kutuya yazdıklarınız bize iletilmez; yalnız mesaj metni hazırlanır. Gönder'e bastığınızda WhatsApp açılır, mesajı orada siz gönderirsiniz. WhatsApp kullanmıyorsanız arayın: <a href="tel:{TEL}" data-olay="telefon">{TEL_GORUNEN}</a></p>
     </form>
   </div>
 </section>"""
 
 
-def konum(k):
-    return f"""
-<section class="konum" aria-labelledby="konum-baslik">
-  <div class="kap konum__ic">
-    <div>
-      <h2 id="konum-baslik">Yenibosna'dayız</h2>
-      <address>
-        <b>{FIRMA}</b><br>{e(ADRES_SATIR)}<br>
-        <a href="tel:{TEL}" data-olay="telefon">{TEL_GORUNEN}</a>
-      </address>
-      <p class="kucuk">Bugünkü açılış ve kapanış saatini <a href="{HARITA}" target="_blank" rel="noopener" data-olay="harita">Google Haritalar'da</a> görebilirsiniz. Gelmeden önce aramanızı öneririz.</p>
-      <p class="ikinci-adres" data-ikinci-adres hidden></p>
-      <div class="konum__dugmeler">
-        <a class="dugme dugme--cizgi" href="{YOL}" target="_blank" rel="noopener" data-olay="yol_tarifi">Yol tarifi</a>
-        <a class="dugme dugme--cizgi" href="{INSTAGRAM}" target="_blank" rel="noopener" data-olay="instagram">Instagram</a>
-      </div>
-    </div>
-    <div class="harita" data-harita="{e(HARITA_GOMME)}">
-      <button type="button" class="harita__dugme" data-olay="harita_yukle">Haritayı göster<small>Google Haritalar yüklenir</small></button>
-    </div>
-  </div>
-</section>"""
-
-
 def son(k):
-    menu = "".join(f'<li><a href="{k}{y}/">{e(a)}</a></li>' for y, a in MENU)
+    cozum = "".join(f'<li><a href="{k}{s}/">{e(SAYFA[s]["ad"])}</a></li>' for s in SAYFA_SIRASI)
     return f"""
 </main>
 <footer class="alt">
   <div class="kap alt__ic">
     <div class="alt__marka">
-      <img src="{k}img/logo.png" width="72" height="72" alt="Şeker Mobilya logosu" loading="lazy">
+      <img src="{k}img/logo.png" width="64" height="64" alt="Şeker Mobilya logosu" loading="lazy">
+      <p class="alt__ad">Şeker Mobilya</p>
       <p class="slogan">Evinize tat katıyoruz.</p>
-    </div>
-    <div>
-      <h2>İletişim</h2>
       <p>{e(ADRES_SATIR)}<br><a href="tel:{TEL}" data-olay="telefon">{TEL_GORUNEN}</a></p>
-      <p><a href="{INSTAGRAM}" target="_blank" rel="noopener" data-olay="instagram">Instagram @sekermobilya</a><br>
-      <a href="{YOUTUBE}" target="_blank" rel="noopener">YouTube @sekermobilya</a></p>
     </div>
-    <div>
-      <h2>Sayfalar</h2>
-      <ul>{menu}</ul>
+    <div><h2>Çözümler</h2><ul>{cozum}</ul></div>
+    <div><h2>Firma</h2><ul>
+      <li><a href="{k}isler/">Yaptığımız işler</a></li>
+      <li><a href="{k}#surec">Nasıl çalışıyoruz</a></li>
+      <li><a href="{k}#sss">Sık sorulanlar</a></li>
+      <li><a href="{k}#konum">İletişim ve konum</a></li>
+    </ul></div>
+    <div><h2>Bu site hakkında</h2>
+      <p>Fotoğrafların hepsi <a href="{INSTAGRAM}" target="_blank" rel="noopener" data-olay="instagram">@sekermobilya</a> hesabındaki paylaşımlardan; stok görsel yok.</p>
+      <p>Site kendi çerezini kullanmaz ve sizden veri toplamaz; harita yalnız siz tıklayınca Google Haritalar'dan yüklenir.</p>
     </div>
   </div>
-  <p class="kap alt__not">Sitedeki fotoğraflar Şeker Mobilya'nın Instagram hesabında paylaşılan işlerdir. Bu site kendi çerezini kullanmaz ve ziyaretçi verisi toplamaz; harita yalnız siz tıklayınca Google Haritalar'dan yüklenir.</p>
+  <div class="kap alt__son">
+    <span>© 2026 Şeker Mobilya — Yenibosna / Bahçelievler</span>
+    <span><a href="{INSTAGRAM}" target="_blank" rel="noopener">Instagram</a> · <a href="{YOUTUBE}" target="_blank" rel="noopener">YouTube</a> · <a href="{HARITA}" target="_blank" rel="noopener" data-olay="harita">Google Haritalar</a></span>
+  </div>
 </footer>
 <div class="alt-cubuk" aria-label="Hızlı iletişim">
-  <a href="{e(wa('Merhaba, bilgi almak istiyorum.'))}" data-wa-sabit data-olay="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+  <a href="{e(wa('Merhaba Şeker Mobilya, bilgi almak istiyorum.'))}" data-wa-sabit data-olay="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
   <a href="tel:{TEL}" data-olay="telefon">Ara</a>
 </div>
 <script src="{k}js/ayarlar.js"></script>
@@ -270,143 +268,233 @@ def son(k):
 """
 
 
-def yorum_satiri():
-    metin = ANA["yorum_p"].format(puan=PUAN, yorum=YORUM, tarih=TARIH_OKUNUR)
-    return f'<p class="yorum"><span class="yildiz" aria-hidden="true">★</span> <a href="{HARITA}" target="_blank" rel="noopener" data-olay="yorumlar">{e(metin)}</a></p>'
+def kart(slug, k, i):
+    p = SAYFA[slug]
+    n = len(sayfa_fotolari(slug))
+    return (f'<li class="kart"><a class="kart__foto" href="{k}{slug}/" tabindex="-1" aria-hidden="true">{img(p["kapak"][0], k)}</a>'
+            f'<div class="kart__govde"><span class="kart__no">{i:02d}</span><h3><a href="{k}{slug}/">{e(p["ad"])}</a></h3>'
+            f'<p>{e(p["ozet"])}</p><div class="kart__alt"><a class="ok" href="#mesaj" data-sec-tur="{e(p["mesaj"])}" data-olay="mesaja_git">Bu iş için yazın {OK}</a>'
+            f'<a class="kart__sayi" href="{k}{slug}/">{n} örneği görün</a></div></div></li>')
+
+
+def sss_blok(sss):
+    return "".join(f"<details><summary>{e(s)}</summary><p>{e(c)}</p></details>" for s, c in sss)
 
 
 # ------------------------------------------------------------------ sayfalar
 def ana_sayfa():
     k = ""
-    odalar = []
-    for i, s in enumerate(SAYFA_SIRASI):
-        p = SAYFA[s]
-        odalar.append(
-            f'<li><a class="oda" href="{s}/"><span class="oda__no">{i + 1:02d}</span>'
-            f'<span class="oda__ad">{e(p["ad"])}</span><span class="oda__ozet">{e(p["ozet"])}</span>'
-            f'<span class="oda__foto">{img(p["kapak"][0], k)}</span></a></li>')
-    surec = "".join(f"<li><h3>{e(b)}</h3><p>{e(m)}</p></li>" for b, m in ANA["surec"])
-    baslangic = "".join(kare(d, k, etiket=False) for d in ANA["baslangic"])
+    duvar = "".join(f"<li>{img(f, k, 'eager' if i < 6 else 'lazy')}</li>" for i, f in enumerate(ANA["duvar"]))
+    guven = "".join(f'<li>{simge(s)}<div><b>{e(b)}</b><span>{e(m.format(yorum=YORUM))}</span></div></li>' for s, b, m in ANA["guven"])
+    ihtiyac = "".join(
+        f'<li><h3>{e(b)}</h3><p>{e(m)}</p><a class="ok" href="#mesaj" data-sec-tur="{e(t)}" data-sec-kapsam="{e(kp)}" data-olay="mesaja_git">{e(l)} {OK}</a></li>'
+        for b, m, l, t, kp in ANA["ihtiyac"])
+    kartlar = "".join(kart(s, k, i + 1) for i, s in enumerate(SAYFA_SIRASI))
+    surec = "".join(f"<li><span class=\"surec__no\">{i + 1:02d}</span><h3>{e(b)}</h3><p>{e(m)}</p></li>" for i, (b, m) in enumerate(ANA["surec"]))
+    ozellik = "".join(f"<div><dt>{e(a)}</dt><dd>{e(d)}</dd></div>" for a, d in ANA["ozellik"])
+    detay = "".join(f"<figure>{img(f, k)}<figcaption><b>{e(b)}</b>{e(n)}</figcaption></figure>" for f, b, n in ANA["detaylar"])
+    satirlar = []
+    for tur, ad in TURLER:
+        slug = next(s for s in SAYFA_SIRASI if SAYFA[s]["tur"] == tur)
+        fotolar = sayfa_fotolari(slug)
+        satirlar.append(
+            f'<div class="satir"><div class="satir__bas"><h3>{e(ad)}</h3><a href="{slug}/">Tüm {e(kucuk(ad))} işleri</a></div>'
+            f'<ul class="satir__liste">' + "".join(f"<li><figure>{img(f, k)}<figcaption>{e(FOTO[f][0])}</figcaption></figure></li>" for f in fotolar) + "</ul></div>")
     govde = f"""
-<section class="giris">
+<section class="giris" aria-labelledby="giris-baslik">
+  <ul class="giris__duvar" aria-hidden="true">{duvar}</ul>
+  <div class="giris__perde" aria-hidden="true"></div>
   <div class="kap giris__ic">
-    <div class="giris__metin">
-      <p class="ust-yazi">Şeker Mobilya · Bahçelievler</p>
-      <h1>{e(ANA["h1"])}</h1>
-      <p class="giris__p">{e(ANA["giris"])}</p>
-      <div class="giris__dugmeler">
-        <a class="dugme" href="#mesaj" data-olay="mesaja_git">Odanın fotoğrafını gönderin</a>
-        <a class="dugme dugme--cizgi" href="tel:{TEL}" data-olay="telefon">{TEL_GORUNEN}</a>
-      </div>
-      {yorum_satiri()}
+    {ust_baslik(ANA["ust"], "ust-baslik--acik")}
+    <h1 id="giris-baslik">{e(ANA["h1"])}</h1>
+    <p class="giris__alt">{e(ANA["giris"])}</p>
+    <div class="eylemler eylemler--orta">
+      <a class="dugme dugme--acik" href="#mesaj" data-olay="mesaja_git">Projenizi konuşalım {OK}</a>
+      <a class="dugme dugme--seffaf" href="isler/">Yaptığımız işler {OK}</a>
     </div>
-    {kolaj(ANA["kapak"], k, "eager")}
+    <p class="giris__not">{e(ANA["not"])}</p>
   </div>
 </section>
 
-<section class="imza" aria-labelledby="imza-baslik">
-  <div class="kap imza__ic">
-    {detayli(ANA["imza_foto"], k)}
-    <div class="imza__metin">
-      <h2 id="imza-baslik">{e(ANA["imza_h2"])}</h2>
-      <p>{e(ANA["imza_p"])}</p>
-      {detay_liste(ANA["imza_foto"])}
-      <p><a class="ok" href="duvar-paneli-petek-kapama/">Çıtalı duvar paneli ve petek kapama</a></p>
-    </div>
-  </div>
-</section>
+<section class="guven" aria-label="Neden Şeker Mobilya"><ul class="kap guven__ic">{guven}</ul></section>
 
-<section class="odalar" aria-labelledby="odalar-baslik">
+<section class="bolum" aria-labelledby="ihtiyac-baslik">
   <div class="kap">
-    <h2 id="odalar-baslik">{e(ANA["odalar_h2"])}</h2>
-    <ol class="oda-listesi">{"".join(odalar)}</ol>
-    <p class="odalar__alt"><a class="ok" href="isler/">Bütün işler: 47 kare</a></p>
+    {ust_baslik(ANA["ihtiyac_ust"], "ust-baslik--orta")}
+    <h2 id="ihtiyac-baslik" class="orta">{e(ANA["ihtiyac_h2"])}</h2>
+    <ul class="ihtiyac">{ihtiyac}</ul>
   </div>
 </section>
 
-<section class="baslangic" aria-labelledby="baslangic-baslik">
-  <div class="kap baslangic__ic">
-    <div>
-      <h2 id="baslangic-baslik">{e(ANA["baslangic_h2"])}</h2>
-      <p>{e(ANA["baslangic_p"])}</p>
-      <p><a class="ok" href="{INSTAGRAM}reels/" target="_blank" rel="noopener" data-olay="instagram">Videoları Instagram'da izleyin</a></p>
-    </div>
-    <div class="baslangic__kareler">{baslangic}</div>
-  </div>
-</section>
-
-<section class="surec" aria-labelledby="surec-baslik">
+<section class="bolum bolum--panel" aria-labelledby="cozum-baslik">
   <div class="kap">
+    {ust_baslik(ANA["cozum_ust"], "ust-baslik--orta")}
+    <h2 id="cozum-baslik" class="orta">{e(ANA["cozum_h2"])}</h2>
+    <p class="bolum__alt orta">{e(ANA["cozum_p"])}</p>
+    <ul class="kartlar">{kartlar}</ul>
+  </div>
+</section>
+
+<section class="bant" aria-labelledby="bant-baslik">
+  <div class="kap orta">
+    {ust_baslik(ANA["bant_ust"], "ust-baslik--orta")}
+    <h2 id="bant-baslik">{e(ANA["bant_h2"])}</h2>
+    <p class="bolum__alt">{e(ANA["bant_p"])}</p>
+    <a class="dugme" href="#mesaj" data-olay="mesaja_git">Fotoğrafınızı gönderin {OK}</a>
+  </div>
+</section>
+
+<section class="surec" id="surec" aria-labelledby="surec-baslik">
+  <div class="kap">
+    {ust_baslik(ANA["surec_ust"], "ust-baslik--acik")}
     <h2 id="surec-baslik">{e(ANA["surec_h2"])}</h2>
+    <p class="surec__alt">{e(ANA["surec_alt"])}</p>
     <ol class="surec__liste">{surec}</ol>
+    <p class="orta"><a class="dugme dugme--acik" href="#mesaj" data-olay="mesaja_git">İlk adımı atın {OK}</a></p>
   </div>
 </section>
-{mesaj_bolumu(k, "")}
-{konum(k)}"""
-    sema = ld(isletme(), {"@type": "WebSite", "@id": URL + "#site", "url": URL, "name": FIRMA, "inLanguage": "tr-TR"})
-    return bas(k, "", ANA["title"], ANA["meta"], sema) + govde + son(k)
+
+<section class="bolum" aria-labelledby="iscilik-baslik">
+  <div class="kap iscilik">
+    <figure class="iscilik__foto">{img(ANA["iscilik_foto"], k)}</figure>
+    <div>
+      {ust_baslik(ANA["iscilik_ust"])}
+      <h2 id="iscilik-baslik">{e(ANA["iscilik_h2"])}</h2>
+      <p class="iscilik__alt">{e(ANA["iscilik_alt"])}</p>
+      <dl class="ozellik">{ozellik}</dl>
+    </div>
+  </div>
+  <div class="kap">
+    {ust_baslik("Detaylar")}
+    <div class="detaylar">{detay}</div>
+  </div>
+</section>
+
+<section class="bolum bolum--cizgi" aria-labelledby="isler-baslik">
+  <div class="kap">
+    {ust_baslik(ANA["isler_ust"], "ust-baslik--orta")}
+    <h2 id="isler-baslik" class="orta">{e(ANA["isler_h2"])}</h2>
+    <p class="bolum__alt orta">{e(ANA["isler_p"])}</p>
+    {"".join(satirlar)}
+    <p class="orta satir__son"><a class="dugme dugme--cizgi" href="isler/">{len(FOTO)} işin hepsini görün {OK}</a></p>
+  </div>
+</section>
+
+<section class="bolum bolum--panel" id="konum" aria-labelledby="konum-baslik">
+  <div class="kap konum">
+    <div>
+      {ust_baslik(ANA["konum_ust"])}
+      <h2 id="konum-baslik">{e(ANA["konum_h2"])}</h2>
+      <p class="konum__p">{e(ANA["konum_p"])}</p>
+      <table class="tablo">
+        <tr><th scope="row">Adres</th><td>{e(ADRES_SATIR)}</td></tr>
+        <tr><th scope="row">Plus code</th><td>2R3Q+4H Bahçelievler</td></tr>
+        <tr><th scope="row">Telefon</th><td><a href="tel:{TEL}" data-olay="telefon">{TEL_GORUNEN}</a></td></tr>
+        <tr><th scope="row">Instagram</th><td><a href="{INSTAGRAM}" target="_blank" rel="noopener" data-olay="instagram">@sekermobilya</a></td></tr>
+        <tr><th scope="row">Google</th><td><a href="{HARITA}" target="_blank" rel="noopener" data-olay="yorumlar">{PUAN} · {YORUM} değerlendirme</a></td></tr>
+        <tr><th scope="row">Çalışma saati</th><td>Bugünkü saat <a href="{HARITA}" target="_blank" rel="noopener" data-olay="harita">Google Haritalar'da</a>; gelmeden önce arayın</td></tr>
+      </table>
+      <p class="ikinci-adres" data-ikinci-adres hidden></p>
+      <div class="eylemler">
+        <a class="dugme" href="{YOL}" target="_blank" rel="noopener" data-olay="yol_tarifi">Yol tarifi al {OK}</a>
+        <a class="dugme dugme--cizgi" href="#mesaj" data-olay="mesaja_git">Mesaj yazın {OK}</a>
+      </div>
+    </div>
+    <div class="harita" data-harita="{e(HARITA_GOMME)}">
+      <button type="button" class="harita__dugme" data-olay="harita_yukle">Haritayı göster<small>Google Haritalar yüklenir</small></button>
+    </div>
+  </div>
+</section>
+
+<section class="bolum" id="sss" aria-labelledby="sss-baslik">
+  <div class="kap sss">
+    {ust_baslik(ANA["sss_ust"], "ust-baslik--orta")}
+    <h2 id="sss-baslik" class="orta">{e(ANA["sss_h2"])}</h2>
+    <div class="sss__liste">{sss_blok(ANA["sss"])}</div>
+    <p class="orta"><a class="dugme dugme--cizgi" href="#mesaj" data-olay="mesaja_git">Sorunuzu yazın {OK}</a></p>
+  </div>
+</section>
+{kapanis(k, "")}"""
+    sema = ld(isletme(), {"@type": "WebSite", "@id": URL + "#site", "url": URL, "name": FIRMA, "inLanguage": "tr-TR"}, sss_ld(ANA["sss"]))
+    return bas(k, "", ANA["title"], ANA["meta"], sema, seffaf=True) + govde + son(k)
 
 
 def hizmet_sayfasi(slug):
     k = "../"
     p = SAYFA[slug]
-    bolumler = []
-    for i, (h2, metin, fotolar) in enumerate(p["bolumler"]):
-        kareler = "".join(kare(f, k) for f in fotolar)
-        bolumler.append(f'<section class="bolum{" bolum--fotolu" if fotolar else ""}"><div class="bolum__metin"><h2>{e(h2)}</h2><p>{e(metin)}</p></div>'
-                        + (f'<div class="bolum__kareler">{kareler}</div>' if kareler else "") + "</section>")
-    kullanilan = set(p["kapak"]) | {p["detay_foto"]} | {f for _, _, fs in p["bolumler"] for f in fs}
-    turler = {p["tur"]} | ({"genc"} if slug == "giyinme-odasi-gardirop" else set())
-    galeri = [f for f, v in FOTO.items() if v[1] in turler and f not in kullanilan]
-    sss = "".join(f"<details><summary>{e(s)}</summary><p>{e(c)}</p></details>" for s, c in p["sss"])
-    ilgili = "".join(f'<li><a class="ok" href="{k}{s}/">{e(SAYFA[s]["ad"])}</a></li>' for s in p["ilgili"])
+    fotolar = sayfa_fotolari(slug)
+    projeler = "".join(f"<figure>{img(f, k)}<figcaption>{e(FOTO[f][0])}</figcaption></figure>" for f in fotolar)
+    bolumler = "".join(f"<div><h3>{e(h)}</h3><p>{e(m)}</p></div>" for h, m in p["bolumler"])
+    hazirlik = "".join(f"<li>{e(h)}</li>" for h in p["hazirlik"])
+    diger = "".join(kart(s, k, SAYFA_SIRASI.index(s) + 1) for s in p["ilgili"])
+    a, b = p["kapak"]
     govde = f"""
-<section class="giris giris--alt">
-  <div class="kap">{kirinti(k, [p["ad"]])}</div>
-  <div class="kap giris__ic">
-    <div class="giris__metin">
-      <h1>{e(p["h1"])}</h1>
-      <p class="giris__p">{e(p["giris"])}</p>
-      <div class="giris__dugmeler">
-        <a class="dugme" href="#mesaj" data-olay="mesaja_git">Fotoğraf gönderin</a>
-        <a class="dugme dugme--cizgi" href="tel:{TEL}" data-olay="telefon">{TEL_GORUNEN}</a>
+<section class="sayfa-giris" aria-labelledby="sayfa-baslik">
+  <div class="kap sayfa-giris__ic">
+    <div>
+      {kirinti(k, [p["ad"]])}
+      {ust_baslik(p["ust"], "ust-baslik--acik")}
+      <h1 id="sayfa-baslik">{e(p["h1"])}</h1>
+      <p class="sayfa-giris__alt">{e(p["giris"])}</p>
+      <div class="eylemler">
+        <a class="dugme dugme--acik" href="#mesaj" data-olay="mesaja_git">Bu iş için yazın {OK}</a>
+        <a class="dugme dugme--seffaf" href="#projeler">Tüm {e(kucuk(SAYFA[slug]["menu"]))} işleri {OK}</a>
       </div>
-      {yorum_satiri()}
+      <dl class="bilgi-serit">
+        <div><dt>Bu sayfada</dt><dd>{len(fotolar)} gerçek iş fotoğrafı</dd></div>
+        <div><dt>Google</dt><dd><a href="{HARITA}" target="_blank" rel="noopener" data-olay="yorumlar">{PUAN} · {YORUM} değerlendirme</a></dd></div>
+        <div><dt>Hizmet</dt><dd>Ölçü · İmalat · Montaj</dd></div>
+      </dl>
     </div>
-    {kolaj(p["kapak"], k, "eager")}
-  </div>
-</section>
-
-<section class="imza imza--sayfa" aria-labelledby="detay-baslik">
-  <div class="kap imza__ic">
-    {detayli(p["detay_foto"], k)}
-    <div class="imza__metin">
-      <h2 id="detay-baslik">Bu işte görülenler</h2>
-      <p>Fotoğraftaki numaralar, bu işte birlikte yaptığımız parçaları gösteriyor.</p>
-      {detay_liste(p["detay_foto"])}
+    <div class="sayfa-giris__kolaj" aria-hidden="true">
+      <figure class="kolaj-a">{img(a, k, "eager")}</figure>
+      <figure class="kolaj-b">{img(b, k, "eager")}</figure>
     </div>
   </div>
 </section>
 
-<div class="kap bolumler">{"".join(bolumler)}</div>
-""" + (f"""
-<section class="galeri-bolum" aria-labelledby="galeri-baslik">
+<section class="bolum" id="projeler" aria-labelledby="projeler-baslik">
   <div class="kap">
-    <h2 id="galeri-baslik">Instagram'dan diğer kareler</h2>
-    <div class="galeri">{"".join(kare(f, k) for f in galeri)}</div>
-    <p><a class="ok" href="{k}isler/#{p['tur']}">Bütün işler</a></p>
-  </div>
-</section>""" if galeri else "") + f"""
-
-<section class="sss" aria-labelledby="sss-baslik">
-  <div class="kap sss__ic">
-    <h2 id="sss-baslik">Sık sorulanlar</h2>
-    <div>{sss}</div>
+    <div class="bolum__bas">
+      <div>{ust_baslik("Gerçek projeler")}<h2 id="projeler-baslik">{e(p["proje_h2"])}</h2></div>
+      <a href="{k}isler/#{p['tur']}">Galeride aç</a>
+    </div>
+    <div class="projeler">{projeler}</div>
   </div>
 </section>
-{mesaj_bolumu(k, p["mesaj"])}
-<nav class="kap ilgili" aria-label="İlgili sayfalar"><h2>Bunlara da bakın</h2><ul>{ilgili}</ul></nav>
-{konum(k)}"""
+
+<section class="bolum bolum--panel" aria-labelledby="neler-baslik">
+  <div class="kap iki-sutun">
+    <div>
+      {ust_baslik("Bu işlerde neler var")}
+      <h2 id="neler-baslik">Ne yapıyoruz, nasıl yapıyoruz</h2>
+      <div class="maddeler">{bolumler}</div>
+    </div>
+    <aside class="hazirlik" aria-labelledby="hazirlik-baslik">
+      <h2 id="hazirlik-baslik">Ölçü gününden önce hazırlayabilecekleriniz</h2>
+      <p>Bunlar zorunlu değil; ama ilk mesajda olursa konuşma çok daha hızlı ilerler.</p>
+      <ol>{hazirlik}</ol>
+      <a class="ok" href="#mesaj" data-olay="mesaja_git">Bunlarla birlikte yazın {OK}</a>
+    </aside>
+  </div>
+</section>
+
+<section class="bolum" aria-labelledby="sss-baslik">
+  <div class="kap sss">
+    {ust_baslik("S.S.S.", "ust-baslik--orta")}
+    <h2 id="sss-baslik" class="orta">Merak edilenler.</h2>
+    <div class="sss__liste">{sss_blok(p["sss"])}</div>
+  </div>
+</section>
+{kapanis(k, p["mesaj"])}
+
+<section class="bolum" aria-labelledby="diger-baslik">
+  <div class="kap">
+    {ust_baslik("Evin diğer odaları", "ust-baslik--orta")}
+    <h2 id="diger-baslik" class="orta">Bunlara da bakın.</h2>
+    <ul class="kartlar">{diger}</ul>
+  </div>
+</section>"""
     sema = ld(isletme(), hizmet_ld(slug), sss_ld(p["sss"]), kirinti_ld([("", "Ana sayfa"), (slug + "/", p["ad"])]))
     return bas(k, slug, p["title"], p["meta"], sema) + govde + son(k)
 
@@ -416,22 +504,25 @@ def isler_sayfasi():
     filtre = '<button type="button" data-filtre="hepsi" aria-pressed="true">Hepsi</button>' + "".join(
         f'<button type="button" data-filtre="{t}" aria-pressed="false">{e(a)}</button>' for t, a in TURLER)
     sira = [t for t, _ in TURLER]
-    kareler = sorted(FOTO, key=lambda f: (sira.index(FOTO[f][1]), FOTO[f][2], FOTO[f][3]))
+    kareler = sorted(FOTO, key=lambda f: sira.index(FOTO[f][1]))
     govde = f"""
-<section class="giris giris--alt giris--isler">
-  <div class="kap">{kirinti(k, ["İşler"])}
-    <h1>{e(ISLER["h1"])}</h1>
-    <p class="giris__p">{e(ISLER["giris"])}</p>
+<section class="sayfa-giris sayfa-giris--kisa" aria-labelledby="sayfa-baslik">
+  <div class="kap">
+    {kirinti(k, ["İşlerimiz"])}
+    {ust_baslik(ISLER["ust"], "ust-baslik--acik")}
+    <h1 id="sayfa-baslik">{e(ISLER["h1"])}</h1>
+    <p class="sayfa-giris__alt">{e(ISLER["giris"])}</p>
   </div>
 </section>
-<section class="kap galeri-bolum" aria-label="Fotoğraflar">
-  <div class="filtre" role="group" aria-label="Oda türüne göre süz">{filtre}</div>
-  <div class="galeri galeri--tum" data-galeri>{"".join(kare(f, k) for f in kareler)}</div>
-  <p class="sayac" data-sayac aria-live="polite"></p>
+<section class="bolum" aria-label="Fotoğraflar">
+  <div class="kap">
+    <div class="filtre" role="group" aria-label="Oda türüne göre süz">{filtre}</div>
+    <div class="projeler" data-galeri>{"".join(f'<figure class="kare" data-tur="{FOTO[f][1]}">{img(f, k)}<figcaption>{e(FOTO[f][0])}</figcaption></figure>' for f in kareler)}</div>
+    <p class="sayac" data-sayac aria-live="polite"></p>
+  </div>
 </section>
-{mesaj_bolumu(k, "")}
-{konum(k)}"""
-    sema = ld(isletme(), kirinti_ld([("", "Ana sayfa"), ("isler/", "İşler")]))
+{kapanis(k, "")}"""
+    sema = ld(isletme(), kirinti_ld([("", "Ana sayfa"), ("isler/", "İşlerimiz")]))
     return bas(k, "isler", ISLER["title"], ISLER["meta"], sema) + govde + son(k)
 
 
@@ -456,24 +547,27 @@ def site():
 def metin():
     """modul-2-icerik-seo.md içindeki 12. bölümü icerik.py'den yeniler."""
     s = ["<!-- METIN:BAS (uret.py --metin ile üretilir; elle düzenleme icerik.py'de) -->"]
-    s.append(f"### Ana sayfa `/`\n- **Title:** {ANA['title']}\n- **Meta:** {ANA['meta']}\n- **H1:** {ANA['h1']}\n- **Giriş:** {ANA['giris']}")
-    s.append(f"- **H2 {ANA['imza_h2']}:** {ANA['imza_p']} (detaylar: " + "; ".join(d for _, _, d in DETAY[ANA['imza_foto']]) + ")")
-    s.append(f"- **H2 {ANA['odalar_h2']}:** 6 oda satırı (sayfa adı + giriş cümlesi + kapak karesi)")
-    s.append(f"- **H2 {ANA['baslangic_h2']}:** {ANA['baslangic_p']}")
-    s.append(f"- **H2 {ANA['surec_h2']}:** " + " → ".join(f"**{b}:** {m}" for b, m in ANA["surec"]))
-    s.append("- **Yorum satırı:** " + ANA["yorum_p"].format(puan=PUAN, yorum=YORUM, tarih=TARIH_OKUNUR))
-    s.append("- **H2 Odanın fotoğrafını gönderin:** Birkaç seçimle WhatsApp mesajınızı hazırlayın; fotoğrafları WhatsApp'ta ekleyin. Bu sayfa hiçbir bilgiyi kaydetmez ya da bir yere göndermez — mesajı siz gönderirsiniz. · CTA: WhatsApp'ta gönder / Mesajı kopyala")
-    s.append("- **H2 Yenibosna'dayız:** adres + telefon · \"Bugünkü açılış ve kapanış saatini Google Haritalar'da görebilirsiniz. Gelmeden önce aramanızı öneririz.\" · Yol tarifi · Instagram")
+    s.append(f"### Ana sayfa `/`\n- **Title:** {ANA['title']}\n- **Meta:** {ANA['meta']}\n- **Ön başlık:** {ANA['ust']}\n- **H1:** {ANA['h1']}\n- **Giriş:** {ANA['giris']} · *{ANA['not']}*")
+    s.append("- **Güven şeridi:** " + " · ".join(f"**{b}** — {m.format(yorum=YORUM)}" for _, b, m in ANA["guven"]))
+    s.append(f"- **H2 {ANA['ihtiyac_h2']}:** " + " · ".join(f"**{b}** — {m} ({l})" for b, m, l, _, _ in ANA["ihtiyac"]))
+    s.append(f"- **H2 {ANA['cozum_h2']}:** {ANA['cozum_p']} (6 kart: sayfa adı + özet + \"Bu iş için yazın\" + örnek sayısı)")
+    s.append(f"- **H2 {ANA['bant_h2']}:** {ANA['bant_p']}")
+    s.append(f"- **H2 {ANA['surec_h2']}:** {ANA['surec_alt']} " + " → ".join(f"**{b}:** {m}" for b, m in ANA["surec"]))
+    s.append(f"- **H2 {ANA['iscilik_h2']}:** {ANA['iscilik_alt']} " + " · ".join(f"**{a}:** {d}" for a, d in ANA["ozellik"]))
+    s.append("- **Detaylar:** " + " · ".join(f"**{b}** — {n}" for _, b, n in ANA["detaylar"]))
+    s.append(f"- **H2 {ANA['isler_h2']}:** {ANA['isler_p']}")
+    s.append(f"- **H2 {ANA['konum_h2']}:** {ANA['konum_p']} (adres tablosu)")
+    s.append(f"- **H2 {ANA['sss_h2']}:**\n" + "\n".join(f"  - *{q}* — {a}" for q, a in ANA["sss"]))
+    s.append(f"- **H2 {ANA['kapanis_h2']}:** {ANA['kapanis_p']} · Mesaj notu: \"Bu kutuya yazdıklarınız bize iletilmez; yalnız mesaj metni hazırlanır. Gönder'e bastığınızda WhatsApp açılır, mesajı orada siz gönderirsiniz.\"")
     for slug in SAYFA_SIRASI:
         p = SAYFA[slug]
-        s.append(f"\n### {p['ad']} `/{slug}/`\n- **Title:** {p['title']}\n- **Meta:** {p['meta']}\n- **H1:** {p['h1']}\n- **Giriş:** {p['giris']}")
-        if p["detay_foto"] in DETAY:
-            s.append("- **H2 Bu işte görülenler:** " + "; ".join(d for _, _, d in DETAY[p["detay_foto"]]))
-        for h2, m, _ in p["bolumler"]:
-            s.append(f"- **H2 {h2}:** {m}")
+        s.append(f"\n### {p['ad']} `/{slug}/`\n- **Title:** {p['title']}\n- **Meta:** {p['meta']}\n- **Ön başlık:** {p['ust']}\n- **H1:** {p['h1']}\n- **Giriş:** {p['giris']}\n- **H2 {p['proje_h2']}:** {len(sayfa_fotolari(slug))} gerçek kare")
+        for h3, m in p["bolumler"]:
+            s.append(f"- **H3 {h3}:** {m}")
+        s.append("- **H2 Ölçü gününden önce hazırlayabilecekleriniz:** " + " · ".join(p["hazirlik"]))
         s.append("- **SSS:**\n" + "\n".join(f"  - *{q}* — {a}" for q, a in p["sss"]))
-    s.append(f"\n### İşler `/isler/`\n- **Title:** {ISLER['title']}\n- **Meta:** {ISLER['meta']}\n- **H1:** {ISLER['h1']}\n- **Giriş:** {ISLER['giris']}")
-    s.append("\n### Ortak\n- Alt bilgi notu: \"Sitedeki fotoğraflar Şeker Mobilya'nın Instagram hesabında paylaşılan işlerdir. Bu site kendi çerezini kullanmaz ve ziyaretçi verisi toplamaz; harita yalnız siz tıklayınca Google Haritalar'dan yüklenir.\"\n- Slogan (firmanın): \"Evinize tat katıyoruz.\"")
+    s.append(f"\n### İşlerimiz `/isler/`\n- **Title:** {ISLER['title']}\n- **Meta:** {ISLER['meta']}\n- **H1:** {ISLER['h1']}\n- **Giriş:** {ISLER['giris']}")
+    s.append("\n### Ortak\n- Alt bilgi: \"Fotoğrafların hepsi @sekermobilya hesabındaki paylaşımlardan; stok görsel yok.\" · \"Site kendi çerezini kullanmaz ve sizden veri toplamaz; harita yalnız siz tıklayınca Google Haritalar'dan yüklenir.\"\n- Slogan (firmanın): \"Evinize tat katıyoruz.\"")
     s.append("<!-- METIN:SON -->")
     yeni = "\n".join(s)
     yol = os.path.join(KOK, "_proje", "modul-2-icerik-seo.md")
