@@ -59,7 +59,9 @@
     function temiz(s) { return (s || "").replace(/\s+/g, " ").trim(); }
     function metin() {
       var tur = deger("tur"), ilce = temiz(form.ilce.value), olcu = temiz(form.olcu.value);
-      var m = "Merhaba, " + (tur ? tur.toLocaleLowerCase("tr") + " için " : "") + "bilgi almak istiyorum.";
+      // yalnız ilk harf küçülür; "TV" gibi kısaltmalar korunur
+      var kucuk = /^[A-ZÇĞİÖŞÜ]{2}/.test(tur) ? tur : tur.charAt(0).toLocaleLowerCase("tr") + tur.slice(1);
+      var m = "Merhaba, " + (tur ? kucuk + " için " : "") + "bilgi almak istiyorum.";
       if (ilce) m += "\nSemt / ilçe: " + ilce;
       if (olcu) m += "\nKaba ölçü: " + olcu;
       if (form.foto.checked) m += "\nAlanın fotoğraflarını bu mesajın ardından gönderiyorum.";
