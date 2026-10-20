@@ -58,7 +58,7 @@ def dekupe(oturum, kaynak, sil):
     from rembg import remove
     from scipy import ndimage
 
-    im = sicak(Image.open(KAYNAK / f'{kaynak}.webp').convert('RGB'))
+    im = Image.open(KAYNAK / f'{kaynak}.webp').convert('RGB')  # renk düzeltmesi yok
     a = np.array(remove(im, session=oturum).convert('RGBA'))
     al = a[..., 3]
     m = al > 150  # yarı saydam pus atılır
@@ -79,8 +79,9 @@ def dekupe(oturum, kaynak, sil):
 HEDEF.mkdir(parents=True, exist_ok=True)
 for ad in FOTOLAR:
     im = Image.open(KAYNAK / f'{ad}.webp').convert('RGB')
-    im.thumbnail((1300, 1300))  # A4'te en büyük kullanım ~18 cm: 1300 px yeterli, PDF küçük kalır
-    sicak(im).save(HEDEF / f'{ad}.jpg', quality=82, optimize=True, progressive=True)
+    # En yüksek kalite: kaynak çözünürlüğü korunur (en büyük kenar 1800 px, A4'te ~250 dpi)
+    # Fotoğrafa dokunulmaz: renk düzeltmesi yok, yalnızca JPEG'e çevrilir
+    im.save(HEDEF / f'{ad}.jpg', quality=92, optimize=True, progressive=True, subsampling=0)
     print('foto', ad)
 
 try:
@@ -95,6 +96,6 @@ else:
         if secili and ad not in secili:
             continue
         k = dekupe(oturum, kaynak, sil)
-        k.thumbnail((1000, 1000))  # A4 sahnesinde en fazla ~11 cm: 1000 px ≈ 230 dpi
+        k.thumbnail((1800, 1800))  # kaynak çözünürlüğü korunur
         k.save(HEDEF / f'{ad}.png', optimize=True)
         print('dekupe', ad)
