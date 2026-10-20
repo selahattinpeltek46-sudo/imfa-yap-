@@ -91,14 +91,20 @@
     };
   }
 
-  // ---- mobil sabit düğme: mesaj bölümü görünürken gizlenir
+  // ---- mobil sabit düğme: sayfadaki ilk düğmeler kaydırılınca görünür, mesaj bölümünde gizlenir
   var yapiskan = document.querySelector(".yapiskan");
   var mesaj = document.getElementById("mesaj");
+  var ilkEylem = document.querySelector(".eylemler");
   if (yapiskan && mesaj && "IntersectionObserver" in window) {
     new IntersectionObserver(function (g) {
       yapiskan.classList.toggle("gizli", g[0].isIntersecting);
     }, { rootMargin: "0px 0px -20% 0px" }).observe(mesaj);
-  }
+    if (ilkEylem) {
+      new IntersectionObserver(function (g) {
+        yapiskan.classList.toggle("goster", !g[0].isIntersecting && g[0].boundingClientRect.top < 0);
+      }).observe(ilkEylem);
+    } else yapiskan.classList.add("goster");
+  } else if (yapiskan) yapiskan.classList.add("goster");
 
   // ---- galeri: süzgeç + büyük görünüm
   var suzgec = document.querySelector(".suzgec");

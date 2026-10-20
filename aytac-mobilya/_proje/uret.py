@@ -175,6 +175,7 @@ def bas(k, yol, title, meta, schema, og=None):
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="{k}img/favicon.png">
   <link rel="apple-touch-icon" href="{k}img/apple-touch-icon.png">
+  <link rel="preload" href="{k}fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{k}fonts/schibsted-grotesk-400-800-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{k}css/site.css">
   {schema}
@@ -322,6 +323,7 @@ SUREC = [
 
 def ana_sayfa():
     k = "./"
+    SAYI = {y: sum(1 for _, _, t in FOTO if t in HIZMET[y]["turler"]) for y in SAYFALAR}
     schema = ld(isletme(), {"@type": "WebSite", "@id": URL + "#site", "url": URL, "name": "Aytaç Mobilya", "inLanguage": "tr-TR"},
                 sss_ld(SSS_ANA))
     h = bas(k, "", "Aytaç Mobilya | Etimesgut Özel Ölçü Mobilya İmalatı",
@@ -330,7 +332,7 @@ def ana_sayfa():
       <li><a class="kapak" href="{k}{y}/">
         {img(f, k)}
         <span class="kapak__kulp" aria-hidden="true"></span>
-        <span class="kapak__ad">{e(ad)}</span>
+        <span class="kapak__ad">{e(ad)}<small>{SAYI[y]} fotoğraf</small></span>
         <span class="kapak__icerik">{e(ic)}</span>
       </a></li>""" for y, ad, ic, f in KAPAKLAR)
     surec = "".join(f'<li><span class="surec__no">{i:02d}</span><h3>{e(b)}</h3><p>{e(m)}</p></li>' for i, (b, m) in enumerate(SUREC, 1))
@@ -346,20 +348,23 @@ def ana_sayfa():
         <a class="dugme" href="#mesaj" data-olay="mesaja_git">Odanın fotoğrafını gönder</a>
         <a class="dugme dugme--cizgi" href="{k}isler/">Yaptığımız işler</a>
       </div>
-      <p class="giris__kaynak">Bu sitede stok fotoğraf yok. Gördüğünüz her kare, Instagram'da paylaştığımız bir işten.</p>
+      <dl class="antet">
+        <div><dt>Hizmet</dt><dd>Ölçü · Proje · İmalat · Montaj</dd></div>
+        <div><dt>Konum</dt><dd>Etimesgut / Ankara</dd></div>
+        <div><dt>Google Haritalar</dt><dd><a href="{HARITA}" target="_blank" rel="noopener" data-olay="yorum_tikla">5,0 · 131 değerlendirme</a><small>20 Ekim 2026 · yorumları biz seçmedik</small></dd></div>
+        <div><dt>Fotoğraflar</dt><dd>Kendi işlerimiz<small>stok görsel yok</small></dd></div>
+      </dl>
     </div>
-    <div class="giris__kapaklar">
-      {isaretli("mutfak-led-ust-dolap", k, "eager", "giris__k1")}
-      {isaretli("kitaplik-led-raf", k, "eager", "giris__k2", isaret=False)}
-      {isaretli("banyo-oval-led-ayna", k, "eager", "giris__k3", isaret=False)}
+    <div class="giris__sag">
+      <div class="olcu olcu--yatay" aria-hidden="true"><span>duvardan duvara</span></div>
+      <div class="olcu olcu--dikey" aria-hidden="true"><span>tavana kadar</span></div>
+      <div class="giris__kapaklar">
+        {isaretli("mutfak-led-ust-dolap", k, "eager", "giris__k1")}
+        {isaretli("kitaplik-led-raf", k, "eager", "giris__k2", isaret=False)}
+        {isaretli("banyo-oval-led-ayna", k, "eager", "giris__k3", isaret=False)}
+      </div>
+      <p class="giris__not">Fotoğraflar <a href="{INSTAGRAM}" target="_blank" rel="noopener" data-olay="instagram_tikla">@aytac_mobilya</a> paylaşımlarından</p>
     </div>
-  </div>
-</section>
-
-<section class="yorum" aria-label="Google değerlendirmeleri">
-  <div class="kap">
-    <p>Google Haritalar'da <b>131 değerlendirme</b>, ortalama <b>5,0</b>. <small>(20 Ekim 2026)</small>
-    Yorumları biz seçmedik — <a href="{HARITA}" target="_blank" rel="noopener" data-olay="yorum_tikla">Google'da kendiniz okuyun</a>.</p>
   </div>
 </section>
 
@@ -512,6 +517,10 @@ def hizmet_sayfasi(yol):
       <a class="dugme" href="#mesaj" data-olay="mesaja_git">Bu iş için yaz</a>
       <a class="dugme dugme--cizgi" href="{k}isler/#{d['turler'][0]}">{e(d["tum"])}</a>
     </div>
+    <dl class="antet antet--kisa">
+      <div><dt>Bu sayfada</dt><dd>{len(fotolar) + 1} gerçek iş fotoğrafı<small>stok görsel yok</small></dd></div>
+      <div><dt>Google Haritalar</dt><dd><a href="{HARITA}" target="_blank" rel="noopener" data-olay="yorum_tikla">5,0 · 131 değerlendirme</a><small>20 Ekim 2026</small></dd></div>
+    </dl>
   </div>
   {isaretli(d["ana"], k, "eager", "hizmet-giris__foto") if d["ana"] in ISARET else '<figure class="isaretli hizmet-giris__foto">' + img(d["ana"], k, yukle="eager") + "</figure>"}
 </section>
@@ -561,7 +570,7 @@ def isler_sayfasi():
 <section class="kap hizmet-giris hizmet-giris--tek">
   <div class="hizmet-giris__metin">
     <h1>Yaptığımız işler</h1>
-    <p class="giris__alt">Hepsi Instagram hesabımızda paylaştığımız işler. Bazı karelerde koruma naylonu ya da matkap göreceksiniz; fotoğrafları düzenlemeden paylaşıyoruz.</p>
+    <p class="giris__alt">Hepsi Instagram hesabımızda paylaştığımız işler. Bazı karelerde koruma naylonu ya da matkap göreceksiniz.</p>
   </div>
 </section>
 <section class="kap bolum galeri" aria-label="Fotoğraflar">
