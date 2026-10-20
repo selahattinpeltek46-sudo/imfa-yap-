@@ -1,5 +1,7 @@
 # 🔵 MODÜL 2 — BİLGİ MİMARİSİ, İÇERİK, SEO VE GÖRSEL (10–14)
 
+> **Revizyon 1 (2026-10-20):** sayfa yapısı Babacan Mobilya düzenine geçti; üstü yazılı Reels kapakları ve fotoğraf üstü işaretler kaldırıldı (sitede 25 yazısız kare). Bölüm sırası, yeni içerik blokları ve görsel kararları için `revizyon-1-babacan.md` geçerlidir; 11 ve 14'teki eski bölüm sırası / kare sayıları onun yerine geçmiştir. 12. bölüm güncel metni üreticiden alır.
+
 Önce okundu: `modul-1-strateji.md` · Tek kaynak: nihai metinler ve fotoğraf envanteri `_proje/icerik.py`'de; 12. bölüm `python3 seker-mobilya/_proje/uret.py --metin` ile oradan üretilir (site ile rapor arasında metin farkı oluşmaz).
 
 ---
@@ -54,68 +56,90 @@
 ### Ana sayfa `/`
 - **Title:** Şeker Mobilya | Bahçelievler Özel Ölçü Mobilya ve Dekorasyon
 - **Meta:** Yenibosna'dan TV ünitesi, giyinme odası, portmanto, banyo ve mutfak dolabı; çıtalı duvar paneli, gizli LED ve lake boya. Odanın fotoğrafını gönderin.
-- **H1:** Ölçüye özel mobilya, duvar ve ışık: odanın son hâli tek ekipten.
-- **Giriş:** TV ünitesinden giyinme odasına, banyo dolabından petek kapamaya kadar; dolabı, çıtalı duvarı, gizli ışığı ve lake boyayı aynı ekip yapıyor. Bahçelievler Yenibosna'dayız.
-- **H2 Bir odada neleri birlikte yapıyoruz:** Instagram'daki işlerimize bakınca aynı şeyler tekrar ediyor: ölçüye oturan dolap, çıtalı panel, gizli ışık ve ayna. Hepsi birbirini tutsun diye aynı ekipten çıkıyor. Bu yatak odasında görülenler: (detaylar: Tavana kadar çıtalı duvar paneli; Tavan bandında gizli ışık; Arkası ışıklı yuvarlak ayna; Duvara asılı komodin)
-- **H2 Hangi oda için yazıyorsunuz?:** 6 oda satırı (sayfa adı + giriş cümlesi + kapak karesi)
-- **H2 İşe başladığımız gün:** Videolarımızın çoğu boş odadan başlar: sökülmüş duvar, kapısı çıkarılmış antre, parkesi kalkmış salon. Bunlar o videoların ilk kareleri; bitmiş hâlleri Instagram'da.
-- **H2 Fotoğraftan teslime:** **Fotoğraf ve kaba ölçü:** Odanın birkaç fotoğrafını ve aklınızdaki işi WhatsApp'tan gönderin. Kaba ölçü yeterli; metre yoksa da yazın. → **Ölçü:** Kesin ölçüyü yerinde alıyoruz; kolon, tesisat, petek ve priz yerleri o gün netleşir. → **Renk ve malzeme:** Lake rengi, kaplama, kulp, ışığın yeri ve rengi birlikte seçilir. → **İmalat:** Parçalar ölçünüze göre üretilir. → **Montaj ve teslim:** Yerinde montaj yapılır, ışıklar bağlanır ve teslim edilir.
-- **Yorum satırı:** Google Haritalar'da 4,9 puan · 93 değerlendirme (20 Ekim 2026 itibarıyla). Yorumları kendiniz okuyun.
-- **H2 Odanın fotoğrafını gönderin:** Birkaç seçimle WhatsApp mesajınızı hazırlayın; fotoğrafları WhatsApp'ta ekleyin. Bu sayfa hiçbir bilgiyi kaydetmez ya da bir yere göndermez — mesajı siz gönderirsiniz. · CTA: WhatsApp'ta gönder / Mesajı kopyala
-- **H2 Yenibosna'dayız:** adres + telefon · "Bugünkü açılış ve kapanış saatini Google Haritalar'da görebilirsiniz. Gelmeden önce aramanızı öneririz." · Yol tarifi · Instagram
+- **Ön başlık:** Bahçelievler · Yenibosna · Özel tasarım mobilya
+- **H1:** Odanın son hâli, ölçüsüne göre ve tek ekipten
+- **Giriş:** TV ünitesinden giyinme odasına, banyo dolabından petek kapamaya; dolabı, çıtalı paneli, gizli ışığı ve lake boyayı aynı ekip yapıyor. Arkadaki fotoğrafların hepsi bizim işlerimiz. · *Odanızın fotoğrafını göndererek başlayabilirsiniz.*
+- **Güven şeridi:** **Ölçüye özel** — Duvar, kolon, petek ve tavan yüksekliğine göre. · **Tek ekip** — Dolap, çıtalı panel, ışık ve lake boya birlikte. · **Yenibosna'da adres** — Ahmet Yesevi Cd. No:120, Bahçelievler. · **Google'da 4,9** — 93 değerlendirme · yorumları biz seçmedik
+- **H2 Siz hangi ihtiyaçtasınız?:** **Odayı baştan yaptırıyorum** — Salonun TV duvarı, yatak odasının paneli ya da giyinme odası; dolabı, ışığı ve duvarı birlikte planlayalım. (Odanın tamamı için yazın) · **Banyoyu yenileyeceğim** — Lavabo dolabı, makine yerli boy dolap, ışıklı ayna; eski PVC duvar ve hazır dolap yerine. (Banyo için yazın) · **Tek bir köşe için** — Portmanto, petek kapama, çamaşır makinesi dolabı ya da tek bir TV ünitesi. Küçük işler de fotoğraflarımızda var. (Bir köşe için yazın) · **Fiyat araştırıyorum** — Fiyat ölçüye, kapak yüzeyine ve ışığa göre değişir. Fotoğraf ve kaba ölçü gönderin, size göre konuşalım. (Fiyat için yazın)
+- **H2 Odanıza göre, ölçüsüne göre.:** Hazır mobilya köşeye, kolona, petek önüne oturmaz. Biz dolabı, paneli ve ışığı odanın ölçüsüne göre yapıyoruz. (6 kart: sayfa adı + özet + "Bu iş için yazın" + örnek sayısı)
+- **H2 Odanızı bize gösterin.:** Ne istediğinizi bir iki cümleyle yazın, odanın fotoğrafını ekleyin; birlikte değerlendirelim.
+- **H2 Siz anlatın, ölçüsünü biz alalım.:** Fotoğraftan teslime beş adım. **Bize yazarsınız:** Odanın birkaç fotoğrafını ve aklınızdaki işi WhatsApp'tan gönderirsiniz; Instagram'da beğendiğiniz bir iş varsa onu da eklersiniz. → **Ölçü:** Kesin ölçüyü yerinde alıyoruz; kolon, tesisat, petek ve priz yerleri o gün netleşir. → **Renk ve malzeme:** Lake rengi, kaplama, kulp, ışığın yeri ve rengi birlikte seçilir. → **İmalat:** Parçalar ölçünüze göre üretilir. → **Montaj:** Yerinde montaj yapılır, ışıklar bağlanır ve teslim edilir.
+- **H2 İşçilik detayda belli olur.:** "Kaliteliyiz" demek yerine fotoğraflarda görüneni yazıyoruz. **Yüzey:** Mat lake (açık gri, krem, beyaz), ceviz kaplama, mermer görünümlü panel · **Panel:** Tavana kadar dikey çıtalı duvar paneli; yatak başı, TV duvarı, antre · **Aydınlatma:** Tavan bandı, raf altı, ayna arkası ve dolap içi gizli şerit ışık · **Ayna:** Oval, yuvarlak ve yarım ay; arkası ışıklı
+- **Detaylar:** **Cam kapak ve iç ışık** — Neden önemli? Kıyafet kapak açmadan görünür; giyinme odası akşam tek başına aydınlanır. · **Ayna arkası ışık** — Neden önemli? Işık aynanın arkasından yayıldığı için yüze daha eşit düşer. · **Raf altı ışık** — Neden önemli? Şerit görünmez, yalnız rafa vuran ışık görünür; salon akşam yumuşak bir ışıkla kalır.
+- **H2 Yaptığımız işler konuşsun.:** Hepsi Instagram hesabımızda paylaştığımız işler. Kaydırarak diğerlerini görün.
+- **H2 Ahmet Yesevi Caddesi, No:120.:** Şeker Mobilya, Yenibosna'da özel tasarım mobilya üreten bir mobilya imalatçısı. İşlerimizi bitirdikçe Instagram'da paylaşıyoruz. (adres tablosu)
+- **H2 Merak edilenler.:**
+  - *Bahçelievler dışına da geliyor musunuz?* — Semtinizi yazın; ölçü için gelip gelemeyeceğimizi hemen söyleyelim.
+  - *Fiyat nasıl belirleniyor?* — Fiyat ölçüye, kapak ve panel yüzeyine, ışık miktarına göre değişir. Fotoğraf ve kaba ölçü gönderirseniz ilk konuşmada daha net bir şey söyleyebiliriz.
+  - *Fotoğraf göndererek bilgi alabilir miyim?* — Evet. Odanın birkaç fotoğrafı ve kaba ölçüsüyle başlıyoruz; kesin ölçüyü yerinde alıyoruz.
+  - *Tek bir parça için de geliyor musunuz?* — Evet. Portmanto, petek kapama, lavabo dolabı ya da tek bir TV ünitesi de yapıyoruz.
+  - *Dolap dışında hangi işleri yapıyorsunuz?* — Çıtalı duvar paneli, gizli ışık, ışıklı ayna, lake petek kapama ve kapı lake boyama; Instagram'daki işlerimizde hepsinin örneği var.
+  - *Hangi yüzeyler var?* — İşlerimizde en çok mat lake (açık gri, krem, beyaz), ceviz kaplama ve mermer görünümlü panel kullanıyoruz. Seçimi örnekleri görerek yapıyoruz.
+  - *Işıklı raf ve LED ayna yapıyor musunuz?* — Evet. Raf altı, tavan bandı, dolap içi ve ayna arkası ışık işlerimizin çoğunda var; ışığın yeri ölçü günü konuşulur.
+- **H2 Odanızı birlikte değerlendirelim.:** Aklınızdaki işi ve odanızı anlatın. Fotoğraf ve kaba ölçü gönderirseniz ilk konuşmada daha net bir şey söyleyebiliriz. · Mesaj notu: "Bu kutuya yazdıklarınız bize iletilmez; yalnız mesaj metni hazırlanır. Gönder'e bastığınızda WhatsApp açılır, mesajı orada siz gönderirsiniz."
 
-### TV ünitesi `/tv-unitesi/`
+### TV ünitesi ve duvar ünitesi `/tv-unitesi/`
 - **Title:** TV Ünitesi ve Duvar Ünitesi | Şeker Mobilya Bahçelievler
 - **Meta:** Ölçüye özel TV ünitesi ve duvar ünitesi: LED'li raflar, mermer görünümlü panel, ceviz kaplama, çıtalı panel. Bahçelievler Yenibosna, Şeker Mobilya.
-- **H1:** TV ünitesi ve duvar ünitesi
+- **Ön başlık:** TV ünitesi · Bahçelievler / Yenibosna
+- **H1:** TV ünitesi ve duvar ünitesi, duvarın ölçüsüne göre
 - **Giriş:** TV duvarı salonun yüzü. Rafları, kapakları, paneli ve ışığı duvarın ölçüsüne göre tek parça gibi kuruyoruz; kablo görünmesin, ışık doğrudan göze gelmesin.
-- **H2 Bu işte görülenler:** Mermer görünümlü panel; Raf altı ışık; Çıtalı TV paneli; Çerçeveli lake kapak
-- **H2 Duvarın tamamı, tek tasarım:** Yalnız TV sehpası değil; iki yandaki raflar, üstteki kapaklar ve TV'nin arkasındaki panel birlikte tasarlanır. Böylece duvar baştan sona aynı çizgide biter. Tavana kadar çıkan üst kapaklar hem depolama hem de daha yüksek bir tavan hissi verir.
-- **H2 Işık: raf altı, panel çevresi, tavan bandı:** Işık şeridini rafın altına, TV panelinin çevresine ya da tavan bandına gizliyoruz. Şerit görünmez, yalnız yüzeye vuran sıcak ışık görünür. Işığın rengi ve nereye bağlanacağı ölçü günü konuşulur.
-- **H2 Yüzey seçenekleri:** İşlerimizde en çok açık gri ve krem lake, ceviz kaplama, mermer görünümlü panel ve çıtalı panel kullanıyoruz. Seçimi örnekleri görerek, odanın zemini ve ışığıyla birlikte yapıyoruz.
+- **H2 Kurduğumuz TV duvarları:** 4 gerçek kare
+- **H3 Duvarın tamamı, tek tasarım:** Yalnız TV sehpası değil; iki yandaki raflar, üstteki kapaklar ve TV'nin arkasındaki panel birlikte tasarlanır. Böylece duvar baştan sona aynı çizgide biter. Tavana kadar çıkan üst kapaklar hem depolama hem de daha yüksek bir tavan hissi verir.
+- **H3 Işık: raf altı, panel çevresi, tavan bandı:** Işık şeridini rafın altına, TV panelinin çevresine ya da tavan bandına gizliyoruz. Şerit görünmez, yalnız yüzeye vuran sıcak ışık görünür. Işığın rengi ve nereye bağlanacağı ölçü günü konuşulur.
+- **H3 Yüzey seçenekleri:** İşlerimizde en çok açık gri ve krem lake, ceviz kaplama, mermer görünümlü panel ve çıtalı panel kullanıyoruz. Seçimi örnekleri görerek, odanın zemini ve ışığıyla birlikte yapıyoruz.
+- **H2 Ölçü gününden önce hazırlayabilecekleriniz:** TV'nin ekran ölçüsü (inç) ve duvara mı asılacağı · Duvarın genişliği ve tavan yüksekliği (kaba ölçü yeterli) · Priz, uydu ve internet kablosunun şu anki yeri · Soundbar, konsol, modem gibi ünitede duracak cihazlar · Duvarın karşıdan bir, yandan bir fotoğrafı
 - **SSS:**
   - *TV ünitesi fiyatı ne kadar?* — Fiyat duvarın ölçüsüne, kapak ve panel yüzeyine, ışık miktarına göre değişir. Duvarın fotoğrafını ve kaba ölçüsünü WhatsApp'tan gönderin; ona göre konuşalım.
   - *Kablolar görünür mü?* — TV paneli ve dolaplar kabloların geçeceği yer düşünülerek yapılır; prizlerin ve uydu/internet kablosunun yeri ölçü günü netleşir.
   - *Sadece raflı bir TV ünitesi de yapıyor musunuz?* — Evet. Duvarın tamamı şart değil; tek bir alt modül ya da yalnız raf da yapılır. Ne istediğinizi yazmanız yeterli.
+  - *Işığın rengini seçebilir miyim?* — Evet; işlerimizde çoğunlukla sıcak beyaz kullanıyoruz. Rengi ve nereden açılıp kapanacağını ölçü günü birlikte belirliyoruz.
 
 ### Banyo dolabı ve banyo yenileme `/banyo/`
 - **Title:** Banyo Dolabı ve Banyo Yenileme | Şeker Mobilya Bahçelievler
 - **Meta:** Ölçüye özel banyo dolabı, boy dolap, çamaşır makinesi dolabı ve LED ayna; banyoyu baştan sona yeniliyoruz. Bahçelievler Yenibosna, Şeker Mobilya.
-- **H1:** Banyo dolabı ve banyoyu baştan yenileme
+- **Ön başlık:** Banyo · Bahçelievler / Yenibosna
+- **H1:** Banyo dolabı, makine dolabı ve ışıklı ayna
 - **Giriş:** Küçük bir lavabo dolabından makine yerli boy dolaba, ışıklı aynadan baştan sona yenilenen banyoya kadar. Banyonun her santimini ölçüsüne göre kullanıyoruz.
-- **H2 Bu işte görülenler:** Arkası ışıklı oval ayna; Açık raf kutuları; Gömme lavabolu tezgâh; Çıtalı boy dolap
-- **H2 Çamaşır makinesi için boy dolap:** Makineyi dolabın içine ya da altına alıp üstünü ve yanını boy dolapla kapatıyoruz. Deterjan, havlu ve temizlik malzemesi kapağın arkasına girer; banyo derli toplu görünür.
-- **H2 Küçük banyoya çekmeceli dolap:** Dar banyoda kapak yerine çekmece çoğu zaman daha çok yer açar. Lavabo dolabını banyonun ölçüsüne göre daraltıp derinliğini ayarlıyoruz.
-- **H2 Işıklı ayna ve aynalı üst dolap:** Oval, yuvarlak ya da dikdörtgen; arkası ışıklı ayna veya içi raflı aynalı dolap. Tezgâh üstü lavabo ile antrasit, ceviz ya da açık gri kapak birlikte seçilir.
-- **H2 Baştan sona banyo yenileme:** Instagram'daki "baştan sona yepyeni banyo" videolarımız eski PVC duvar ve hazır dolapla başlar. Banyonun yenilenmesinde hangi işleri bizim yapacağımızı keşif sırasında açıkça konuşuyoruz.
+- **H2 Kurduğumuz banyolar:** 8 gerçek kare
+- **H3 Çamaşır makinesi için boy dolap:** Makineyi dolabın içine ya da altına alıp üstünü ve yanını boy dolapla kapatıyoruz. Deterjan, havlu ve temizlik malzemesi kapağın arkasına girer; banyo derli toplu görünür.
+- **H3 Küçük banyoya çekmeceli dolap:** Dar banyoda kapak yerine çekmece çoğu zaman daha çok yer açar. Lavabo dolabını banyonun ölçüsüne göre daraltıp derinliğini ayarlıyoruz.
+- **H3 Işıklı ayna ve aynalı üst dolap:** Oval, yuvarlak ya da dikdörtgen; arkası ışıklı ayna veya içi raflı aynalı dolap. Tezgâh üstü lavabo ile antrasit, ceviz ya da açık gri kapak birlikte seçilir.
+- **H3 Baştan sona banyo yenileme:** Instagram'daki "baştan sona yepyeni banyo" videolarımız eski PVC duvar ve hazır dolapla başlar. Banyonun yenilenmesinde hangi işleri bizim yapacağımızı keşif sırasında açıkça konuşuyoruz.
+- **H2 Ölçü gününden önce hazırlayabilecekleriniz:** Lavabo duvarının genişliği ve tavan yüksekliği · Makine dolabı istiyorsanız makinenin ölçüsü (genişlik × derinlik) · Mevcut lavabo ve batarya kalacak mı, değişecek mi · Gider, priz ve su vanalarının yeri (fotoğraf yeterli) · Banyonun kapıdan çekilmiş bir fotoğrafı
 - **SSS:**
   - *Banyo dolabı nemden etkilenir mi?* — Banyo dolabında kullanılacak gövde ve kapak malzemesini banyonun havalandırmasına göre birlikte seçiyoruz. Malzeme seçeneklerini ölçü günü örnekleriyle gösteririz.
   - *Mevcut lavaboyu kullanabilir miyiz?* — Çoğu zaman evet; dolabı mevcut lavabonun ölçüsüne göre yaparız. Lavabonun ve giderin fotoğrafını göndermeniz yeterli.
   - *Banyo dolabı fiyatı ne kadar?* — Ölçüye, kapak yüzeyine, ayna ve ışığa göre değişir. Banyonun fotoğrafını ve genişliğini WhatsApp'tan gönderin.
+  - *Çamaşır makinesinin üstüne dolap olur mu?* — Evet; makinenin üstüne ve yanına boy dolap yapıyoruz. Makinenin ölçüsünü ve kapağının açılma yönünü yazın.
 
 ### Mutfak dolabı `/mutfak/`
 - **Title:** Mutfak Dolabı Özel Ölçü | Şeker Mobilya Bahçelievler
 - **Meta:** Ölçüye özel mutfak dolabı: tam açılan çekmeceler, kiler boy dolap, tavana kadar üst dolap, cam kapak. Bahçelievler Yenibosna, Şeker Mobilya.
-- **H1:** Mutfak dolabı, ölçüye özel
+- **Ön başlık:** Mutfak · Bahçelievler / Yenibosna
+- **H1:** Mutfak dolabı, mutfağın ölçüsüne göre
 - **Giriş:** Mutfakta mesele görüntü kadar düzen: çekmecelerin nasıl açıldığı, kilerin nereye sığdığı, üst dolabın tavana kadar çıkıp çıkmadığı. Dolabı mutfağınızın ölçüsüne ve kullanımınıza göre kuruyoruz.
-- **H2 Bu işte görülenler:** Tam açılan çekmeceler; Eviye dolabı; Tavana kadar üst dolap
-- **H2 Kapak yerine çekmece:** Alt dolaplarda çekmece, arkaya itilmiş tencereyi aramayı bitirir. Dar mutfakta bile yan yana tam açılan çekmeceler kuruyoruz.
-- **H2 Kiler ve boy dolap:** Boy dolabın içine çekme raflı kiler koymak, mutfağın en çok yer kazandıran parçası. Buzdolabı ve fırın yeriyle birlikte ölçülür.
-- **H2 Tezgâh ve cam kapak:** Beyaz tezgâh, açık gri kapaklar, füme cam kapaklı boy dolap; Instagram'daki mutfaklarımızda en çok bu dil var. Tezgâh malzemesini örneklerle birlikte seçiyoruz.
+- **H2 Kurduğumuz mutfaklar:** 4 gerçek kare
+- **H3 Kapak yerine çekmece:** Alt dolaplarda çekmece, arkaya itilmiş tencereyi aramayı bitirir. Dar mutfakta bile yan yana tam açılan çekmeceler kuruyoruz.
+- **H3 Kiler ve boy dolap:** Boy dolabın içine çekme raflı kiler koymak, mutfağın en çok yer kazandıran parçası. Buzdolabı ve fırın yeriyle birlikte ölçülür.
+- **H3 Tezgâh ve cam kapak:** Beyaz tezgâh, açık gri kapaklar, füme cam kapaklı boy dolap; Instagram'daki mutfaklarımızda en çok bu dil var. Tezgâh malzemesini örneklerle birlikte seçiyoruz.
+- **H2 Ölçü gününden önce hazırlayabilecekleriniz:** Mutfak duvarlarının kaba uzunluğu ve tavan yüksekliği · Buzdolabı, fırın, ocak ve bulaşık makinesinin ölçüsü ya da modeli · Eviye, su ve doğalgaz bağlantılarının yeri · Pencere ve kapının konumu (bir fotoğraf yeterli) · Mutfağın kapıdan ve karşı köşeden fotoğrafı
 - **SSS:**
   - *Mutfak dolabı fiyatı ne kadar?* — Fiyat duvar uzunluğuna, dolap sayısına, kapak ve tezgâh malzemesine göre değişir. Mutfağın fotoğrafını ve kaba ölçüsünü gönderin.
   - *Eski mutfağı siz mi söküyorsunuz?* — Sökümün kapsamını ölçü günü konuşuyoruz; ne yapılacağını önceden netleştiririz.
   - *Ankastre cihazlar sonra mı alınmalı?* — Cihazları önceden seçerseniz ölçüsünü dolaba göre ayarlarız; seçmediyseniz standart ölçüye göre yer bırakırız. Bunu ölçü günü birlikte karar veririz.
 
-### Giyinme odası, gardırop ve genç odası `/giyinme-odasi-gardirop/`
+### Giyinme odası ve gardırop `/giyinme-odasi-gardirop/`
 - **Title:** Giyinme Odası ve Gardırop | Şeker Mobilya Bahçelievler
 - **Meta:** Cam kapaklı ışıklı giyinme odası, tavana kadar gömme dolap, gardırop ve genç odası; ölçüye özel. Bahçelievler Yenibosna, Şeker Mobilya.
-- **H1:** Giyinme odası, gardırop ve genç odası
+- **Ön başlık:** Giyinme odası · Bahçelievler / Yenibosna
+- **H1:** Giyinme odası, gömme dolap ve gardırop
 - **Giriş:** Cam kapaklı ve içi ışıklı giyinme odası, koridorda tavana kadar gömme dolap, makyaj masasıyla birleşen gardırop. Duvarın köşesine, kolonuna ve tavan yüksekliğine göre.
-- **H2 Bu işte görülenler:** Cam kapak; Dolap içi ışık; Köşeyi dönen modül
-- **H2 Cam kapak ve dolap içi ışık:** Giyinme odasında cam kapak ve içeriden gelen ışık, kıyafeti kapak açmadan gösterir; oda da bir vitrin gibi durur. Kapak açılınca yanan ya da sürekli yanan ışık seçilebilir.
-- **H2 Tavana kadar düz kapak:** Koridorda ya da yatak odasında tavana kadar çıkan, kulpsuz görünümlü düz kapaklar duvarla bir bütün olur. Gömme alanlar boşa gitmez.
-- **H2 Genç ve çocuk odası:** Ranza, çalışma köşesi, kemerli ışıklı niş ve çocuğun seçtiği lake renk birlikte tasarlanır. İki çocuğun paylaştığı odada basamakları çekmeceli ranza gibi çözümler kuruyoruz.
+- **H2 Kurduğumuz dolaplar:** 3 gerçek kare
+- **H3 Cam kapak ve dolap içi ışık:** Giyinme odasında cam kapak ve içeriden gelen ışık, kıyafeti kapak açmadan gösterir; oda da bir vitrin gibi durur. Kapak açılınca yanan ya da sürekli yanan ışık seçilebilir.
+- **H3 Tavana kadar düz kapak:** Koridorda ya da yatak odasında tavana kadar çıkan, kulpsuz görünümlü düz kapaklar duvarla bir bütün olur. Gömme alanlar boşa gitmez.
+- **H3 Genç ve çocuk odası:** Ranza, çalışma köşesi, kemerli ışıklı niş ve çocuğun seçtiği lake renk birlikte tasarlanır. İki çocuğun paylaştığı odada basamakları çekmeceli ranza gibi çözümler kuruyoruz; örnekleri Instagram'daki videolarımızda.
+- **H2 Ölçü gününden önce hazırlayabilecekleriniz:** Dolabın gireceği duvarın genişliği ve tavan yüksekliği · Kolon, pencere, petek ve priz yerleri · Askı, raf ve çekmece oranı: daha çok asılan mı, katlanan mı · Kapak tercihi: düz, cam ya da aynalı · Odanın kapıdan çekilmiş bir fotoğrafı
 - **SSS:**
   - *Giyinme odası için ne kadar alan gerekir?* — Küçük bir oda, bir duvar boyu ya da bir köşe yeterli olabilir. Alanın fotoğrafını ve ölçüsünü gönderin, nasıl yerleşeceğini konuşalım.
   - *Gardırop fiyatı ne kadar?* — Genişliğe, yüksekliğe, kapak türüne (düz, cam, aynalı) ve iç düzene göre değişir. Ölçüyü ve istediğiniz kapağı yazın.
@@ -124,39 +148,43 @@
 ### Portmanto ve antre `/portmanto/`
 - **Title:** Portmanto ve Antre Dekorasyonu | Şeker Mobilya Bahçelievler
 - **Meta:** Ölçüye özel portmanto, gömme alan portmantosu, ceviz çıtalı antre duvarı, aynalı konsol. Bahçelievler Yenibosna, Şeker Mobilya.
+- **Ön başlık:** Portmanto · Bahçelievler / Yenibosna
 - **H1:** Portmanto ve antre duvarı
 - **Giriş:** Eve girince ilk görülen yer antre. Ayakkabı, mont ve anahtar için yeri olan bir portmanto; yanında çıtalı duvar, ayna ve ince bir konsol.
-- **H2 Bu işte görülenler:** Ceviz çıtalı duvar; Yarım ay ayna; Asma konsol
-- **H2 Gömme alana portmanto:** Antredeki girintiye ya da kapı arkasındaki boşluğa ölçüsünde portmanto yapıyoruz; gerekirse yanına kitaplık ekleniyor.
-- **H2 Çıtalı duvar ve ayna:** Ceviz ya da açık renk çıtalı panel, yarım ay veya yuvarlak ayna ve duvara asılı konsol; küçük antreyi de karşılama alanına çevirir.
-- **H2 Kapı lake boyama:** Antreyle birlikte kapıyı da lake boyayla yeniliyoruz; Instagram'daki "After" videosunda portmantonun yanındaki kapı böyle.
+- **H2 Kurduğumuz antreler:** 5 gerçek kare
+- **H3 Gömme alana portmanto:** Antredeki girintiye ya da kapı arkasındaki boşluğa ölçüsünde portmanto yapıyoruz; gerekirse yanına kitaplık ekleniyor.
+- **H3 Çıtalı duvar ve ayna:** Ceviz ya da açık renk çıtalı panel, yarım ay veya yuvarlak ayna ve duvara asılı konsol; küçük antreyi de karşılama alanına çevirir.
+- **H3 Kapı lake boyama:** Antreyle birlikte iç kapıyı da lake boyayla yeniliyoruz; Instagram'daki "After" videosunda portmantonun yanındaki kapı böyle.
+- **H2 Ölçü gününden önce hazırlayabilecekleriniz:** Antre duvarının genişliği ve kapıya olan mesafe · Kaç kişinin ayakkabısı ve montu duracak · Oturma bankı, ayna ya da konsol isteyip istemediğiniz · Petek, priz ve elektrik panosunun yeri · Antrenin kapıdan ve içeriden fotoğrafı
 - **SSS:**
   - *Portmanto fiyatı ne kadar?* — Genişliğe, ayna ve panel olup olmamasına göre değişir. Antrenin fotoğrafını ve ölçüsünü gönderin.
   - *Dar bir antreye sığar mı?* — Derinliği antreye göre azaltılmış, duvara asılı modüllerle dar antrelere de portmanto yapıyoruz.
-  - *Çelik kapı veya iç kapı da boyanıyor mu?* — İç kapı lake boyamayı yapıyoruz; kapınızın türünü fotoğrafla gönderin, uygun olup olmadığını söyleyelim.
+  - *İç kapı da boyanıyor mu?* — İç kapı lake boyamayı yapıyoruz; kapınızın türünü fotoğrafla gönderin, uygun olup olmadığını söyleyelim.
 
-### Çıtalı duvar paneli ve lake petek kapama `/duvar-paneli-petek-kapama/`
+### Çıtalı duvar paneli ve petek kapama `/duvar-paneli-petek-kapama/`
 - **Title:** Çıtalı Duvar Paneli ve Lake Petek Kapama | Şeker Mobilya
 - **Meta:** Çıtalı (yivli) duvar paneli, tavan bandında gizli LED, lake petek kapama ve duvar dekorasyonu. Bahçelievler Yenibosna, Şeker Mobilya.
+- **Ön başlık:** Duvar paneli · Bahçelievler / Yenibosna
 - **H1:** Çıtalı duvar paneli ve lake petek kapama
 - **Giriş:** Duvarı mobilyanın bir parçası gibi bitiriyoruz: yatak başında tavana kadar çıtalı panel, tavan bandında gizli ışık, pencere altında görüntüyü bozan peteğe lake bir kapama.
-- **H2 Bu işte görülenler:** Tavana kadar çıtalı duvar paneli; Tavan bandında gizli ışık; Arkası ışıklı yuvarlak ayna; Duvara asılı komodin
-- **H2 Çıtalı duvar paneli:** Dikey çıtalı panel duvara derinlik verir, yatak başı ya da TV duvarında odanın odak noktası olur. Paneli komodin, ayna ve ışıkla birlikte tasarlıyoruz.
-- **H2 Lake petek kapama:** Peteğin önüne, ısının geçeceği aralıklarla lake bir kapama yapıyoruz; üstü raf ya da konsol olarak kullanılabilir. Rengi duvara ya da dolaplara göre seçilir.
-- **H2 Duvar dekorasyonu:** Konsol, ayna ve desenli duvarla küçük bir köşeyi de tamamlıyoruz.
+- **H2 Çıtalı panelli işlerimiz:** 6 gerçek kare
+- **H3 Çıtalı duvar paneli:** Dikey çıtalı panel duvara derinlik verir, yatak başı ya da TV duvarında odanın odak noktası olur. Paneli komodin, ayna ve ışıkla birlikte tasarlıyoruz; işlerimizde antrede ceviz, yatak odasında açık renk kullandık.
+- **H3 Lake petek kapama:** Peteğin önüne, ısının geçeceği aralıklarla lake bir kapama yapıyoruz; üstü raf ya da konsol olarak kullanılabilir. Rengi duvara ya da dolaplara göre seçilir. Petek kapama örneklerimiz Instagram'daki videolarımızda.
+- **H3 Duvar dekorasyonu:** Konsol, ayna ve panelle küçük bir köşeyi de tamamlıyoruz.
+- **H2 Ölçü gününden önce hazırlayabilecekleriniz:** Panel yapılacak duvarın genişliği ve tavan yüksekliği · Duvardaki priz ve anahtarların yeri · Petek kapama için peteğin genişliği, yüksekliği ve tipi (fotoğraf yeterli) · Panelin rengi: duvarla aynı mı, ceviz gibi zıt mı · Duvarın karşıdan bir fotoğrafı
 - **SSS:**
   - *Petek kapama ısıyı engeller mi?* — Kapama, sıcak havanın geçeceği açıklıklarla yapılır; peteğin önü tamamen kapatılmaz. Ölçü günü peteğin tipine göre şekli belirlenir.
   - *Petek kapama için petek sökülür mü?* — Genellikle sökülmez; kapama peteğin önüne ve çevresine ölçüsüne göre yapılır. Peteğin fotoğrafını gönderin.
   - *Çıtalı panel hangi odalarda olur?* — İşlerimizde yatak başı duvarı, TV duvarı, antre ve banyo boy dolabının kenarında kullandık.
 
-### İşler `/isler/`
+### İşlerimiz `/isler/`
 - **Title:** İşlerimiz: Instagram'dan Gerçek Kareler | Şeker Mobilya
-- **Meta:** TV ünitesi, banyo, mutfak, giyinme odası, genç odası, portmanto ve petek kapama: @sekermobilya Instagram'ında paylaştığımız işlerden 47 kare.
-- **H1:** İşlerimiz
-- **Giriş:** Buradaki tüm kareler Instagram'da (@sekermobilya) paylaştığımız işlerden alındı; temsili görsel yok. Yazılı olanlar Reels videolarının kapağı; videoların tamamı Instagram'da.
+- **Meta:** TV ünitesi, banyo, mutfak, giyinme odası, portmanto ve çıtalı duvar paneli: @sekermobilya Instagram'ında paylaştığımız işlerden 25 kare.
+- **H1:** Yaptığımız işler
+- **Giriş:** Buradaki tüm kareler Instagram'da (@sekermobilya) paylaştığımız işlerden alındı; temsili görsel yok. Videoların tamamı Instagram'da.
 
 ### Ortak
-- Alt bilgi notu: "Sitedeki fotoğraflar Şeker Mobilya'nın Instagram hesabında paylaşılan işlerdir. Bu site kendi çerezini kullanmaz ve ziyaretçi verisi toplamaz; harita yalnız siz tıklayınca Google Haritalar'dan yüklenir."
+- Alt bilgi: "Fotoğrafların hepsi @sekermobilya hesabındaki paylaşımlardan; stok görsel yok." · "Site kendi çerezini kullanmaz ve sizden veri toplamaz; harita yalnız siz tıklayınca Google Haritalar'dan yüklenir."
 - Slogan (firmanın): "Evinize tat katıyoruz."
 <!-- METIN:SON -->
 

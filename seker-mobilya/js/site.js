@@ -9,23 +9,31 @@
     if (a) olay(a.getAttribute("data-olay"), { sayfa: location.pathname });
   });
 
-  // menü
-  var dugme = document.querySelector(".menu-dugme"), menu = document.getElementById("menu");
+  // üst çubuk: girişin üstünde şeffaf, kaydırınca dolu
+  var ust = document.querySelector(".ust"), dugme = document.querySelector(".menu-dugme"), menu = document.getElementById("menu");
+  function boya() { if (ust && ust.classList.contains("ust--seffaf")) ust.classList.toggle("dolu", window.scrollY > 40 || (menu && menu.classList.contains("acik"))); }
+  window.addEventListener("scroll", boya, { passive: true });
+  boya();
+  function kapat() { menu.classList.remove("acik"); dugme.setAttribute("aria-expanded", "false"); boya(); }
   if (dugme && menu) {
     dugme.addEventListener("click", function () {
       var acik = menu.classList.toggle("acik");
       dugme.setAttribute("aria-expanded", acik ? "true" : "false");
+      boya();
     });
-    menu.addEventListener("click", function (e) {
-      if (e.target.closest("a")) { menu.classList.remove("acik"); dugme.setAttribute("aria-expanded", "false"); }
-    });
+    menu.addEventListener("click", function (e) { if (e.target.closest("a")) kapat(); });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && menu.classList.contains("acik")) { menu.classList.remove("acik"); dugme.setAttribute("aria-expanded", "false"); dugme.focus(); }
+      if (e.key === "Escape" && menu.classList.contains("acik")) { kapat(); dugme.focus(); }
     });
   }
 
+  // cümle içi küçük harf (uret.py kucuk() ile aynı): "TV ünitesi" olduğu gibi kalır
+  function kucuk(s) {
+    if (s.slice(0, 2) === s.slice(0, 2).toLocaleUpperCase("tr")) return s;
+    return s.charAt(0).toLocaleLowerCase("tr") + s.slice(1);
+  }
   function waLink(metin) { return "https://wa.me/" + (A.whatsapp || "") + "?text=" + encodeURIComponent(metin); }
-  document.querySelectorAll("[data-wa-sabit]").forEach(function (a) { a.href = waLink("Merhaba, bilgi almak istiyorum."); });
+  document.querySelectorAll("[data-wa-sabit]").forEach(function (a) { a.href = waLink("Merhaba Şeker Mobilya, bilgi almak istiyorum."); });
 
   // mesaj hazırlayıcı: veri toplanmaz, yalnız WhatsApp metni oluşturulur
   document.querySelectorAll("[data-hazirla]").forEach(function (form) {
@@ -34,10 +42,10 @@
     function temiz(s) { return (s || "").replace(/\s+/g, " ").trim(); }
     function metin() {
       var tur = deger("tur"), kapsam = deger("kapsam"), ilce = temiz(form.ilce.value), olcu = temiz(form.olcu.value);
-      var m = "Merhaba, " + (tur ? tur.toLocaleLowerCase("tr") + " için" : "") + (tur ? " " : "") + "bilgi almak istiyorum.";
+      var m = "Merhaba Şeker Mobilya, " + (tur ? kucuk(tur) + " için " : "") + "bilgi almak istiyorum.";
       if (kapsam) m += "\nKapsam: " + kapsam;
       if (ilce) m += "\nSemt / ilçe: " + ilce;
-      if (olcu) m += "\nKaba ölçü: " + olcu;
+      if (olcu) m += "\nNot: " + olcu;
       if (form.foto.checked) m += "\nFotoğrafları bu mesajın ardından gönderiyorum.";
       return m;
     }
@@ -51,6 +59,19 @@
       if (navigator.clipboard) navigator.clipboard.writeText(m).then(tamam, function () {});
     });
     guncelle();
+  });
+
+  // kart / ihtiyaç bağlantıları mesajı önceden doldurur
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-sec-tur], [data-sec-kapsam]"), form = document.querySelector("[data-hazirla]");
+    if (!a || !form) return;
+    function sec(ad, deger) {
+      if (deger === null) return;
+      form.querySelectorAll('[name="' + ad + '"]').forEach(function (r) { r.checked = r.value === deger; });
+    }
+    sec("tur", a.getAttribute("data-sec-tur"));
+    sec("kapsam", a.getAttribute("data-sec-kapsam"));
+    form.dispatchEvent(new Event("change"));
   });
 
   // ikinci adres (teyit edilince ayarlar.js'ten)

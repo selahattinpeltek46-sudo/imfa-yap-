@@ -7,7 +7,7 @@ const yollar = ['', 'tv-unitesi/', 'banyo/', 'mutfak/', 'giyinme-odasi-gardirop/
   let hata = 0, test = 0;
   const ok = (c, m) => { test++; if (!c) { hata++; console.log('❌', m); } };
   const hrefler = new Set();
-  for (const [ad, vp] of [['masa', { width: 1366, height: 860 }], ['mobil', { width: 375, height: 760 }]]) {
+  for (const [ad, vp] of [['masa', { width: 1366, height: 860 }], ['tablet', { width: 900, height: 1000 }], ['mobil', { width: 375, height: 760 }]]) {
     const ctx = await b.newContext({ viewport: vp });
     for (const y of yollar) {
       const p = await ctx.newPage();
@@ -25,13 +25,14 @@ const yollar = ['', 'tv-unitesi/', 'banyo/', 'mutfak/', 'giyinme-odasi-gardirop/
         tasma: document.documentElement.scrollWidth - innerWidth,
         kirik: [...document.images].filter(i => i.complete && i.naturalWidth === 0).map(i => i.src),
         altYok: [...document.images].filter(i => !i.hasAttribute('alt')).length,
-        buyuk: [...document.images].filter(i => i.getBoundingClientRect().width > 362).map(i => i.src),
+        buyuk: [...document.images].filter(i => { const r = i.getBoundingClientRect(); return r.width > 362 || r.height > 446; }).map(i => i.src),
         ld: [...document.querySelectorAll('script[type="application/ld+json"]')].map(s => { try { JSON.parse(s.textContent); return 1 } catch (e) { return 0 } }),
         wa: [...document.querySelectorAll('a[href*="wa.me"]')].map(a => a.href),
         tel: [...document.querySelectorAll('a[href^="tel:"]')].map(a => a.getAttribute('href')),
         hrefs: [...document.querySelectorAll('a[href]')].map(a => a.href),
         gizli: [...document.querySelectorAll('[hidden]')].filter(e => getComputedStyle(e).display !== 'none').length,
         adres: document.body.innerText.includes('Ahmet Yesevi Cd. No:120'),
+        yaziliYok: ![...document.images].some(i => /reels|oncesi|petek-kapama|genc-odasi/.test(i.src)),
       }));
       r.hrefs.forEach(h => hrefler.add(h));
       ok(errs.length === 0, `${ad} ${y} konsol: ${errs.join(' | ')}`);
@@ -44,7 +45,8 @@ const yollar = ['', 'tv-unitesi/', 'banyo/', 'mutfak/', 'giyinme-odasi-gardirop/
       ok(r.tasma <= 0, `${ad} ${y} yatay taşma ${r.tasma}`);
       ok(r.kirik.length === 0, `${y} kırık görsel ${r.kirik}`);
       ok(r.altYok === 0, `${y} alt yok`);
-      ok(r.buyuk.length === 0, `${ad} ${y} 360 px'ten geniş görsel ${r.buyuk}`);
+      ok(r.buyuk.length === 0, `${ad} ${y} 360 px'ten büyük gösterilen görsel ${r.buyuk}`);
+      ok(r.yaziliYok, `${y} kaldırılan Reels kapağı hâlâ var`);
       ok(r.ld.length > 0 && r.ld.every(Boolean), `${y} JSON-LD`);
       ok(r.wa.length > 0 && r.wa.every(h => h.startsWith('https://wa.me/905357618538?text=')), `${y} WhatsApp ${r.wa}`);
       ok(r.tel.length > 0 && r.tel.every(h => h === 'tel:+905357618538'), `${y} tel ${r.tel}`);
@@ -67,25 +69,44 @@ const yollar = ['', 'tv-unitesi/', 'banyo/', 'mutfak/', 'giyinme-odasi-gardirop/
   await p.locator('label.secim:has-text("Odanın tamamı")').click();
   await p.fill('input[name=ilce]', 'Yenibosna');
   await p.fill('input[name=olcu]', '2,10 m');
-  const href = await p.locator('[data-wa]').getAttribute('href');
-  const metin = decodeURIComponent(href.split('text=')[1]);
-  ok(metin === 'Merhaba, banyo dolabı / banyo yenileme için bilgi almak istiyorum.\nKapsam: odanın tamamı\nSemt / ilçe: Yenibosna\nKaba ölçü: 2,10 m\nFotoğrafları bu mesajın ardından gönderiyorum.', 'WhatsApp metni: ' + metin);
+  const metin = decodeURIComponent((await p.locator('[data-wa]').getAttribute('href')).split('text=')[1]);
+  ok(metin === 'Merhaba Şeker Mobilya, banyo dolabı / banyo yenileme için bilgi almak istiyorum.\nKapsam: odanın tamamı\nSemt / ilçe: Yenibosna\nNot: 2,10 m\nFotoğrafları bu mesajın ardından gönderiyorum.', 'WhatsApp metni: ' + metin);
   ok((await p.locator('[data-onizleme]').textContent()) === metin, 'önizleme = gönderilen metin');
+  const renk = await p.locator('[data-wa]').evaluate(a => [getComputedStyle(a).color, getComputedStyle(a).backgroundColor]);
+  ok(renk[0] !== renk[1], 'WhatsApp düğmesi okunur (yazı ≠ zemin) ' + renk);
+  // TV ünitesi: "TV" küçülmez, JS ile Python aynı metni üretir
+  await p.goto(B + 'tv-unitesi/', { waitUntil: 'networkidle' });
+  const ilk = await p.locator('[data-onizleme]').textContent();
+  ok(ilk.startsWith('Merhaba Şeker Mobilya, TV ünitesi / duvar ünitesi için'), 'TV metni: ' + ilk);
   // menü
   ok(!(await p.locator('#menu').isVisible()), 'mobil menü başta kapalı');
   await p.click('.menu-dugme'); ok(await p.locator('#menu').isVisible(), 'menü açılıyor');
   await p.keyboard.press('Escape'); ok(!(await p.locator('#menu').isVisible()), 'Esc menüyü kapatıyor');
+  // ana sayfa: şeffaf üst çubuk kaydırınca doluyor; kart mesajı önceden dolduruyor
+  await p.goto(B, { waitUntil: 'networkidle' });
+  ok(!(await p.locator('.ust').evaluate(e => e.classList.contains('dolu'))), 'üst çubuk başta şeffaf');
+  await p.evaluate(() => scrollTo(0, 600)); await p.waitForTimeout(100);
+  ok(await p.locator('.ust').evaluate(e => e.classList.contains('dolu')), 'üst çubuk kaydırınca dolu');
+  await p.locator('.kart a[data-sec-tur="Mutfak dolabı"]').click();
+  ok(await p.locator('input[name=tur]:checked').inputValue() === 'Mutfak dolabı', 'kart türü seçiyor');
+  await p.locator('.ihtiyac a:has-text("Bir köşe için yazın")').click();
+  ok(await p.locator('input[name=kapsam]:checked').inputValue() === 'tek parça', 'ihtiyaç kapsamı seçiyor');
+  ok(await p.locator('input[name=tur]:checked').count() === 0, 'ihtiyaç (türsüz) türü temizliyor');
+  // kaydırmalı satırlarda tembel görseller görünür olunca yükleniyor
+  const satir = p.locator('.satir__liste').nth(1);
+  await satir.scrollIntoViewIfNeeded();
+  await satir.evaluate(el => el.scrollTo(el.scrollWidth, 0)); await p.waitForTimeout(600);
+  ok(await satir.evaluate(el => [...el.querySelectorAll('img')].every(i => i.complete && i.naturalWidth > 0)), 'satırdaki tüm görseller yüklendi');
   // harita tıkla-yükle
   ok(await p.locator('.harita iframe').count() === 0, 'harita başta yüklenmemiş');
   await p.click('.harita__dugme'); ok(await p.locator('.harita iframe').count() === 1, 'harita tıklayınca yükleniyor');
   // galeri süzgeci + hashchange
   await p.goto(B + 'isler/#banyo', { waitUntil: 'networkidle' });
   const say = () => p.evaluate(() => [...document.querySelectorAll('.kare')].filter(k => !k.hidden).length);
-  ok(await say() === 15, 'isler/#banyo 15 kare: ' + await say());
+  ok(await say() === 8, 'isler/#banyo 8 kare: ' + await say());
   await p.evaluate(() => { location.hash = 'tv'; }); await p.waitForTimeout(100);
-  ok(await say() === 6, 'hashchange #tv 6 kare: ' + await say());
-  await p.click('[data-filtre=hepsi]'); ok(await say() === 47, 'hepsi 47');
-  // dataLayer
+  ok(await say() === 4, 'hashchange #tv 4 kare: ' + await say());
+  await p.click('[data-filtre=hepsi]'); ok(await say() === 25, 'hepsi 25');
   await p.click('[data-filtre=mutfak]');
   ok(await p.evaluate(() => dataLayer.some(o => o.event === 'galeri_suz' && o.tur === 'mutfak')), 'dataLayer galeri_suz');
   console.log(`${test - hata}/${test} test geçti`);
