@@ -13,16 +13,26 @@
     window.dataLayer.push(o);
   }
 
-  // ---- menü
+  // ---- üst çubuk: girişin üstünde şeffaf, kaydırınca dolu
+  var ust = document.querySelector(".ust");
   var menuDugme = document.querySelector(".menu-dugme");
   var menu = document.getElementById("menu");
+  if (ust && ust.classList.contains("ust--seffaf")) {
+    var boya = function () { ust.classList.toggle("dolu", window.scrollY > 40 || (menu && menu.classList.contains("acik"))); };
+    window.addEventListener("scroll", boya, { passive: true });
+    boya();
+  }
+
+  // ---- menü
   if (menuDugme && menu) {
     menuDugme.addEventListener("click", function () {
       var acik = menu.classList.toggle("acik");
       menuDugme.setAttribute("aria-expanded", acik ? "true" : "false");
+      ust.classList.toggle("menu-acik", acik);
+      if (ust.classList.contains("ust--seffaf")) ust.classList.toggle("dolu", acik || window.scrollY > 40);
     });
     menu.addEventListener("click", function (e) {
-      if (e.target.closest("a")) { menu.classList.remove("acik"); menuDugme.setAttribute("aria-expanded", "false"); }
+      if (e.target.closest("a")) { menu.classList.remove("acik"); ust.classList.remove("menu-acik"); menuDugme.setAttribute("aria-expanded", "false"); }
     });
   }
 
@@ -80,6 +90,19 @@
           if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(m).then(bitti, function () {});
         } catch (err) { /* kopyalanamazsa yalnız Instagram açılır */ }
       }
+    });
+
+    // "Yeni evim için yazın", "Bu iş için yazın" gibi bağlantılar mesajı önceden doldurur
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest("a[data-not], a[data-tur]");
+      if (!a) return;
+      if (a.hasAttribute("data-not")) form.not.value = a.getAttribute("data-not");
+      if (a.hasAttribute("data-tur")) {
+        var v = a.getAttribute("data-tur");
+        form.querySelectorAll("input[name=tur]").forEach(function (i) { if (i.value === v) i.checked = true; });
+      }
+      yenile();
+      olay("mesaja_git", { kaynak: a.textContent.trim(), sayfa: location.pathname });
     });
 
     // galeriden "bu fotoğraftaki gibi" isteği

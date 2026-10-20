@@ -17,8 +17,8 @@ const out = process.argv[2];
       p.on('response', r => { if (r.status() >= 400) bad.push(r.status() + ' ' + r.url()); });
       await p.goto(B + y, { waitUntil: 'networkidle' });
       // tembel görselleri yükle
-      await p.evaluate(async () => { for (let i = 0; i < document.body.scrollHeight; i += 600) { window.scrollTo(0, i); await new Promise(r => setTimeout(r, 30)); } window.scrollTo(0, 0); });
-      await p.waitForTimeout(300);
+      await p.evaluate(async () => { for (let i = 0; i < document.body.scrollHeight; i += 600) { window.scrollTo(0, i); await new Promise(r => setTimeout(r, 90)); } window.scrollTo(0, 0); });
+      await p.evaluate(async()=>{for(const u of document.querySelectorAll(".satir__liste")){u.scrollLeft=9999;await new Promise(r=>setTimeout(r,150));u.scrollLeft=0}}); await p.waitForTimeout(600);
       const r = await p.evaluate(() => ({
         title: document.title, meta: document.querySelector('meta[name=description]').content,
         h1: document.querySelectorAll('h1').length, canon: !!document.querySelector('link[rel=canonical]'),
