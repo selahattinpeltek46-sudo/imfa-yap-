@@ -20,6 +20,13 @@ FOTOLAR = [
     'on-yukleyici-kubota', 'on-yukleyici-saha', 'on-yukleyici-mavi', 'on-yukleyici-kaldirma',
     'on-yukleyici-ve-pulluk', 'kulakli-pulluk', 'romork-ve-gubre-serpme', 'su-tankeri',
     'doner-ot-tirmigi-sevkiyat',
+    # 20.10.2026: Üçel'in gönderdiği yeni fotoğraflar
+    'romork-mavi-2026', 'romork-damperli', 'romork-atolye-onu', 'romork-kirmizi-traktor',
+    'pulluk-mavi', 'pulluk-mavi-2', 'pulluk-cesitleri', 'kepce-kirmizi-traktor', 'kepce-mavi', 'kepce-mavi-traktor',
+    'tampon-on', 'kultivator-renkler', 'kultivator-mavi-atolye', 'kultivator-yesil', 'tanker-mavi', 'tanker-yesil',
+    'tapan-loglu', 'tapan-loglu-traktor', 'gubre-serpme-tekli', 'gubre-serpme-sira', 'gubre-serpme-atolye',
+    'saman-aspiratoru', 'helikopter-tirmik', 'ot-bicme-tamburu', 'ot-bicme-tamburu-2', 'odun-sepeti', 'odun-sepeti-2',
+    'bahce-sepeti', 'ilac-makinasi', 'tas-toplama-tirmigi', 'tas-toplama-tirmigi-kirmizi',
 ]
 
 # ad: (kaynak, silinecek bölgeler [x0, y0, x1, y1] oran olarak)
@@ -31,6 +38,9 @@ DEKUPE = {
     'k-kepce': ('on-yukleyici-atolye', [(0, 0.28, 0.245, 0.40), (0.245, 0.32, 0.385, 0.40)]),
     'k-tanker': ('su-tankeri', []),
     'k-pulluk': ('kulakli-pulluk', []),
+    'k-tanker-mavi': ('tanker-mavi', [(0, 0, 0.17, 0.66)]),
+    'k-tapan': ('tapan-loglu', []),
+    'k-gubre': ('gubre-serpme-tekli', [(0, 0, 1, 0.31)]),
 }
 
 
@@ -68,7 +78,9 @@ def dekupe(oturum, kaynak, sil):
 
 HEDEF.mkdir(parents=True, exist_ok=True)
 for ad in FOTOLAR:
-    sicak(Image.open(KAYNAK / f'{ad}.webp').convert('RGB')).save(HEDEF / f'{ad}.jpg', quality=86, optimize=True, progressive=True)
+    im = Image.open(KAYNAK / f'{ad}.webp').convert('RGB')
+    im.thumbnail((1300, 1300))  # A4'te en büyük kullanım ~18 cm: 1300 px yeterli, PDF küçük kalır
+    sicak(im).save(HEDEF / f'{ad}.jpg', quality=82, optimize=True, progressive=True)
     print('foto', ad)
 
 try:
@@ -77,6 +89,12 @@ except ImportError:
     print('rembg yok: dekupe atlandı (mevcut katalog/img/k-*.png dosyaları kullanılır)')
 else:
     oturum = new_session('isnet-general-use')
+    import sys
+    secili = sys.argv[1:]  # ad verilirse yalnız onlar yeniden kesilir
     for ad, (kaynak, sil) in DEKUPE.items():
-        dekupe(oturum, kaynak, sil).save(HEDEF / f'{ad}.png', optimize=True)
+        if secili and ad not in secili:
+            continue
+        k = dekupe(oturum, kaynak, sil)
+        k.thumbnail((1000, 1000))  # A4 sahnesinde en fazla ~11 cm: 1000 px ≈ 230 dpi
+        k.save(HEDEF / f'{ad}.png', optimize=True)
         print('dekupe', ad)

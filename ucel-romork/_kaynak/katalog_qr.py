@@ -25,10 +25,21 @@ KODLAR = {
     'romork': urun('Tarım Römorku'),
     'kultivator': urun('Yaylı Kültivatör'),
     'kepce': urun('Loader Kepçe'),
-    'tapan': urun('Tapan'),
+    'tapan': urun('Loğlu Tapan'),
     'pulluk': urun('Pulluk'),
     'gubre': urun('Gübre Serpme Makinesi'),
     'tanker': urun('Su Tankeri'),
+    # C · Diğer ürünlerimiz
+    'tampon': urun('Traktör Ön Tamponu'),
+    'odun-sepeti': urun('Traktör Arkası Odun Sepeti'),
+    'bahce-sepeti': urun('Traktör Arkası Bahçe Sepeti'),
+    'tas-toplama': urun('Taş Toplama Tırmığı'),
+    'helikopter': urun('Helikopter Ot Toplama Tırmığı'),
+    'ot-bicme': urun('Ot Biçme Tamburu'),
+    'aspirator': urun('Saman Üfleme Aspiratörü'),
+    'ilac': urun('İlaç Makinesi'),
+    'vinc': urun('Traktör Arkası Yükleme Vinci'),
+    'yem-karma': urun('Yem Karma Makinesi'),
 }
 
 hedef = pathlib.Path(__file__).resolve().parent.parent / 'katalog' / 'qr'
