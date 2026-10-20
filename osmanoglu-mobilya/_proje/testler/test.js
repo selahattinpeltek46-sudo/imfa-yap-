@@ -24,30 +24,28 @@ const fotolu = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'projeler/pencere
       await p.goto(B + y, { waitUntil: 'networkidle' });
       await p.waitForTimeout(2600);
       const hero = await p.evaluate(() => {
-        const h = document.querySelector('.hero'), s = document.querySelector('.sahne');
-        const st = s ? getComputedStyle(s) : null;
-        // karartma / bulanıklık yok: sahne ve fotoğraf üstünde filtre, yarı saydam katman, gradyan olmamalı
-        const katman = s ? [...s.querySelectorAll('*')].filter(el => {
-          const c = getComputedStyle(el), r = el.getBoundingClientRect(), sr = s.getBoundingClientRect();
-          const tamKaplar = r.width >= sr.width * .9 && r.height >= sr.height * .9;
-          return c.filter !== 'none' || c.backdropFilter !== 'none' || (tamKaplar && el.tagName !== 'IMG' && el.tagName !== 'FIGURE' && !el.classList.contains('kare') && !el.classList.contains('etiketler') && (c.backgroundColor !== 'rgba(0, 0, 0, 0)' || c.backgroundImage !== 'none'));
+        const h = document.querySelector('.hero'), m = document.querySelector('.mozaik');
+        // karartma / bulanıklık yok: mozaik ve karelerde filtre yok, kareleri kaplayan renkli / gradyan katman yok
+        const katman = m ? [...m.querySelectorAll('*')].filter(el => {
+          const c = getComputedStyle(el);
+          if (c.filter !== 'none' || c.backdropFilter !== 'none') return true;
+          if (el.tagName === 'IMG' || el.matches('figcaption, button, .mozaik__sutun, .mozaik__serit, .karo')) return false;
+          return c.backgroundColor !== 'rgba(0, 0, 0, 0)' || c.backgroundImage !== 'none';
         }).map(el => el.className) : [];
-        const gorunurEtiket = [...document.querySelectorAll('.slayt.aktif .etiket')].filter(e => !e.classList.contains('disarida') && getComputedStyle(e).opacity > .9);
-        const sr = s && s.getBoundingClientRect();
-        const etiketTasma = sr ? gorunurEtiket.filter(e => { const r = e.querySelector('b').getBoundingClientRect(); return r.left < sr.left - 1 || r.right > sr.right + 1; }).length : 0;
-        const kesis = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
-        const engel = [...document.querySelectorAll('.hero__kart, .hero__kontrol')].map(x => x.getBoundingClientRect());
-        const ortulen = gorunurEtiket.filter(e => engel.some(g => kesis(e.getBoundingClientRect(), g))).length;
-        return { var: !!(h && s), yuk: h ? h.getBoundingClientRect().height : 0, ekran: innerHeight - document.querySelector('.ust').offsetHeight,
-          katman, filtre: st ? st.filter : 'none', etiket: gorunurEtiket.length, etiketTasma, ortulen };
+        const kareler = m ? [...m.querySelectorAll('.karo img')].filter(i => { const r = i.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < innerHeight; }) : [];
+        // kalite: hiçbir kare doğal çözünürlüğünden büyük gösterilmez
+        const buyutulen = kareler.filter(i => i.getBoundingClientRect().width > i.naturalWidth + 1).map(i => i.currentSrc);
+        const mr = m && m.getBoundingClientRect();
+        return { var: !!(h && m), yuk: h ? h.getBoundingClientRect().height : 0, ekran: innerHeight - document.querySelector('.ust').offsetHeight,
+          katman, filtre: m ? getComputedStyle(m).filter : 'none', gorunen: kareler.length, buyutulen, mozaikYuk: mr ? mr.height : 0 };
       });
       if (fotolu.includes(y)) {
-        ok(hero.var, `${y} fotoğraflı hero yok`);
+        ok(hero.var, `${y} mozaik hero yok`);
         ok(hero.yuk >= hero.ekran - 1, `${ad} ${y} hero tam boy değil: ${hero.yuk} < ${hero.ekran}`);
         ok(hero.katman.length === 0 && hero.filtre === 'none', `${ad} ${y} hero üstünde karartma/bulanıklık: ${hero.katman}`);
-        ok(hero.etiket >= 2, `${ad} ${y} görünür detay etiketi ${hero.etiket}`);
-        ok(hero.etiketTasma === 0, `${ad} ${y} etiket sahneden taşıyor (${hero.etiketTasma})`);
-        ok(hero.ortulen === 0, `${ad} ${y} etiket kartın / kontrolün altında (${hero.ortulen})`);
+        ok(hero.gorunen >= 4, `${ad} ${y} ilk ekranda görünen kare ${hero.gorunen}`);
+        ok(hero.buyutulen.length === 0, `${ad} ${y} büyütülen (bulanık) kare: ${hero.buyutulen}`);
+        ok(hero.mozaikYuk >= 300, `${ad} ${y} mozaik yüksekliği ${hero.mozaikYuk}`);
       }
       await p.evaluate(async () => { for (let i = 0; i < document.body.scrollHeight; i += 600) { scrollTo(0, i); await new Promise(r => setTimeout(r, 25)); } scrollTo(0, 0); });
       await p.waitForTimeout(300);
@@ -95,21 +93,20 @@ const fotolu = ['', 'mutfak-dolabi/', 'vestiyer-gomme-dolap/', 'projeler/pencere
     const id = h.split('#')[1];
     if (id) ok(await bp.locator('#' + id).count() === 1, `çapa yok ${h}`);
   }
-  // slayt gösterisi
+  // mozaik hareketi, Durdur ve az hareket tercihi
   const p = await (await b.newContext({ viewport: { width: 375, height: 760 } })).newPage();
   await p.goto(B, { waitUntil: 'networkidle' });
-  const aktif = () => p.evaluate(() => document.querySelector('.slayt.aktif').dataset.slayt);
-  ok(await aktif() === '0', 'ilk slayt aktif');
-  await p.waitForTimeout(7600); ok(await aktif() === '1', 'slayt kendiliğinden ilerliyor: ' + await aktif());
-  await p.click('[data-git="2"]'); ok(await aktif() === '2', 'kanal düğmesi slayta gidiyor');
-  ok((await p.locator('[data-ad]').textContent()).startsWith('Antre'), 'slayt adı güncelleniyor');
-  await p.click('[data-dur]'); await p.waitForTimeout(7600);
-  ok(await aktif() === '2', 'Durdur çalışıyor (karşıt kontrol)');
+  const konum = () => p.evaluate(() => getComputedStyle(document.querySelector('.mozaik__serit')).transform);
+  const k1 = await konum(); await p.waitForTimeout(1500); const k2 = await konum();
+  ok(k1 !== k2, 'mozaik kayıyor');
+  await p.click('[data-dur]'); await p.waitForTimeout(200);
+  const k3 = await konum(); await p.waitForTimeout(1500);
+  ok(k3 === await konum(), 'Durdur çalışıyor (karşıt kontrol)');
   ok(await p.getAttribute('[data-dur]', 'aria-pressed') === 'true', 'Durdur aria-pressed');
-  // az hareket tercihinde otomatik geçiş yok
+  ok(await p.evaluate(() => [...document.querySelectorAll('.karo[aria-hidden="true"]')].length > 0), 'döngü kopyaları ekran okuyucudan gizli');
   const pr = await (await b.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' })).newPage();
-  await pr.goto(B, { waitUntil: 'networkidle' }); await pr.waitForTimeout(7600);
-  ok(await pr.evaluate(() => document.querySelector('.slayt.aktif').dataset.slayt) === '0', 'reduced-motion: otomatik geçiş yok');
+  await pr.goto(B, { waitUntil: 'networkidle' });
+  ok(await pr.evaluate(() => document.querySelector('[data-mozaik]').classList.contains('durdu')), 'reduced-motion: mozaik duruk');
   // mesaj hazırlayıcı
   await p.goto(B + 'mutfak-dolabi/', { waitUntil: 'networkidle' });
   ok(await p.locator('input[name=tur]:checked').inputValue() === 'Mutfak dolabı', 'mutfak sayfasında tür ön seçili');

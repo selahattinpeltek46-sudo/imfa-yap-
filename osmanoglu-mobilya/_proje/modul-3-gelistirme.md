@@ -38,6 +38,11 @@
 - **Mobil:** tam ekran menü, alt sabit WhatsApp / Ara çubuğu; masaüstünde kayan WhatsApp düğmesi.
 - **Ek kabul kriterleri:** 12 sayfa × 3 genişlik; fotoğraflı 5 hero'da ≥ 2 görünür etiket ve hiçbiri kart / kontrol altında değil. Sonuç: **719/719**.
 
+### v3 — mozaik hero
+- `icerik.py`: `MOZAIK` (sayfa başına 3 sütun), `KARO` (kare etiketleri), 9 detay kırpımı (`img/detay-*.webp`, büyütme yok); `uret.py hero()` mozaik üretir, sütunlar kesintisiz döngü için iki kez yazılır (kopyalar `aria-hidden`).
+- CSS: sol krem panel + sağda 3 sütun (`kay` animasyonu, farklı hız / yön); mobilde mozaik üstte 2 sütun, metin altta. JS: yalnız Durdur / Oynat.
+- Kabul: hero tam boy; filtre / kaplayan katman yok; ilk ekranda ≥ 4 kare; **büyütülen kare 0**; mozaik kayıyor, Durdur durduruyor, reduced-motion'da duruk. 717/717.
+
 ## 16 — DEVELOPMENT
 
 INSPECT → UNDERSTAND → PLAN → PATCH → TEST → REGRESSION → DEPLOY
