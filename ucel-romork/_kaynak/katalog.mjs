@@ -268,6 +268,7 @@ const kapak = `
   <div class="showroom">
     <span class="sr-band"></span>
     <img class="s-romork-k" src="${kesit('k-romork-kirmizi')}" alt="Üçel kırmızı tarım römorku">
+    <img class="s-orta" src="${kesit('k-gubre')}" alt="Üçel gübre serpme makinesi">
     <img class="s-romork" src="${kesit('k-romork')}" alt="Üçel tarım römorku">
     <img class="s-kepce" src="${kesit('k-kepce')}" alt="Üçel loader kepçe">
     <img class="s-kult" src="${kesit('k-kultivator')}" alt="Üçel yaylı kültivatör">
