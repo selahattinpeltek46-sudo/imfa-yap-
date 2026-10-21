@@ -87,10 +87,10 @@ const URUNLER = [
     lead: 'Göksun model yaylı kültivatör. Yaylı ayaklar taşa çarpınca esner; hem aleti hem traktörü korur. Atölyemizde üretiyoruz.',
     sahne: { kesit: 'k-kultivator' },
     uses: [['soil', 'Toprak yüzey işleme'], ['sprout', 'Tohum yatağı'], ['noweed', 'Yabani ot mücadelesi']], usesH: 'Ne işe yarar?',
-    bilinen: [['Model', 'Göksun'], ['Ayak tipi', 'Yaylı']],
-    olcu: ['Ayak sayısı', 'Çalışma genişliği (cm)', 'Çalışma derinliği (cm)', 'Traktör gücü (HP)'],
+    bilinen: [['Model', 'Göksun'], ['Ayak tipi', 'Yaylı'], ['Ayak sayısı', '9 – 11']],
+    olcu: ['Çalışma genişliği (cm)', 'Çalışma derinliği (cm)', 'Traktör gücü (HP)'],
     renk: ['kirmizi', 'mavi', 'yesil'],
-    sec: ['Farklı ayak sayısı ve ebat seçenekleri'],
+    sec: ['9 ile 11 ayak arası seçenekler'],
     saha: [['kultivator-renkler', 'Kırmızı, mavi ve yeşil kültivatörler.'], ['kultivator-mavi-atolye', 'Atölyemizin önünde mavi kültivatörler.']],
   },
   {
@@ -99,10 +99,10 @@ const URUNLER = [
     lead: 'Traktörünüzün arkasına takılan hidrolik asistan kepçe. Yem, gübre ve malzemeyi kaldırıp taşır. Kendi atölyemizde imal ediyoruz.',
     sahne: { kesit: 'k-kepce' },
     uses: [['lift', 'Yükleme ve boşaltma'], ['barn', 'Ahır ve çiftlik işleri'], ['box', 'Malzeme taşıma']], usesH: 'Ne işe yarar?',
-    bilinen: [['Çalışma', 'Hidrolik'], ['Montaj', 'Traktörün arkasına']],
+    bilinen: [['Çalışma', 'Hidrolik'], ['Montaj', 'Traktörün arkasına'], ['Kepçe tipi', 'Düz · Çeneli']],
     olcu: ['Kaldırma kapasitesi (kg)', 'Kaldırma yüksekliği (cm)', 'Kepçe genişliği (cm)', 'Traktör gücü (HP)'],
     renk: ['kirmizi', 'mavi'],
-    sec: ['Traktörünüze montaj uygunluğunu birlikte kontrol ederiz'],
+    sec: ['Düz kepçe ya da çenesi açılan kepçe', 'Traktörünüze montaj uygunluğunu birlikte kontrol ederiz'],
     saha: [['kepce-kirmizi-traktor', 'Traktörün arkasına takılı kırmızı kepçe.'], ['kepce-mavi', 'Mavi asistan kepçeler.']],
   },
   {
@@ -111,10 +111,10 @@ const URUNLER = [
     lead: 'Merada ve yaylada hayvanlara, bahçede fidana, tarla başında ilaçlamaya su taşır. Göksun’daki atölyemizde imal ediyoruz.',
     sahne: { kesit: 'k-tanker-mavi' },
     uses: [['drop', 'Tarla sulama'], ['cow', 'Hayvan suyu'], ['truck', 'Genel su taşıma']], usesH: 'Ne işe yarar?',
-    bilinen: [['Çekiş', 'Traktörle, çeki oklu şasi']],
-    olcu: ['Tank kapasitesi (lt)', 'Tank malzemesi', 'Dingil', 'Pompa', 'Traktör gücü (HP)'],
+    bilinen: [['Tank kapasitesi', '2 – 7 ton'], ['Çekiş', 'Traktörle, çeki oklu şasi']],
+    olcu: ['Tank malzemesi', 'Dingil', 'Pompa', 'Traktör gücü (HP)'],
     renk: ['mavi', 'yesil'],
-    sec: ['Farklı kapasite seçenekleri', 'Hayvan sayınıza ve sulama alanınıza göre birlikte seçelim'],
+    sec: ['2 tondan 7 tona kapasite seçenekleri', 'Hayvan sayınıza ve sulama alanınıza göre birlikte seçelim'],
     saha: [['tanker-yesil', 'Yeşil su tankeri.'], ['su-tankeri', 'Mavi su tankerleri.']],
   },
   {
@@ -147,25 +147,26 @@ const URUNLER = [
     sahne: { kesit: 'k-gubre' },
     uses: [['spread', 'Granül gübre serpme'], ['wheat', 'Dengeli dağıtım'], ['tractor', 'Traktör arkasına takılır']], usesH: 'Ne işe yarar?',
     bilinen: [],
-    olcu: ['Depo hacmi (lt)', 'Serpme genişliği (m)', 'Tip', 'Traktör gücü (HP)'],
-    sec: ['Farklı kapasite seçenekleri'],
+    bilinen: [['Depo hacmi', '400 – 600 lt']],
+    olcu: ['Serpme genişliği (m)', 'Tip', 'Traktör gücü (HP)'],
+    sec: ['400 ve 600 litre arası depo seçenekleri'],
     saha: [['gubre-serpme-sira', 'Gübre serpme makineleri.'], ['gubre-serpme-atolye', 'Atölyemizin önünde.']],
     akis: 3, akisNot: 'Taban gübresi için ekimden önce, üst gübre için bitki büyürken kullanılır.',
   },
 ];
-// C · Diğer ürünlerimiz (Üçel'in 20.10.2026'da WhatsApp'tan gönderdiği liste). İmalat/satış bilgisi
-// teyit edilmediği için rozet yalnızca fotoğrafta marka görünen ürünlerde var.
+// C · Diğer ürünlerimiz (Üçel'in 20.10.2026'da WhatsApp'tan gönderdiği liste).
+// Üçel teyidi (21.10.2026): markasız olanların hepsi kendi imalatı, markalı olanlar satış.
 const DIGER = [
-  [{ qr: 'tampon', ad: 'Traktör Ön Tamponu', foto: 'tampon-on', pos: '50% 62%', cat: 'Traktör', d: 'Traktörün önüne takılan tampon. Boyasını beğendiğiniz renkte yapıyoruz.' },
-   { qr: 'odun-sepeti', ad: 'Traktör Arkası Odun Sepeti', foto: 'odun-sepeti', pos: '50% 55%', cat: 'Taşıma', d: 'Odun ve malzeme taşımak için traktörün arkasına takılan sepet.' },
-   { qr: 'bahce-sepeti', ad: 'Traktör Arkası Bahçe Sepeti', foto: 'bahce-sepeti', pos: '45% 60%', cat: 'Taşıma', d: 'Bahçede ürün, kasa ve malzeme taşımak için traktör arkası sepet.' },
-   { qr: 'tas-toplama', ad: 'Taş Toplama Tırmığı', foto: 'tas-toplama-tirmigi', pos: '50% 55%', cat: 'Toprak işleme', d: 'Tarladaki taşları toplayıp ayıklamak için traktör arkasına takılır.' }],
-  [{ qr: 'helikopter', ad: 'Helikopter Ot Toplama Tırmığı', foto: 'helikopter-tirmik', pos: '50% 60%', cat: 'Ot ve saman', d: 'Biçilmiş otu toplayıp sıraya dizer, balyalamaya hazırlar.' },
-   { qr: 'ot-bicme', ad: 'Ot Biçme Tamburu', foto: 'ot-bicme-tamburu', pos: '50% 60%', cat: 'Ot ve saman', marka: 'Sürüm marka', d: 'Çayır, yonca ve ot biçimi için tamburlu biçme makinesi.' },
+  [{ qr: 'tampon', imalat: true, ad: 'Traktör Ön Tamponu', foto: 'tampon-on', pos: '50% 62%', cat: 'Traktör', d: 'Traktörün önüne takılan tampon. Boyasını beğendiğiniz renkte yapıyoruz.' },
+   { qr: 'odun-sepeti', imalat: true, ad: 'Traktör Arkası Odun Sepeti', foto: 'odun-sepeti', pos: '50% 55%', cat: 'Taşıma', d: 'Odun ve malzeme taşımak için traktörün arkasına takılan sepet.' },
+   { qr: 'bahce-sepeti', imalat: true, ad: 'Traktör Arkası Bahçe Sepeti', foto: 'bahce-sepeti', pos: '45% 60%', cat: 'Taşıma', d: 'Bahçede ürün, kasa ve malzeme taşımak için traktör arkası sepet.' },
+   { qr: 'tas-toplama', imalat: true, ad: 'Taş Toplama Tırmığı', foto: 'tas-toplama-tirmigi', pos: '50% 55%', cat: 'Toprak işleme', d: 'Tarladaki taşları toplayıp ayıklamak için traktör arkasına takılır.' }],
+  [{ qr: 'helikopter', imalat: true, ad: 'Helikopter Ot Toplama Tırmığı', foto: 'helikopter-tirmik', pos: '50% 60%', cat: 'Ot ve saman', d: 'Biçilmiş otu toplayıp sıraya dizer, balyalamaya hazırlar.' },
+   { qr: 'ot-bicme', ad: 'Ot Biçme Tamburu', foto: 'ot-bicme-tamburu', pos: '50% 60%', cat: 'Ot ve saman', marka: 'Sürüm marka · Satış', d: 'Çayır, yonca ve ot biçimi için tamburlu biçme makinesi.' },
    { qr: 'aspirator', ad: 'Saman Üfleme Aspiratörü', foto: 'saman-aspiratoru', pos: '50% 62%', cat: 'Ot ve saman', marka: 'Satışını yapıyoruz', d: 'Samanı üfleyerek samanlığa ya da depoya aktarır.' },
    { qr: 'ilac', ad: 'İlaç Makinesi', foto: 'ilac-makinasi', pos: '50% 58%', cat: 'İlaçlama', marka: 'Satışını yapıyoruz', d: 'Hortum makaralı ilaçlama makinesi; bahçe ve tarla ilaçlaması için.' },
    { qr: 'yem-karma', ad: 'Yem Karma Makinesi', foto: ['yem-karma-metkarsan', 'yem-karma-sagro-2'], pos: '50% 55%', cat: 'Hayvancılık', marka: 'Satışını yapıyoruz', d: 'Hayvan yemini karıştırır. Metkarsan ve Sagro marka seçenekleri.' },
-   { qr: 'vinc', ad: 'Traktör Arkası Yükleme Vinci', cat: 'Yükleme', d: 'Traktörün arkasına takılan yükleme vinci.' }],
+   { qr: 'vinc', imalat: true, ad: 'Traktör Arkası Yükleme Vinci', cat: 'Yükleme', d: 'Traktörün arkasına takılan yükleme vinci.' }],
 ];
 
 const A = URUNLER.filter((u) => u.bolum === 'A');
@@ -261,13 +262,16 @@ const kapak = `
   <p class="cover-k">ÜRÜN KATALOĞU <em>2026</em> · GÖKSUN</p>
   ${logo('logo-lg')}
   <h1>Tarlada da,<br>yolda da sağlam iş.</h1>
-  <p class="sub">Römork, kültivatör, loader kepçe ve su tankerini Göksun’da kendimiz üretiyoruz. Diğer tarım aletlerinin satışını yapıyoruz.</p>
+  <p class="sub">Römorktan kültivatöre, asistan kepçeden su tankerine birçok aleti Göksun’daki atölyemizde kendimiz üretiyoruz. Markalı makinelerin de satışını yapıyoruz.</p>
   <div class="showroom">
     <span class="sr-band"></span>
     <img class="s-romork" src="${kesit('k-romork')}" alt="Üçel tarım römorku">
     <img class="s-kepce" src="${kesit('k-kepce')}" alt="Üçel loader kepçe">
     <img class="s-kult" src="${kesit('k-kultivator')}" alt="Üçel yaylı kültivatör">
   </div>
+  <ul class="cover-strip">
+    ${[['k-tanker-mavi', 'Su tankeri'], ['k-kultivator-mavi', 'Kültivatör'], ['k-tapan', 'Loğlu tapan'], ['k-pulluk', 'Pulluk'], ['k-gubre', 'Gübre serpme']].map(([k, ad]) => `<li><img src="${kesit(k)}" alt="${ad}"><span>${ad}</span></li>`).join('')}
+  </ul>
   <div class="cover-bottom">
     <div><div class="toc-h">${i('gear')} Kendi imalatımız</div>
       <ul class="toc">${A.map((u) => `<li><b>${u.no}</b>${u.ad}<span>${SAYFA[u.qr]}</span></li>`).join('')}</ul></div>
@@ -300,7 +304,7 @@ const digerSayfa = (liste, no, ilk) => `
   <div class="svc-head"><h1>Diğer ürünlerimiz</h1><p class="tag">${ilk ? 'Traktör, taşıma ve tarla işleri için diğer aletlerimiz.' : 'Ot, saman, ilaçlama ve hayvancılık işleri için.'}</p></div>
   <ul class="others-grid n${liste.length}">
     ${liste.map((u) => `<li>
-      <figure class="${!u.foto ? 'bos' : Array.isArray(u.foto) ? 'cift' : ''}">${!u.foto ? `<em class="ui">${i('camera')}</em><small>Fotoğrafı WhatsApp’tan gönderelim</small>` : [].concat(u.foto).map((f) => `<img src="${foto(f)}" alt="${u.ad}" style="object-position:${u.pos}">`).join('')}<span class="o-cat">${u.cat}</span>${u.marka ? `<span class="o-marka">${u.marka}</span>` : ''}</figure>
+      <figure class="${!u.foto ? 'bos' : Array.isArray(u.foto) ? 'cift' : ''}">${!u.foto ? `<em class="ui">${i('camera')}</em><small>Fotoğrafı WhatsApp’tan gönderelim</small>` : [].concat(u.foto).map((f) => `<img src="${foto(f)}" alt="${u.ad}" style="object-position:${u.pos}">`).join('')}<span class="o-cat">${u.cat}</span>${u.marka ? `<span class="o-marka">${u.marka}</span>` : u.imalat ? `<span class="o-marka made">${i('gear')} Kendi imalatımız</span>` : ''}</figure>
       <div class="o-txt"><strong>${u.ad}</strong><span>${u.d}</span><a href="${WA[u.qr]}">${i('chat')} Fiyat ve bilgi isteyin ${i('arrow')}</a></div>
     </li>`).join('')}
   </ul>
