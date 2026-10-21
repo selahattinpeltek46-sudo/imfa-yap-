@@ -52,6 +52,7 @@ const IKON = {
   pen: '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
   gauge: '<path d="m12 14 4-4M3.3 19a10 10 0 1 1 17.4 0"/>',
   ruler: '<path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0zM14.5 12.5l2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/>',
+  star: '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
 };
 const i = (ad) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${IKON[ad]}</svg>`;
@@ -133,7 +134,7 @@ const URUNLER = [
     no: '04', qr: 'pulluk', ad: 'Pulluk', bolum: 'B', cat: 'Toprak işleme', imalat: true,
     tag: 'Tarlanın ekim öncesi derin işlenmesinde temel alet.',
     lead: 'Toprağı devirerek sürer, anızı toprağa gömer. Toprağınıza ve traktörünüzün gücüne uygun pulluk, traktörünüzü gereksiz yormaz.',
-    sahne: { kesit: 'k-pulluk' },
+    sahne: { kesit: 'k-pulluk-2' },
     uses: [['soil', 'Derin toprak işleme'], ['sprout', 'Ekim öncesi hazırlık'], ['plough', 'Anız bozma']], usesH: 'Ne işe yarar?',
     bilinen: [['Tip', 'Kulaklı'], ['Gövde sayısı', '3’lü ve 4’lü']],
     olcu: ['Çalışma genişliği (cm)', 'Çalışma derinliği (cm)', 'Traktör gücü (HP)'],
@@ -271,7 +272,7 @@ const kapak = `
     <img class="s-kult" src="${kesit('k-kultivator')}" alt="Üçel yaylı kültivatör">
   </div>
   <ul class="cover-strip">
-    ${[['k-tanker-mavi', 'Su tankeri'], ['k-kultivator-mavi', 'Kültivatör'], ['k-tapan', 'Loğlu tapan'], ['k-pulluk', 'Pulluk'], ['k-gubre', 'Gübre serpme']].map(([k, ad]) => `<li><img src="${kesit(k)}" alt="${ad}"><span>${ad}</span></li>`).join('')}
+    ${[['k-tanker-mavi', 'Su tankeri'], ['k-kultivator-mavi', 'Kültivatör'], ['k-tapan', 'Loğlu tapan'], ['k-pulluk-2', 'Pulluk'], ['k-gubre', 'Gübre serpme']].map(([k, ad]) => `<li><img src="${kesit(k)}" alt="${ad}"><span>${ad}</span></li>`).join('')}
   </ul>
   <div class="cover-bottom">
     <div><div class="toc-h">${i('truck')} Taşıma ve yükleme</div>
@@ -355,7 +356,7 @@ const arka = `
   <ul class="qrs">
     <li><a href="${WA.whatsapp}"><em class="ui">${i('chat')}</em><b>WhatsApp</b><span>Mesajınız hazır açılır</span><span class="qr"><img src="qr/whatsapp.svg" alt="WhatsApp QR"></span></a></li>
     <li><a href="${WA.harita}"><em class="ui">${i('pin')}</em><b>Konum</b><span>Yol tarifi alın</span><span class="qr"><img src="qr/harita.svg" alt="Konum QR"></span></a></li>
-    <li><a href="${WA.site}"><em class="ui">${i('globe')}</em><b>Web sitesi</b><span>Tüm ürünler</span><span class="qr"><img src="qr/site.svg" alt="Web sitesi QR"></span></a></li>
+    <li><a href="${WA.yorum}"><em class="ui">${i('star')}</em><b>Google yorum</b><span>Bizi değerlendirin</span><span class="qr"><img src="qr/yorum.svg" alt="Google yorum QR"></span></a></li>
   </ul>
   <div class="back-foot">
     <div class="back-row"><img src="${kesit('k-kultivator-mavi')}" alt=""><img src="${kesit('k-romork')}" alt=""><img src="${kesit('k-tanker-mavi')}" alt=""></div>
