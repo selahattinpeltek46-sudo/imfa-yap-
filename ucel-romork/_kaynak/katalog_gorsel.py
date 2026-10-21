@@ -27,6 +27,8 @@ FOTOLAR = [
     'tapan-loglu', 'tapan-loglu-traktor', 'gubre-serpme-tekli', 'gubre-serpme-sira', 'gubre-serpme-atolye',
     'saman-aspiratoru', 'helikopter-tirmik', 'ot-bicme-tamburu', 'ot-bicme-tamburu-2', 'odun-sepeti', 'odun-sepeti-2',
     'bahce-sepeti', 'ilac-makinasi', 'tas-toplama-tirmigi', 'tas-toplama-tirmigi-kirmizi',
+    # 21.10.2026: yem karma
+    'yem-karma-metkarsan', 'yem-karma-sagro', 'yem-karma-sagro-2',
 ]
 
 # ad: (kaynak, silinecek bölgeler [x0, y0, x1, y1] oran olarak)

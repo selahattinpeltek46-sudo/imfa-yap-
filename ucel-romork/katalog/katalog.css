@@ -298,3 +298,12 @@ svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; s
 .o-ask { flex: none; margin-bottom: 0; }
 .o-ask a b { color: var(--ink); text-decoration: underline; text-decoration-color: var(--yellow); text-underline-offset: 2px; }
 .page.others .pf { margin-top: 5mm; }
+/* 6 kartlı sayfa (2 x 3) */
+.others-grid.n6 { gap: 4mm; }
+.others-grid.n6 .o-txt { padding: 2.6mm 4mm 4mm; gap: 1mm; }
+.others-grid.n6 .o-txt strong { font-size: 11.5pt; }
+.others-grid.n6 .o-txt span { font-size: 8.5pt; min-height: 2.6em; }
+.others-grid figure.cift { display: grid; grid-template-columns: 1fr 1fr; gap: .6mm; }
+.others-grid figure.bos { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2mm; background: var(--yellow-soft); }
+.others-grid figure.bos small { font: 600 8.5pt/1.3 var(--font); color: var(--ink-2); }
+.others-grid figure.cift img { min-width: 0; min-height: 0; height: 100%; }

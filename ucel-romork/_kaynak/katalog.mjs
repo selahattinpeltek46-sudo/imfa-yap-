@@ -3,6 +3,8 @@
 //   python3 ucel-romork/_kaynak/katalog_gorsel.py (fotoğraflar + dekupe — bir kez)
 //   node ucel-romork/_kaynak/katalog.mjs        (katalog/index.html)
 //   node ucel-romork/_kaynak/katalog.mjs --pdf  (+ katalog/Ucel-Katalog-2026.pdf)
+//   python3 ucel-romork/_kaynak/pdf_sikistir.py ucel-romork/katalog/Ucel-Katalog-2026.pdf (tekrar eden görseller)
+//   python3 ucel-romork/_kaynak/katalog_hafif.py (+ WhatsApp için hafif PDF)
 //
 // KURAL (veri.mjs ile aynı): Üçel'in teyit etmediği teknik değer yazılmaz.
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -161,9 +163,10 @@ const DIGER = [
   [{ qr: 'helikopter', ad: 'Helikopter Ot Toplama Tırmığı', foto: 'helikopter-tirmik', pos: '50% 60%', cat: 'Ot ve saman', d: 'Biçilmiş otu toplayıp sıraya dizer, balyalamaya hazırlar.' },
    { qr: 'ot-bicme', ad: 'Ot Biçme Tamburu', foto: 'ot-bicme-tamburu', pos: '50% 60%', cat: 'Ot ve saman', marka: 'Sürüm marka', d: 'Çayır, yonca ve ot biçimi için tamburlu biçme makinesi.' },
    { qr: 'aspirator', ad: 'Saman Üfleme Aspiratörü', foto: 'saman-aspiratoru', pos: '50% 62%', cat: 'Ot ve saman', marka: 'Satışını yapıyoruz', d: 'Samanı üfleyerek samanlığa ya da depoya aktarır.' },
-   { qr: 'ilac', ad: 'İlaç Makinesi', foto: 'ilac-makinasi', pos: '50% 58%', cat: 'İlaçlama', marka: 'Satışını yapıyoruz', d: 'Hortum makaralı ilaçlama makinesi; bahçe ve tarla ilaçlaması için.' }],
+   { qr: 'ilac', ad: 'İlaç Makinesi', foto: 'ilac-makinasi', pos: '50% 58%', cat: 'İlaçlama', marka: 'Satışını yapıyoruz', d: 'Hortum makaralı ilaçlama makinesi; bahçe ve tarla ilaçlaması için.' },
+   { qr: 'yem-karma', ad: 'Yem Karma Makinesi', foto: ['yem-karma-metkarsan', 'yem-karma-sagro-2'], pos: '50% 55%', cat: 'Hayvancılık', marka: 'Satışını yapıyoruz', d: 'Hayvan yemini karıştırır. Metkarsan ve Sagro marka seçenekleri.' },
+   { qr: 'vinc', ad: 'Traktör Arkası Yükleme Vinci', cat: 'Yükleme', d: 'Traktörün arkasına takılan yükleme vinci.' }],
 ];
-const FOTOSUZ = [{ qr: 'vinc', ad: 'Traktör Arkası Yükleme Vinci' }, { qr: 'yem-karma', ad: 'Yem Karma Makinesi' }];
 
 const A = URUNLER.filter((u) => u.bolum === 'A');
 const B = URUNLER.filter((u) => u.bolum === 'B');
@@ -294,14 +297,13 @@ const digerSayfa = (liste, no, ilk) => `
 <section class="page product others">
   ${susler}
   ${ustSerit(`<div class="cat"><b>C</b><span>Diğer ürünlerimiz</span></div>`)}
-  <div class="svc-head"><h1>Diğer ürünlerimiz</h1><p class="tag">${ilk ? 'Traktör, taşıma ve tarla işleri için diğer aletlerimiz.' : 'Ot, saman ve ilaçlama işleri için.'}</p></div>
-  <ul class="others-grid">
+  <div class="svc-head"><h1>Diğer ürünlerimiz</h1><p class="tag">${ilk ? 'Traktör, taşıma ve tarla işleri için diğer aletlerimiz.' : 'Ot, saman, ilaçlama ve hayvancılık işleri için.'}</p></div>
+  <ul class="others-grid n${liste.length}">
     ${liste.map((u) => `<li>
-      <figure><img src="${foto(u.foto)}" alt="${u.ad}" style="object-position:${u.pos}"><span class="o-cat">${u.cat}</span>${u.marka ? `<span class="o-marka">${u.marka}</span>` : ''}</figure>
+      <figure class="${!u.foto ? 'bos' : Array.isArray(u.foto) ? 'cift' : ''}">${!u.foto ? `<em class="ui">${i('camera')}</em><small>Fotoğrafı WhatsApp’tan gönderelim</small>` : [].concat(u.foto).map((f) => `<img src="${foto(f)}" alt="${u.ad}" style="object-position:${u.pos}">`).join('')}<span class="o-cat">${u.cat}</span>${u.marka ? `<span class="o-marka">${u.marka}</span>` : ''}</figure>
       <div class="o-txt"><strong>${u.ad}</strong><span>${u.d}</span><a href="${WA[u.qr]}">${i('chat')} Fiyat ve bilgi isteyin ${i('arrow')}</a></div>
     </li>`).join('')}
   </ul>
-  ${ilk ? '' : `<div class="ask o-ask"><em class="ui">${i('camera')}</em><div><h3>Bunlar da var</h3><p>${FOTOSUZ.map((u) => `<a href="${WA[u.qr]}"><b>${u.ad}</b></a>`).join(' ve ')} için de bize yazın; fotoğraf ve bilgiyi WhatsApp’tan gönderelim.</p></div></div>`}
   ${altBant(no, 'whatsapp', 'Fiyat ve bilgi için', 'QR’ı okutun ya da ürünün altındaki bağlantıya dokunun')}
 </section>`;
 
