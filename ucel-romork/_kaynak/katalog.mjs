@@ -53,6 +53,7 @@ const IKON = {
   gauge: '<path d="m12 14 4-4M3.3 19a10 10 0 1 1 17.4 0"/>',
   ruler: '<path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0zM14.5 12.5l2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/>',
   star: '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>',
+  fb: '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8z"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
 };
 const i = (ad) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${IKON[ad]}</svg>`;
@@ -434,7 +435,7 @@ const arka = `
   <ul class="qrs">
     <li><a href="${WA.whatsapp}"><em class="ui">${i('chat')}</em><b>WhatsApp</b><span>Mesajınız hazır açılır</span><span class="qr"><img src="qr/whatsapp.svg" alt="WhatsApp QR"></span></a></li>
     <li><a href="${WA.harita}"><em class="ui">${i('pin')}</em><b>Konum</b><span>Yol tarifi alın</span><span class="qr"><img src="qr/harita.svg" alt="Konum QR"></span></a></li>
-    <li><a href="${WA.yorum}"><em class="ui">${i('star')}</em><b>Google yorum</b><span>Bizi değerlendirin</span><span class="qr"><img src="qr/yorum.svg" alt="Google yorum QR"></span></a></li>
+    <li><a href="${WA.facebook}"><em class="ui">${i('fb')}</em><b>Facebook</b><span>Ürünler ve teslimatlar</span><span class="qr"><img src="qr/facebook.svg" alt="Facebook QR"></span></a></li>
   </ul>
   <div class="back-foot">
     <div class="back-row"><img src="${kesit('k-kultivator-mavi')}" alt=""><img src="${kesit('k-romork')}" alt=""><img src="${kesit('k-tanker-mavi')}" alt=""></div>

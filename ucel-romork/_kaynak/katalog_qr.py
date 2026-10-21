@@ -12,8 +12,6 @@ SITE = 'https://selahattinpeltek46-sudo.github.io/imfa-yap-/ucel-romork/'
 # İşletme adı + açık adres: işletme haritada kayıtlı değilse de Göksun Sanayi Sitesi'ne götürür
 HARITA = 'https://www.google.com/maps/search/?api=1&query=' + urllib.parse.quote('Üçel Tarım Aletleri, Yeni Mah. Göksun Sanayi Sitesi, 46660 Göksun, Kahramanmaraş')
 
-YORUM = 'https://www.google.com/search?q=' + urllib.parse.quote('Üçel Tarım Aletleri Göksun yorumlar')
-
 def wa(mesaj):
     return f'https://wa.me/{WA}?text=' + urllib.parse.quote(mesaj)
 
@@ -24,9 +22,8 @@ KODLAR = {
     'whatsapp': wa('Merhaba, Üçel kataloğundan yazıyorum. Bilgi almak istiyorum.'),
     'harita': HARITA,
     'site': SITE,
-    # Google yorum: işletmenin Google "Yorum yaz" bağlantısı gelince YORUM değiştirilecek.
-    # Şimdilik Google'da işletme adıyla yorumlar araması açılır.
-    'yorum': YORUM,
+    # Üçel'in Facebook hesabı (21.10.2026, Üçel'den). Arka kapakta Google yorum yerine.
+    'facebook': 'https://www.facebook.com/hytckcnsz/',
     'romork': urun('Tarım Römorku'),
     'kultivator': urun('Yaylı Kültivatör'),
     'kepce': urun('Loader Kepçe'),
