@@ -82,7 +82,7 @@ const URUNLER = [
     saha: [['romork-damperli', 'Damperli römork, kasa kaldırılmış.'], ['romork-kirmizi-traktor', 'Kırmızı römork, traktöre bağlı.']],
   },
   {
-    no: '02', qr: 'kultivator', ad: 'Yaylı Kültivatör', bolum: 'A', cat: 'Toprak işleme', imalat: true,
+    no: '05', qr: 'kultivator', ad: 'Yaylı Kültivatör', bolum: 'B', cat: 'Toprak işleme', imalat: true,
     tag: 'Pulluktan sonra toprağı inceltir, tohum yatağını hazırlar.',
     lead: 'Göksun model yaylı kültivatör. Yaylı ayaklar taşa çarpınca esner; hem aleti hem traktörü korur. Atölyemizde üretiyoruz.',
     sahne: { kesit: 'k-kultivator' },
@@ -94,7 +94,7 @@ const URUNLER = [
     saha: [['kultivator-renkler', 'Kırmızı, mavi ve yeşil kültivatörler.'], ['kultivator-mavi-atolye', 'Atölyemizin önünde mavi kültivatörler.']],
   },
   {
-    no: '03', qr: 'kepce', ad: 'Loader Kepçe', bolum: 'A', cat: 'Yükleme', imalat: true,
+    no: '02', qr: 'kepce', ad: 'Loader Kepçe', bolum: 'A', cat: 'Yükleme', imalat: true,
     tag: 'Traktör arkası asistan kepçe: gübre, yem ve malzemeyi yükleyin.',
     lead: 'Traktörünüzün arkasına takılan hidrolik asistan kepçe. Yem, gübre ve malzemeyi kaldırıp taşır. Kendi atölyemizde imal ediyoruz.',
     sahne: { kesit: 'k-kepce' },
@@ -106,7 +106,7 @@ const URUNLER = [
     saha: [['kepce-kirmizi-traktor', 'Traktörün arkasına takılı kırmızı kepçe.'], ['kepce-mavi', 'Mavi asistan kepçeler.']],
   },
   {
-    no: '04', qr: 'tanker', ad: 'Su Tankeri', bolum: 'A', cat: 'Su', imalat: true,
+    no: '03', qr: 'tanker', ad: 'Su Tankeri', bolum: 'A', cat: 'Su', imalat: true,
     tag: 'Tarla sulaması ve hayvan suyu için traktörle çekilen tanker.',
     lead: 'Merada ve yaylada hayvanlara, bahçede fidana, tarla başında ilaçlamaya su taşır. Göksun’daki atölyemizde imal ediyoruz.',
     sahne: { kesit: 'k-tanker-mavi' },
@@ -118,7 +118,7 @@ const URUNLER = [
     saha: [['tanker-yesil', 'Yeşil su tankeri.'], ['su-tankeri', 'Mavi su tankerleri.']],
   },
   {
-    no: '05', qr: 'tapan', ad: 'Loğlu Tapan', bolum: 'B', cat: 'Toprak işleme',
+    no: '06', qr: 'tapan', ad: 'Loğlu Tapan', bolum: 'B', cat: 'Toprak işleme', imalat: true,
     tag: 'Ekim öncesi tarlayı düzler, kesek kırar.',
     lead: 'Pulluk ve kültivatörden sonra tarlanın yüzeyini düzler, keseği kırar. Arkasındaki loğ (silindir) toprağı bastırarak ekime hazırlar.',
     sahne: { kesit: 'k-tapan' },
@@ -130,7 +130,7 @@ const URUNLER = [
     akis: 2, akisNot: 'Tapan, pulluk ve kültivatörden sonra, ekimden hemen önce kullanılır.',
   },
   {
-    no: '06', qr: 'pulluk', ad: 'Pulluk', bolum: 'B', cat: 'Toprak işleme',
+    no: '04', qr: 'pulluk', ad: 'Pulluk', bolum: 'B', cat: 'Toprak işleme', imalat: true,
     tag: 'Tarlanın ekim öncesi derin işlenmesinde temel alet.',
     lead: 'Toprağı devirerek sürer, anızı toprağa gömer. Toprağınıza ve traktörünüzün gücüne uygun pulluk, traktörünüzü gereksiz yormaz.',
     sahne: { kesit: 'k-pulluk' },
@@ -141,7 +141,7 @@ const URUNLER = [
     saha: [['pulluk-mavi-2', 'Mavi kulaklı pulluk.'], ['pulluk-cesitleri', 'Pulluk çeşitlerimiz.']],
   },
   {
-    no: '07', qr: 'gubre', ad: 'Gübre Serpme Makinesi', bolum: 'B', cat: 'Gübreleme',
+    no: '07', qr: 'gubre', ad: 'Gübre Serpme Makinesi', bolum: 'B', cat: 'Gübreleme', imalat: true,
     tag: 'Gübreyi tarlanıza dengeli şekilde dağıtın.',
     lead: 'Traktörün arkasına takılır; granül gübreyi tarlaya eşit serper. Elle serpmeye göre zaman kazandırır.',
     sahne: { kesit: 'k-gubre' },
@@ -169,13 +169,14 @@ const DIGER = [
    { qr: 'vinc', imalat: true, ad: 'Traktör Arkası Yükleme Vinci', cat: 'Yükleme', d: 'Traktörün arkasına takılan yükleme vinci.' }],
 ];
 
-const A = URUNLER.filter((u) => u.bolum === 'A');
-const B = URUNLER.filter((u) => u.bolum === 'B');
-// Sayfa numaraları: kapak 1, A 2, A ürünleri 3-6, B 7, B ürünleri 8-10, C diğer ürünler 11-12, hizmetler 13, arka kapak 14
+const sirala = (l) => l.sort((a, b) => a.no.localeCompare(b.no));
+const A = sirala(URUNLER.filter((u) => u.bolum === 'A'));
+const B = sirala(URUNLER.filter((u) => u.bolum === 'B'));
+// Sayfa numaraları (7 ürünün hepsi Üçel imalatı): kapak 1, A taşıma 2, ürünler 3-5, B toprak işleme 6, ürünler 7-10, C diğer ürünler 11-12, hizmetler 13, arka kapak 14
 // QR kodlarıyla aynı adresler (katalog_qr.py üretir): PDF telefonda açılınca QR okutulamaz, dokunulur
 const WA = JSON.parse(readFileSync(join(KOK, 'qr', 'linkler.json'), 'utf8'));
 const TEL = 'tel:' + FIRMA.telefonE164;
-const SAYFA = { romork: 3, kultivator: 4, kepce: 5, tanker: 6, tapan: 8, pulluk: 9, gubre: 10 };
+const SAYFA = { romork: 3, kepce: 4, tanker: 5, pulluk: 7, kultivator: 8, tapan: 9, gubre: 10 };
 const AKIS = ['Pulluk', 'Kültivatör', 'Tapan', 'Gübre', 'Ekim'];
 
 const sahneSrc = (s) => (s.kesit ? `img/${s.kesit}.${s.uzanti || 'png'}` : foto(s.foto));
@@ -262,7 +263,7 @@ const kapak = `
   <p class="cover-k">ÜRÜN KATALOĞU <em>2026</em> · GÖKSUN</p>
   ${logo('logo-lg')}
   <h1>Tarlada da,<br>yolda da sağlam iş.</h1>
-  <p class="sub">Römorktan kültivatöre, asistan kepçeden su tankerine birçok aleti Göksun’daki atölyemizde kendimiz üretiyoruz. Markalı makinelerin de satışını yapıyoruz.</p>
+  <p class="sub">Römorktan pulluğa, aletlerimizi Göksun’daki atölyemizde kendimiz üretiyoruz.<br>Markalı makinelerin de satışını yapıyoruz.</p>
   <div class="showroom">
     <span class="sr-band"></span>
     <img class="s-romork" src="${kesit('k-romork')}" alt="Üçel tarım römorku">
@@ -273,9 +274,9 @@ const kapak = `
     ${[['k-tanker-mavi', 'Su tankeri'], ['k-kultivator-mavi', 'Kültivatör'], ['k-tapan', 'Loğlu tapan'], ['k-pulluk', 'Pulluk'], ['k-gubre', 'Gübre serpme']].map(([k, ad]) => `<li><img src="${kesit(k)}" alt="${ad}"><span>${ad}</span></li>`).join('')}
   </ul>
   <div class="cover-bottom">
-    <div><div class="toc-h">${i('gear')} Kendi imalatımız</div>
+    <div><div class="toc-h">${i('truck')} Taşıma ve yükleme</div>
       <ul class="toc">${A.map((u) => `<li><b>${u.no}</b>${u.ad}<span>${SAYFA[u.qr]}</span></li>`).join('')}</ul></div>
-    <div><div class="toc-h">${i('gear')} Sattığımız ürünler</div>
+    <div><div class="toc-h">${i('soil')} Toprak işleme</div>
       <ul class="toc">${B.map((u) => `<li><b>${u.no}</b>${u.ad}<span>${SAYFA[u.qr]}</span></li>`).join('')}
         <li><b>${i('list')}</b>Diğer ürünlerimiz<span>11</span></li>
         <li><b>${i('wrench')}</b>Hizmetlerimiz<span>13</span></li></ul></div>
@@ -289,7 +290,7 @@ const bolumSayfa = (harf, baslik, metin, liste, no) => `
   ${susler}
   <p class="cover-k">ÜRÜN KATALOĞU <em>2026</em> · GÖKSUN</p>
   ${logo('logo-md')}
-  <div class="sec-title"><p class="sec-k">Bölüm ${harf}</p><h2>${baslik}</h2><span class="bar"></span><p class="sub">${metin}</p></div>
+  <div class="sec-title"><p class="sec-k">Bölüm ${harf} · Kendi imalatımız</p><h2>${baslik}</h2><span class="bar"></span><p class="sub">${metin}</p></div>
   <ul class="cards n${liste.length}">
     ${liste.map((u) => `<li><span class="card-no">${u.no}</span><div class="card-img">${kucuk(u)}</div><div class="card-txt"><strong>${u.ad}</strong><span>${u.tag}</span><em>Sayfa ${SAYFA[u.qr]} ${i('arrow')}</em></div></li>`).join('')}
   </ul>
@@ -321,7 +322,7 @@ const hizmetler = `
     <li><em class="ui">${i('cycle')}</em><b>İkinci el</b><span>İkinci el tarım aleti alıp satıyoruz; gerçek durumunu dürüstçe paylaşıyoruz.</span></li>
     <li><em class="ui">${i('swap')}</em><b>Takas</b><span>Eski aletinizin fotoğrafını gönderin; yeni ya da ikinci el bir aletle takas edelim.</span></li>
     <li><em class="ui">${i('ruler')}</em><b>Özel imalat</b><span>Kendi imal ettiğimiz aletlerde ihtiyacınıza göre özel ölçü yapıyoruz.</span></li>
-    <li><em class="ui">${i('gear')}</em><b>Yedek parça</b><span>Sattığımız ve sık kullanılan aletler için yedek parça bulunduruyoruz.</span></li>
+    <li><em class="ui">${i('gear')}</em><b>Yedek parça</b><span>Ürettiğimiz ve sattığımız aletler için yedek parça bulunduruyoruz.</span></li>
   </ul>
   <div class="ask"><em class="ui">${i('question')}</em><div><h3>Listede yoksa sorun</h3><p>Mibzer, tesviye küreği ve katalogda görmediğiniz diğer aletler için de bize yazın; birlikte bakalım.</p></div></div>
   <div class="three-h"><h2>3 adımda fiyat alın</h2></div>
@@ -381,9 +382,9 @@ const html = `<!doctype html>
 </head>
 <body>
 ${kapak}
-${bolumSayfa('A', 'Kendi imalatımız', 'Göksun Sanayi Sitesi’ndeki atölyemizde kaynağından boyasına kadar kendimiz üretiyoruz. Ürünlerimizin üzerinde <b>ÜÇEL · GÖKSUN</b> yazar.', A, 2)}
+${bolumSayfa('A', 'Taşıma ve yükleme', 'Göksun Sanayi Sitesi’ndeki atölyemizde kaynağından boyasına kadar kendimiz üretiyoruz. Ürünlerimizin üzerinde <b>ÜÇEL · GÖKSUN</b> yazar.', A, 2)}
 ${A.map(urunSayfa).join('')}
-${bolumSayfa('B', 'Sattığımız ürünler', 'Toprak hazırlığından gübrelemeye; traktörünüze ve işinize uygun aleti birlikte seçelim.', B, 7)}
+${bolumSayfa('B', 'Toprak işleme ve gübreleme', 'Sürümden ekime kadar tarla işlerinizin aletleri. Hepsi Göksun’daki atölyemizde, kendi imalatımız.', B, 6)}
 ${B.map(urunSayfa).join('')}
 ${digerSayfa(DIGER[0], 11, true)}
 ${digerSayfa(DIGER[1], 12, false)}
