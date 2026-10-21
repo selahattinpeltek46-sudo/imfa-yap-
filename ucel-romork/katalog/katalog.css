@@ -414,3 +414,6 @@ svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; s
 .plaka-tablo th { font-size: 9pt; }
 .plaka-slogan { font-size: 32pt; margin-top: 18mm; }
 .plaka-tel { margin-top: 12mm; }
+/* Kapak: baba-oğul sözü */
+.kasa-soz { position: relative; z-index: 1; margin-top: 8mm; max-width: 150mm; font: italic 600 15pt/1.35 var(--font); color: #fff; text-shadow: 0 .4mm 1mm rgba(0,0,0,.35); }
+.kasa-urunler { margin-top: 8mm; font-size: 8.5pt; opacity: .75; }

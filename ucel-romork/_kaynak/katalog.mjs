@@ -331,6 +331,7 @@ const kapakKasa = `
     </div>
     <div class="kasa-reflektor"><i></i><i></i><i></i><i></i></div>
     <p class="kasa-slogan">Tarlada da, yolda da sağlam iş.</p>
+    <p class="kasa-soz">“Ustalığı babadan,<br>sağlamlığı Göksun’un kışından öğrendik.”</p>
     <p class="kasa-urunler">${URUN_ADLARI}</p>
   </div>
   <div class="kasa-sasi">
