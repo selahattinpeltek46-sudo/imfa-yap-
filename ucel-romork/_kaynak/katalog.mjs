@@ -287,6 +287,33 @@ const kapak = `
   </div>
 </section>`;
 
+// ---------- Kapak seçenekleri (karşılaştırma için: katalog/kapak-secenekleri.html) ----------
+const kapakUst = `
+  ${susler}
+  <p class="cover-k">ÜRÜN KATALOĞU <em>2026</em> · GÖKSUN</p>
+  ${logo('logo-lg')}
+  <h1>Tarlada da,<br>yolda da sağlam iş.</h1>
+  <p class="sub">Aletlerimizi Göksun’daki atölyemizde kendimiz üretiyoruz.</p>`;
+const kapakAlt = `
+  <div class="cv-alt">
+    <div class="cv-imza">${i('gear')}<div><b>Kendi imalatımız</b><span>Römork · Kepçe · Su tankeri · Pulluk · Kültivatör · Tapan · Gübre serpme</span></div></div>
+    <a class="cover-call" href="${WA.whatsapp}"><em class="wa">${i('chat')}</em><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></a>
+  </div>`;
+const kapakA = `
+<section class="page cover cv cv-a">
+  ${kapakUst}
+  <div class="cv-sahne"><span class="cv-bant"></span><img src="${kesit('k-romork')}" alt="Üçel tarım römorku"></div>
+  ${kapakAlt}
+</section>`;
+const kapakB = `
+<section class="page cover cv cv-b">
+  ${kapakUst}
+  <div class="cv-sahne"><span class="cv-bant"></span>
+    <ul class="cv-uc">${[['k-kultivator-mavi', 'Yaylı kültivatör'], ['k-romork', 'Tarım römorku'], ['k-kepce-mavi', 'Asistan kepçe']].map(([k, ad]) => `<li><span class="cv-kutu"><img src="${kesit(k)}" alt="${ad}"></span><b>${ad}</b></li>`).join('')}</ul>
+  </div>
+  ${kapakAlt}
+</section>`;
+
 // ---------- Bölüm sayfası ----------
 const bolumSayfa = (harf, baslik, metin, liste, no) => `
 <section class="page section">
@@ -397,6 +424,7 @@ ${arka}
 </html>
 `;
 writeFileSync(join(KOK, 'index.html'), html);
+writeFileSync(join(KOK, 'kapak-secenekleri.html'), html.replace(/<body>[\s\S]*<\/body>/, `<body>${kapakA}${kapakB}</body>`));
 console.log('katalog/index.html yazıldı');
 
 if (process.argv.includes('--pdf')) {

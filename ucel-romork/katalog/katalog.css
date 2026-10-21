@@ -330,3 +330,25 @@ svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; s
 /* Kapak: ön sıranın ortasında gübre serpme */
 .s-orta { width: 40mm; left: 50%; transform: translateX(-50%); bottom: 6mm; z-index: 4; }
 .s-kepce { width: 56mm; right: 12mm; bottom: 4mm; }
+
+/* ---------- Kapak seçenekleri (A: tek ürün, B: üçlü vitrin) ---------- */
+.cv .sub { font-size: 11pt; }
+.cv-sahne { position: relative; width: 210mm; flex: 1; min-height: 0; margin-top: 6mm; }
+.cv-bant { position: absolute; left: -10mm; right: -10mm; bottom: 16mm; height: 38mm; background: var(--yellow); transform: skewY(-4deg); }
+.cv-bant::after { content: ''; position: absolute; left: 0; right: 0; bottom: -5mm; height: 3mm; background: var(--black); }
+.cv-a .cv-sahne img { position: absolute; left: 50%; bottom: 24mm; transform: translateX(-50%); width: 150mm; filter: drop-shadow(0 4mm 3mm rgba(0,0,0,.35)); }
+.cv-uc { position: absolute; left: var(--pad); right: var(--pad); bottom: 14mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+.cv-uc li { display: flex; flex-direction: column; align-items: center; gap: 4mm; }
+.cv-kutu { height: 58mm; width: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.cv-kutu img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 3mm 2.5mm rgba(0,0,0,.35)); }
+.cv-uc b { background: var(--black); color: #fff; font: 700 9.5pt/1 var(--font); padding: 2.2mm 6mm 2.2mm 4mm; clip-path: polygon(0 0, 100% 0, calc(100% - 3mm) 100%, 0 100%); }
+.cv-alt { width: 100%; display: grid; grid-template-columns: 1fr 62mm; gap: 8mm; align-items: center; padding: 0 0 12mm; }
+.cv-imza { display: flex; align-items: center; gap: 4mm; border-left: 1.4mm solid var(--yellow); padding-left: 4mm; }
+.cv-imza > .i { font-size: 22pt; color: var(--yellow-dk); }
+.cv-imza b { display: block; font: 800 14pt/1.1 var(--font); }
+.cv-imza span { display: block; font: 500 9pt/1.5 var(--font); color: var(--ink-2); margin-top: 1.5mm; }
+.cv-a .cv-sahne img { width: 166mm; bottom: 22mm; }
+.cv-b .cv-bant { bottom: 26mm; }
+.cv-uc { bottom: 10mm; gap: 4mm; }
+.cv-kutu { height: 84mm; }
+.cv-uc { left: 6mm; right: 6mm; grid-template-columns: 1fr 1.45fr 1fr; gap: 2mm; }
