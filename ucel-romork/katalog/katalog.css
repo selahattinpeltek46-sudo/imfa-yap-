@@ -329,3 +329,4 @@ svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; s
 .s-kepce { width: 60mm; right: 16mm; bottom: 4mm; z-index: 3; }
 /* Kapak: ön sıranın ortasında gübre serpme */
 .s-orta { width: 40mm; left: 50%; transform: translateX(-50%); bottom: 6mm; z-index: 4; }
+.s-kepce { width: 56mm; right: 12mm; bottom: 4mm; }
