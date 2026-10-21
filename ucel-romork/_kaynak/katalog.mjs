@@ -460,7 +460,7 @@ const html = `<!doctype html>
 <link rel="stylesheet" href="katalog.css">
 </head>
 <body>
-${kapak}
+${kapakKasa}
 ${bolumSayfa('A', 'Taşıma ve yükleme', 'Göksun Sanayi Sitesi’ndeki atölyemizde kaynağından boyasına kadar kendimiz üretiyoruz. Ürünlerimizin üzerinde <b>ÜÇEL · GÖKSUN</b> yazar.', A, 2)}
 ${A.map(urunSayfa).join('')}
 ${bolumSayfa('B', 'Toprak işleme ve gübreleme', 'Sürümden ekime kadar tarla işlerinizin aletleri. Hepsi Göksun’daki atölyemizde, kendi imalatımız.', B, 6)}
