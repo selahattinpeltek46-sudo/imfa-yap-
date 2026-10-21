@@ -314,6 +314,55 @@ const kapakB = `
   ${kapakAlt}
 </section>`;
 
+const URUN_ADLARI = 'Römork · Kepçe · Su tankeri · Pulluk · Kültivatör · Tapan · Gübre serpme';
+// Kapak 1: Üçel römorkunun yan kasası (mavi sac, çıtalar, şablon harfli ÜÇEL yazısı)
+const kapakKasa = `
+<section class="page kasa">
+  <div class="kasa-ust">
+    <div class="logo logo-ters"><img src="${AMBLEM}" alt=""><div><b>ÜÇEL</b><small>TARIM ALETLERİ</small></div></div>
+    <p>ÜRÜN KATALOĞU <em>2026</em></p>
+  </div>
+  <div class="kasa-sac">
+    <i class="dikme d1"></i><i class="dikme d2"></i><i class="dikme d3"></i>
+    <div class="kasa-yazi">
+      <h1 class="kasa-ad">ÜÇEL</h1>
+      <p class="kasa-alt">TARIM ALETLERİ · GÖKSUN</p>
+    </div>
+    <div class="kasa-reflektor"><i></i><i></i><i></i><i></i></div>
+    <p class="kasa-slogan">Tarlada da, yolda da sağlam iş.</p>
+    <p class="kasa-urunler">${URUN_ADLARI}</p>
+  </div>
+  <div class="kasa-sasi">
+    <a class="kasa-tel" href="${WA.whatsapp}">${i('chat')} ${FIRMA.telefon}</a>
+    <span>Göksun / Kahramanmaraş · Kendi imalatımız</span>
+  </div>
+  <div class="kasa-tampon"></div>
+</section>`;
+
+// Kapak 2: makinelere perçinlenen imalatçı plakası
+const kapakPlaka = `
+<section class="page cover plaka-sayfa">
+  ${susler}
+  <p class="cover-k">ÜRÜN KATALOĞU <em>2026</em> · GÖKSUN</p>
+  <div class="plaka">
+    <i class="percin p1"></i><i class="percin p2"></i><i class="percin p3"></i><i class="percin p4"></i>
+    <div class="plaka-bas">
+      <img src="${AMBLEM}" alt="">
+      <div><b>ÜÇEL</b><small>TARIM ALETLERİ İMALAT VE SATIŞ</small></div>
+    </div>
+    <table class="plaka-tablo">
+      <tr><th>İMALATÇI</th><td>Üçel Tarım Aletleri</td></tr>
+      <tr><th>İMALAT YERİ</th><td>Göksun Sanayi Sitesi · Kahramanmaraş</td></tr>
+      <tr><th>YIL</th><td>2026</td></tr>
+      <tr><th>ÜRÜNLER</th><td>Römork · Asistan kepçe · Su tankeri<br>Pulluk · Kültivatör · Loğlu tapan<br>Gübre serpme</td></tr>
+      <tr><th>TELEFON</th><td>${FIRMA.telefon}</td></tr>
+    </table>
+    <p class="plaka-alt">TÜRKİYE'DE ÜRETİLMİŞTİR · MADE IN GÖKSUN</p>
+  </div>
+  <h1 class="plaka-slogan">Tarlada da,<br>yolda da sağlam iş.</h1>
+  <a class="cover-call plaka-tel" href="${WA.whatsapp}"><em class="wa">${i('chat')}</em><b>${FIRMA.telefon}</b><span>Telefon · WhatsApp</span></a>
+</section>`;
+
 // ---------- Bölüm sayfası ----------
 const bolumSayfa = (harf, baslik, metin, liste, no) => `
 <section class="page section">
@@ -407,7 +456,7 @@ const html = `<!doctype html>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Big+Shoulders+Stencil+Display:wght@800;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="katalog.css">
 </head>
 <body>
@@ -424,7 +473,7 @@ ${arka}
 </html>
 `;
 writeFileSync(join(KOK, 'index.html'), html);
-writeFileSync(join(KOK, 'kapak-secenekleri.html'), html.replace(/<body>[\s\S]*<\/body>/, `<body>${kapakA}${kapakB}</body>`));
+writeFileSync(join(KOK, 'kapak-secenekleri.html'), html.replace(/<body>[\s\S]*<\/body>/, `<body>${kapakKasa}${kapakPlaka}${kapakA}${kapakB}</body>`));
 console.log('katalog/index.html yazıldı');
 
 if (process.argv.includes('--pdf')) {

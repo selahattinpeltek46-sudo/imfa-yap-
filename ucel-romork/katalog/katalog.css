@@ -352,3 +352,65 @@ svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; s
 .cv-uc { bottom: 10mm; gap: 4mm; }
 .cv-kutu { height: 84mm; }
 .cv-uc { left: 6mm; right: 6mm; grid-template-columns: 1fr 1.45fr 1fr; gap: 2mm; }
+
+/* ---------- Kapak 1: römork kasası ---------- */
+.kasa { --sac: #1F4F96; --sac-ac: #2A63B3; --sac-ko: #163C75; background: #1E1E1E; }
+.kasa-ust { flex: none; height: 30mm; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--pad); background: var(--black); border-bottom: 1.6mm solid var(--yellow); }
+.logo-ters b, .logo-ters small { color: #fff; }
+.kasa-ust p { font: 700 10pt/1 var(--font); color: #fff; letter-spacing: 2pt; }
+.kasa-ust p em { font-style: normal; color: var(--yellow); }
+.kasa-sac { position: relative; flex: 1; overflow: hidden;
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,.10) 0 1.2mm, rgba(0,0,0,0) 1.2mm 3mm, rgba(0,0,0,.18) 3mm 4mm, rgba(0,0,0,0) 4mm 27mm),
+    linear-gradient(180deg, var(--sac-ac), var(--sac) 45%, var(--sac-ko));
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.dikme { position: absolute; top: 0; bottom: 0; width: 7mm; background: linear-gradient(90deg, var(--sac-ko), var(--sac-ac) 40%, var(--sac-ko)); box-shadow: 0 0 2mm rgba(0,0,0,.35); }
+.dikme::before, .dikme::after { content: ''; position: absolute; left: 50%; width: 2.6mm; height: 2.6mm; margin-left: -1.3mm; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #8fb0e0, #13305e); }
+.dikme::before { top: 12mm; } .dikme::after { bottom: 12mm; }
+.d1 { left: 12mm; } .d2 { left: calc(50% - 3.5mm); opacity: 0; } .d3 { right: 12mm; }
+.kasa-yazi { position: relative; z-index: 1; }
+.kasa-masallah { font: 900 13pt/1 'Big Shoulders Stencil Display', var(--font); color: #fff; letter-spacing: 4pt; opacity: .9; }
+.kasa-ad { font: 900 120pt/0.9 'Big Shoulders Stencil Display', var(--font); color: #F4F4F4; letter-spacing: 14pt; padding-left: 14pt; margin-top: 3mm; text-shadow: 0 .6mm 0 rgba(0,0,0,.25); }
+.kasa-alt { font: 900 22pt/1 'Big Shoulders Stencil Display', var(--font); color: #fff; letter-spacing: 8pt; margin-top: 3mm; }
+.kasa-alt span { color: #fff; margin: 0 2mm; }
+.kasa-reflektor { position: relative; z-index: 1; display: flex; gap: 5mm; margin-top: 12mm; }
+.kasa-reflektor i { display: block; width: 26mm; height: 5mm; background: linear-gradient(180deg, #E8455A, #B8132C); border: .4mm solid rgba(255,255,255,.35); border-radius: .6mm; }
+.kasa-reflektor i:nth-child(even) { background: linear-gradient(180deg, #f5f5f5, #c8c8c8); }
+.kasa-slogan { position: relative; z-index: 1; margin-top: 12mm; background: var(--yellow); color: var(--black); font: 800 17pt/1 var(--font); padding: 4mm 10mm 4mm 7mm; clip-path: polygon(0 0, 100% 0, calc(100% - 5mm) 100%, 0 100%); }
+.kasa-urunler { position: relative; z-index: 1; margin-top: 6mm; font: 600 10pt/1.4 var(--font); color: rgba(255,255,255,.9); letter-spacing: .4pt; }
+.kasa-sasi { flex: none; height: 26mm; background: linear-gradient(180deg, #2b2b2b, #151515); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--pad); color: #fff; }
+.kasa-tel { display: inline-flex; align-items: center; gap: 3mm; font: 800 22pt/1 var(--font); color: #fff; }
+.kasa-tel .i { color: var(--yellow); font-size: 18pt; }
+.kasa-sasi span { font: 600 9.5pt/1.3 var(--font); color: rgba(255,255,255,.8); text-align: right; }
+.kasa-tampon { flex: none; height: 9mm; background: repeating-linear-gradient(-45deg, var(--yellow) 0 8mm, var(--black) 8mm 16mm); }
+
+/* ---------- Kapak 2: imalatçı plakası ---------- */
+.plaka-sayfa { justify-content: flex-start; }
+.plaka { position: relative; z-index: 2; margin-top: 16mm; width: 160mm; padding: 11mm 13mm 9mm; border-radius: 4mm;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.18) 0 .25mm, rgba(0,0,0,.03) .25mm .6mm),
+    linear-gradient(160deg, #EDEFF1 0%, #C9CED3 38%, #F3F4F5 55%, #B9BFC5 100%);
+  box-shadow: 0 2mm 5mm rgba(0,0,0,.25), inset 0 0 0 .6mm rgba(255,255,255,.7), inset 0 0 0 1.8mm #9EA5AC, inset 0 0 0 2.2mm rgba(255,255,255,.6); }
+.percin { position: absolute; width: 5mm; height: 5mm; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff, #9aa1a8 55%, #5d646b); box-shadow: 0 .3mm .6mm rgba(0,0,0,.4); }
+.p1 { left: 5mm; top: 5mm; } .p2 { right: 5mm; top: 5mm; } .p3 { left: 5mm; bottom: 5mm; } .p4 { right: 5mm; bottom: 5mm; }
+.plaka-bas { display: flex; align-items: center; gap: 4mm; padding-bottom: 5mm; border-bottom: .5mm solid #8E959C; }
+.plaka-bas img { width: 20mm; height: 20mm; }
+.plaka-bas b { display: block; font: 800 34pt/1 var(--font); letter-spacing: 5pt; color: #2B2F33; text-shadow: 0 .4mm 0 rgba(255,255,255,.8); }
+.plaka-bas small { display: block; font: 600 8pt/1 'IBM Plex Mono', monospace; letter-spacing: 1.5pt; color: #4A5056; margin-top: 2mm; }
+.plaka-tablo { width: 100%; border-collapse: collapse; margin-top: 4mm; font-family: 'IBM Plex Mono', monospace; }
+.plaka-tablo th, .plaka-tablo td { text-align: left; vertical-align: top; padding: 2.6mm 0; border-bottom: .3mm dashed #9AA1A8; text-shadow: 0 .3mm 0 rgba(255,255,255,.7); }
+.plaka-tablo th { width: 38mm; font: 600 8.5pt/1.4 'IBM Plex Mono', monospace; letter-spacing: 1pt; color: #5A6067; }
+.plaka-tablo td { font: 600 11pt/1.45 'IBM Plex Mono', monospace; color: #1F2327; }
+.plaka-alt { margin-top: 5mm; text-align: center; font: 600 7.5pt/1 'IBM Plex Mono', monospace; letter-spacing: 2pt; color: #5A6067; }
+.plaka-slogan { position: relative; z-index: 2; text-align: center; font: 800 28pt/1.1 var(--font); margin-top: 14mm; }
+.plaka-tel { position: relative; z-index: 2; margin-top: 10mm; width: 66mm; }
+.kasa-ad { font-size: 132pt; letter-spacing: 10pt; padding-left: 10pt; margin-top: 0; }
+.kasa-alt { font: 800 15pt/1 var(--font); letter-spacing: 6pt; margin-top: 12mm; }
+.kasa-reflektor { margin-top: 14mm; }
+/* Plaka sayfası: dikey dengeleme */
+.plaka { margin-top: 24mm; width: 174mm; padding: 13mm 15mm 10mm; }
+.plaka-bas b { font-size: 40pt; }
+.plaka-tablo td { font-size: 12pt; }
+.plaka-tablo th { font-size: 9pt; }
+.plaka-slogan { font-size: 32pt; margin-top: 18mm; }
+.plaka-tel { margin-top: 12mm; }
