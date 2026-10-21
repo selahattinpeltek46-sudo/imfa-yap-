@@ -321,3 +321,6 @@ svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; s
 .sr-band { bottom: 12mm; height: 30mm; }
 .cover-strip { margin-top: 0; }
 .cover-bottom { margin-top: 5mm; padding-bottom: 9mm; }
+/* Kapak: kırmızı römork, mavi römorkun sol arkasında */
+.s-romork-k { width: 74mm; left: 4mm; bottom: 38mm; z-index: 0; }
+.s-romork { left: 56%; }

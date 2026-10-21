@@ -44,6 +44,7 @@ DEKUPE = {
     'k-tapan': ('tapan-loglu', []),
     'k-gubre': ('gubre-serpme-tekli', [(0, 0, 1, 0.31)]),
     'k-pulluk-2': ('pulluk-mavi', [(0, 0, 0.2, 1)]),
+    'k-romork-kirmizi': ('romork-kirmizi-traktor', [(0, 0, 0.19, 1), (0.48, 0.28, 0.66, 0.355), (0.79, 0, 1, 0.6)]),
     'k-pulluk-3': ('pulluk-mavi-2', [(0, 0, 1, 0.12)]),
 }
 
