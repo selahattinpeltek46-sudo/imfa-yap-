@@ -321,6 +321,9 @@ svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; s
 .sr-band { bottom: 12mm; height: 30mm; }
 .cover-strip { margin-top: 0; }
 .cover-bottom { margin-top: 5mm; padding-bottom: 9mm; }
-/* Kapak: kırmızı römork, mavi römorkun sol arkasında */
-.s-romork-k { width: 74mm; left: 4mm; bottom: 38mm; z-index: 0; }
-.s-romork { left: 56%; }
+/* Kapak vitrini, düzenli dizilim: arkada iki römork yan yana aynı boyda, önde kültivatör ve kepçe aynı zeminde */
+.s-romork-k, .s-romork { width: 88mm; bottom: 34mm; transform: none; z-index: 1; }
+.s-romork-k { left: 12mm; }
+.s-romork { left: auto; right: 12mm; }
+.s-kult { width: 72mm; left: 14mm; bottom: 4mm; z-index: 3; }
+.s-kepce { width: 60mm; right: 16mm; bottom: 4mm; z-index: 3; }
